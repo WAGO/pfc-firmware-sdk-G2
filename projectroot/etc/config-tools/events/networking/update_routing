@@ -1,0 +1,508 @@
+#!/bin/bash
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2018-2020 WAGO Kontakttechnik GmbH & Co. KG
+
+#-----------------------------------------------------------------------------
+# Script-name: update_routing
+#
+# Read routing, IP masquerading and port forwarding configuration from persistence
+# and update system configuration.
+#
+# Author: WAGO Kontakttechnik GmbH & Co. KG.
+#-----------------------------------------------------------------------------
+
+# Set error on use of undefined shell variables
+set -u
+
+function Log
+{
+    [[ $# -gt 0 ]] && logger -t "update-routing" "$1"
+}
+
+function getCidrFromNetmask
+{
+    local netmask=$1
+    local nbits=0
+    local ifs_tmp=$IFS
+    IFS=.
+    for dec in $netmask ; do
+        case $dec in
+            255) ((nbits+=8));;
+            254) ((nbits+=7));;
+            252) ((nbits+=6));;
+            248) ((nbits+=5));;
+            240) ((nbits+=4));;
+            224) ((nbits+=3));;
+            192) ((nbits+=2));;
+            128) ((nbits+=1));;
+            0);;
+            *) Log "netmask $dec is not recognised"
+               echo ""
+               IFS=$ifs_tmp
+               return
+        esac
+    done
+    echo "$nbits"
+    IFS=$ifs_tmp
+}
+
+function IsValidInterfaceName
+#
+# Check if given interface name is valid.
+#
+# input: 1: interface name to check
+# output:   true  in case interface name is valid,
+#           false otherwise
+{
+    local ifname="$1"
+    local isValid="false"
+    
+    rex_name='^[^[:space:]/]{1,15}$'
+    [[ "$ifname" =~ $rex_name ]] && isValid="true"
+    echo $isValid
+}
+
+# Check all arrays have same length.
+function IsValidStatic
+{
+    local count_dest=${#static_dest[@]}
+    local count_dest_mask=${#static_dest_mask[@]}
+    local count_gw=${#static_gw[@]}
+    local count_interface=${#static_interface[@]}
+    local count_metric=${#static_metric[@]}
+    local count_state=${#static_state[@]}
+    
+    if [[   $count_dest_mask == "$count_dest"
+         && $count_gw == "$count_dest"
+         && $count_interface == "$count_dest"
+         && $count_metric == "$count_dest"
+         && $count_state == "$count_dest"
+        ]]; then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
+
+# Check all arrays have same length.
+function IsValidStaticRemove
+{
+    local count_dest=${#static_dest_remove[@]}
+    local count_dest_mask=${#static_dest_mask_remove[@]}
+    local count_gw=${#static_gw_remove[@]}
+    local count_interface=${#static_interface_remove[@]}
+    local count_metric=${#static_metric_remove[@]}
+    
+    if [[   $count_dest_mask == "$count_dest"
+         && $count_gw == "$count_dest"
+         && $count_interface == "$count_dest"
+         && $count_metric == "$count_dest"
+        ]]; then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
+
+function HasForwardingEntry
+{
+    itf=$1
+    prot=$2
+    dport=$3
+    destip=$4
+    destport=$5
+
+    local ret=$($AWK -v pattern="fw_port -i $itf -p $prot -m $prot --dport $dport -j DNAT --to-destination $destip:$destport" '$0 ~ pattern {print "HasEntry"}' /etc/firewall/iptables/ipcmn.xml)
+    if [[ "HasEntry" == "$ret" ]]; then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
+
+function SetGeneralForwarding
+{
+    local ret=$SUCCESS
+    
+    if [[ "enabled" == "$state" ]]; then
+        echo 1 > "$IP_FORWARD"
+        $FIREWALL iptables --set-forward on &> /dev/null
+    elif [[ "disabled" == "$state" ]]; then
+        echo 0 > "$IP_FORWARD"
+        $FIREWALL iptables --set-forward off &> /dev/null
+    else
+        Log "Invalid general status value \"$state\"."
+        ret=$INVALID_PARAMETER
+    fi
+    
+    echo "$ret"
+}
+
+function SetMulticastRoutes
+{
+    local ret=$SUCCESS
+    local status=$SUCCESS
+
+    local bridges=$($BRCTL show | $GREP -E '^[[:alpha:]]' | $AWK '(NR>1)  {print $1}')
+    for bridge in $bridges; do
+        ret=$($ROUTE add -net 224.0.0.0 netmask 224.0.0.0 dev $bridge 2>&1)
+        # Ignore duplicates
+        ret_code=$?
+        if [[ $ret_code -ne 0 && $ret != "route: SIOCADDRT: File exists" ]]; then
+            status=$INVALID_PARAMETER
+            Log "Failed to add multicast route for bridge: $bridge"
+        else
+            Log "Set 224.0.0.0 on $bridge"
+        fi
+    done
+
+    echo "$status"
+}
+
+function Route
+{
+    local operation=$1
+    local dest_addr=$2
+    local dest_mask=$3
+    local gw_addr=$4
+    local interface=$5
+    local metric=$6
+    local protocol=$7
+
+    if [[ "$operation" != "add" && "$operation" != "del" ]]; then
+        Log "Invalid route operation: $operation."
+        return $INVALID_PARAMETER
+    fi
+
+    if [[ -z "$dest_addr" || -z "$dest_mask" ]]; then
+        Log "Invalid config: Destination address, destination mask or metric are empty."
+        return $INVALID_PARAMETER
+    fi
+    
+    if [[ -z "$gw_addr" && -z "$interface" ]]; then
+        Log "Invalid config: At least one of the parameters gateway or interface have be not empty."
+        return $INVALID_PARAMETER
+    fi
+
+    local ifs_tmp=$IFS
+    IFS=$IFS_DEFAULT
+
+    [[ "$dest_addr" == "0.0.0.0" ]] && dest_addr="default"
+    
+    local dest_option=""
+    [[ "$dest_addr" == "default" || "$dest_addr" == "0.0.0.0" ]] && dest_option="default" || dest_option="$dest_addr/$(getCidrFromNetmask $dest_mask)"
+    local gw_option=""
+    [[ "$gw_addr" ]] && gw_option=" via $gw_addr"
+    local interface_option=""
+    [[ "$interface" ]] && interface_option=" dev $interface"
+    local metric_option=""
+    [[ "$metric" ]] && metric_option=" metric $metric"
+    local protocol_option=""
+    [[ "$protocol" ]] && protocol_option=" proto $protocol"
+
+    local cmd="$IP route $operation ${dest_option}${gw_option}${interface_option}${metric_option}${protocol_option}"
+    local return_text
+    return_text=$($cmd 2>&1) # TODO(09.09.2020) 2>/dev/null
+    local ret=$?
+
+    IFS=$ifs_tmp
+    
+    if [[ $ret -eq 2 && "$return_text" == "RTNETLINK answers: File exists" ]] ; then
+      Log "Info: Route already exists: ${dest_option}${gw_option}${interface_option}${metric_option}${protocol_option}"
+      ret=$SUCCESS
+    fi
+    if [[ $ret -eq 2 && "$return_text" == "RTNETLINK answers: Network is unreachable" ]] ; then
+      ret=$SUCCESS
+      Log "Warning: Cannot add route (unreachable network): ${dest_option}${gw_option}${interface_option}${metric_option}${protocol_option}"
+    fi
+    
+    [[ $ret -eq $SUCCESS ]] && return $SUCCESS || return $INTERNAL_ERROR
+}
+
+function AddRoutes
+{
+    local index=0
+    local count=${#static_dest[@]}
+    local status=$SUCCESS
+
+    if [[ "true" == $(IsValidStatic) ]]; then
+        local index=0
+        while [[ $index -lt $count ]]; do
+            if [[ "${static_state[$index]}" == "enabled" ]]; then
+                Route add "${static_dest[$index]}" "${static_dest_mask[$index]}" "${static_gw[$index]}" "${static_interface[$index]}" "${static_metric[$index]}" "$ROUTE_PROTOCOL"
+                local ret=$?
+                [[ $ret -ne $SUCCESS ]] && status=$ret
+            fi
+            ((index++))
+        done
+    else
+        # Found inconsistent array state
+        Log "Inconsistent route array state"
+        status=$INVALID_PARAMETER
+    fi
+
+    return $status
+}
+
+function DeleteRoutes
+# Delete all custom routes of routing protocol type "static".
+{
+    $IP route flush proto "$ROUTE_PROTOCOL"
+}
+
+function AddDhcpDefaultGateways
+{
+    local status=$SUCCESS
+    local metric=$DHCP_DEFAULT_METRIC # Metric has to be unique OVER ALL dhcp-bootp-data-<itf> files
+
+    shopt -s nullglob  # in case globbing was not successful
+    for cfgfile in $DHCP_DATA_FILE_TEMPLATE*; do
+	      local owner=$(ls -l "$cfgfile" | awk '{ print $3 }')
+	      if [ "$owner" != "root" ]; then continue; fi
+        . "$cfgfile"                                                                
+        local index=1 # DEFAULT_GATEWAY_<index>="<GW-IP>"; unique FOR EACH dhcp-bootp-data-<itf> file
+        local varname="DEFAULT_GATEWAY_$index"
+
+        # Following line supports set -u. If variable given by varname is currently
+        # not defined as shell variable, it will come into life with an empty value.
+        # Using eval is save because no user input is fed into its arguments.
+        GWVALUE=$(eval "echo \${$varname-}")
+
+        while [[ "$GWVALUE" ]]; do
+            Route add default 0.0.0.0 "$GWVALUE" "" "$metric" "dhcp" # interface is empty for dhcp routes
+            local ret=$?
+            [[ $ret != $SUCCESS ]] && status=$INTERNAL_ERROR || ((metric++))
+            unset $varname # Otherwise $varname is found while reading another file even it is not part of that file.
+            ((index++))
+            varname="DEFAULT_GATEWAY_$index"
+            GWVALUE=$(eval "echo \${$varname-}")
+        done
+    done
+    
+    return $status
+}
+
+function DeleteDhcpDefaultGateways()
+{
+    $IP route flush proto dhcp
+}
+
+function SetRoutes
+{
+    local ret_static=$SUCCESS
+    local ret_dhcp=$SUCCESS
+
+    # Clear default routes/gateways
+    DeleteRoutes
+    
+    # DHCP
+    # Are there previously delivered gateway values (route entries) that have to be removed?
+    DeleteDhcpDefaultGateways
+    
+    AddRoutes
+    ret_static=$?
+    
+    # Configure DHCP/BOOTP dynamic gateways
+    AddDhcpDefaultGateways
+    ret_dhcp=$?
+
+    [[ $ret_static -ne $SUCCESS ]] && return $ret_static || return $ret_dhcp
+}
+
+
+function SetMasquerading
+{
+    # Add masquerading
+    local index=0
+    local count=0
+    [[ "${masquerading_interface[*]-}" ]] && count=${#masquerading_interface[@]}
+    local ret=$SUCCESS
+    
+    # Remove all masquerading rules
+    $FIREWALL iptables --rem-masq all
+    ret=$?
+
+    while [[ $index -lt $count ]]; do
+        if [[ "true" == $(IsValidInterfaceName "${masquerading_interface[$index]}") ]]; then
+            if [[ "${masquerading_state[$index]}" == "enabled" ]]; then
+                $FIREWALL iptables --set-masq "${masquerading_interface[$index]}" # &> /dev/null
+            fi
+        fi
+        ((index++))
+    done
+    
+    echo $ret
+}
+
+
+function SetPortForwarding
+{
+    # Add port forwarding
+    local index=0
+    local count=0
+    [[ "${port_forwarding_interface[*]-}" ]] && count=${#port_forwarding_interface[@]}
+    local ret=$SUCCESS
+
+    # Remove all forwarding rules. Afterwards, add current rules.
+    $FIREWALL iptables --rem-pfw all
+    ret=$?
+    
+    while [[ $index -lt $count ]]; do
+        if [[ "true" == $(IsValidInterfaceName "${port_forwarding_interface[$index]}") ]]; then
+            if [[ "${port_forwarding_state[$index]}" == "enabled" ]]; then
+                $FIREWALL iptables --add-pfw on "${port_forwarding_interface[$index]}" "${port_forwarding_protocol[$index]}" - "${port_forwarding_port[$index]}" "${port_forwarding_forward_ip[$index]}" "${port_forwarding_forward_port[$index]}" # &> /dev/null
+            fi
+        fi
+        ((index++))
+    done
+
+    echo $ret
+}
+
+
+function DoUpdate
+{
+    local status=$SUCCESS
+    local ret=$SUCCESS
+    
+    # Set global IP forwarding state
+    ret=$(SetGeneralForwarding)
+    [[ $ret -ne $SUCCESS ]] && status=$INTERNAL_ERROR
+
+    # Set static and dynamic routes defined by user.
+    SetRoutes
+    ret=$?
+    [[ $ret -ne $SUCCESS ]] && status=$INTERNAL_ERROR
+
+    # Configure IP-Masquerading.
+    ret=$(SetMasquerading)
+    [[ $ret -ne $SUCCESS ]] && status=$INTERNAL_ERROR
+
+    # Configure Port-Forwarding.
+    ret=$(SetPortForwarding)
+    [[ $ret -ne $SUCCESS ]] && status=$INTERNAL_ERROR
+
+    # Set multicast routes on all active bridges
+    ret=$(SetMulticastRoutes)
+    [[ $ret -ne $SUCCESS ]] && status=$INTERNAL_ERROR
+
+    sync
+
+    # Apply previously set changes if no errors occurred.
+    if [[ $status == "$SUCCESS" ]]; then 
+        $FIREWALL iptables --apply &> /dev/null
+    else
+        # Do not log last error when called by netconfd.
+        [[ -z ${NETCONF_IP_CONFIG+x} ]] && SetLastError "One or more errors occur during routing setup. See /var/log/messages for details."    
+    fi
+
+    echo "$status"
+}
+
+#-------------- globals -----------------------------#
+
+ROUTING_CONFIG_FILE="/etc/specific/routing.conf"
+ROUTING_CONFIG_REMOVE_FILE="/tmp/routing_remove.conf"
+DHCP_DATA_FILE_PREFIX="dhcp-bootp-data-"
+DHCP_DATA_FILE_TEMPLATE="/tmp/$DHCP_DATA_FILE_PREFIX"
+IP_FORWARD="/proc/sys/net/ipv4/ip_forward"
+DHCP_DEFAULT_METRIC=10
+ROUTE_PROTOCOL=static
+FIREWALL="/etc/config-tools/firewall"
+AWK="/usr/bin/awk"
+ROUTE="/sbin/route" # Remove: Use ip route instead
+IP="/sbin/ip"
+GREP="/usr/bin/grep"
+BRCTL="/sbin/brctl"
+IFS_DEFAULT=$IFS
+
+# Static route parameters
+declare -a static_dest=( )
+declare -a static_dest_mask=( )
+declare -a static_gw=( )
+declare -a static_interface=( )
+declare -a static_metric=( )
+declare -a static_routing_type=( ) # default or fixed. Fixed routes cannot be deleted.
+declare -a static_state=( ) # read only
+
+# Masquerading parameters
+declare -a masquerading_interface=( )
+declare -a masquerading_state=( )
+declare -a masquerading_routing_type=( ) # Cannot be modified by user.
+
+# Port-Forwarding parameters
+declare -a port_forwarding_state=( )
+declare -a port_forwarding_interface=( )
+declare -a port_forwarding_port=( )
+declare -a port_forwarding_protocol=( )
+declare -a port_forwarding_forward_ip=( )
+declare -a port_forwarding_forward_port=( )
+
+state="invalid" # Fallback in case general routing state value is missing.
+
+
+#-------------- main-programm -----------------------#
+
+# load general definitions and functions
+if [ ! -f "/etc/config-tools/config_tool_lib" ]; then
+    print_dbg "config_tool_lib missing"
+    exit 64
+fi
+. "/etc/config-tools/config_tool_lib"
+
+status=$SUCCESS
+
+# Replace default configuration file if requested
+if [[ $# -gt 0 ]]; then
+    while [[ $# -ne 0 && $status == "$SUCCESS" ]]; do
+        case "$1" in
+            file=*)
+                _file="${1#file=}"
+                if [[ -z "$_file" ]]; then
+                    status=$MISSING_PARAMETER
+                    SetLastError "Missing parameter value for config file"
+                elif [[ ! -e "$_file" ]]; then
+                    status=$INVALID_PARAMETER
+                    SetLastError "Config file does not exist: $_file"
+                else
+                    ROUTING_CONFIG_FILE="$_file"
+                fi
+                ;;
+            remove-file=*)
+                _remove_file="${1#remove-file=}"
+                if [[ -z "$_remove_file" ]]; then
+                    status=$MISSING_PARAMETER
+                    SetLastError "Missing parameter value for config file"
+                elif [[ ! -e "$_remove_file" ]]; then
+                    status=$INVALID_PARAMETER
+                    SetLastError "Config file does not exist: $_remove_file"
+                else
+                    ROUTING_CONFIG_REMOVE_FILE="$_remove_file"
+                fi
+                ;;
+            *)
+                # Ignore unknown parameters
+                break
+                ;;
+        esac
+        shift 1
+    done
+fi
+
+
+# Read configurations from files
+if [ ! -s "$ROUTING_CONFIG_FILE" ]; then
+    SetLastError "$ROUTING_CONFIG_FILE is missing - can't execute."
+    exit 0
+fi
+. "$ROUTING_CONFIG_FILE"
+
+# Use advisory lock to avoid race with config_routing and this script on more than one 
+# interface with dhcp
+status=$( ( flock 9; DoUpdate; ) 9> /var/lock/routing.lock )
+
+exit 0

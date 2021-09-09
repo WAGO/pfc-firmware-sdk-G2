@@ -1,0 +1,128 @@
+#!/bin/bash
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2018-2020 WAGO Kontakttechnik GmbH & Co. KG
+
+#-----------------------------------------------------------------------------#
+# Script-name: config_ethernet
+#
+# Configure Ethernet
+#
+# Author: WAGO Kontakttechnik GmbH
+#-----------------------------------------------------------------------------#
+
+# load general definitions and functions
+if [[ ! -f "/etc/config-tools/config_tool_lib" ]]; then
+  echo "config_tool_lib missing"
+  exit 64
+fi
+
+. /etc/config-tools/config_tool_lib
+
+status=$SUCCESS
+
+if [[ $# -lt 1 ]]; then
+    exit 1
+fi
+
+# show help-text if requested
+if [[ "$1" = "-h" ]] || [[ "$1" = "--help" ]]; then
+  echo
+  echo "* Change the ethernet port settings *"
+  echo
+  echo "Usage: $0 < [interface=interface-value] port=port-value [state=state-value ] [ autoneg=autoneg-value ] [ speed=speed-value ] [duplex=duplex-value ]"
+  echo "With autoneg=enabled, no speed or duplex values have to be provided."
+  echo
+# pfc200-specific settings
+  echo "interface-value: eth0 [ignored]"
+  echo "port-value: $(GetPorts)"
+  echo "state-value: enabled/disabled"
+  echo "autoneg-value: enabled/disabled"
+  echo "speed-value: 10M/100M"
+  echo "duplex-value: full/half"
+  echo
+  exit $status
+fi
+
+declare -A params
+
+function is_supported_port {
+    value=$1
+
+    for port in $(GetPorts); do
+        if [[ "$value" == "$port" ]]; then
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+while [[ $# -ne 0 ]]; do
+    case "$1" in
+        interface=*)
+            ;; # value is ignored
+        port=*)
+            port=${1#port=}
+            params[device]="\"$port\""
+            if ! is_supported_port $port; then
+                status=${CONFIG_DATA_ERROR}
+            fi
+            ;;
+        state=*)
+            value=${1#state=}
+            if [[ "$value" == "on" || "$value" == "enabled" ]]; then
+                value="up"
+            elif [[ "$value" == "off" || "$value" == "disabled" ]]; then
+                value="down"
+            fi
+            params[state]="\"$value\""
+            ;;
+        autoneg=*)
+            value=${1#autoneg=}
+            if [[ "$value" == "on" || "$value" == "enabled" ]]; then
+                value="on"
+            elif [[ "$value" == "off" || "$value" == "disabled" ]]; then
+                value="off"
+            fi
+            params[autonegotiation]="\"$value\""
+            ;;
+        speed=*)
+            value=${1#speed=}
+            if [[ "$value" == "10M" ]]; then
+                value=10
+            elif [[ "$value" == "100M" ]]; then
+                value=100
+            fi
+            params[speed]=$value
+            ;;
+        duplex=*)
+            params[duplex]="\"${1#duplex=}\""
+            ;;
+        *)
+            status=$INVALID_PARAMETER
+            break
+            ;;
+    esac
+    shift 1
+
+done
+
+if [[ $status == $SUCCESS ]]; then
+    add_separator=false
+    json_content=""
+    for i in "${!params[@]}" ; do
+        if [[ $add_separator == false ]]; then
+            json_content="\"$i\":${params[$i]}"
+            add_separator=true
+        else
+            json_content="$json_content,\"$i\":${params[$i]}"
+        fi
+    done
+    $NETWORK_CONFIG --interface-config --set "{${json_content}}" --format=json --quiet
+    status=$?
+fi
+
+exit $status

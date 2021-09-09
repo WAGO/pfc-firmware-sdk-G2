@@ -1,0 +1,1276 @@
+#!/bin/bash
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2018-2021 WAGO Kontakttechnik GmbH & Co. KG
+
+# shellcheck disable=SC2129
+
+#-----------------------------------------------------------------------------
+# Script-name: config_routing
+#
+# Read routing, IP masquerading and port forwarding configuration from and write it to persistence.
+#
+# Author: WAGO Kontakttechnik GmbH & Co. KG.
+#-----------------------------------------------------------------------------
+
+
+# Set error on use of undefined shell variables
+set -u
+
+# load general definitions and functions
+if [ ! -f "/etc/config-tools/config_routing_lib" ]; then
+    echo "config_routing_lib missing"
+    exit 64
+fi
+
+function Log
+{
+    [[ $# -gt 0 ]] && logger -t "config-routing" "$1"
+}
+
+. "/etc/config-tools/config_routing_lib"
+
+function print_usage
+{
+    echo "Usage:"
+    echo
+    echo "config_routing -h|--help"
+    echo "config_routing -g|--get [general|static|dynamic|masquerading|forwarding|all] [-j|--json]"
+    echo
+    echo "config_routing -c|--change general state=<enabled|disabled>"
+    echo
+    echo "config_routing -a|--add static dest=<ip-value> dest-mask=<mask> gw=<ip> metric=<metric-value> state=<enabled|disabled>"
+    echo "config_routing -a|--add static dest=<ip-value> dest-mask=<mask> interface=<interface> metric=<metric-value> state=<enabled|disabled>"
+    echo "config_routing -d|--delete static index=<index>"
+    echo "config_routing -c|--change static index=<index> [dest=<ip-value> | dest-mask=<mask> | gw=<ip> | metric=<metric-value> | state=<enabled|disabled>]"
+    echo
+    echo "config_routing -a|--add masquerading interface=<name> state=<enabled|disabled>"
+    echo "config_routing -d|--delete masquerading index=<index>"
+    echo "config_routing -c|--change masquerading index=<index> state=<enabled|disabled>"
+    echo
+    echo "config_routing -a|--add forwarding state=<enabled|disabled> interface=<name> port=<port-value> protocol=<protocol-value> forward-ip=<ip> forward-port=<port-value>"
+    echo "config_routing -d|--delete forwarding index=<index>"
+    echo "config_routing -c|--change forwarding index=<index> state=<enabled|disabled>"
+    echo
+    echo
+    echo "dst-value:      destination ip-address or \"default\""
+    echo
+    echo "metric-value:   Determines sequence of default gateways to try. Lowest values first."
+    echo "                Default for static configuration is 20. Default for gateways from"
+    echo "                DHCP/BOOTP is 10."
+    echo 
+    echo "port-value:     [1 - 65535]"
+    echo
+    echo "protocol-value: udp|tcp|tcpudp"
+    echo
+    echo "Developer test options"
+    echo "Set configuration file:"
+    echo "  config_routing [..] file=<config file name>"
+    echo "Do not trigger system update. Write configuration file only:"
+    echo "  config_routing [..] --persist-only" 
+}
+
+
+#-------------- helpers ------------------------------#
+
+function parse_cmd_line
+{
+    while [[ $# -ne 0 && $status == "$SUCCESS" ]]; do
+        case "$1" in
+            -h)
+                print_usage
+                exit 0
+                ;;
+            --help)
+                print_usage
+                exit 0
+                ;;
+            -g)
+                _operation="get"
+                ;;
+            --get)
+                _operation="get"
+                ;;
+            -a)
+                _operation="add"
+                ;;
+            --add)
+                _operation="add"
+                ;;
+            -d)
+                _operation="delete"
+                ;;
+            --delete)
+                _operation="delete"
+                ;;
+            -c)
+                _operation="change"
+                ;;
+            --change)
+                _operation="change"
+                ;;
+            -j)
+                _output="json"
+                ;;
+            --json)
+                _output="json"
+                ;;
+            general)
+                _part="general"
+                ;;
+            static)
+                _part="static"
+                ;;
+            dynamic)
+                _part="dynamic"
+                ;;
+            masquerading)
+                _part="masquerading"
+                ;;
+            forwarding)
+                _part="forwarding"
+                ;;
+            all)
+                _part="all"
+                ;;
+            --persist-only)
+                _persist_only="true"
+                ;;
+            state=*)
+                _state="${1#state=}"
+                if [ -z "$_state" ]; then
+                  print_dbg "Missing state parameter value"
+                  status=$MISSING_PARAMETER
+                  SetLastError "Missing state parameter value"
+                fi
+                ;;
+            dest=*)
+                _dest="${1#dest=}"
+                if [[ -z "$_dest" ]]; then
+                  print_dbg "Missing destination parameter value"
+                  status=$MISSING_PARAMETER
+                  SetLastError "Missing destination parameter value"
+                fi
+                [[ $_dest == "default" ]] && _dest="0.0.0.0"
+                ;;
+            dest-mask=*)
+                _dest_mask="${1#dest-mask=}"
+                if [[ -z "$_dest_mask" ]]; then
+                  print_dbg "Missing destination mask parameter value"
+                  status=$MISSING_PARAMETER
+                  SetLastError "Missing destination mask parameter value"
+                fi
+                ;;
+            gw=*)
+                _gw="${1#gw=}"
+                if [[ -z "$_gw" ]]; then
+                  print_dbg "Missing gateway parameter value"
+                  status=$MISSING_PARAMETER
+                  SetLastError "Missing gateway parameter value"
+                fi
+                [[ $_gw == "0.0.0.0" ]] && _gw="-"
+                ;;
+            metric=*)
+                _metric="${1#metric=}"
+                if [[ -z "$_metric" ]]; then
+                  print_dbg "Missing metric parameter value"
+                  status=$MISSING_PARAMETER
+                  SetLastError "Missing metric parameter value"
+                fi
+                ;;
+            index=*)
+                _index="${1#index=}"
+                if [[ -z "$_index" ]]; then
+                  print_dbg "Missing index parameter value"
+                  status=$MISSING_PARAMETER
+                  SetLastError "Missing index parameter value"
+                fi
+                ;;
+            interface=*)
+                _interface="${1#interface=}"
+                if [[ -z "$_interface" ]]; then
+                  print_dbg "Missing interface parameter value"
+                  status=$MISSING_PARAMETER
+                  SetLastError "Missing interface parameter value"
+                fi
+                # WBM Workaround: WBM returns "undefined" as interface name for "Default Static Routes" [fw >= FW19]
+                [[ "$_interface" == undefined ]] && _interface="-"
+                ;;
+            port=*)
+                _port="${1#port=}"
+                if [[ -z "$_port" ]]; then
+                  print_dbg "Missing port parameter value"
+                  status=$MISSING_PARAMETER
+                  SetLastError "Missing port parameter value"
+                fi
+                ;;
+            protocol=*)
+                _protocol="${1#protocol=}"
+                if [[ -z "$_protocol" ]]; then
+                  print_dbg "Missing protocol parameter value"
+                  status=$MISSING_PARAMETER
+                  SetLastError "Missing protocol parameter value"
+                fi
+                ;;
+            forward-ip=*)
+                _forward_ip="${1#forward-ip=}"
+                if [[ -z "$_forward_ip" ]]; then
+                  print_dbg "Missing forward-ip parameter value"
+                  status=$MISSING_PARAMETER
+                  SetLastError "Missing forward-ip parameter value"
+                fi
+                ;;
+            forward-port=*)
+                _forward_port="${1#forward-port=}"
+                if [[ -z "$_forward_port" ]]; then
+                  print_dbg "Missing forward-port parameter value"
+                  status=$MISSING_PARAMETER
+                  SetLastError "Missing forward-port parameter value"
+                fi
+                ;;
+            file=*)
+                _file="${1#file=}"
+                if [[ -z "$_file" ]]; then
+                  print_dbg "Missing file value"
+                  status=$MISSING_PARAMETER
+                  SetLastError "Missing file value"
+                fi
+                ;;
+            *)
+                status=$INVALID_PARAMETER
+                SetLastError "Invalid parameter value: $1"
+                break
+                ;;
+        esac
+        shift 1
+    done
+}
+
+function surround_with_braces_depending_on_output_type
+{
+    local func=$1
+    [[ $_output == "json" ]] && echo -n "{"
+    $func
+    [[ $_output == "json" ]] && echo -n "}"
+}
+
+function update_values
+{
+    if [[ $_operation == "get" ]]; then # No data changes.
+        case "$_part" in
+            general)
+                surround_with_braces_depending_on_output_type get_state
+                ;;
+            static)
+                surround_with_braces_depending_on_output_type get_static_routes
+                ;;
+            dynamic)
+                surround_with_braces_depending_on_output_type get_dynamic_routes
+                ;;
+            masquerading)
+                surround_with_braces_depending_on_output_type get_masquerading_entries
+                ;;
+            forwarding)
+                surround_with_braces_depending_on_output_type get_port_forwarding_entries
+                ;;
+            all)
+                surround_with_braces_depending_on_output_type get_all
+                ;;
+            *)
+                status=$INVALID_PARAMETER
+                SetLastError "Invalid part: $_part. Part has to be one of general, static, dynamic, masquerading, forwarding, all"
+                ;;
+        esac
+    else # Data changes.
+        if [[ $_operation == "add" ]]; then
+            case "$_part" in
+                static)
+                    add_static_route
+                    ;;
+                masquerading)
+                    add_masquerading_entry
+                    ;;
+                forwarding)
+                    add_port_forwarding_entry
+                    ;;
+                *)
+                    status=$INVALID_PARAMETER
+                    SetLastError "Operation \"add\" not allowed for part \"$_part\"."
+                ;;
+            esac
+        elif [[ $_operation == "delete" ]]; then
+            case "$_part" in
+                static)
+                    delete_static_route
+                    ;;
+                masquerading)
+                    delete_masquerading_entry
+                    ;;
+                forwarding)
+                    delete_port_forwarding_entry
+                    ;;
+                *)
+                    status=$INVALID_PARAMETER
+                    SetLastError "Pperation \"delete\" not allowed for part \"$_part\"."
+                    ;;
+            esac
+        elif [[ $_operation == "change" ]]; then
+            case "$_part" in
+                general)
+                    if [[ $_state == "enabled" || $_state == "disabled" ]]; then
+                        state=$_state
+                    else
+                        status=$INVALID_PARAMETER
+                    fi
+                    ;;
+                static)
+                    change_route
+                    ;;
+                masquerading)
+                    change_masquerading_entry
+                    ;;
+                forwarding)
+                    change_port_forwarding_entry
+                    ;;
+                *)
+                    status=$INVALID_PARAMETER
+                    SetLastError "Operation \"change\" not allowed for part \"$_part\"."
+                    ;;
+            esac
+        fi
+    fi
+}
+
+#-------------- general routing configuration--------#
+
+function get_state
+{
+    # Get state.
+    if [[ $_output == "shell" ]]; then
+        echo "state=$state"
+    elif [[ $_output == "json" ]]; then
+        echo -n "\"generalRoutingConfig\":{\"routingEnabled\":\"$state\"}"
+    else
+        state=$INVALID_PARAMETER
+    fi
+}
+
+
+#-------------- static routes -----------------------#
+
+function is_valid_static_index
+{
+    local index="$1"
+    local count=${#static_dest[@]}
+
+    [[ "$index" && "$index" =~ ^[0-9]+$ && $count -gt $index ]] && return 0 || return 1
+}
+
+function static_values_are_valid
+{
+    if [[ "$_dest" && $_dest != "0.0.0.0" ]]; then
+        $IP_DATA_CHECK --verify-ip "$_dest"
+        if [[ $? == 1 ]]; then
+            status=$INVALID_PARAMETER
+            SetLastError "Invalid static routing destination value: \"$_dest\"."
+            return 1
+        fi
+    fi
+
+    if [[ "$_dest_mask" ]]; then
+        $IP_DATA_CHECK --verify-netmask "$_dest_mask"
+        if [[ $? == 1 ]]; then
+            status=$INVALID_PARAMETER
+            SetLastError "Invalid static routing destination mask value: \"$_dest_mask\"."
+            return 1
+        fi
+    fi
+
+    if [[ "$_gw" && "$_gw" != "-" ]]; then
+        $IP_DATA_CHECK --verify-ip "$_gw"
+        if [[ $? == 1 ]]; then
+            status=$INVALID_PARAMETER
+            SetLastError "Invalid static routing gateway value: \"$_gw\"."
+            return 1
+        fi
+    fi
+
+    if [[ "$_interface"  && "$_interface" != "-" ]]; then
+        local is_valid
+        is_valid=$(is_valid_interface "$_interface")
+        if [[ "$is_valid" == "false" ]]; then
+            status=$INVALID_PARAMETER
+            SetLastError "Invalid static routing interface value: \"$_interface\"."
+            return 1
+        fi
+    fi
+
+    if [[ "$_metric" ]]; then
+        $IP_DATA_CHECK --verify-unsigned "$_metric"
+        if [[ $? == 1 ]]; then
+            status=$INVALID_PARAMETER
+            SetLastError "Invalid static routing metric value: \"$_metric\"."
+            return 1
+        fi
+    fi
+
+    if [[ "$_state" ]]; then
+        if [[ "$_state" != "enabled" && "$_state" != "disabled" ]]; then
+            status=$INVALID_PARAMETER
+            SetLastError "Invalid static routing state: $_state"
+            return 1
+        fi
+    fi
+
+    return 0
+}
+
+function exists_route_weak_match
+# Check if route is already part of route array.
+{
+    local dest=$1
+    local dest_mask=$2
+    local gw=$3
+    local interface=$4
+    local metric=$5
+    local state=""
+    local ret="false"
+
+    [[ $# -eq 6 ]] && state=$6
+
+    local count=${#static_dest[@]}
+    local index=0
+    while [[ $index -lt $count && $ret == "false" ]]; do
+        local dest_current=${static_dest[$index]}
+        [[   "$dest_current" == "$dest"
+          && "${static_dest_mask[$index]}" == "$dest_mask"
+          && "${static_metric[$index]}" == "$metric"
+        ]] && ret="true"
+
+        if [[ "$ret" == "true" ]]; then
+            if [[ -n ${static_gw[$index]} && -n "$gw" ]]; then
+                [[ ${static_gw[$index]} != "$gw" ]] && ret="false"
+            fi
+        fi
+
+        if [[ "$ret" == "true" ]]; then
+            if [[ -n ${static_interface[$index]} && -n "$interface" ]]; then
+                [[ ${static_interface[$index]} != "$interface" ]] && ret="false"
+            fi
+        fi
+
+        if [[ "$ret" == "true" ]]; then
+            if [[ -n ${static_state[$index]} && -n "$state" ]]; then
+                [[ ${static_state[$index]} != "$state" ]] && ret="false"
+            fi
+        fi
+
+        ((index++))
+    done
+    
+    echo $ret
+}
+
+function exists_route_exact_match
+# Check if route is already part of route array.
+{
+    local dest=$1
+    local dest_mask=$2
+    local gw=$3
+    local interface=$4
+    local metric=$5
+    local state=""
+    local ret="false"
+
+    [[ $# -eq 6 ]] && state=$6
+
+    local count=${#static_dest[@]}
+    local index=0
+    while [[ $index -lt $count && $ret == "false" ]]; do
+        local dest_current=${static_dest[$index]}
+        [[   "$dest_current" == "$dest"
+          && "${static_dest_mask[$index]}" == "$dest_mask"
+          && "${static_metric[$index]}" == "$metric"
+        ]] && ret="true"
+
+        if [[ "$ret" == "true" ]]; then
+            [[ ${static_gw[$index]} != "$gw" ]] && ret="false"
+        fi
+
+        if [[ "$ret" == "true" ]]; then
+            [[ "${static_interface[$index]}" != "$interface" ]] && ret="false"
+        fi
+
+        if [[ "$ret" == "true" ]]; then
+            if [[ -n ${static_state[$index]} && -n "$state" ]]; then
+                [[ ${static_state[$index]} != "$state" ]] && ret="false"
+            fi
+        fi
+
+        ((index++))
+    done
+    
+    echo $ret
+}
+
+# Check that given metric is unique over all default gateways.
+function is_default_gateway_metric_unique
+{
+    local new_metric="$1"
+    local is_unique=true
+
+    local count=${#static_dest[@]}
+    local index=0
+    while [[ $index -lt $count ]]; do
+        if [[ ${static_dest[index]} == "0.0.0.0" && ${static_dest_mask[index]} == "0.0.0.0" ]]; then
+            # Found default gateway
+            if [[ $index -ne $_index ]]; then
+                [[ $new_metric -eq ${static_metric[index]} ]] && is_unique=false
+            fi
+        fi
+        ((index++))
+    done
+
+    echo "$is_unique"
+}
+
+function get_static_routes
+{
+    # Static routes added by the user.
+    # These routes are a subet of the routes returned from the "route -n" command.
+    print_routes "$ROUTING_SOURCE_STATIC" "$_output" static_dest static_dest_mask static_gw static_interface static_metric static_routing_type static_state
+    status=$?
+}
+
+function add_static_route
+{
+    # Check parameters
+    static_values_are_valid
+    [[ $status != "$SUCCESS" ]] && return
+
+    # The "-" symbol signals that we want to remove part of the route.
+    [[ "$_gw" == "-" ]] && _gw=""
+    [[ "$_interface" == "-" ]] && _interface=""
+    
+    if [[ "$_gw" == "" && $_interface == "" ]]; then
+        status=$INVALID_PARAMETER
+        SetLastError "At least one of the parameters gateway or interface have to be given."
+    fi
+
+    # Check for default gateway destination mask.
+    # Check for valid destination address and destination netmask combination.
+    static_destination_and_mask_are_compatible
+
+    if [[ $status == "$SUCCESS" ]]; then
+        exists=$(exists_route_weak_match "$_dest" "$_dest_mask" "$_gw" "$_interface" "$_metric")
+        if [[ $exists == "false" ]]; then
+
+            if [[ "$_dest" == "0.0.0.0" && "$_dest_mask" == "0.0.0.0" ]]; then
+
+                local is_unique_metric=$(is_default_gateway_metric_unique "$_metric")
+                if [[ $is_unique_metric == "false" ]]; then
+                    status=$CONFIG_DATA_ERROR
+                    SetLastError "Add static route: Metric of new default gateway is not unique: Metric: $_metric"
+                    return
+                fi
+            fi
+
+            if [[ ${#static_dest[@]} -gt 0 ]]; then
+                static_dest=("${static_dest[@]}" "$_dest")
+                static_dest_mask=("${static_dest_mask[@]}" "$_dest_mask")
+                static_gw=("${static_gw[@]}" "$_gw")
+                static_interface=("${static_interface[@]}" "$_interface")
+                static_metric=("${static_metric[@]}" "$_metric")
+                static_routing_type=("${static_routing_type[@]}" "$_type")
+                static_state=("${static_state[@]}" "$_state")
+            else
+                static_dest=("$_dest")
+                static_dest_mask=("$_dest_mask")
+                static_gw=("$_gw")
+                static_interface=("$_interface")
+                static_metric=("$_metric")
+                static_routing_type=("$_type")
+                static_state=("$_state")
+            fi
+        else
+            status=$CONFIG_DATA_ERROR
+            SetLastError "Add static route: Route already exists."
+        fi
+    fi
+}
+
+function static_destination_and_mask_are_compatible
+{
+    # Check for valid destination address and destination netmask combination.
+    if [[ "$_dest" != "0.0.0.0" ]]; then
+        $IP_DATA_CHECK --verify-route-dest "$_dest" "$_dest_mask"
+        if [[ $? == 1 ]]; then
+            status=$INVALID_PARAMETER
+            SetLastError "Invalid destination address $_dest for destination mask $_dest_mask."
+            return 1
+        fi
+    else
+        # Check for correct default gateway destination mask. _dest==0.0.0.0 ==> _dest_mask==0.0.0.0
+        if [[ $_dest_mask != "0.0.0.0" ]]; then
+            status=$INVALID_PARAMETER
+            SetLastError "Invalid static routing: Invalid destination mask $_dest_mask for destionation $_dest."
+            return 1
+        fi
+    fi
+
+    return 0
+}
+
+# Change default gateway
+function change_default_gateway
+{
+    if [[ -z "$_gw" ]]; then
+        _state="disabled"
+    fi
+
+    if [[ -n "$_metric" && "${static_metric[$_index]}" != "$_metric" ]]; then
+        status=$INVALID_PARAMETER
+        SetLastError "Cannot change metric of default gateway with index $_index"
+        return
+    fi
+
+    static_dest[$_index]=$_dest
+    static_dest_mask[$_index]=$_dest_mask
+    static_gw[$_index]=$_gw
+    static_interface[$_index]=$_interface
+    # static_metric[$_index]=$_metric # It is not allowed to change the metric of a default gateway of type fixed.
+    static_state[$_index]=$_state
+
+}
+
+function change_static_route
+{
+    if [[ "$_gw" == "" && "$_interface" == "" ]]; then
+        status=$INVALID_PARAMETER
+        SetLastError "At least one of the parameters gateway or interface have to be given."
+        return
+    fi
+    
+    exists=$(exists_route_exact_match "$_dest" "$_dest_mask" "$_gw" "$_interface" "$_metric" "$_state")
+    if [[ $exists == "false" ]]; then
+        if [[ "$_dest" == "0.0.0.0" && "$_dest_mask" == "0.0.0.0" ]]; then
+
+            local is_unique_metric=$(is_default_gateway_metric_unique "$_metric")
+            if [[ $is_unique_metric == "false" ]]; then
+                status=$CONFIG_DATA_ERROR
+                SetLastError "Change static route: Metric of default gateway is not unique: Metric: $_metric"
+                return
+            fi
+        fi
+        static_dest[$_index]=$_dest
+        static_dest_mask[$_index]=$_dest_mask
+        static_gw[$_index]=$_gw
+        static_interface[$_index]=$_interface
+        static_metric[$_index]=$_metric
+        static_state[$_index]=$_state
+    else
+        status=$CONFIG_DATA_ERROR
+        SetLastError "Change static route: Route already exists."
+    fi
+}
+
+function change_route
+{
+    if ! is_valid_static_index "$_index" ; then
+        status=$INVALID_PARAMETER
+        SetLastError "Change static route: Invalid index: $_index"
+        return
+    fi
+
+    # Check if at least one value is set.
+    if [[  -z "$_dest"
+        && -z "$_dest_mask"
+        && -z "$_gw"
+        && -z "$_interface"
+        && -z "$_metric"
+        && -z "$_state" ]]; then
+        
+        status=$MISSING_PARAMETER
+        SetLastError "At least one of the following parameters has to be set: destination, destination-mask, gw, metric or state"
+        return
+    fi
+
+    # Check if there are any changes.
+    if [[  "${static_dest[$_index]}" == "$_dest"
+        && "${static_dest_mask[$_index]}" == "$_dest_mask"
+        && "${static_gw[$_index]}" == "$_gw" 
+        && "${static_interface[$_index]}" == "$_interface" 
+        && "${static_metric[$_index]}" == "$_metric"
+        && "${static_state[$_index]}" == "$_state" ]]; then
+        return
+    fi
+        
+    # Check parameter values
+    static_values_are_valid
+    [[ $status != "$SUCCESS" ]] && return
+
+    #  parameter value unequals empty word => this parameter has changed
+    #  parameter value equals empty word => this parameter has not changed; get current parameter value
+    if [[ $status == "$SUCCESS" ]]; then
+        [[ "$_dest" ]] || _dest=${static_dest[$_index]}
+        [[ "$_dest_mask" ]] || _dest_mask=${static_dest_mask[$_index]}
+        [[ "$_gw" ]] || _gw=${static_gw[$_index]}
+        [[ "$_interface" ]] || _interface=${static_interface[$_index]}
+        [[ "$_metric" ]] || _metric=${static_metric[$_index]}
+        [[ "$_state" ]] || _state=${static_state[$_index]}
+
+        # The "-" symbol signals that we want to remove part of the route.
+        [[ "$_gw" == "-" ]] && _gw=""
+        [[ "$_interface" == "-" ]] && _interface=""
+    fi
+    
+    static_destination_and_mask_are_compatible
+    [[ $status != "$SUCCESS" ]] && return
+
+    if [[ $status == "$SUCCESS" ]]; then
+        if [[ ${static_routing_type[$_index]} == fixed ]]; then
+            change_default_gateway
+        else
+            change_static_route
+        fi
+    fi
+}
+
+function delete_static_route
+# Only one route might be deleted per script invocation. Therefore, we just could delete the array
+# element immediately changing array and indices.
+{
+    # Ensure all arrays have the same element count.
+    local count=${#static_dest[@]}
+
+    if ! is_valid_static_index "$_index" ; then
+        status=$INVALID_PARAMETER
+        SetLastError "Delete static route: Invalid index: $_index."
+        return
+    fi
+
+    if [[ "${static_routing_type[$_index]}" == "default" ]]; then
+        
+        if [[ $status == "$SUCCESS" ]]; then
+            # Remove routes to delete from static arrays.
+            static_dest=("${static_dest[@]:0:$_index}" "${static_dest[@]:(($_index + 1)) }" )
+            static_dest_mask=("${static_dest_mask[@]:0:$_index}" "${static_dest_mask[@]:(($_index + 1)) }" )
+            static_gw=("${static_gw[@]:0:$_index}" "${static_gw[@]:(($_index + 1)) }" )
+            static_interface=("${static_interface[@]:0:$_index}" "${static_interface[@]:(($_index + 1)) }" )
+            static_metric=("${static_metric[@]:0:$_index}" "${static_metric[@]:(($_index + 1)) }" )
+            static_routing_type=("${static_routing_type[@]:0:$_index}" "${static_routing_type[@]:(($_index + 1)) }" )
+            static_state=("${static_state[@]:0:$_index}" "${static_state[@]:(($_index + 1)) }" )
+        fi
+    elif [[ "${static_routing_type[$_index]}" == "fixed" ]]; then
+        status=$INVALID_PARAMETER
+        SetLastError "Cannot delete route of routing-type: fixed"
+    else
+        status=$INVALID_PARAMETER
+        SetLastError "Cannot delete route of unknown routing-type: ${static_routing_type[$_index]}"
+    fi
+}
+
+#-------------- dynamic routes ----------------------#
+
+function get_dynamic_routes
+{
+    # Configure DHCP/BOOTP dynamic gateways
+    
+    local gwindex=-1 # index of the dynamic_* array; unique OVER ALL dhcp-bootp-data-<itf> files
+    shopt -s nullglob # handle the case of no cfgfiles
+    for cfgfile in "$DHCP_DATA_FILE_TEMPLATE"*; do
+        local owner
+        owner=$(ls -l "$cfgfile" | awk '{ print $3 }')
+        if [ "$owner" != "root" ]; then continue; fi
+        . "$cfgfile"                                                                
+        local index=1 # DEFAULT_GATEWAY_<index>="<GW-IP>"; unique FOR EACH dhcp-bootp-data-<itf> file
+        local varname="DEFAULT_GATEWAY_$index"
+               
+        # Following line supports set -u. If variable given by varname is currently
+        # not defined as shell variable, it will come into life with an empty value.
+        # Using eval is save because no user input is fed into its arguments.
+        GWVALUE=$(eval echo \${$varname-})
+
+        while [[ "$GWVALUE" ]]; do
+            ((gwindex++))
+            # shellcheck disable=SC2034
+            dynamic_dest[$gwindex]="0.0.0.0"
+            # shellcheck disable=SC2034
+            dynamic_dest_mask[$gwindex]="0.0.0.0"
+            # shellcheck disable=SC2034
+            dynamic_gw[$gwindex]=$GWVALUE
+            # shellcheck disable=SC2034
+            dynamic_interface[$gwindex]=""
+            # shellcheck disable=SC2034
+            dynamic_metric[$gwindex]=$((DHCP_DEFAULT_METRIC + gwindex))
+            # shellcheck disable=SC2034
+            dynamic_routing_type[$gwindex]="system"
+            # shellcheck disable=SC2034
+            dynamic_state[$gwindex]="enabled"
+            unset $varname # Otherwise $varname is found while reading another file even it is not part of that file.
+            ((index++))
+            varname="DEFAULT_GATEWAY_$index"
+            GWVALUE=$(eval echo \${$varname-})
+        done
+    done
+    
+    print_routes "$ROUTING_SOURCE_DHCP" "$_output" dynamic_dest dynamic_dest_mask dynamic_gw dynamic_interface dynamic_metric dynamic_routing_type dynamic_state
+}
+
+
+#-------------- IP masquerading ---------------------#
+
+function exists_masquerading_entry
+{
+    local interface=$1
+ 
+    local ret="false"
+    
+    local count=0
+    local index=0
+    local count=${#masquerading_interface[@]}
+    while [[ $index -lt $count && $ret == "false" ]]; do
+        [[ ${masquerading_interface[$index]} == "$interface" ]] && ret="true"
+        ((index++))
+    done
+    
+    echo $ret
+}
+
+
+function get_masquerading_entries
+{
+    local count=${#masquerading_interface[@]}
+    local index
+    
+    if [[ $_output == "shell" ]]; then
+        index=0
+        while [[ $index -lt $count ]]; do
+            echo "${masquerading_interface[$index]} ${masquerading_state[$index]} ${masquerading_routing_type[$index]}"
+            ((index++))
+        done
+    elif [[ $_output == "json" ]]; then
+        echo -n "\"ipMasquerading\": ["
+        if [[ $count -gt 0 ]]; then
+            index=0
+            echo -n "{\"interface\":\"${masquerading_interface[$index]}\",\"state\":\"${masquerading_state[$index]}\",\"routingType\":\"${masquerading_routing_type[$index]}\"}"
+            ((index++))
+            while [[ $index -lt $count ]]; do
+                echo -n ",{\"interface\":\"${masquerading_interface[$index]}\",\"state\":\"${masquerading_state[$index]}\",\"routingType\":\"${masquerading_routing_type[$index]}\"}"
+                ((index++))
+            done
+        fi
+        echo -n "]"
+    else
+        status=$INVALID_PARAMETER
+        SetLastError "Get masquerading entries: Invalid ouput format: $_output."
+    fi
+}
+
+
+function add_masquerading_entry
+{
+    if [[ "$_interface" && ${#_interface} -le $INTERFACE_NAME_MAX ]]; then
+        if [[ "$_state" && ( $_state == "enabled" || $_state == "disabled" ) ]]; then
+            if [[ $(exists_masquerading_entry "$_interface") == "false" ]]; then
+                local count=${#masquerading_interface[@]}
+                if [[ $count -gt 0 ]]; then
+                    masquerading_interface=("${masquerading_interface[@]}" "$_interface")
+                    masquerading_state=("${masquerading_state[@]}" "$_state")
+                    masquerading_routing_type=("${masquerading_routing_type[@]}" "user")
+                else
+                    masquerading_interface=("$_interface")
+                    masquerading_state=("$_state")
+                    masquerading_routing_type=("user")
+                fi
+            else
+                status=$CONFIG_DATA_ERROR
+                SetLastError "Add masquerading: Entry already exists."
+            fi
+        else
+            status=$INVALID_PARAMETER
+            SetLastError "Add masquerading entry: Invalid state: $_state."
+        fi
+    else
+        status=$INVALID_PARAMETER
+        SetLastError "Add masquerading entry: Invalid interface: $_interface."
+    fi
+}
+
+
+function delete_masquerading_entry
+{
+    local count=${#masquerading_interface[@]}
+    if [[ $_index && $_index =~ ^[0-9]+$ && $count -gt $_index ]]; then
+        masquerading_interface=("${masquerading_interface[@]:0:$_index}" "${masquerading_interface[@]:(($_index + 1)) }" )
+        masquerading_state=("${masquerading_state[@]:0:$_index}" "${masquerading_state[@]:(($_index + 1)) }" )
+        masquerading_routing_type=("${masquerading_routing_type[@]:0:$_index}" "${masquerading_routing_type[@]:(($_index + 1)) }" )
+    else
+        status=$INVALID_PARAMETER
+        SetLastError "Delete masquerading entry: Invalid index: $_index."
+    fi
+}
+
+
+function change_masquerading_entry
+{
+    local count_state="${#masquerading_state[@]}"
+    if [[    -n $_state
+            && -n $_index
+            && $_index =~ ^[0-9]+$
+            && $count_state -gt $_index
+            && ($_state == "enabled" || $_state == "disabled")]]; then
+        masquerading_state[$_index]=$_state
+    else
+        status=$INVALID_PARAMETER
+        SetLastError "Change masquerading entry: Invalid index: $_index."
+    fi
+}
+
+
+#-------------- port forwarding ---------------------#
+
+function exists_port_forwarding_entry
+{
+    local interface=$1
+    local port=$2
+    local protocol=$3
+    local forward_ip=$4
+    local forward_port=$5
+ 
+    local ret="false"
+    
+    local index=0
+    local count=${#port_forwarding_interface[@]}
+    while [[ $index -lt $count && $ret == "false" ]]; do
+        [[   ${port_forwarding_interface[$index]} == "$interface"
+          &&  ${port_forwarding_port[$index]} == "$port"
+          &&  ${port_forwarding_protocol[$index]} == "$protocol"
+          &&  ${port_forwarding_forward_ip[$index]} == "$forward_ip"
+          &&  ${port_forwarding_forward_port[$index]} == "$forward_port"
+        ]] && ret="true"
+        ((index++))
+    done
+    
+    echo $ret
+}
+
+function get_port_forwarding_entries
+{
+    local index
+    local count=${#port_forwarding_interface[@]}
+
+    if [[ $_output == "shell" ]]; then
+        index=0
+        while [[ $index -lt $count ]]; do
+            echo "${port_forwarding_interface[$index]} ${port_forwarding_state[$index]} ${port_forwarding_port[$index]} ${port_forwarding_protocol[$index]} ${port_forwarding_forward_ip[$index]} ${port_forwarding_forward_port[$index]}"
+            ((index++))
+        done
+    elif [[ $_output == "json" ]]; then
+        echo -n "\"portForwarding\": ["
+        if [[ $count -gt 0 ]]; then
+            index=0
+            echo -n "{\"interface\":\"${port_forwarding_interface[$index]}\",\"state\":\"${port_forwarding_state[$index]}\",\"port\":\"${port_forwarding_port[$index]}\",\"protocol\":\"${port_forwarding_protocol[$index]}\", \"forwardIp\":\"${port_forwarding_forward_ip[$index]}\",\"forwardPort\":\"${port_forwarding_forward_port[$index]}\"}"
+            ((index++))
+            while [[ $index -lt $count ]]; do
+                echo -n ",{\"interface\":\"${port_forwarding_interface[$index]}\",\"state\":\"${port_forwarding_state[$index]}\",\"port\":\"${port_forwarding_port[$index]}\",\"protocol\":\"${port_forwarding_protocol[$index]}\", \"forwardIp\":\"${port_forwarding_forward_ip[$index]}\",\"forwardPort\":\"${port_forwarding_forward_port[$index]}\"}"
+                ((index++))
+            done
+        fi
+        echo -n "]"
+    else
+        status=$INVALID_PARAMETER
+        SetLastError "Get port forwarding entries: Invalid ouput format: $_output."
+    fi
+}
+
+
+function add_port_forwarding_entry
+{
+    if [[ $_interface && ${#_interface} -le $INTERFACE_NAME_MAX ]]; then
+        status=$SUCCESS
+    else
+        status=$INVALID_PARAMETER
+        SetLastError "Add port forwarding entry: Invalid interface: $_interface."
+    fi
+
+    if [[ $status == "$SUCCESS" ]]; then
+        if [[ $_state != "enabled" && $_state != "disabled" ]]; then
+            status=$INVALID_PARAMETER
+            SetLastError "Add port forwarding entry: Invalid state value: $_state."
+        fi
+    fi
+    if [[ $status == "$SUCCESS" ]]; then
+        # Check range
+        if [[  ! $_port =~ ^[0-9]+$ || $_port -lt 0 || $_port -gt 65535 ]]; then
+            status=$INVALID_PARAMETER
+            SetLastError "Add port forwarding entry: Invalid port value: $_port."
+        fi
+    fi
+    if [[ $status == "$SUCCESS" ]]; then
+        if [[ $_protocol != "tcp" && $_protocol != "udp" && $_protocol != "tcpudp" ]]; then
+            status=$INVALID_PARAMETER
+            SetLastError "Add port forwarding entry: Invalid protocol value: $_protocol."
+        fi
+    fi
+    if [[ $status == "$SUCCESS" ]]; then
+        $IP_DATA_CHECK --verify-ip "$_forward_ip"
+        if [[ $? == 1 ]]; then
+            status=$INVALID_PARAMETER
+            SetLastError "Add port forwarding entry: Invalid forward ip value: $_forward_ip."
+        fi
+    fi
+    if [[ $status == "$SUCCESS" ]]; then
+        # Check range
+        if [[ ! $_forward_port =~ ^[0-9]+$ || $_forward_port -lt 0 || $_forward_port -gt 65535 ]]; then
+            status=$INVALID_PARAMETER
+            SetLastError "Add port forwarding entry: Invalid forward port value: $_forward_port."
+        fi
+    fi
+
+    if [[ $status == "$SUCCESS" ]]; then
+        if [[ $(exists_port_forwarding_entry "$_interface" "$_port" "$_protocol" "$_forward_ip" "$_forward_port") == "false" ]]; then
+            local count=${#port_forwarding_interface[@]}
+            if [[ $count -gt 0 ]]; then
+                port_forwarding_interface=("${port_forwarding_interface[@]}" "$_interface")
+                port_forwarding_state=("${port_forwarding_state[@]}" "$_state")
+                port_forwarding_port=("${port_forwarding_port[@]}" "$_port")
+                port_forwarding_protocol=("${port_forwarding_protocol[@]}" "$_protocol")
+                port_forwarding_forward_ip=("${port_forwarding_forward_ip[@]}" "$_forward_ip")
+                port_forwarding_forward_port=("${port_forwarding_forward_port[@]}" "$_forward_port")
+            else
+                port_forwarding_interface=("$_interface")
+                port_forwarding_state=("$_state")
+                port_forwarding_port=("$_port")
+                port_forwarding_protocol=("$_protocol")
+                port_forwarding_forward_ip=("$_forward_ip")
+                port_forwarding_forward_port=("$_forward_port")
+            fi
+        else
+            status=$CONFIG_DATA_ERROR
+            SetLastError "Add port-forwarding: Entry already exists."
+        fi
+    fi
+}
+
+function delete_port_forwarding_entry
+{
+    local count=${#port_forwarding_interface[@]}
+    
+    if [[ $_index && $_index =~ ^[0-9]+$ && $count -gt $_index ]]; then
+        port_forwarding_interface=("${port_forwarding_interface[@]:0:$_index}" "${port_forwarding_interface[@]:(($_index + 1)) }" )
+        port_forwarding_state=("${port_forwarding_state[@]:0:$_index}" "${port_forwarding_state[@]:(($_index + 1)) }" )
+        port_forwarding_port=("${port_forwarding_port[@]:0:$_index}" "${port_forwarding_port[@]:(($_index + 1)) }" )
+        port_forwarding_protocol=("${port_forwarding_protocol[@]:0:$_index}" "${port_forwarding_protocol[@]:(($_index + 1)) }" )
+        port_forwarding_forward_ip=("${port_forwarding_forward_ip[@]:0:$_index}" "${port_forwarding_forward_ip[@]:(($_index + 1)) }" )
+        port_forwarding_forward_port=("${port_forwarding_forward_port[@]:0:$_index}" "${port_forwarding_forward_port[@]:(($_index + 1)) }" )
+    else
+        status=$INVALID_PARAMETER
+        SetLastError "Delete port forwarding entry: Invalid index: $_index."
+    fi
+}
+
+
+# NOTE: It is only possible to change the port-forwarding state!
+function change_port_forwarding_entry
+{
+    local count=${#port_forwarding_interface[@]}
+    if [[   $_index =~ ^[0-9]+$
+         && "${#port_forwarding_state[@]}" -gt $_index
+         && ($_state == "enabled" || $_state == "disabled") ]]; then
+        port_forwarding_state[$_index]=$_state
+    else
+        status=$INVALID_PARAMETER
+        SetLastError "Change port forwarding entry: Invalid index: $_index."
+    fi
+}
+
+
+function get_all
+{
+    if [[ $_output == "shell" ]]; then
+        echo "General Routing Configuration:"
+        get_state
+        echo ""
+        echo "Static Routes:"
+        get_static_routes
+        echo ""
+        echo "Dynamic Routes:"
+        get_dynamic_routes
+        echo ""
+        echo "IP-Masquerading:"
+        get_masquerading_entries
+        echo ""
+        echo "Port-Forwarding:"
+        get_port_forwarding_entries
+    elif [[ $_output == "json" ]]; then
+        get_state
+        echo -n ","
+        get_static_routes
+        echo -n ","
+        get_dynamic_routes
+        echo -n ","
+        get_masquerading_entries
+        echo -n ","
+        get_port_forwarding_entries
+    else
+        status=$INVALID_PARAMETER
+        SetLastError "Get all values: Invalid ouput format: $_output."
+    fi
+}
+
+
+#-------------- configuration file operations -------#
+
+function write_config_file
+{
+    # Write temporary file first. After write operation is completed move temporary file to routing config file.
+
+    # Write general routing parameters
+    echo "state=$state" > "$ROUTING_CONFIG_TMP_FILE"
+
+    # Write static route parameters
+    local index=0
+    local count="${#static_dest[@]}"
+    echo >> "$ROUTING_CONFIG_TMP_FILE"
+    while [[ $index -lt $count ]]; do
+        echo "static_dest[$index]=${static_dest[$index]}" >> "$ROUTING_CONFIG_TMP_FILE"
+        echo "static_dest_mask[$index]=${static_dest_mask[$index]}" >> "$ROUTING_CONFIG_TMP_FILE"
+        echo "static_gw[$index]=${static_gw[$index]}" >> "$ROUTING_CONFIG_TMP_FILE"
+        echo "static_interface[$index]=${static_interface[$index]}" >> "$ROUTING_CONFIG_TMP_FILE"
+        echo "static_metric[$index]=${static_metric[$index]}" >> "$ROUTING_CONFIG_TMP_FILE"
+        echo "static_routing_type[$index]=${static_routing_type[$index]}" >> "$ROUTING_CONFIG_TMP_FILE"
+        echo "static_state[$index]=${static_state[$index]}" >> "$ROUTING_CONFIG_TMP_FILE"
+        ((index++))
+    done
+
+    # Write masquerading parameters
+    index=0
+    count="${#masquerading_interface[@]}"
+    echo >> "$ROUTING_CONFIG_TMP_FILE"
+    while [[ $index -lt $count ]]; do
+        echo "masquerading_interface[$index]=${masquerading_interface[$index]}" >> "$ROUTING_CONFIG_TMP_FILE"
+        echo "masquerading_state[$index]=${masquerading_state[$index]}" >> "$ROUTING_CONFIG_TMP_FILE"
+        echo "masquerading_routing_type[$index]=${masquerading_routing_type[$index]}" >> "$ROUTING_CONFIG_TMP_FILE"
+        ((index++))
+    done
+    # Write port-forwarding parameters
+    index=0
+    count="${#port_forwarding_interface[@]}"
+    echo >> "$ROUTING_CONFIG_TMP_FILE"
+    while [[ $index -lt $count ]]; do
+        echo "port_forwarding_interface[$index]=${port_forwarding_interface[$index]}" >> "$ROUTING_CONFIG_TMP_FILE"
+        echo "port_forwarding_state[$index]=${port_forwarding_state[$index]}" >> "$ROUTING_CONFIG_TMP_FILE"
+        echo "port_forwarding_port[$index]=${port_forwarding_port[$index]}" >> "$ROUTING_CONFIG_TMP_FILE"
+        echo "port_forwarding_protocol[$index]=${port_forwarding_protocol[$index]}" >> "$ROUTING_CONFIG_TMP_FILE"
+        echo "port_forwarding_forward_ip[$index]=${port_forwarding_forward_ip[$index]}" >> "$ROUTING_CONFIG_TMP_FILE"
+        echo "port_forwarding_forward_port[$index]=${port_forwarding_forward_port[$index]}" >> "$ROUTING_CONFIG_TMP_FILE"
+        ((index++))
+    done
+    sync
+    $MOVE "$ROUTING_CONFIG_TMP_FILE" "$main_routing_config_file"
+}
+
+
+#-------------- globals -----------------------------#
+
+main_routing_config_file="$ROUTING_CONFIG_FILE" # Might be overwritten by "file" cmd line argument.
+readonly ROUTING_CONFIG_TMP_FILE="/etc/specific/routing.conf.tmp"
+readonly DHCP_DATA_FILE_PREFIX="dhcp-bootp-data-"
+readonly DHCP_DATA_FILE_TEMPLATE="/tmp/$DHCP_DATA_FILE_PREFIX"
+readonly IP_DATA_CHECK="/etc/config-tools/ipdatacheck"
+readonly DHCP_DEFAULT_METRIC=10
+readonly INTERFACE_NAME_MAX=15
+readonly MOVE="/bin/mv"
+
+# Static route parameters
+declare -a static_dest=( )
+declare -a static_dest_mask=( )
+declare -a static_gw=( )
+declare -a static_interface=( )
+declare -a static_metric=( )
+declare -a static_routing_type=( ) # default or fixed. Fixed routes cannot be deleted.
+declare -a static_state=( ) # enabled or disabled
+
+# Dynamic route parameters
+declare -a dynamic_dest=( )
+declare -a dynamic_dest_mask=( )
+declare -a dynamic_gw=( )
+declare -a dynamic_metric=( )
+declare -a dynamic_state=( ) # read only
+
+# Masquerading parameters
+declare -a masquerading_interface=( )
+declare -a masquerading_state=( )
+declare -a masquerading_routing_type=( ) # Cannot be modified by user.
+
+# Port-Forwarding parameters
+declare -a port_forwarding_state=( )
+declare -a port_forwarding_interface=( )
+declare -a port_forwarding_port=( )
+declare -a port_forwarding_protocol=( )
+declare -a port_forwarding_forward_ip=( )
+declare -a port_forwarding_forward_port=( )
+
+#-------------- main-programm -----------------------#
+
+status=$SUCCESS
+
+# Variables that are filled during command line parsing.
+_operation=""
+_part=""
+_state=""           # enable|disable
+_output="shell"     # shell|json
+_dest=""
+_dest_mask=""
+_gw=""
+_metric=""
+_index=""
+_type="default"     # default|fixed
+_interface=""
+_port=""
+_protocol=""        # tcp|udp|tcpudp
+_forward_ip=""
+_forward_port=""
+# Developer testing options
+_file=""
+_persist_only="false"
+
+state="disabled"    # Disabled by default. Used if reading general "state" failed.
+
+if [[ $# -lt 1 ]]; then
+    print_usage
+    exit 0
+fi
+
+parse_cmd_line "$@"
+
+if [[ -z "$_operation" ]]; then
+    echo "Missing operation."
+    print_usage
+    exit 1
+fi
+
+if [[ $status == "$SUCCESS" ]]; then
+    [[ $_file ]] && main_routing_config_file="$_file"
+
+    # Read configurtation from file
+    read_config_file "$main_routing_config_file"
+    status=$?
+fi
+
+# Update values
+[[ $status == "$SUCCESS" ]] && update_values
+# Write configuration to file
+if [[ $status == "$SUCCESS" && $_operation != "get" ]]; then
+    write_config_file
+fi
+
+# Trigger update of system in case of write operation
+if [[ $status == "$SUCCESS" && $_operation != "get" && $_persist_only != "true" ]]; then
+    [ -e /etc/config-tools/events/networking ] && run-parts -a config /etc/config-tools/events/networking/
+fi
+
+exit "$status"

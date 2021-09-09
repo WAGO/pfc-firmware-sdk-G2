@@ -1,0 +1,10 @@
+## SECTION=wago_specific
+
+config WAGO_TRACE
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select LIBCOMMONHEADER
+	prompt "wago-trace"
+	help
+	  Library to build trace functionality into applications for debug and analysis.

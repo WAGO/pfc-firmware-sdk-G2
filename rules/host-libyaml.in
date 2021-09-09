@@ -1,0 +1,7 @@
+## SECTION=hosttools_noprompt
+
+config HOST_LIBYAML
+	tristate
+	prompt "libyaml"
+	help
+	  A C library for parsing and emitting YAML.

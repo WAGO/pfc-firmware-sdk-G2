@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE diagnostic SYSTEM "diagnostics.dtd">
+<diagnostic>
+  <eventclass  class_range="x0000" name="common">
+    <event id="x0000" name="common_system_error" persistent="no">
+      <string>
+        <en>Common System Error </en>
+      </string>
+    </event>
+    <event id="x0001" name="ip_set_by_switch" persistent="yes">
+    <led name="SYS" state="BLINK_YLW" >
+      <on>500</on>
+      <off>500</off>
+    </led>
+      <string>
+        <en>Temporarily set IP address of eth0 to 192.168.1.17</en>
+      </string>
+    </event>
+    <event id="x00C0" name="system_start" persistent="yes">
+      <led name="SYS" state="STATIC_GRN" />
+      <string>
+        <en>System Booted</en>
+      </string>
+    </event>
+    <event id="x00D0" name="wait_to_start">
+      <led name="SYS" state="BLINK_GRN_RED" >
+        <on>500</on>
+        <off>500</off>
+      </led>
+      <string>
+        <en>Wait to start</en>
+      </string>
+    </event>
+    <event id="x0003" name="Reset_all" persistent="yes">
+      <string>
+        <en>Perform Hard System Reset</en>
+      </string>
+    </event>
+    <event id="x0004" name="EthernetIP-Notloaded">
+      <comment>
+        Until we have no Ethernet/IP-Driver we use this ID 
+      </comment>
+      <led name="NS" state="STATIC_OFF" />
+      <string>
+        <en>Not active</en>
+      </string>
+    </event>
+    <event id="x0005" name="IpConflict">    
+      <string>
+        <en>IP address conflict detected. See /var/log/messages for details.</en>
+      </string>
+    </event>
+    <event id="x0007" name="factory_reset_mode">
+      <led name="SYS" state="BLINK_GRN_RED" >
+        <on>500</on>
+        <off>500</off>
+      </led>      
+      <string>
+        <en>Factory reset initiated by OMS</en>
+      </string>
+    </event>
+    <event id="x0008" name="runtime_crash">
+      <led name="RUN" state="STATIC_OFF">
+      </led>
+      <string>
+        <en>Unexpected stop of runtime</en>
+      </string>
+    </event>
+    <event id="x0009" name="runtime_crash_2">
+      <led name="IO" state="STATIC_OFF">
+      </led>
+      <string>
+        <en>Unexpected stop of runtime</en>
+      </string>
+    </event>
+    <event id="x000A" name="firmware_copy">
+      <led name="SYS" state="BLINK_GRN_RED" >
+        <on>1000</on>
+        <off>1000</off>
+      </led>
+      <string>
+        <en>Copy firmware</en>
+      </string>
+    </event>
+    <event id="x000B" name="extended_error_code">
+      <comment>
+        If there is no extended error code active we use this ID 
+      </comment>
+      <led name="MS" state="STATIC_OFF" />
+      <string>
+        <en>No extended error code active</en>
+      </string>
+    </event>
+    <event id="x000C" name="rtc_error">
+      <comment>
+        If the RTC detects an interruption (e.g. oscillator interruption or voltage drop) this error is recorded 
+      </comment>
+      <string>
+        <en>RTC interruption detected, please check and adjust date and time</en>
+      </string>
+    </event>
+    <event id="x000D" name="fieldbus_not_active_bf">
+      <comment>
+        If there is no extended error code active we use this ID 
+      </comment>
+      <led name="BF" state="STATIC_OFF" />
+      <string>
+        <en>Fieldbus not active</en>
+      </string>
+    </event>    
+    <event id="x000E" name="fieldbus_not_active_dia">
+      <comment>
+        If there is no extended error code active we use this ID 
+      </comment>
+      <led name="DIA" state="STATIC_OFF" />
+      <string>
+        <en>Fieldbus not active</en>
+      </string>
+    </event>    
+	<event id="x000F" name="fieldbus_not_active_can">
+      <comment>
+        If there is no extended error code active we use this ID 
+      </comment>
+      <led name="CAN" state="STATIC_OFF" />
+      <string>
+        <en>Fieldbus not active</en>
+      </string>
+    </event>
+	<event id="x0010" name="not_active_ec">
+      <comment>
+        If there is no extended error code active we use this ID 
+      </comment>
+      <led name="EC" state="STATIC_OFF" />
+      <string>
+        <en>not active</en>
+      </string>
+    </event>
+    <event id="x0011" name="MODEM_MANAGER_NOT_IN_OPERATION" persistent="none"> 
+      <comment> Modem Manager is not in operation</comment>
+      <led name="NET" state="STATIC_OFF"></led>
+      <string>
+        <en>Modem Manager is not in operation</en>
+        <de>Modem Manager ist nicht in Betrieb</de>
+      </string>
+    </event>
+    <event id="x0012" name="system_start_done" persistent="yes">
+      <string>
+        <en>System Booted</en>
+      </string>
+    </event>
+  </eventclass>
+</diagnostic>

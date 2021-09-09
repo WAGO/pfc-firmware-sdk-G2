@@ -1,0 +1,78 @@
+#!/bin/bash
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2018-2019 WAGO Kontakttechnik GmbH & Co. KG
+
+#-----------------------------------------------------------------------------#
+# Script-name: features/exist
+#
+#######################################################
+# This tool is depreacted, use detect_feature instead #
+#######################################################
+# Check if a specific feature exist in the actual feature set
+#
+# Author:   JO:  WAGO Kontakttechnik GmbH & Co. KG
+# Author:   PEn: WAGO Kontakttechnik GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+
+#------------------------------------------------------------------------------
+# variables and constants
+#------------------------------------------------------------------------------
+FeaturePath="/etc/specific/features"
+
+# detect undefined variables
+#set-u
+
+#------------------------------------------------------------------------------
+# print help
+#------------------------------------------------------------------------------
+function print_help
+{
+  echo
+  echo " *** This tool is depreacted, use detect_feature instead *** "
+  echo
+  echo "Usage: detectfeature [FEATURE]";
+  echo "   or: detectfeature [OPTION]";
+  echo "Offers the information if the feature named by [FEATURE] is installed on"
+  echo "this target."
+  echo 
+  echo "Mandatory arguments to long options are mandatory for short options too."
+  echo "  -h, --help     display this help and exit."
+  echo
+  echo "If feature exist a true is printed otherwise false"
+  return 0
+}
+
+#------------------------------------------------------------------------------
+# main function of this script 
+# param $1 
+#     name of feature to detect
+#   | option to get help
+# echo true if feature can be detected otherwise false or help 
+# return always 0
+#------------------------------------------------------------------------------
+function main
+{
+  local arg="${1:-}"
+  local result=0
+
+  if [[ "$arg" = "-h" ]] || [[ "$arg" = "--help" ]]; then
+    print_help
+  else
+    local available
+    available="$(/etc/config-tools/detect_feature -q -t -f "$arg")"
+    result=$?
+    if [[ $result -eq 0 ]]; then
+      printf "$available" | cut -d'=' -f2
+    fi
+  fi
+
+  return $result
+}
+
+#------------------------------------------------------------------------------
+#main-programm 
+#------------------------------------------------------------------------------
+  main "$@"

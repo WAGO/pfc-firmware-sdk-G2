@@ -1,0 +1,366 @@
+Firmware Release 03.07.14 (99)
+
+Starting with firmware 19, the PFC200 of the first generation and PFC100 has its own 
+image and release notes.
+
+System:
+[NEW] Extend routing functionality: routing over an interface.
+[NEW] The configuration of a default gateway can now be set on
+      the TCP/IP configuration page in the WBM together with the IP configuration.
+[NEW] Extend the Fix-IP-Feature to address all configured bridges. (Not only bridge 0)
+[NEW] Updated kernel to version 5.10
+[FIXED] SEC: Disabled local and remote port forwarding for SSH server
+        by de-fault (conforming to in BDEW whitepaper)
+[FIXED] Fixed invalid progress of 30% during firmware update.
+[FIXED] Prevent dropbear from logging "no such file or directory"
+[FIXED] PFC 3G: Show correct connection state and signal strength with
+        specific SIM cards for data service only
+[FIXED] Allow PN connection up to 64 modules.
+[FIXED] Fix synchronization error while using WagoLibNetSnmpManager and WagoLibNetSnmp.
+[FIXED] PFC is not sending coldstart trap via SNMP
+[FIXED] WagoConfigToolLib could not be used to read DHCP assigned DNS server and default gateway
+[FIXED] Fix port mirroring visualization error in WBM.
+[FIXED] SEC: Updated dnsmasq to 2.83; Fixed CVE-2020-25684, CVE-2020-25685, CVE-2020-25686
+[FIXED] SEC: Updated sudo to 1.9.5p2; Addresses CVE-2021-3156
+[FIXED] Fixed issue displaying the wrong time zone after select time zone CET via WBM.
+[FIXED] Fix SNMP v2c Inform Notification function (extend FB)
+[FIXED] Updated ca-certificates to NSS.3.60.1.RTM
+[FIXED] Updated webserver lighttpd to version 1.4.59
+[FIXED] PFC 3G: Modem Management: Unexpected network traffic with
+        deactivated wireless data service
+[FIXED] Fix temporary network loop/network bridge within the FW update process, 
+        if the network is separated and connected to more than one network
+
+Runtime System:
+[NEW] e!RUNTIME Upgrade to version 3.5.16.3 (based on CODESYS 3.5, SP 16, Patch 3)
+[FIXED] Bootproject with e!COCKPIT application doesn't start when using retain variables
+        and changing application without download.
+[FIXED] CODESYS2 WebVisu doesn't show variable values when port authentication
+        is enabled since FW18 Patch3
+
+Fieldbus Interface & Protocols:
+-OPC UA
+ [FIXED] The OPC UA port is now correctly opened in the firewall.
+-Modbus
+ [NEW] Bidirectional access to address ranges adjustable
+ [FIXED]Fix Modbus Master (Client) mode OnValueChange to write data in
+        Modbus Slave (Server) registers.
+-CAN
+ [FIXED] PFC sends unexpected CAN emergency telegram.
+ [FIXED] CAN layer2 receive does not work when calling FbCanL2Open in each SPS cycle.
+ [FIXED] CAN layer2 keeps sockets open / memory leak
+ [FIXED] CAN layer2 memory leak when opening CAN socket in disconnected state
+-Cloud Connectivity
+ [NEW] Add support for cache mode SD-Card for NativeMQTT
+ [NEW] IEC retain data is not deleted during transfer of boot application. Retain data
+       may be reused if it is still compatible to boot application.
+ [FIXED] Use exponential backoff for retry interval if connection fails due to failing
+         certificate validation
+
+Libraries:
+[FIXED] Set path to standard certificate store (/etc/ssl/certs) for curl library.
+[FIXED] Restore behavior of WagoSysProcess library for PFC firmware release 17 and older.
+
+Functional change:
+[DEPRECATED] Config tool function get_telecontrol_state will be removed in future releases.
+             The config tool was used to determine whether a device is a telecontrol. Since telecontrol
+             services can be added by dynamic licensing, the tool is no longer needed.
+[REMOVED] 3S OPC UA Server removed from the firmware. 
+          (Can be installed for firmware 19, available via support: support@wago.com).
+[CHANGED] In future releases, HTTPS-Port is always active and can only be switched off by the firewall.
+
+################################################################################
+
+Firmware Release 03.06.19 (99)
+System:
+[NEW] PFC200 with 4G: Send and receive SMS via e!COCKPIT IEC-Library
+[NEW] PFC200 with 4G: Modem configuration can now be prepared in WBM even when
+      SIM is not inserted or locked
+[NEW] PFC200 with 4G: Manual configuration of net type and provider via WBM
+[NEW] PFC200 with 4G: Networkscan of available mobile radio networks via WBM
+[NEW] PFC200 with 4G: CID/LAC to determine the location of the cell tower
+[FIXED] PFC200 with 4G: Stabilization for applications with massive cell changes
+[FIXED] PFC200 with 4G: Authentication type "PAP or CHAP" can now be
+        configured correctly
+[KNOWN] PFC200 with 4G: 2kB Memoryleak for each Modem-Reset.
+
+Runtime System:
+[NEW] SEC, CDS2: CODESYS Advisory 2021-06 (Security update for CODESYS Control
+      V2 communication)
+[NEW] SEC, CDS2: CODESYS Advisory 2021-07 (Security update for CODESYS V2 web server)
+
+Fieldbus Interface & Protocols:
+-OPC UA
+ [FIXED] Nested IEC structures are now supported
+ [NEW] The Endpoint URL can be set in the WBM between the Hostname and the IP
+       ad-dresses of the bridges
+ [NEW] StructureFields are now supported. Structured DataType is used to provide the
+       metadata for a field of a custom Structure DataType. (OPC UA Specification
+       Part 3 - 8.51 StructureField)
+-Cloud Connectivity
+[FIXED] CC-2133 Fixed issues which may lead to crash or deadlock of cloud connection.
+[FIXED] CC-2247 native MQTT: Fixed blocked data transmission if more than 20
+        subscriptions are used and broker is not available during initial connect.
+
+################################################################################
+
+Firmware Release 03.06.09 (99)
+System:
+[NEW] PFC200 with 4G: Modem reset possible
+[NEW] The invalid IP adress 0.0.0.0 is not accepted by the system.
+[NEW] In case of IP missconfguration a corresponding error message
+      is displayed in the WBM dialog.
+[NEW] Compiler Update to Linaro GCC 9.2
+[FIXED] WBM: Not all TZ strings can be set and displayed
+[FIXED] Communication over service port could not established.
+[FIXED] Connection problems with roaming SIM cards
+[FIXED] Config tool bootproject argument not available
+[FIXED] PFC sends undocumented emergency telegram
+[REMOVED] Removed deprecated function ct_liblog_reportError 
+
+Runtime System:
+[NEW] e!RUNTIME Upgrade to Version 3.5.15.4 (based on CODESYS 3.5, SP 15, Patch 4)
+[FIXED] RUN-LED stays red when application restarts itself
+[FIXED] Wrong time stamp for alarms.
+
+Fieldbus Interface & Protocols:
+ -OPC UA
+  [NEW] Integration of the WAGO OPC UA server into the Firmware.
+  [NEW] Import of a customer-specific information model possible.
+  (WAGO Mapping Editor is required.)
+  [REMOVED] Discontinue 3S OPC UA Server in the firmware. (Can be installed
+            for firmware 19, available via support: support@wago.com).
+-CAN
+  [FIXED] WAT32038 CAN continues to run even if the Runtime crashes
+  [FIXED] WAT31936 750-8215: Missing EDS file for CANopen
+
+################################################################################
+
+Firmware Release 03.05.10 (99)
+System:
+[NEW] Each bridge contains its own MAC address for 2nd generation PFC200(750-821X)
+[NEW] PFC 4G: Configurable data service
+[NEW] PFC 4G: Activate SIM card with PIN/PUK
+[NEW] PFC 4G: Determine signal strength from the mobile network
+[NEW] WBM-NG: Extension by the area "Package Server”
+[NEW] WBM-NG: Password length increased to maximum 100 characters
+[NEW] WBM: Discontinuation of the legacy WBM
+[NEW] Config-tool no longer uses /etc/specific/network-interfaces.xml (do not use
+      this file anymore - it will be removed in future versions)
+[NEW] config-tool ipdatacheck option --subnet-check is removed
+[NEW] CBM: TCP/IP settings show bridge names instead of ethernet interface labels
+[NEW] CBM: Ethernet port physical settings now support 4-port PFCs (X1, X2, X11, X12)
+[NEW] Cloud Connectivity: Add support for two parallel cloud connections
+[NEW] Cloud Connectivity: Add statically configuration of protocol version
+[NEW] Cloud Connectivity: Add support for certificate based authentification for
+      Azure IoT Hub connections
+[NEW] Cloud Connectivity: Add option for application specific property for Az-ure
+      IoT Hub connections
+[FIXED] Cloud Connectivity: Improve robustness of Azure IoT hub connection when using
+        an unreliable network connection
+[FIXED] SEC: WBM-NG: Cookies can no longer be deleted or modified over an
+        insecure connection
+[FIXED] PFC 3G: The options PREFER_GSM and PREFER_UMTS for mobile networks are no
+        longer supported because they are not correctly con-sidered by the modem
+[FIXED] PFC 3G: Visibility of the signal strength restored
+[FIXED] PFC 3G: Provider list for manual selection is also displayed if a SIM card
+        without PIN is used
+[FIXED] Fixed restore of NTP server settings
+[FIXED] SEC: PPPD updated
+[KNOWN] Under Firefox, the old WBM allowed to accept passwords of any length but only
+        the first 32 characters were saved. In order to use these pass-words in
+        WBM-NG, only the first 32 characters of these passwords must be entered.
+
+Runtime System:
+[FIXED] PFC200: CODESYS2: No access after double download FW13
+
+Fieldbus Interface & Protocols:
+ -OPC UA
+  [NEW] Structures are supported
+  [NEW] Security Policy Base128Rsa15 is supported
+  [NEW] Activation of the Commissioning Mode
+  [NEW] Change of factory settings
+      • The device starts with the highest security policy (Base256Sha256).
+      • Trust all clients is deactivated
+      • Unlimited anonymous access is deactivated
+ -Modbus
+  [FIXED] ModbusSlave: Overwriting of registers / variables
+ -BACnet
+  [NEW] BACnet S license added to the BACnet Stack.
+  [NEW] BACnet: Added further error code information on incorrect userinput.
+ -Cloud Connectivity
+  [NEW] Cloud Connectivity: Use Azure specific system properties to provide
+        content type and content encoding of device2cloud messages
+        for message routing
+  [FIXED] Cloud Connectivity: WBM: Minor usability issues
+  [FIXED] Cloud Connectivity: Improve robustness in scenarios with high
+          transmission rate and high data volume
+  [FIXED] Cloud Connectivity: Resend DeviceHello message with interval
+          of 30 seconds if corresponding CloudHello message is not received
+  [REMOVED] Cloud Connectivity: Discontinue support of WAGO Protocol 1.0
+  [REMOVED] Cloud Connectivity: Discontinue support of Cloud Connectivity
+            with WagoLibCloud_02.lib for Codesys 2.3
+ -SFTP
+  [FIXED] SFTP Client freezes
+
+Libraries:
+[NEW] Updated libssh (1.8.0 -> 1.9.0)
+[NEW] Library for monitoring and controlling the modem.
+[FIXED] CDS2 configToolFb is blocking while error handling
+
+################################################################################
+
+Firmware Release 03.04.10 (99)
+System:
+[NEW] New Web Based Management integrated. WBM has a contemporary look and feel such
+      as an improved handling.
+[NEW] WBM-NG: network configuration adopted to support 4 ports
+[NEW] WBM-NG: configuration is based on bridges, instead of interfaces
+[NEW] WBM-NG: Improved DIP switch logic
+[NEW] SSH host keys are taken over during firmware update
+[NEW] Custom OpenVPN data is regarded during backup
+[NEW] Added curl command line tool
+[NEW] Updated tcpdump (4.9.2 -> 4.9.3)
+[NEW] Updated dropbear (2018.76 -> 2019.78)
+[NEW] Updated libcurl/curl (7.65.0 -> 7.67.0)
+[NEW] Updated net-snmp (5.7.3 -> 5.8)
+[NEW] Updated sudo (1.8.28 -> 1.8.31)
+[NEW] Updated PHP (7.3.5 -> 7.3.15)
+[NEW] Updated mdmd (0.5.3 -> 0.7.6)
+      Several and improvements for configuration of internal 3G modem and ad-ditional
+      failure diagnostics (see new version of 750-8207 manual)
+[NEW] Added EXT4 filesystem as SD card formatting option.
+[NEW] Enlargement of the CANopen master configuration memory now enables more complex
+      CANopen project planning.
+[FIXED] Internal MAC address translation.
+[FIXED] Conflicted IP configurations.
+[FIXED] Missing routing table update.
+[FIXED] Changing third DIP switch octetts is not possible.
+[FIXED] Modem cannot be addressed after several resets.
+[FIXED] Modem swichtover to GSM not possible.
+[FIXED] Possible loss of internal 3G modem parameter on power cycle.
+[FIXED] IP remains on bridge after link loss on interfaces
+[FIXED] Fixed CVE-2019-5134, 5135, -5155, -5156. 5157, -5166, -5167,
+        -5168, -5169, -5170, -5171, -5172, -5173, -5174, -5175, -5176,
+        -5177, 5178, -5179, -5180, -5181, -5182, -5185, -5186
+
+Fieldbus Interface & Protocols:
+ - OPC UA
+   [NEW] WAGO OPC UA Server available. New Server can be installed via ipk.
+         File is available through website and support: support@wago.com
+ - BACnet
+   [NEW] Add BACnet Support for PFC200 G2 (750-8212, 750-8212/025-00X, 750-8213)
+         and Control Panel Devices (762-430X/8000-002, 762-530X/8000-002)
+ - CAN
+   [FIXED] Added method CAN_RX_ALL in Codesys2 CANLayer2 library. This method
+           allows processing of CAN telegrams in order of their receiption.
+           New ver-sion of WagoCANLayer2_03.lib is required.
+ - MQTT
+   [FIXED] Fixed timestamp creation for Sparkplug NDATA messages: Use data
+           creation time instead of transmission time
+   [FIXED] Increased handshake timeout for WAGO protocol
+   [FIXED] Try to reconnect automatically if MQTT broker denies connection
+   [KNOWN] Limit for maximum number of Trend Log (Multiple) Objects is set to 300
+
+################################################################################
+
+Firmware Release 03.03.11 (99)
+System:
+[FIXED] Improved robustness by heavy ethernet traffic.
+
+################################################################################
+
+Firmware Release 03.03.10 (99)
+System:
+[NEW]   The switch mode on 4-port PFC devices (750-8215) may now be configured
+    like 2-port devices for ports X1 & X2 via WBM.
+    The default switch configuration on 750-8215 has changed from a fixed
+    separated to an all switched setting.
+    It is now possible to configure all 4 ports, as you like via config-tool.
+    Our next release will make this feature available via WBM.
+[NEW]   By download of the CDS3 PROFINET i-Device functionality, the 
+    PROFINET-designated ports X11 & X12 are automatically combined in one bridge.
+[FIXED] Cloud-Connectivity: Improve robustness of Azure IoT hub connection
+    when using an unreliable network connection.
+[FIXED] Correct impact of SMS method calls and modem status requests from
+    Codesys IEC application to modem data service for PFC 750-8207
+
+Runtime System:
+[FIXED] Correct directory handling in e!Cockpit SysDirLinux library for PFC
+
+Fieldbus Interface & Protocols:
+ - Profibus
+   [FIXED] Correct mapping of PROFIBUS Bool variables for PFC. Possible wrong 
+           configuration of Bool arrays is now blocked in the
+           CODESYS 2.3 PROFIBUS configurator (requires new TSP).
+
+################################################################################
+
+Firmware Release 03.02.02 (99)
+System:
+[FIXED] e!COCKPIT BlkDrvTcp Exception
+[FIXED] "force" on the Software Uploads page in the Web based Management does not work
+
+Runtime System:
+[NEW] e!RUNTIME Upgrade to Version 3.5.14.3
+
+Fieldbus Interface & Protocols:
+ - Cloud Connectivity
+   [NEW] Compression method integrated
+   [NEW] WAGO protocol extended by data type String
+   [NEW] Recovery of an application backup via WAGO Cloud (application update)
+   [NEW] Restoring an application backup via WAGO Cloud in the context of a firmware update (device update)
+ - OPC UA
+   [FIXED] OPC UA inactive after firewall activation.
+ - Profibus
+  [FIXED] e!COCKPIT: Profibus Slave: wrong input data when mapping to existing variables
+  [FIXED] Profibus slave: no correct data transmission of array slots when accessing via addresses / existing variables
+
+Libraries:
+[FIXED] WagoSysCurl does not consider the udiStringLength of the method curl_easy_setopt_STRING2
+
+Firmware Release 03.01.07 (99)
+System:
+[NEW] New Device: PFC200 with BACnet (750-8212/000-100)
+[NEW] Backups can be encrypted via password.
+[NEW] PHP updated to 7.3
+[NEW] OpenSSL updated to 1.0.2q
+[NEW] OpenSSH updated to 7.9p1
+[NEW] OpenVPN updated to 2.4.6
+[NEW] CA certificated updated to 2019.02.11
+[NEW] CURL updated to 7.65
+[NEW] lighttpd updated to 1.4.53
+
+Runtime System:
+[FIXED] CODESYS 2.3: No access after double download.
+
+Fieldbus Interface & Protocols:
+ - BACnet
+   [NEW] Integration of BACnet profile B-BC (can only be used with 750-8212/000-100)
+ - Cloud Connectivity
+   [NEW] WebSockets are supported for the WAGO protocol.
+
+Libraries:
+[FIXED] WagoAppHttp: Data sporadically in header.
+[FIXED] WagoAppFTP: FTP/FTPS client freezes during processing.
+
+################################################################################
+
+Firmware Release 03.00.39 (99)
+System:
+[FIXED] Unreliable behavior of the mobile connection (750-8207)
+[FIXED] Directory structure of /home folder was destroyed after system backup
+[NEW] Checksum of CODESYS 2.3 project is shown in WBM
+[NEW] Advanced Intrusion Detection Environment (AIDE) can be used to identify changes of filesystem
+
+Operating System:
+[NEW] Kernel Update to version 4.9.146
+
+Fieldbus Interface & Protocols:
+ - Cloud Connectivity:
+   [NEW] Support of SAP Cloud
+   [NEW] Azure SDK uses websockets
+   [NEW] Retain-parameter visible in WBM
+   [NEW] Backup / Restore extended by parameter migration
+ - Profibus:
+   [FIXED] Using Bool and Real variables under Profibus does not work properly.

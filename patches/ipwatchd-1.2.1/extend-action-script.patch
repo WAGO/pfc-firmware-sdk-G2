@@ -1,0 +1,16 @@
+Index: ipwatchd-1.2.1/src/scripts/ipwatchd-script
+===================================================================
+--- ipwatchd-1.2.1.orig/src/scripts/ipwatchd-script
++++ ipwatchd-1.2.1/src/scripts/ipwatchd-script
+@@ -20,5 +20,10 @@ if [ -x /usr/sbin/ipwatchd-gnotify ]; th
+ 		--message "MAC address $MAC causes IP conflict with address $IP set on interface $DEVICE"
+ fi
+ 
+-exit 0
++# Create entry in /var/log/wago/wagolog.log.
++# Decode log with cat /var/log/wago/wagolog.log | decodeid.
++if [ -x /usr/bin/eventmsg ]; then
++	eventmsg -n ipwatchd 0x00000005
++fi
+ 
++exit 0

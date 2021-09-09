@@ -1,0 +1,105 @@
+### SECTION=staging
+### old section:
+## SECTION=networking
+# syslog-ng configuration
+
+menuconfig SYSLOGNG
+	tristate
+	prompt "syslog-ng                     "
+#	select EVENTLOG
+	select GLIB
+	select OPENSSL
+	select PYTHON		if SYSLOGNG_PYTHON_DESTINATION
+	select LIBC_NSL
+	select LIBC_RT
+	select LIBCURL
+	select LIBNET		if SYSLOGNG_SPOOF_SOURCE
+	select LIBPCRE
+	select TCPWRAPPER	if SYSLOGNG_TCP_WRAPPER
+	select SYSTEMD		if SYSLOGNG_SYSTEMD
+	help
+	  The next generation syslog daemon.
+
+	  STAGING: remove in ptxdist-2020.01.0
+	  Fails to build with OpenSSL 1.1.x. Update to a new version is
+	  needed.
+
+if SYSLOGNG
+
+config SYSLOGNG_TCP_WRAPPER
+	bool
+	prompt "tcpwrapper support"
+	help
+	  Support /etc/hosts.deny and /etc/hosts.allow.
+
+config SYSLOGNG_SPOOF_SOURCE
+	bool
+	prompt "spoof_source feature"
+	help
+	  Enables the ability for source address spoofing.
+	  This means that the host running syslog-ng generates
+	  UDP packets with the source IP address matching the
+	  original sender of the message. It is useful when
+	  you want to perform some kind of preprocessing via
+	  syslog-ng then forward messages to your central log
+	  management solution with the source address of the
+	  original sender. This option only works for UDP
+	  destinations though the original message can be
+	  received by TCP as well.
+
+config SYSLOGNG_AMQP_DESTINATION
+	bool
+	prompt "support the AMQP destination"
+	help
+	  Enables the ability to publish AMQP messages.
+
+config SYSLOGNG_MONGODB_DESTINATION
+	bool
+	prompt "support the MongoDB destination"
+	help
+	  Enables the ability to send messages to a MongoDB database.
+
+config SYSLOGNG_PYTHON_DESTINATION
+	bool
+	prompt "support the python destination"
+	help
+	  Enables the ability to use inline python in the
+	  syslog-ng configuration file.
+
+config SYSLOGNG_STOMP_DESTINATION
+	bool
+	prompt "support the STOMP destination"
+	help
+	  Enables the ability to send STOMP messages to message brokers.
+
+comment "runtime options   ---"
+
+config SYSLOGNG_CONFIG
+	bool
+	default y
+	prompt "Install configuration file"
+	help
+	  Installs (if present) the "./projectroot/etc/syslog-ng.conf"
+	  file from your workspace, otherwise a generic one from the
+	  ptxdist installation
+	  ("<PTXDIST>/projectroot/etc/syslog-ng.conf").
+
+config SYSLOGNG_SYSTEMD
+	bool
+	default y
+	prompt "Enable systemd support"
+	depends on INITMETHOD_SYSTEMD
+	help
+	  Installs the systemd service file and enables support for the
+	  systemd-journal
+
+config SYSLOGNG_STARTSCRIPT
+	bool
+	default y
+	help
+	  Installs (if present) the
+	  "./projectroot/etc/init.d/syslog-ng" startscript from your
+	  workspace, otherwise a generic one from the ptxdist
+	  installation ("<PTXDIST>/projectroot/etc/init.d/syslog-ng").
+
+endif

@@ -1,0 +1,144 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# This file is part of PTXdist package config-tools.
+#
+# Copyright (c) 2013-2020  WAGO Kontakttechnik GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
+# Script:   config_interfaces
+#
+#  Brief:   Change the configuration of the interfaces.
+#
+# Author:   AGa: WAGO Kontakttechnik GmbH & Co. KG
+# Author:   HJH: WAGO Kontakttechnik GmbH & Co. KG
+# Author:   HFS: WAGO Kontakttechnik GmbH & Co. KG
+# Author:   FR:  WAGO Kontakttechnik GmbH & Co. KG
+# Author:   OG:  WAGO Kontakttechnik GmbH & Co. KG
+# Author:   MSc: WAGO Kontakttechnik GmbH & Co. KG
+# Author:   MOe: WAGO Kontakttechnik GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+
+# load general definitions and functions
+if [ ! -f "/etc/config-tools/config_tool_lib" ]; then
+  echo "config_tool_lib missing"
+  exit 64
+fi
+
+source "/etc/config-tools/config_tool_lib"
+
+#-------------- main-program ------------------------#
+
+function echo_help {
+    echo
+    echo "* Change the configuration of the interfaces *"
+    echo
+    echo -n "Usage: config_interfaces interface=interface-value [state=state-value] [config-type=config-type-value] [ip-address=ip-address-value] [subnet-mask=subnet-mask-value] [broadcast=broadcast-value]"
+    echo
+    echo "interface-value (must always be set): $(/etc/config-tools/get_eth_config --print-ports)"
+    echo "state-value: enabled | disabled"
+    echo "config-type-value: static | bootp | dhcp"
+    echo "ip-address-value: ip-address for config-type static"
+    echo "subnet-mask-value: subnet-mask for config-type static"
+    echo "broadcast-value: broadcast for config-type static"
+    echo
+}
+
+function convert_port_to_bridge {
+    declare -A mapping=( [X1]=br0 [X2]=br1 [br0]=br0 [br1]=br1 )
+    local port=$1
+    echo "${mapping[$port]}"
+}
+
+function convert_bridge_to_port {
+    declare -A mapping=( [X1]=X1 [X2]=X2 [br0]=X1 [br1]=X2 )
+    local bridge=$1
+    echo "${mapping[$bridge]}"
+}
+
+status=$SUCCESS
+
+if [[ $# -lt 1 ]]; then
+    exit 1
+fi
+
+if [[ "$1" = "-h" ]] || [[ "$1" = "--help" ]]; then
+    echo_help
+    exit $status
+fi
+
+readonly IFCONFIG=/sbin/ifconfig
+
+ipaddr=
+netmask=
+bridge=
+source=
+broadcast=
+state=
+declare -A state_map=( [enabled]=up [disabled]=down )
+
+while [[ $# -ne 0 ]]; do
+    case "$1" in
+        interface=*)
+            port="${1#interface=}"
+            ;;
+        state=*)
+            state="${1#state=}"
+            ;;
+        config-type=*)
+            source="${1#config-type=}"
+            ;;
+        ip-address=*)
+            ipaddr="${1#ip-address=}"
+            ;;
+        subnet-mask=*)
+            netmask="${1#subnet-mask=}"
+            ;;
+        broadcast=*)
+            broadcast="${1#broadcast=}"
+            ;;
+        *)
+            exit $INVALID_PARAMETER
+            ;;
+    esac
+    shift 1
+done
+
+if [[ -z "$port" ]]; then
+    exit 1
+fi
+
+if [[ -z "$state" && -z "$source" && -z "$ipaddr" && -z "$netmask" && -z "$broadcast" ]]; then
+    exit 1
+fi
+
+bridge=$(convert_port_to_bridge "$port")
+if [[ -z $bridge ]]; then
+    exit $INVALID_PARAMETER
+fi
+
+if [[ -n "$state" ]]; then
+	$IFCONFIG "$bridge" "${state_map[$state]}"
+	status=$?
+fi
+
+if [[ "$status" == $SUCCESS && ( -n "$source" || -n "$ipaddr" || -n "$netmask" ) ]]; then
+    port=$(convert_bridge_to_port "$bridge")
+    [[ -z "$source" ]] && source=$(/etc/config-tools/get_eth_config "$port" 'config-type')
+    [[ -z "$ipaddr" ]] && ipaddr=$(/etc/config-tools/get_eth_config "$port" 'ip-address')
+    [[ -z "$netmask" ]] && netmask=$(/etc/config-tools/get_eth_config "$port" 'subnet-mask')
+
+    if [[ "$ipaddr" == "0.0.0.0" ]]; then
+        netmask="0.0.0.0"
+        [[ "$source" == "static" ]] && source="none"
+    fi
+
+    json_string="{\"$bridge\":{\"source\":\"$source\",\"ipaddr\":\"$ipaddr\",\"netmask\":\"$netmask\"}}"
+    result=$($NETWORK_CONFIG --ip-config --set $json_string --format=json)
+    status=$?
+fi
+
+exit $status

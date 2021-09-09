@@ -1,0 +1,10 @@
+## SECTION=networking
+config CJOSE
+	tristate
+	prompt "cJOSE"
+	select HOST_PKG_CONFIG
+	select HOST_AUTOTOOLS_LIBTOOL
+	select OPENSSL
+	select JANSSON
+	help
+	  C library implementing the Javascript Object Signing and Encryption (JOSE)
