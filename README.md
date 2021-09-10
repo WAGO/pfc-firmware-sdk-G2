@@ -16,7 +16,7 @@ This HowTo describes steps to install the Software-Development-Kit (SDK) for PFC
 The start into the embedded linux world requires substantial technical know-how to have success. 
 Therefore WAGO recommends familiarity with the following topics for the future embedded linux developer:
 - Linux-OS
-- working on command line interface(CLI)
+/- working on command line interface(CLI)
 - writing Makefile, C or C++ code, shell-scripts.
 - Cross-Platform-Development.
 
@@ -108,7 +108,7 @@ These steps will only concentrate on the recommented Ubuntu version:
     >cd ~
     >mkdir -p wago/ptxproj/
     >cd wago/ptxproj/
-    >git clone https://github.com/WAGO/pfc-firmware-sdk.git .
+    >git clone https://github.com/WAGO/pfc-firmware-sdk-G2 .
 ```
 
 ## 2.) Install "cross toolchain"
