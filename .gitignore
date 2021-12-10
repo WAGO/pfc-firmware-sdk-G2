@@ -2,6 +2,8 @@
 **/bin/gcc_5_5_arm-linux-gnueabihf/
 **/out/gcc_9_2_arm-linux-gnueabihf/
 **/bin/gcc_9_2_arm-linux-gnueabihf/
-selected_platformconfig
-selected_ptxconfig
-selected_toolchain
+platform-wago-pfcXXX
+*.old
+src/genpart-1.0.2.tar.bz2
+*.log
+build/
