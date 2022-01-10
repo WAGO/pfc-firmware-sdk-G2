@@ -20,14 +20,15 @@ endif
 #
 # Paths and names
 #
-DOCKER_VERSION	:= 19.03.8
-DOCKER_MD5			:= 328f19218783795cb902450e5891a520
-DOCKER					:= docker-$(DOCKER_VERSION)
-DOCKER_SUFFIX		:= tgz
-DOCKER_URL			:= https://download.docker.com/linux/static/stable/armhf/$(DOCKER).$(DOCKER_SUFFIX)
+DOCKER_VERSION		:= 20.10.8
+DOCKER_MD5			:= 72eb023440b66764a5b97a8477b94313
+DOCKER				:= docker-$(subst .,_,$(DOCKER_VERSION))-wago_static-linux_arm_v7
+DOCKER_SUFFIX		:= tar.gz
+DOCKER_URL			:= https://github.com/WAGO/docker-engine/releases/download/v$(DOCKER_VERSION)-wago/$(DOCKER).$(DOCKER_SUFFIX) 
 DOCKER_SOURCE		:= $(SRCDIR)/$(DOCKER).$(DOCKER_SUFFIX)
 DOCKER_DIR			:= $(BUILDDIR)/$(DOCKER)
-DOCKER_LICENSE	:= Apache 2.0
+DOCKER_LICENSE		:= Apache 2.0
+DOCKER_STRIP_LEVEL 	:= 0
 
 # ----------------------------------------------------------------------------
 # Prepare
@@ -78,7 +79,6 @@ $(STATEDIR)/docker.targetinstall:
 	@$(call install_alternative, docker, 0, 0, 0755, /etc/docker/daemon.json)
 	@$(call install_alternative, docker, 0, 0, 0755, /etc/config-tools/events/firewall/iptables/docker)
 	@$(call install_alternative, docker, 0, 0, 0755, /opt/wago-docker/sbin/iptables)
-	
 	@$(call install_link, docker, /home/wago-docker/containerd, /usr/bin/containerd)
 	@$(call install_link, docker, /home/wago-docker/containerd-shim, /usr/bin/containerd-shim)
 	@$(call install_link, docker, /home/wago-docker/ctr, /usr/bin/ctr)
@@ -88,7 +88,7 @@ $(STATEDIR)/docker.targetinstall:
 	@$(call install_link, docker, /home/wago-docker/docker-proxy, /usr/bin/docker-proxy)
 	@$(call install_link, docker, /home/wago-docker/runc, /usr/bin/runc)
 
-	@$(call install_link, docker, /etc/init.d/dockerd, /etc/rc.d/disabled/S99_docker)
+	@$(call install_link, docker, /etc/init.d/dockerd, /etc/rc.d/S99_docker)
 	
 	@$(call install_finish, docker)
 
