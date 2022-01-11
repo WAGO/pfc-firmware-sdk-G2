@@ -57,6 +57,9 @@ menu "OPC UA"
 source "generated/wago_specific_opcua.in"
 endmenu
 
+menu "WAGO Parameter Service        "
+source "generated/wago_specific_config_parameterservice.in"
+endmenu
 
 menu "Rocket Specific"
 source "generated/wago_specific_rocket_specific.in"
@@ -121,6 +124,9 @@ source "generated/wago_specific_wbm_plugins.in"
 endmenu
 endmenu
 
+menu "Parameter Provider            "
+source "generated/wago_specific_paramprovider.in"
+endmenu
 
 comment "------------------------------------"
 

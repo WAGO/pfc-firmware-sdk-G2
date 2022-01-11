@@ -1,0 +1,7 @@
+## SECTION=initmethod_bbinit
+
+config WAGO_PARAMETER_SERVICE_DAEMON_BBINIT_LINK
+	string
+	depends on WAGO_PARAMETER_SERVICE_DAEMON_STARTSCRIPT
+	prompt "run paramd at startup"
+	default "S11_paramd"

@@ -1,3 +1,69 @@
+Firmware Release 03.08.08 (99)
+
+System:
+[NEW] Integration of Docker Deamon. Docker now can be installed and activited via. WBM.
+[NEW] Users of WBM and Linux where harmonized. User "user" and "admin" can still be 
+      used for authorization in WBM as default, but they are no longer exclusive for WBM.
+      Every WBM user can only change his own password now. To use WBM, linux user can be
+      added to group "wbm-admin" or "wbm-user". All other users where treated as "guest".
+      Note: Configuration/change of password in WBM will directly change the configuration
+            of the corresponding linux user and vice versa. After upgrade to FW 20, login
+            in WBM is not possible with the old WBM passwords; you must use the passwords
+            of the corresponding linux us-ers. After a following downgrade to FW 19 
+            (or less), WBM will use the WBM default passwords.
+[NEW] "Codesys port authentication password" can no longer be changed via WBM.
+[NEW] From FW20 the HTTPS port is always active and cannot be disabled via WBM or configtool.     
+      Please note that this will be the state after a firmware update, regardless which 
+      state was configured before. If nec-essary, the HTTPS port can be blocked via the firewall.
+[NEW] PTXdist update to version 2020.8.0
+[NEW] openSSL update to version 1.1.1.L
+[NEW] Busybox update to version 1.34.1
+[FIXED] PFC200 with 4G: Fix issue with sporadic high system load leading to a KBus watchdog 
+        timeout when modem starts unexpected re-initialisation of SIM card in operational state.
+[KNOWN] PFC200 with 4G: 2kB Memoryleak for each Modem-Reset.
+[FIXED] IPsec: SHA512 based ESP algorithms not available.
+
+Runtime System:
+[FIXED] Fix possible deadlock when using multiple tasks in an e!Cockpit applica-tion on
+        PFC based controllers leading to a KBus watchdog timeout (signalled by IO LED
+        error blinkcode 9-5)
+[FIXED] Fixed CODESYS 2.3 webserver vulnerabilities regarding CODESYS 
+        advisory 2021-15_LCDS-358
+[FIXED] Fixed CODESYS 2.3 runtime vulnerabilities regarding CODESYS 
+        advisory 2021-16_LCDS-361
+[FIXED] Fixed CODESYS 2.3 runtime vulnerabilities regarding CODESYS
+        advisory 2021-17_LCDS-362
+
+Fieldbus Interface & Protocols:
+-OPC UA
+ [FIXED] The OPC UA port is now correctly opened in the firewall after restart.
+-CAN
+ [NEW] It is now possible to use extended CAN configuration in e!COCKPIT
+-BACnet
+ [FIXED] When using BACnet, there is no longer an increase in open file discrep-tors.
+-Cloud Connectivity
+ [NEW] Cloud Connectivity: Update Azure SDK to 1.6.0
+-SNMP
+ [FIXED] Sender of SNMP "Informs" not changeable via IEC Libraries.
+
+Functional change:
+[DEPRECATED] Config tool function get_telecontrol_state will be removed in future
+             releases. The config tool was used to determine whether a device is a
+             telecontrol. Since telecontrol services can be added by dynamic licensing,
+             the tool is no longer needed.
+[REMOVED] Removed Telnet server, use SSH instead.
+[REMOVED] Removed TFTP server.
+
+Beta functionalities:
+[BETA] "Wago Device Access" for parametrization and configuration. The service is
+       available and can already be tested. Changes in the model and behavior are
+       possible for future versions.
+       REST-API is active under path "<host>/wda" on port 443. File-Access-API is
+       active under path "<host>/files" on port 443. To disable the service,
+       delete symlink "/etc/rc.d/S11_paramd" or move it to subdirectory "disabled".
+
+################################################################################
+
 Firmware Release 03.07.14 (99)
 
 Starting with firmware 19, the PFC200 of the first generation and PFC100 has its own 

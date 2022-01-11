@@ -1,0 +1,15 @@
+## SECTION=wago_specific_paramprovider
+
+config PP_NETWORKING
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select PP_NETCONF
+	select PP_ROUTING
+	select PP_HOSTDOMAINNAME
+	select PP_SWITCHCONFIG
+	select WAGO_PARAMETER_SERVICE_COM
+	prompt "pp_networking"
+	help
+	  Defines a home of various parameter providers regarding network parameters, e.g. pp_netconf, pp_routing, etc.
+	  There will be one executable which instantiates all the PPs and runs them under a common process.

@@ -1,0 +1,60 @@
+## SECTION=wago_specific_config_parameterservice
+
+config WAGO_PARAMETER_SERVICE
+	bool
+	default n
+	select HOST_CT_BUILD
+	select HOST_SYSTEM_PYTHON3
+	select GOOGLETEST
+	select WAGO_TRACE
+	select TYPELABEL                          if WAGO_PARAMETER_SERVICE_LIB
+	select LIBCOMMONHEADER                    if WAGO_PARAMETER_SERVICE_LIB
+	select WAGO_PARAMETER_SERVICE_CORE        if WAGO_PARAMETER_SERVICE_LIB
+	select NLOHMANN_JSON                      if WAGO_PARAMETER_SERVICE_LIB
+	select PAM                                if WAGO_PARAMETER_SERVICE_LIB
+	select PAM_PAM_SUCCEED_IF                 if PAM
+	select FCGI                               if WAGO_PARAMETER_SERVICE_LIB
+	select CJOSE                              if WAGO_PARAMETER_SERVICE_LIB
+	select LIGHTTPD                           if WAGO_PARAMETER_SERVICE_LIGHTTPD_INTEGRATION
+	select WAGO_PARAMETER_SERVICE_COM         if WAGO_PARAMETER_SERVICE_LIB
+	select WAGO_PARAMETER_SERVICE_COM_LIB     if WAGO_PARAMETER_SERVICE_DAEMON
+	select WAGO_PARAMETER_SERVICE_COM_LOGGING if WAGO_PARAMETER_SERVICE_LIB
+
+config WAGO_PARAMETER_SERVICE_LIB
+	bool
+	default n
+	prompt "WAGO Parameter Service Target Library"
+	select WAGO_PARAMETER_SERVICE
+	help
+	  Library for Linux controller devices to build parameter services.
+
+config WAGO_PARAMETER_SERVICE_DAEMON
+	bool
+	default n
+	prompt "WAGO Parameter Service Daemon"
+	select WAGO_PARAMETER_SERVICE_LIB
+	help
+	  WAGO Parameter Service daemon for Linux controller devices.
+
+config WAGO_PARAMETER_SERVICE_DAEMON_STARTSCRIPT
+	bool
+	default y
+	prompt "install daemon init script into /etc/init.d/"
+	depends on INITMETHOD_BBINIT
+	depends on WAGO_PARAMETER_SERVICE_DAEMON
+
+config WAGO_PARAMETER_SERVICE_LIGHTTPD_INTEGRATION
+	bool
+	default n
+	prompt "WAGO Parameter Service lighttpd integration"
+	select WAGO_PARAMETER_SERVICE_LIB
+	help
+	  WAGO Parameter Service integration for lighttpd webserver.
+
+config WAGO_PARAMETER_SERVICE_OPENAPI
+	bool
+	default n
+	prompt "WAGO Parameter Service OpenAPI"
+	select WAGO_PARAMETER_SERVICE_LIB
+	help
+	  WAGO Parameter Service OpenAPI definition for target.

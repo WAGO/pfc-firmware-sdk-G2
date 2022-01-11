@@ -1,0 +1,8 @@
+## SECTION=security
+
+config CYRUS_SASL
+	tristate
+	prompt "cyrus-sasl"
+	help
+	  A free and portable SASL (Simple Authentication and Security Layer) library
+	  providing generic security for various applications

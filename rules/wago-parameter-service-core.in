@@ -1,0 +1,42 @@
+## SECTION=wago_specific_config_parameterservice
+
+menuconfig WAGO_PARAMETER_SERVICE_CORE
+	bool
+	default n
+	prompt "WAGO Parameter Service Core"
+	select HOST_CMAKE
+	select NLOHMANN_JSON
+	select WSTD
+	help
+	  WAGO Parameter Service common core library.
+
+config WAGO_PARAMETER_SERVICE_CORE_URL_TEMPLATE
+	string
+	depends on WAGO_PARAMETER_SERVICE_CORE
+	depends on !WAGO_PARAMETER_SERVICE_CORE_DEV
+	prompt "URL template"
+	default "%ARTIFACTORY_BASE_URL%/wdx-generic-prod-local/wago/parameterservice/parameterservice-Source/parameterservice-Source-%VERSION%.tgz"
+	help
+	  Encodes the desired artifact version. Can be configured to a specific version or to a latest compatible version of an artifact.
+	  See Confluence for further details.
+
+config WAGO_PARAMETER_SERVICE_CORE_DEV
+	bool
+	default n
+	prompt "Use development version"
+	depends on WAGO_PARAMETER_SERVICE_CORE
+	help
+	  Instead of released version use source code directly checked-out from repository.
+	  Use only for development!
+
+if WAGO_PARAMETER_SERVICE_CORE_DEV
+
+config WAGO_PARAMETER_SERVICE_CORE_DEV_BRANCH
+	string
+	default "master"
+	prompt "Branch to be checked-out for development version"
+	depends on WAGO_PARAMETER_SERVICE_CORE
+	help
+	  Name of branch which should be checked out or empty for default.
+
+endif

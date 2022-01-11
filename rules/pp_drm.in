@@ -1,0 +1,12 @@
+## SECTION=wago_specific_paramprovider
+
+if DRM
+
+config PP_DRM
+	bool
+	default n
+	prompt "pp_drm"
+	help
+		Parameter Provider for DRM
+
+endif

@@ -124,7 +124,7 @@ $(STATEDIR)/wago-trace.targetinstall:
 	@$(call install_fixup, wago-trace,AUTHOR,"PEn - WAGO Kontakttechnik GmbH \& Co. KG")
 	@$(call install_fixup, wago-trace,DESCRIPTION,missing)
 
-#	@$(call install_lib, wago-trace, 0, 0, 0644, libwtrace)
+	@$(call install_lib, wago-trace, 0, 0, 0644, libwtrace)
 
 	@$(call install_finish, wago-trace)
 

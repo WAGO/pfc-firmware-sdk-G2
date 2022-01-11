@@ -1,0 +1,64 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# This file is part of project parameter-service (PTXdist package wago-parameter-service).
+#
+# Copyright (c) 2019-2021 WAGO Kontakttechnik GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
+# Script:   /etc/init.d/parameter_service
+#
+# Brief:    WAGO Parameter Service post install script.
+#
+# Author:   PEn: WAGO Kontakttechnik GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+
+
+# Function to restart service daemon.
+#
+# Return: 0 on success, unequal to 0 otherwise
+#-----------------------------------------------------------------------------#
+restart_service()
+{
+  local service_script="/etc/init.d/paramd"
+  if [ -e "$service_script" ]; then
+    local status=$("$service_script" status)
+    echo $status | grep -q "running";
+    local running=$?
+    if [ $running -ne 0 ]; then
+      echo "Service currently not running: Skip service restart"
+    else
+      "$service_script" stop
+      "$service_script" start
+    fi
+  fi
+}
+
+
+# Function to restart webserver (currently lighttpd).
+#
+# Return: 0 on success, unequal to 0 otherwise
+#-----------------------------------------------------------------------------#
+restart_webserver()
+{
+  local server_script="/etc/init.d/lighttpd"
+  if [ -e "$server_script" ]; then
+    "$server_script" stop
+    "$server_script" start
+  fi
+}
+
+
+# Main: Prepare newly installed package to run.
+#
+# Exit: 0 on success, unequal to 0 otherwise
+#-----------------------------------------------------------------------------#
+if [ ! "$PTXDIST" ]; then
+  restart_service
+  restart_webserver
+fi
+
+exit 0

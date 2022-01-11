@@ -1,6 +1,6 @@
 ## SECTION=networking
 
-config MDMD_NG
+menuconfig MDMD_NG
 	bool
 	default n
 	prompt "mdmd-ng"
@@ -25,6 +25,56 @@ config MDMD_NG
 	select NLOHMANN_JSON
 	select LIBCOMMONHEADER
 	select NETCONFD
-
 	help
 	  WAGO Modem Manager Daemon Next Gen (4G)
+
+if MDMD_NG
+
+config MDMD_NG_LIBMODEM_CLI
+	bool
+	default n
+	prompt "Install libmodem CLI"
+
+menuconfig MDMD_NG_EC25
+	bool
+	default y
+	prompt "Install files for quectel modem EC25"
+
+if MDMD_NG_EC25
+config MDMD_NG_EC25_QMI
+	bool
+	default y
+	prompt "Configure for QMI_WWAN driver"
+	help 
+	  Create link to configuration file ec25.qmi_func to work with QMI_WWAN driver
+
+config MDMD_NG_EC25_GOBINET_AT_ONLY
+	bool
+	default n
+	prompt "Configure for GobiNet driver (AT commands only)"
+	help
+	  Create link to configuration file ec25.at_func to work with GobiNet driver
+endif
+
+menuconfig MDMD_NG_RM500Q
+	bool
+	default n
+	prompt "Install files for quectel modem RM500Q"
+
+if MDMD_NG_RM500Q
+config MDMD_NG_RM500Q_QMI 
+	bool
+	default n
+	prompt "Configure for QMI_WWAN driver"
+	help 
+	  Create link to configuration file rm500q.qmi_func to work with QMI_WWAN driver
+
+config MDMD_NG_RM500Q_GOBINET_AT_ONLY
+	bool
+	default n
+	prompt "Configure for GobiNet driver (AT commands only)"
+	help
+	  Create link to configuration file rm500q.at_func to work with GobiNet driver
+endif
+
+endif

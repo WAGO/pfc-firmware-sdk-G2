@@ -1,0 +1,12 @@
+## SECTION=wago_specific_paramprovider
+
+config PP_DEVICE_INFORMATION
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select WAGO_PARAMETER_SERVICE_CORE
+	select TYPELABEL
+	select LIBCOMMONHEADER
+	prompt "pp_device-information"
+	help
+	  Enable WAGO device information parameter provider

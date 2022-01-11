@@ -1,0 +1,15 @@
+## SECTION=wago_specific_paramprovider
+
+config PP_ROUTING
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select NLOHMANN_JSON
+	select WAGO_PARAMETER_SERVICE_CORE
+  select WAGO_PARAMETER_SERVICE_MODEL_FILES
+  select WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_CPP_HEADERS
+  select WAGO_PARAMETER_SERVICE_COM
+	select GLIB
+	prompt "pp_routing"
+	help
+	  Parameter provider handles the routing configuration

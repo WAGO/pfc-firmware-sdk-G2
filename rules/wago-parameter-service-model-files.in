@@ -1,0 +1,26 @@
+## SECTION=wago_specific_config_parameterservice
+
+menuconfig WAGO_PARAMETER_SERVICE_MODEL_FILES
+	bool
+	default n
+	prompt "WAGO Parameter Service Model Files"
+	select HOST_PYTHON3
+	help
+	  WDM and platform specific WDD Model files used by the WAGO Parameter Service.
+
+config WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_URL_TEMPLATE
+	string
+	depends on WAGO_PARAMETER_SERVICE_MODEL_FILES
+	prompt "URL template"
+	default "%ARTIFACTORY_BASE_URL%/wdx-generic-prod-local/wago/wdx/wdx-%VERSION%/wdx.zip"
+	help
+	  Encodes the desired artifact version. Can be configured to a specific version or to a latest compatible version of an artifact.
+	  See Confluence for further details.
+
+config WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_CPP_HEADERS
+	bool
+	prompt "Install WDM C++ Header files"
+	default n
+	depends on WAGO_PARAMETER_SERVICE_MODEL_FILES
+	help
+	  Installs C++ header files with constants generated from the WDM files into /usr/include/wago/wdm.

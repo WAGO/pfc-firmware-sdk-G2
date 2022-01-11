@@ -1,0 +1,7 @@
+## SECTION=initmethod_bbinit
+
+config PP_LIGHTTPD_DAEMON_BBINIT_LINK
+	string
+	depends on PP_LIGHTTPD_DAEMON_STARTSCRIPT
+	prompt "run pp_lighttpd at startup"
+	default "S99_pp_lighttpd"

@@ -1,0 +1,33 @@
+## SECTION=wago_specific_paramprovider
+
+config PP_COMBO
+	bool
+	select WAGO_PARAMETER_SERVICE_CORE
+  select WAGO_PARAMETER_SERVICE_COM
+  select WAGO_PARAMETER_SERVICE_COM_LIB
+  select PP_DEVICE_INFORMATION
+  select PP_REBOOT
+  select PP_SYSTEMTIME
+  select PP_FILETRANSFER
+  select PP_UPDATE_HS
+  select HOST_CT_BUILD
+  select GOOGLETEST
+	prompt "pp_combo"
+	help
+	  Combo parameter service client contains device id, reboot and system time providers
+	  
+config PP_COMBO_DAEMON
+	bool
+	default n
+	prompt "pp_combo daemon"
+	depends on PP_COMBO
+	help
+	  WAGO Parameter Service client daemon for combo pp client.
+
+config PP_COMBO_DAEMON_STARTSCRIPT
+	bool
+	default y
+	prompt "install daemon init script into /etc/init.d/"
+	depends on INITMETHOD_BBINIT
+	depends on PP_COMBO_DAEMON
+

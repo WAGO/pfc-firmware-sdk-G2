@@ -1,0 +1,12 @@
+## SECTION=wago_specific_paramprovider
+
+config PP_UPDATE_HS
+	bool
+	select HOST_CT_BUILD
+	select WAGO_PARAMETER_SERVICE_CORE
+	select GOOGLETEST
+	select JANSSON
+	select GLIB
+	prompt "pp_update-hs"
+	help
+	  FIXME

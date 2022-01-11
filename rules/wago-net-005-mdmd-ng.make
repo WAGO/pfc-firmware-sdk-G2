@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_MDMD_NG) += mdmd-ng
 #
 # Paths and names
 #
-MDMD_NG_VERSION        := 0.12.3
+MDMD_NG_VERSION        := 0.14.1
 MDMD_NG_MD5            := 
 MDMD_NG                := mdmd-ng
 MDMD_NG_URL            := file://$(PTXDIST_WORKSPACE)/wago_intern/mdmd-ng
@@ -33,7 +33,7 @@ MDMD_NG_MAKE_ENV       := $(CROSS_ENV) \
  BUILDCONFIG=$(MDMD_NG_BUILDCONFIG) \
  BIN_DIR=$(MDMD_NG_BUILD_DIR) \
  SCRIPT_DIR=$(PTXDIST_SYSROOT_HOST)/lib/ct-build
-
+ 
 MDMD_NG_PACKAGE_NAME   := $(MDMD_NG)_$(MDMD_NG_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 MDMD_NG_PLATFORMCONFIGPACKAGEDIR   := $(PTXDIST_PLATFORMCONFIGDIR)/packages
 
@@ -135,21 +135,69 @@ $(STATEDIR)/mdmd-ng.targetinstall:
 	@$(call install_lib, mdmd-ng, 0, 0, 0644, libfr)
 	@$(call install_lib, mdmd-ng, 0, 0, 0644, libmodem)
 	@$(call install_lib, mdmd-ng, 0, 0, 0644, libmdmd-ng)
+
 	@$(call install_copy, mdmd-ng, 0, 0, 0750, /etc/specific/features/)
 	@$(call install_copy, mdmd-ng, 0, 0, 0750, -, /usr/bin/mdmd-ng)
+	@$(call install_copy, mdmd-ng, 0, 0, 0750, -, /usr/bin/mdmd-ng_wrapper)
+	@$(call install_copy, mdmd-ng, 0, 0, 0750, -, /etc/init.d/mdmd-ng)
 	@$(call install_copy, mdmd-ng, 0, 0, 0750, -, /etc/config-tools/config_mdmd-ng)
 	@$(call install_copy, mdmd-ng, 0, 0, 0750, -, /etc/config-tools/backup-restore/mdmd-ng_backup_restore)
 	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/mdmd-ng/settings.json)
 	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/mdmd-ng/libmodem.rc)
-	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/mdmd-ng/drvconf/ec25.conf)
+	
+# Install files for quectel modem EC25
+ifdef PTXCONF_MDMD_NG_EC25
+	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/mdmd-ng/drvconf/ec25.at_conf)
+	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/mdmd-ng/drvconf/ec25.qmi_conf)
 	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/mdmd-ng/drvconf/ec25.mdi)
-	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/mdmd-ng/drvconf/ec25.func)
+	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/mdmd-ng/drvconf/ec25.at_func)
+	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/mdmd-ng/drvconf/ec25.qmi_func)
+endif
+
+#Install files for quectel modem RM500Q
+ifdef PTXCONF_MDMD_NG_RM500Q
+	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/mdmd-ng/drvconf/rm500q.conf)
+	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/mdmd-ng/drvconf/rm500q.mdi)
+	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/mdmd-ng/drvconf/rm500q.at_func)
+	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/mdmd-ng/drvconf/rm500q.qmi_func)
+endif
+
+#Install driver functions for libmodem
 	@$(call install_copy, mdmd-ng, 0, 0, 0644, -, /usr/lib/mdmd-ng/ec25.md)
 	@$(call install_copy, mdmd-ng, 0, 0, 0644, -, /usr/lib/mdmd-ng/qmi.md)
-	@$(call install_copy, mdmd-ng, 0, 0, 0750, -, /etc/init.d/mdmd-ng)
-	@$(call install_copy, mdmd-ng, 0, 0, 0750, -, /usr/bin/mdmd-ng_wrapper)
+
 	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/specific/features/wireless-mobile-EC25)
+	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /usr/lib/udev/rules.d/77-gobinet-usb.rules)
+	
 	@$(call install_link, mdmd-ng, /etc/init.d/mdmd-ng, /etc/rc.d/S95_mdmd-ng)
+
+# Install sudoers.d file
+	@$(call install_copy, mdmd-ng, 0, 0, 0444, -, /etc/sudoers.d/config_mdmd-ng)
+
+# Install link to ec25.qmi_func due to usage of the qmi wwwan driver
+ifdef PTXCONF_MDMD_NG_EC25_QMI
+	@$(call install_link, mdmd-ng, /etc/mdmd-ng/drvconf/ec25.qmi_func, /etc/mdmd-ng/drvconf/ec25.func)
+		@$(call install_link, mdmd-ng, /etc/mdmd-ng/drvconf/ec25.qmi_conf, /etc/mdmd-ng/drvconf/ec25.conf)
+endif
+# Install link to ec25.at_func due to usage of the gobinet driver
+ifdef PTXCONF_MDMD_NG_EC25_GOBINET_AT_ONLY
+	@$(call install_link, mdmd-ng, /etc/mdmd-ng/drvconf/ec25.at_func, /etc/mdmd-ng/drvconf/ec25.func)
+		@$(call install_link, mdmd-ng, /etc/mdmd-ng/drvconf/ec25.at_conf, /etc/mdmd-ng/drvconf/ec25.conf)
+endif
+
+# Install link to rm500q.qmi_func due to usage of the qmi wwwan driver
+ifdef PTXCONF_MDMD_NG_RM500Q_QMI
+	@$(call install_link, mdmd-ng, /etc/mdmd-ng/drvconf/rm500q.qmi_func, /etc/mdmd-ng/drvconf/rm500q.func)
+endif
+# Install link to rm500q.at_func due to usage of the gobinet driver
+ifdef PTXCONF_MDMD_NG_RM500Q_GOBINET_AT_ONLY
+	@$(call install_link, mdmd-ng, /etc/mdmd-ng/drvconf/rm500q.at_func, /etc/mdmd-ng/drvconf/rm500q.func)
+endif
+
+# Install libmodem cli 
+ifdef PTXCONF_MDMD_NG_LIBMODEM_CLI
+	@$(call install_copy, mdmd-ng, 0, 0, 0750, -, /etc/mdmd-ng/libmodem_cli)
+endif
 	
 	@$(call install_finish, mdmd-ng)
 	@$(call touch)

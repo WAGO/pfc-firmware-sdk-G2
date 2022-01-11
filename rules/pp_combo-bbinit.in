@@ -1,0 +1,7 @@
+## SECTION=initmethod_bbinit
+
+config PP_COMBO_DAEMON_BBINIT_LINK
+	string
+	depends on PP_COMBO_DAEMON_STARTSCRIPT
+	prompt "run pp_combo at startup"
+	default "S99_pp_combo"
