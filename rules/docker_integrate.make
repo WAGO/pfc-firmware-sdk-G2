@@ -20,7 +20,7 @@ PACKAGES-$(PTXCONF_DOCKER_INTEGRATE) += docker_integrate
 #
 
 DOCKER_BASE								:= docker
-DOCKER_INTEGRATE					:= $(DOCKER)-integrate
+DOCKER_INTEGRATE					:= $(DOCKER_BASE)-integrate
 DOCKER_IPK_SUFFIX					:= armhf.ipk
 ARTIFACTORY_BASE_URL			:= $(call remove_quotes, ${PTXCONF_ARTIFACTORY_BASE_URL})
 DOCKER_REPO								:= pfc-generic-dev-local
@@ -38,6 +38,9 @@ DOCKER_MD5_FILE						:= ${DOCKER_INTEGRATE_DIR}/$(DOCKER)_$(DOCKER_VERSION)_$(DO
 DOCKER_INTEGRATE_MD5			= $(shell [ -f "$(DOCKER_MD5_FILE)" ] && cat "$(DOCKER_MD5_FILE)")
 DOCKER_INTEGRATE_LICENSE	:= Apache 2.0
 
+DOCKER_INTEGRATE_PACKAGE_NAME             := $(DOCKER_INTEGRATE)_$(DOCKER_INTEGRATE_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
+DOCKER_INTEGRATE_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+
 # ----------------------------------------------------------------------------
 # Get
 # ----------------------------------------------------------------------------
@@ -45,9 +48,22 @@ DOCKER_INTEGRATE_LICENSE	:= Apache 2.0
 $(STATEDIR)/docker_integrate.get:
 	@$(call targetinfo)
 	
+ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+# BSP mode: install by extracting tgz file
+	@mkdir -p $(DOCKER_INTEGRATE_DIR) && \
+		tar xvzf $(DOCKER_INTEGRATE_PLATFORMCONFIGPACKAGEDIR)/$(DOCKER_INTEGRATE_PACKAGE_NAME).tgz -C $(DOCKER_INTEGRATE_DIR)
+
+else
 	@mkdir -p $(DOCKER_INTEGRATE_DIR)
 	${PTXDIST_WORKSPACE}/scripts/wago/artifactory.sh fetch \
 		'$(DOCKER_IPK_URL)' '${DOCKER_INTEGRATE_DIR}/$(DOCKER_IPK)' '$(DOCKER_MD5_FILE)'
+	
+ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_RELEASE
+# save install directory to tgz for BSP mode
+	@mkdir -p $(DOCKER_INTEGRATE_PLATFORMCONFIGPACKAGEDIR)
+	@cd $(DOCKER_INTEGRATE_DIR) && tar cvzf $(DOCKER_INTEGRATE_PLATFORMCONFIGPACKAGEDIR)/$(DOCKER_INTEGRATE_PACKAGE_NAME).tgz *
+endif
+endif
 		
 	@$(call touch)
 
