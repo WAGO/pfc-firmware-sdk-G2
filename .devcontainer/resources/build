@@ -1,0 +1,37 @@
+#!/bin/bash
+start=`date +%s`
+
+previousLog="1"
+nextLog="2"
+x=1
+while [ "$x" -ne 0 ] && [ "$nextLog" != "$previousLog" ]
+do
+  previousLog=$nextLog
+  nextLog=$(ptxdist go -q -j -k)
+  x=$?
+done
+
+if [ "$nextLog" == "$previousLog" ]; then
+  echo "Build failed!"
+  exit 1
+fi
+
+x=1
+while [ "$x" -ne 0 ]
+do
+  ptxdist -q images 2> build.log
+  x=$?
+  if [ "$x" -ne 0 ]; then
+    cat build.log | grep -Po "(?<=But that file is already provided by package  \* ).*" | sort -u > cleanup.log
+    cat build.log | grep -Po "(?<=Cannot install package ).*[^\.]" | sort -u >> cleanup.log
+    cat build.log | grep -Po "(?<=check_data_file_clashes: Package )[^\s]*" | sort -u >> cleanup.log
+    eval ptxdist clean $(cat cleanup.log | sort -u)
+  fi
+done
+
+end=`date +%s`
+let deltatime=end-start
+let hours=deltatime/3600
+let minutes=(deltatime/60)%60
+let seconds=deltatime%60
+printf "Time spent: %d:%02d:%02d\n" $hours $minutes $seconds
