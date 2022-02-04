@@ -5,3 +5,9 @@
 selected_platformconfig
 selected_ptxconfig
 selected_toolchain
+platform-wago-pfcXXX
+*.old
+src/genpart-1.0.2.tar.bz2
+*.log
+build/
+configs/wago-pfcXXX/packages/tmp
