@@ -1,0 +1,5 @@
+# Ignore everything
+**
+
+# Allow files and directories
+!platform-wago-pfcXXX/images/root.tgz
