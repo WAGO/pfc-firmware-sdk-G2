@@ -7,3 +7,4 @@ platform-wago-pfcXXX
 src/genpart-1.0.2.tar.bz2
 *.log
 build/
+configs/wago-pfcXXX/packages/tmp
