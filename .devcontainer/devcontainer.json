@@ -18,6 +18,8 @@
 		"ms-azuretools.vscode-docker",
 		"howardzuo.vscode-favorites"
 	],
+	"workspaceMount": "source=${localWorkspaceFolder},target=/ptxproj,type=bind",
+	"workspaceFolder": "/ptxproj",
 	"mounts": [
 		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
 		"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"

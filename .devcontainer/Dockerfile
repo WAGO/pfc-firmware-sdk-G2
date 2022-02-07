@@ -54,7 +54,7 @@ RUN git checkout 8d495aab3689d2bff0ca82f2850de8e2bc812aeb
 RUN ./configure
 RUN make
 RUN make install
-COPY resources /usr/bin/
+
 
 RUN wget https://github.com/GitTools/GitVersion/releases/download/5.8.1/gitversion-linux-x64-5.8.1.tar.gz
 RUN tar -xvf gitversion-linux-x64-5.8.1.tar.gz
@@ -85,17 +85,18 @@ RUN echo "#!/bin/sh\n\
     exec \"\$@\"" > /usr/local/share/docker-init.sh \
     && chmod +x /usr/local/share/docker-init.sh
     
-RUN chmod +x /usr/bin/docker-entrypoint.sh
-RUN chmod +x /usr/bin/build
 
 FROM scratch as final
 ARG NONROOT_USER
 LABEL maintainer="dirk.meihoefer@wago.com, sergei.ikkert@wago.com"
 COPY --from=base / /
+COPY resources /usr/bin/
+RUN chmod +x /usr/bin/docker-entrypoint.sh
+RUN chmod +x /usr/bin/build
 USER ${NONROOT_USER}
-WORKDIR /workspaces
+WORKDIR /ptxproj
 # VS Code overrides ENTRYPOINT and CMD when executing `docker run` by default.
-# Setting the ENTRYPOINT to docker-init.sh will configure non-root access to
+# Setting the ENTRYPOINT to docker-entrypoint.sh will configure non-root access to
 # the Docker socket if "overrideCommand": false is set in devcontainer.json.
 # The script will also execute CMD if you need to alter startup behaviors.
 ENTRYPOINT [ "docker-entrypoint.sh" ]
