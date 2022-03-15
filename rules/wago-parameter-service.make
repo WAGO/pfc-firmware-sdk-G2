@@ -5,7 +5,7 @@
 #
 # This file is part of project parameter-service (PTXdist package wago-parameter-service).
 #
-# Copyright (c) 2019-2021 WAGO Kontakttechnik GmbH & Co. KG
+# Copyright (c) 2019-2022 WAGO Kontakttechnik GmbH & Co. KG
 #
 # Contributors:
 #   PEn: WAGO Kontakttechnik GmbH & Co. KG
@@ -24,7 +24,7 @@ PACKAGES-$(PTXCONF_WAGO_PARAMETER_SERVICE) += wago-parameter-service
 #
 # Paths and names
 #
-WAGO_PARAMETER_SERVICE_VERSION        := 0.19.0-beta
+WAGO_PARAMETER_SERVICE_VERSION        := 0.21.0-beta
 WAGO_PARAMETER_SERVICE_MD5            :=
 WAGO_PARAMETER_SERVICE_BASE           := parameter-service
 WAGO_PARAMETER_SERVICE                := wago-$(WAGO_PARAMETER_SERVICE_BASE)-$(WAGO_PARAMETER_SERVICE_VERSION)
@@ -76,6 +76,7 @@ endif
 # ----------------------------------------------------------------------------
 # Compile
 # ----------------------------------------------------------------------------
+$(STATEDIR)/wago-parameter-service.compile: export WAGO_PARAMETER_SERVICE_WDM_DIR=$(PTXCONF_WAGO_PARAMETER_SERVICE_MODEL_FILES_WDM_DIR)
 
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 $(STATEDIR)/wago-parameter-service.compile:
@@ -127,11 +128,21 @@ ifdef PTXCONF_WAGO_PARAMETER_SERVICE_LIB
 #	@$(call install_lib, wago-parameter-service, 0, 0, 0755, libparamserv)
 	@$(call install_copy, wago-parameter-service, 0, 0, 0644, -, /etc/pam.d/wda)
 endif
+
 ifdef PTXCONF_WAGO_PARAMETER_SERVICE_LIGHTTPD_INTEGRATION
 	@$(call install_alternative, wago-parameter-service, 0, 0, 0600, /etc/lighttpd/fastcgi.confd/param-service.conf)
 endif
+
 ifdef PTXCONF_WAGO_PARAMETER_SERVICE_DAEMON
-	@$(call install_copy, wago-parameter-service, 0, 0, 0750, -, /usr/sbin/paramd)
+	@$(call install_copy, wago-parameter-service, 0,   0, 0750, -, /usr/sbin/paramd)
+	@$(call install_copy, wago-parameter-service, 0, 121, 0770,    /etc/paramd)
+	@$(call install_copy, wago-parameter-service, 0, 121, 0660, -, /etc/paramd/paramd.conf)
+	@$(call install_copy, wago-parameter-service, 0,   0, 0750, -, /etc/config-tools/get_wda)
+	@$(call install_copy, wago-parameter-service, 0,   0, 0750, -, /etc/config-tools/config_wda)
+	@$(call install_copy, wago-parameter-service, 0,   0, 0750, -, /etc/config-tools/backup-restore/parameter_service)
+
+# Install sudoers.d file
+	@$(call install_copy, wago-parameter-service, 0,   0, 0444, -, /etc/sudoers.d/config_wda)
 
 # busybox init
 ifdef PTXCONF_INITMETHOD_BBINIT
@@ -145,8 +156,8 @@ ifneq ($(call remove_quotes, $(PTXCONF_WAGO_PARAMETER_SERVICE_DAEMON_BBINIT_LINK
 endif
 endif # PTXCONF_WAGO_PARAMETER_SERVICE_DAEMON_STARTSCRIPT
 endif # PTXCONF_INITMETHOD_BBINIT
-
 endif # PTXCONF_WAGO_PARAMETER_SERVICE_DAEMON
+
 ifdef PTXCONF_WAGO_PARAMETER_SERVICE_OPENAPI
 	# create target directory itself
 	@$(call install_copy, wago-parameter-service, 0, 0, 0755, $(WAGO_PARAMETER_SERVICE_OPENAPI_DIR))

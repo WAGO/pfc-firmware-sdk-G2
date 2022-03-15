@@ -5,13 +5,14 @@ config PP_HOSTDOMAINNAME
 	select HOST_CT_BUILD
 	select GOOGLETEST
 	select WAGO_PARAMETER_SERVICE_CORE
-  select WAGO_PARAMETER_SERVICE_MODEL_FILES
-  select WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_CPP_HEADERS
-  select WAGO_PARAMETER_SERVICE_COM
-  select GLIB
+	select WAGO_PARAMETER_SERVICE_MODEL_FILES
+	select WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_CPP_HEADERS
+	select WAGO_PARAMETER_SERVICE_COM 
+	select GLIB
+	select NETCONFD
 	prompt "pp_hostdomainname"
 	help
-	  FIXME
+	  Build and install parameter provider that provides parameter access to hostname, domain and nameserver entries.
 
 
 	  

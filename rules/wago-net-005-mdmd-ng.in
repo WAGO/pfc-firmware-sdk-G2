@@ -54,6 +54,13 @@ config MDMD_NG_EC25_GOBINET_AT_ONLY
 	prompt "Configure for GobiNet driver (AT commands only)"
 	help
 	  Create link to configuration file ec25.at_func to work with GobiNet driver
+
+config MDMD_NG_EC25_GOBINET_QCON
+	bool
+	default n
+	prompt "Configure for GobiNet driver (QCON)"
+	help
+	  Create link to configuration file ec25.gobinet_func to work with GobiNet driver
 endif
 
 menuconfig MDMD_NG_RM500Q
@@ -72,9 +79,16 @@ config MDMD_NG_RM500Q_QMI
 config MDMD_NG_RM500Q_GOBINET_AT_ONLY
 	bool
 	default n
-	prompt "Configure for GobiNet driver (AT commands only)"
+	prompt "CURRENTLY NOT SUPPORTED!.Configure for GobiNet driver (AT commands only)"
 	help
 	  Create link to configuration file rm500q.at_func to work with GobiNet driver
+
+config MDMD_NG_RM500Q_GOBINET_QCON
+	bool
+	default n
+	prompt "Configure for GobiNet driver (QCON)"
+	help
+	  Create link to configuration file rm500q.gobinet_func to work with GobiNet driver
 endif
 
 endif

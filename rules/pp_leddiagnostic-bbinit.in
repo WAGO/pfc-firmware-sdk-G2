@@ -1,0 +1,7 @@
+## SECTION=initmethod_bbinit
+
+config PP_LEDDIAGNOSTIC_DAEMON_BBINIT_LINK
+	string
+	depends on PP_LEDDIAGNOSTIC_DAEMON_STARTSCRIPT
+	prompt "run pp_leddiagnostic at startup"
+	default "S99_pp_leddiagnostic"

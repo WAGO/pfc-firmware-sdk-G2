@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2021 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -108,7 +108,7 @@ $(STATEDIR)/pp_combo.targetinstall:
 	@$(call install_init, pp_combo)
 	@$(call install_fixup, pp_combo,PRIORITY,optional)
 	@$(call install_fixup, pp_combo,SECTION,base)
-	@$(call install_fixup, pp_combo,AUTHOR,"OG - WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, pp_combo,AUTHOR,"OG - WAGO GmbH \& Co. KG")
 	@$(call install_fixup, pp_combo,DESCRIPTION,missing)
 
 ifdef PTXCONF_PP_COMBO_DAEMON

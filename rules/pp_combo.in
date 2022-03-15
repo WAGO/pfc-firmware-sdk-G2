@@ -10,6 +10,11 @@ config PP_COMBO
   select PP_SYSTEMTIME
   select PP_FILETRANSFER
   select PP_UPDATE_HS
+  select PP_SECURESHELL
+  select PP_NETWORKTIME
+  select PP_ACTIVESYSTEM
+  select PP_MEMORYCARD
+  select PP_DOCKER
   select HOST_CT_BUILD
   select GOOGLETEST
 	prompt "pp_combo"

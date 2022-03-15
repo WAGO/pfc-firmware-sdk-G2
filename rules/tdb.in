@@ -1,0 +1,10 @@
+## SECTION=system_libraries
+
+config TDB
+	tristate
+	prompt "tdb"
+	select LIBBSD
+	select HOST_SYSTEM_PYTHON3
+	help
+	  TDB stands for "Trivial database" and was first introduced in
+          Samba as a way to store information quickly and effectively.

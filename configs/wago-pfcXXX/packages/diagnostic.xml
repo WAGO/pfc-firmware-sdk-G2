@@ -4131,6 +4131,171 @@
       </string>
     
   </event>
+  <event id="x0060" name="MDMDNG_UPDATE_START_NET_MSG">
+    <led name="NET" state="BLINK_YLW">
+      <on>500</on>
+      <off>500</off>
+    </led>
+    <string>
+        <en>Updating modem firmware</en>
+        <de>Modem Firmware wird aktualisiert</de>
+      </string>
+    
+  </event>
+  <event id="x0061" name="MDMDNG_UPDATE_START_WDS" persistent="none">
+    <led name="WDS" state="BLINK_YLW">
+      <on>500</on>
+      <off>500</off>
+    </led>
+    <string>
+        <en>Updating modem firmware</en>
+        <de>Modem Firmware wird aktualisiert</de>
+      </string>
+    
+  </event>
+  <event id="x0062" name="MDMDNG_UPDATE_BELOW_25_MSG">
+    <led name="S1" state="STATIC_YLW">
+    </led>
+    <string>
+        <en>Modem Firmware Update - Progress below 25%</en>
+        <de>Modem Firmware Update - Fortschritt unter 25%</de>
+      </string>
+    
+  </event>
+  <event id="x0063" name="MDMDNG_UPDATE_OVER_25" persistent="none">
+    <led name="S1" state="STATIC_YLW">
+    </led>
+    <string>
+        <en>Modem Firmware Update - Progress over 25%</en>
+        <de>Modem Firmware Update - Fortschritt über 25%</de>
+      </string>
+    
+  </event>
+  <event id="x0064" name="MDMDNG_UPDATE_BETWEEN_25_50_MSG">
+    <led name="S2" state="STATIC_YLW">
+    </led>
+    <string>
+        <en>Modem Firmware Update - Progress between 25% and 50%</en>
+        <de>Modem Firmware Update - Fortschritt zwischen 25% und 50%</de>
+      </string>
+    
+  </event>
+  <event id="x0065" name="MDMDNG_UPDATE_OVER_50" persistent="none">
+    <led name="S2" state="STATIC_YLW">
+    </led>
+    <string>
+        <en>Modem Firmware Update - Progress over 50%</en>
+        <de>Modem Firmware Update - Fortschritt über 50%</de>
+      </string>
+    
+  </event>
+  <event id="x0066" name="MDMDNG_UPDATE_BETWEEN_50_75_MSG">
+    <led name="S3" state="STATIC_YLW">
+    </led>
+    <string>
+        <en>Modem Firmware Update - Progress between 50% and 75%</en>
+        <de>Modem Firmware Update - Fortschritt zwischen 50% und 75%</de>
+      </string>
+    
+  </event>
+  <event id="x0067" name="MDMDNG_UPDATE_OVER_75" persistent="none">
+    <led name="S3" state="STATIC_YLW">
+    </led>
+    <string>
+        <en>Modem Firmware Update - Progress over 75%</en>
+        <de>Modem Firmware Update - Fortschritt über 75%</de>
+      </string>
+    
+  </event>
+  <event id="x0068" name="MDMDNG_UPDATE_BETWEEN_75_100_MSG">
+    <led name="S4" state="STATIC_YLW">
+    </led>
+    <string>
+        <en>Modem Firmware Update - Progress between 75% and 100%</en>
+        <de>Modem Firmware Update - Fortschritt zwischen 75% und 100%</de>
+      </string>
+    
+  </event>
+  <event id="x0069" name="MDMDNG_UPDATE_FINISHED_S1_MSG">
+    <led name="S1" state="FLASH_GRN_OFF">
+      <on>3000</on>
+    </led>
+    <string>
+        <en>Modem Firmware Update - Finished successfully</en>
+        <de>Modem Firmware Update - Erfolgreich abgeschlossen</de>
+      </string>
+    
+  </event>
+  <event id="x006A" name="MDMDNG_UPDATE_FINISHED_S2" persistent="none">
+    <led name="S2" state="FLASH_GRN_OFF">
+      <on>3000</on>
+    </led>
+    <string>
+        <en>Modem Firmware Update - Finished successfully</en>
+        <de>Modem Firmware Update - Erfolgreich abgeschlossen</de>
+      </string>
+    
+  </event>
+  <event id="x006B" name="MDMDNG_UPDATE_FINISHED_S3" persistent="none">
+    <led name="S3" state="FLASH_GRN_OFF">
+      <on>3000</on>
+    </led>
+    <string>
+        <en>Modem Firmware Update - Finished successfully</en>
+        <de>Modem Firmware Update - Erfolgreich abgeschlossen</de>
+      </string>
+    
+  </event>
+  <event id="x006C" name="MDMDNG_UPDATE_FINISHED_S4" persistent="none">
+    <led name="S4" state="FLASH_GRN_OFF">
+      <on>3000</on>
+    </led>
+    <string>
+        <en>Modem Firmware Update - Finished successfully</en>
+        <de>Modem Firmware Update - Erfolgreich abgeschlossen</de>
+      </string>
+    
+  </event>
+  <event id="x006D" name="MDMDNG_UPDATE_ERROR_S1_MSG">
+    <led name="S1" state="FLASH_RED_OFF">
+      <on>3000</on>
+    </led>
+    <string>
+        <en>Modem Firmware Update - Error</en>
+        <de>Modem Firmware Update - Fehler</de>
+      </string>
+    
+  </event>
+  <event id="x006E" name="MDMDNG_UPDATE_ERROR_S2" persistent="none">
+    <led name="S2" state="FLASH_RED_OFF">
+      <on>3000</on>
+    </led>
+    <string>
+        <en>Modem Firmware Update - Error</en>
+        <de>Modem Firmware Update - Fehler</de>
+      </string>
+    
+  </event>
+  <event id="x006F" name="MDMDNG_UPDATE_ERROR_S3" persistent="none">
+    <led name="S3" state="FLASH_RED_OFF">
+      <on>3000</on>
+    </led>
+    <string>
+        <en>Modem Firmware Update - Error</en>
+        <de>Modem Firmware Update - Fehler</de>
+      </string>
+    
+  </event>
+  <event id="x0070" name="MDMDNG_UPDATE_ERROR_S4" persistent="none">
+    <led name="S4" state="FLASH_RED_OFF">
+      <on>3000</on>
+    </led>
+    <string>
+        <en>Modem Firmware Update - Error</en>
+        <de>Modem Firmware Update - Fehler</de>
+      </string>
+    
+  </event>
 </eventclass>
 <eventclass class_range="x2FFF" name="KBUS">
   <event id="x0000" name="OPERATIONAL">

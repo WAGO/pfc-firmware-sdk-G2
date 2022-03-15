@@ -1,0 +1,17 @@
+## SECTION=wago_specific_paramprovider
+
+config PP_CODESYS2
+  bool
+  select HOST_CT_BUILD
+  select CONFIG_TOOLS
+  select GOOGLETEST
+  select WAGO_PARAMETER_SERVICE_CORE
+  select WAGO_PARAMETER_SERVICE_COM
+  select WAGO_PARAMETER_SERVICE_CLIENT_LIB
+  select WAGO_PARAMETER_SERVICE_TEST_LIB
+  select WAGO_PARAMETER_SERVICE_MODEL_FILES
+  select WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_CPP_HEADERS
+  select PP_ERUNTIME # this package builds the libppruntimecommon needed by pp_eruntime and pp_codesys2
+  prompt "pp_codesys2"
+  help
+    Enable Codesys2 parameter provider

@@ -1,0 +1,15 @@
+## SECTION=wago_specific
+
+config SSSD_REPO_IPK
+	bool
+#	# we cannot depend, i.e. use "select" on the required packages,
+#	# as this would activate these packages which would install
+#	# these installed within the image!
+#	# Try to workaround by depending, i.e. select, on
+#	# WAGO_CUSTOM_INSTALL, seems not to work for ... unclear reason.
+#	#select WAGO_CUSTOM_INSTALL
+#	# ... depending directly within makefile on
+#	# wago-custom-install.targetinstall
+	prompt "sssd-repo-ipk"
+	help
+	  FIXME

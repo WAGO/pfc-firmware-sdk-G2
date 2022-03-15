@@ -1,0 +1,8 @@
+## SECTION=initmethod_bbinit
+
+config PP_SERVICES_BBINIT_LINK
+	string
+	depends on PP_SERVICES_STARTSCRIPT
+	prompt "pp_services"
+	default "S99_pp_services"
+

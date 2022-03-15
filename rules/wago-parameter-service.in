@@ -7,18 +7,20 @@ config WAGO_PARAMETER_SERVICE
 	select HOST_SYSTEM_PYTHON3
 	select GOOGLETEST
 	select WAGO_TRACE
-	select TYPELABEL                          if WAGO_PARAMETER_SERVICE_LIB
-	select LIBCOMMONHEADER                    if WAGO_PARAMETER_SERVICE_LIB
-	select WAGO_PARAMETER_SERVICE_CORE        if WAGO_PARAMETER_SERVICE_LIB
-	select NLOHMANN_JSON                      if WAGO_PARAMETER_SERVICE_LIB
-	select PAM                                if WAGO_PARAMETER_SERVICE_LIB
-	select PAM_PAM_SUCCEED_IF                 if PAM
-	select FCGI                               if WAGO_PARAMETER_SERVICE_LIB
-	select CJOSE                              if WAGO_PARAMETER_SERVICE_LIB
-	select LIGHTTPD                           if WAGO_PARAMETER_SERVICE_LIGHTTPD_INTEGRATION
-	select WAGO_PARAMETER_SERVICE_COM         if WAGO_PARAMETER_SERVICE_LIB
-	select WAGO_PARAMETER_SERVICE_COM_LIB     if WAGO_PARAMETER_SERVICE_DAEMON
-	select WAGO_PARAMETER_SERVICE_COM_LOGGING if WAGO_PARAMETER_SERVICE_LIB
+	select TYPELABEL                                            if WAGO_PARAMETER_SERVICE_LIB
+	select LIBCOMMONHEADER                                      if WAGO_PARAMETER_SERVICE_LIB
+	select WAGO_PARAMETER_SERVICE_CORE                          if WAGO_PARAMETER_SERVICE_LIB
+	select NLOHMANN_JSON                                        if WAGO_PARAMETER_SERVICE_LIB
+	select PAM                                                  if WAGO_PARAMETER_SERVICE_LIB
+	select PAM_PAM_SUCCEED_IF                                   if PAM
+	select FCGI                                                 if WAGO_PARAMETER_SERVICE_LIB
+	select CJOSE                                                if WAGO_PARAMETER_SERVICE_LIB
+	select LIGHTTPD                                             if WAGO_PARAMETER_SERVICE_LIGHTTPD_INTEGRATION
+	select WAGO_PARAMETER_SERVICE_COM                           if WAGO_PARAMETER_SERVICE_LIB
+	select WAGO_PARAMETER_SERVICE_COM_LIB                       if WAGO_PARAMETER_SERVICE_DAEMON
+	select WAGO_PARAMETER_SERVICE_COM_LOGGING                   if WAGO_PARAMETER_SERVICE_LIB
+	select WAGO_PARAMETER_SERVICE_MODEL_FILES                   if WAGO_PARAMETER_SERVICE_LIB
+	select WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_CPP_HEADERS   if WAGO_PARAMETER_SERVICE_LIB
 
 config WAGO_PARAMETER_SERVICE_LIB
 	bool

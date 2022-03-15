@@ -1,0 +1,13 @@
+## SECTION=wago_specific
+
+config FP_X509_PKEY
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select WAGO_PARAMETER_SERVICE_CORE
+	select FP_REGULAR_FILE
+	select OPENSSL
+	prompt "fp_x509-pkey"
+	help
+	  This file provider allows atomic Read/Write access to x509
+          certificates an private keys in PEM format.

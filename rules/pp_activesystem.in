@@ -1,0 +1,13 @@
+## SECTION=wago_specific_paramprovider
+
+config PP_ACTIVESYSTEM
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+  select WAGO_PARAMETER_SERVICE_CORE
+	select LIBCOMMONHEADER
+	select NLOHMANN_JSON
+	select LIBARCHIVE
+	prompt "pp_activesystem"
+	help
+	  Parameter provider for active system settings

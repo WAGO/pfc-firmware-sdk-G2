@@ -1,0 +1,8 @@
+## SECTION=initmethod_bbinit
+
+config SSSD_BBINIT_LINK
+	string
+	depends on SSSD_STARTSCRIPT
+	prompt "sssd"
+	default "S99sssd"
+

@@ -1,0 +1,7 @@
+## SECTION=system_libraries
+
+config DING_LIBS
+	tristate
+	prompt "ding-libs"
+	help
+	  "DING is not GNU" helper libraries for SSSD and FreeIPA

@@ -1,0 +1,10 @@
+## SECTION=system_libraries
+
+config TEVENT
+	tristate
+	prompt "tevent"
+	select TALLOC
+	select LIBBSD
+	select HOST_SYSTEM_PYTHON3
+	help
+	  Tevent is an event system based on the talloc memory management library

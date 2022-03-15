@@ -1,0 +1,15 @@
+## SECTION=wago_specific_paramprovider
+
+config PP_MODEM
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select WAGO_PARAMETER_SERVICE_CORE
+	select WAGO_PARAMETER_SERVICE_COM
+	select WAGO_PARAMETER_SERVICE_CLIENT_LIB
+	select WAGO_PARAMETER_SERVICE_TEST_LIB
+	select LIBCOMMONHEADER
+	select MDMD_NG
+	prompt "pp_modem"
+	help
+	  Enable modem parameter provider

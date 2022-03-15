@@ -1,0 +1,23 @@
+--- sssd-2.5.2/src/external/nsupdate.m4	2021-09-13 12:37:54.850525936 +0200
++++ platform-wago-pfcXXX/build-target/sssd-2.5.2/src/external/nsupdate.m4	2021-09-13 12:56:34.588920404 +0200
+@@ -1,18 +1,4 @@
+ AC_PATH_PROG(NSUPDATE, nsupdate)
+ AC_MSG_CHECKING(for executable nsupdate)
+-if test -x "$NSUPDATE"; then
+-  AC_DEFINE_UNQUOTED([NSUPDATE_PATH], ["$NSUPDATE"], [The path to nsupdate])
+-  AC_MSG_RESULT(yes)
+-
+-  AC_MSG_CHECKING(for nsupdate 'realm' support')
+-  if AC_RUN_LOG([echo realm |$NSUPDATE >&2]); then
+-    AC_MSG_RESULT([yes])
+-  else
+-    AC_MSG_RESULT([no])
+-    AC_MSG_ERROR([nsupdate does not support 'realm'])
+-  fi
+-
+-else
+-  AC_MSG_RESULT([no])
+-  AC_MSG_ERROR([nsupdate is not available])
+-fi
++AC_DEFINE_UNQUOTED([NSUPDATE_PATH], ["$NSUPDATE"], [The path to nsupdate])
++AC_MSG_RESULT(yes)

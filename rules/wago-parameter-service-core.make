@@ -5,7 +5,7 @@
 #
 # This file is part of project parameter-service (PTXdist package wago-parameter-service-core).
 #
-# Copyright (c) 2019-2021 WAGO Kontakttechnik GmbH & Co. KG
+# Copyright (c) 2019-2022 WAGO Kontakttechnik GmbH & Co. KG
 #
 # Contributors:
 #   MP:  WAGO Kontakttechnik GmbH & Co. KG
@@ -28,7 +28,7 @@ PACKAGES-$(PTXCONF_WAGO_PARAMETER_SERVICE_CORE) += wago-parameter-service-core
 
 ifndef PTXCONF_WAGO_PARAMETER_SERVICE_CORE_DEV
 
-WAGO_PARAMETER_SERVICE_CORE_VERSION        := 1.2.17-163350085171
+WAGO_PARAMETER_SERVICE_CORE_VERSION        := 1.2.22-164192153776
 WAGO_PARAMETER_SERVICE_CORE                := wago-parameter-service-core-$(WAGO_PARAMETER_SERVICE_CORE_VERSION)
 WAGO_PARAMETER_SERVICE_CORE_DIR            := $(BUILDDIR)/$(WAGO_PARAMETER_SERVICE_CORE)
 WAGO_PARAMETER_SERVICE_CORE_URL            := $(call jfrog_template_to_url, WAGO_PARAMETER_SERVICE_CORE)

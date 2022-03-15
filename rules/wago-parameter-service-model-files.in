@@ -5,8 +5,21 @@ menuconfig WAGO_PARAMETER_SERVICE_MODEL_FILES
 	default n
 	prompt "WAGO Parameter Service Model Files"
 	select HOST_PYTHON3
+	depends on WAGO_PARAMETER_SERVICE
 	help
 	  WDM and platform specific WDD Model files used by the WAGO Parameter Service.
+
+config WAGO_PARAMETER_SERVICE_MODEL_FILES_WDM_DIR
+	string
+	depends on WAGO_PARAMETER_SERVICE_MODEL_FILES
+	prompt "directory to contain the main WDM artifact"
+	default "/usr/share/wdm"
+
+config WAGO_PARAMETER_SERVICE_MODEL_FILES_WDD_DIR
+	string
+	depends on WAGO_PARAMETER_SERVICE_MODEL_FILES
+	prompt "directory to contain WDD artifacts"
+	default "/usr/share/wdd"
 
 config WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_URL_TEMPLATE
 	string

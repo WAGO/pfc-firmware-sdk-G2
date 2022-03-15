@@ -1,0 +1,38 @@
+## SECTION=security
+
+config SSSD
+	tristate
+	select LIBPOPT
+	select TALLOC
+	select TDB
+	select TEVENT
+	select LDB
+	select DING_LIBS
+	select KRB5
+	select PAM
+	select OPENLDAP
+	select LIBPCRE
+	select C_ARES
+	select JANSSON
+	select GLIB
+	select DBUS
+	select P11_KIT
+	select SAMBA
+	select CYRUS_SASL
+	select BUSYBOX_START_STOP_DAEMON	if SSSD_STARTSCRIPT
+	prompt "sssd"
+	help
+	  System Security Services Daemon
+
+if SSSD
+
+menu "startup"
+
+config SSSD_STARTSCRIPT
+        bool
+        default y
+        prompt "install /etc/init.d/sssd"
+
+endmenu
+
+endif

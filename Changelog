@@ -1,3 +1,54 @@
+Firmware Release 03.09.04 (99)
+
+System:
+[NEW] Improved robustness of application control with operating mode switch and
+      additional detection of invalid states.
+[NEW] IP forwading is activated implicitly when Docker is activated.
+[NEW] Libcurl update to version 7.81.0
+[NEW] Bootloader update to version 2021.10.0
+[FIXED] Sender of SNMP "Informs" could be changed
+[FIXED] deactivate Multicast Snooping by default
+[FIXED] 4-Port PFCs now forwarding BPDU packets
+[FIXED] Security-Fix in config-tool print_log.
+[FIXED] Network bridges discard their IP address when all associated network
+        ports are disconnected.
+[FIXED] “Dirty Pipe" enables root privileges CVE-2022-0847
+
+Runtime System
+[FIXED] New e!Cockpit projects for 750-8217 automatically contains WagoSysModem
+        as required Library
+
+Fieldbus Interface & Protocols:
+-OPC UA
+ [NEW] OPC UA client that can establish a connection to an OPC UA server via
+       standardized PLCopen function blocks.
+-CAN 
+ [FIXED] CAN interface goes into BusOff by TxOverflow
+-BACnet
+ [NEW] The BACnet revision has been updated from revision 14 to revision 22
+-Cloud Connectivity
+ [NEW] Proxy configuration for MS Azure + Wago Cloud in WBM configurable
+
+Functional change:
+[DEPRECATED] Config tool function get_telecontrol_state will be removed in
+			 future re-leases. The config tool was used to determine whether a
+			 device is a telecontrol. Since telecontrol services can be added
+			 by dynamic licensing, the tool is no longer needed.
+[DEPRECATED] DHCP and DNS Server will be removed in future releases. For the
+			 transition, it will be included for now. In the next release, the
+			 servers will still be part of the firmware.
+
+Beta functionalities:
+[BETA] "Wago Device Access" for parametrization and configuration. The service
+	   is available and can already be tested. Changes in the model and behavior
+	   are possible for future versions. 
+	   REST-API is active under path "<host>/wda" on port 443. 
+	   File-Access-API is active under path "<host>/files" on port 443. 
+	   To disable the service, delete symlink "/etc/rc.d/S11_paramd" or move it to
+	   subdirectory "disabled". Compared to the last firmware, many more
+	   parameter providers have been added.
+################################################################################
+
 Firmware Release 03.08.08 (99)
 
 System:
