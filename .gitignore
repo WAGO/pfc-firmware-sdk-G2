@@ -7,3 +7,5 @@ platform-wago-pfcXXX
 src/genpart-1.0.2.tar.bz2
 *.log
 build/
+configs/wago-pfcXXX/packages/tmp
+src/docker-20_10_8-wago_static-linux_arm_v7.tar.gz
