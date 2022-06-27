@@ -43,6 +43,7 @@ RUN apt-get update && apt-get install -y \
     bc \
     rsync \
     libelf-dev \
+    pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
 RUN git lfs install
