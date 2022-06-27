@@ -50,7 +50,7 @@ RUN git clone https://github.com/wago/gcc-toolchain-2019.12-precompiled.git /opt
 RUN git clone https://github.com/wago/ptxdist.git /ptxdist
 
 WORKDIR /ptxdist
-RUN git checkout 8d495aab3689d2bff0ca82f2850de8e2bc812aeb
+RUN git checkout Update-2020.08.0
 RUN ./configure
 RUN make
 RUN make install
