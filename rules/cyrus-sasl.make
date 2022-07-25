@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH & Co. KG
+# Copyright (C) 2021 by WAGO GmbH & Co. KG
 #
 # For further information about the PTXdist project and license conditions
 # see the README file.
@@ -14,8 +14,8 @@ PACKAGES-$(PTXCONF_CYRUS_SASL) += cyrus-sasl
 #
 # Paths and names
 #
-CYRUS_SASL_VERSION		:= 2.1.27
-CYRUS_SASL_MD5			:= a33820c66e0622222c5aefafa1581083
+CYRUS_SASL_VERSION		:= 2.1.28
+CYRUS_SASL_MD5			:= 6f228a692516f5318a64505b46966cfa
 CYRUS_SASL			:= cyrus-sasl-$(CYRUS_SASL_VERSION)
 CYRUS_SASL_SUFFIX		:= tar.gz
 CYRUS_SASL_URL			:= https://github.com/cyrusimap/cyrus-sasl/releases/download/$(CYRUS_SASL)/$(CYRUS_SASL).$(CYRUS_SASL_SUFFIX)
@@ -54,9 +54,9 @@ $(STATEDIR)/cyrus-sasl.extract: $(STATEDIR)/autogen-tools
 # autoconf
 #
 CYRUS_SASL_CONF_TOOL	:= autoconf
-CYRUS_SASL_CONF_OPT	:=  \
+CYRUS_SASL_CONF_OPT	:= \
 	$(CROSS_AUTOCONF_USR) \
-	--disable-java
+	--enable-spnego=no
 
 #$(STATEDIR)/cyrus-sasl.prepare:
 #	@$(call targetinfo)
@@ -91,7 +91,7 @@ $(STATEDIR)/cyrus-sasl.targetinstall:
 	@$(call install_init, cyrus-sasl)
 	@$(call install_fixup, cyrus-sasl,PRIORITY,optional)
 	@$(call install_fixup, cyrus-sasl,SECTION,base)
-	@$(call install_fixup, cyrus-sasl,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, cyrus-sasl,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, cyrus-sasl,DESCRIPTION,missing)
 
 #	#

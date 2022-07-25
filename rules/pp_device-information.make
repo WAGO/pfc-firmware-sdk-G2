@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2020 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2020 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -105,7 +105,7 @@ $(STATEDIR)/pp_device-information.targetinstall:
 	@$(call install_init, pp_device-information)
 	@$(call install_fixup, pp_device-information,PRIORITY,optional)
 	@$(call install_fixup, pp_device-information,SECTION,base)
-	@$(call install_fixup, pp_device-information,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, pp_device-information,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, pp_device-information,DESCRIPTION,missing)
 	@$(call install_finish, pp_device-information)
 

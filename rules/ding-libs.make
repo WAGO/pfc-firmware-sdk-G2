@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH & Co. KG
+# Copyright (C) 2021 by WAGO GmbH & Co. KG
 #
 # For further information about the PTXdist project and license conditions
 # see the README file.
@@ -78,7 +78,7 @@ $(STATEDIR)/ding-libs.targetinstall:
 	@$(call install_init, ding-libs)
 	@$(call install_fixup, ding-libs,PRIORITY,optional)
 	@$(call install_fixup, ding-libs,SECTION,base)
-	@$(call install_fixup, ding-libs,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, ding-libs,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, ding-libs,DESCRIPTION,missing)
 
 	@$(call install_lib, ding-libs, 0, 0, 0644, libpath_utils)

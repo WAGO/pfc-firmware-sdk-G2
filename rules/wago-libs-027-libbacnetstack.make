@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2012 by <WAGO Kontakttechnik GmbH & Co. KG>
+# Copyright (C) 2012 by <WAGO GmbH & Co. KG>
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -27,14 +27,14 @@ endif
 
 ifdef PTXCONF_LIBBACNETSTACK_SOURCE_RELEASED
 LIBBACNETSTACK_REVISION          := 22
-LIBBACNETSTACK_SO_VERSION        := 1.6.3
-LIBBACNETSTACK_BUILD_ID          := 16448251224
+LIBBACNETSTACK_SO_VERSION        := 1.6.5
+LIBBACNETSTACK_BUILD_ID          := 16538942281
 LIBBACNETSTACK_FOLDER            := libbacnetstack_rev$(LIBBACNETSTACK_REVISION)
 endif
 
 ifdef PTXCONF_LIBBACNETSTACK_SOURCE_LEGACY
 LIBBACNETSTACK_REVISION          := 14
-LIBBACNETSTACK_SO_VERSION        := 1.5.2
+LIBBACNETSTACK_SO_VERSION        := 1.5.4
 LIBBACNETSTACK_FOLDER            := libbacnetstack
 endif
 

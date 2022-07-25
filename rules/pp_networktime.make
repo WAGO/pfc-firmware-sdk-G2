@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2021 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -105,7 +105,7 @@ $(STATEDIR)/pp_networktime.targetinstall:
 	@$(call install_init, pp_networktime)
 	@$(call install_fixup, pp_networktime,PRIORITY,optional)
 	@$(call install_fixup, pp_networktime,SECTION,base)
-	@$(call install_fixup, pp_networktime,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, pp_networktime,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, pp_networktime,DESCRIPTION,missing)
 
 	@$(call install_finish, pp_networktime)

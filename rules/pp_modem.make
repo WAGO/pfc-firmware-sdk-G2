@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_PP_MODEM) += pp_modem
 #
 # Paths and names
 #
-PP_MODEM_VERSION        := 1.0.0
+PP_MODEM_VERSION        := 1.0.1
 PP_MODEM_MD5            :=
 PP_MODEM                := pp_modem
 PP_MODEM_BUILDCONFIG    := Release

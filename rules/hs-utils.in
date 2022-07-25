@@ -1,9 +1,0 @@
-## SECTION=wago_specific
-
-config HS_UTILS
-	bool
-	select HOST_CT_BUILD
-	select GOOGLETEST
-	prompt "hs-utils"
-	help
-	  FIXME

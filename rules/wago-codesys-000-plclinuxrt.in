@@ -293,7 +293,6 @@ config CDS2_IODRVEXT_LIBWIDEDPS_LIBRARY
 
 config CDS2_IODRVEXT_LIBWIDEPBDPM_LIBRARY
 	bool "Install profibus dp master I/O driver configuration library for codesys 2"
-	select LIBWIDEPBDPM
 	default n
 	help
 	  Meta package to build and install the libwidepbdom.so

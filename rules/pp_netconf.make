@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2020 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2020 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -105,7 +105,7 @@ $(STATEDIR)/pp_netconf.targetinstall:
 	@$(call install_init, pp_netconf)
 	@$(call install_fixup, pp_netconf,PRIORITY,optional)
 	@$(call install_fixup, pp_netconf,SECTION,base)
-	@$(call install_fixup, pp_netconf,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, pp_netconf,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, pp_netconf,DESCRIPTION,missing)
 
 	@$(call install_finish, pp_netconf)

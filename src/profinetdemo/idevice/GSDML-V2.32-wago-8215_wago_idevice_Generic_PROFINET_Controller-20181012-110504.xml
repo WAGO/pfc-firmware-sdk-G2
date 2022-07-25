@@ -16,7 +16,7 @@
     <ProfileBody>
         <DeviceIdentity VendorID="0x011D" DeviceID="0x12EE">
             <InfoText TextId="IDT_INFO_SERIES_750_753_PFC" />
-            <VendorName Value="WAGO Kontakttechnik GmbH u. Co. KG" />
+            <VendorName Value="WAGO GmbH u. Co. KG" />
         </DeviceIdentity>
         <DeviceFunction>
             <Family MainFamily="I/O" ProductFamily="WAGO-I/O-SYSTEM 750/753" />

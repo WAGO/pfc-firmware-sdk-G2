@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2020 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2020 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -116,7 +116,7 @@ $(STATEDIR)/cds3-tscmodemiecinterface.targetinstall:
 	@$(call install_init, cds3-tscmodemiecinterface)
 	@$(call install_fixup, cds3-tscmodemiecinterface,PRIORITY,optional)
 	@$(call install_fixup, cds3-tscmodemiecinterface,SECTION,base)
-	@$(call install_fixup, cds3-tscmodemiecinterface,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, cds3-tscmodemiecinterface,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, cds3-tscmodemiecinterface,DESCRIPTION,missing)
 
 	@$(call install_lib, cds3-tscmodemiecinterface, 0, 0, 0640, libTscModemIecInterface)

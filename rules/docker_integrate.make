@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH
+# Copyright (C) 2022 by WAGO GmbH
 # <Marius.Warning@wago.com>
 #
 # See CREDITS for details about who has contributed to this project.
@@ -24,15 +24,12 @@ DOCKER_INTEGRATE					:= $(DOCKER_BASE)-integrate
 DOCKER_IPK_SUFFIX					:= armhf.ipk
 ARTIFACTORY_BASE_URL			:= $(call remove_quotes, ${PTXCONF_ARTIFACTORY_BASE_URL})
 DOCKER_REPO								:= pfc-generic-dev-local
-DOCKER_REPO_PATH					:= wago/pfc/development/trunk/pfcXXX-docker-ipk
-DOCKER_BASE_VERSION				:= 20.10.8
+DOCKER_REPO_PATH					:= wago/pfc/development/trunk/pfcXXX-docker-ipk/platform-wago-pfcXXX/packages
+DOCKER_BASE_VERSION				:= 20.10.14
 DOCKER_INTEGRATE_VERSION	:= $(DOCKER_BASE_VERSION)
 DOCKER_IPK								:= $(DOCKER_BASE)_$(DOCKER_BASE_VERSION)_$(DOCKER_IPK_SUFFIX)
-DOCKER_IPK_URL						:= ${ARTIFACTORY_BASE_URL}/$(DOCKER_REPO)/$(DOCKER_REPO_PATH)
-#Always get the latest version
-DOCKER_REPO_VERSION  			:= $(shell curl -s -H "X-JFrog-Art-API:${JFROG_APIKEY}" "${DOCKER_IPK_URL}/" | grep -Po '(?<=href="pfcXXX-docker-ipk-)[^"]*(?=\/")' | tail -1)
+DOCKER_IPK_URL						:= ${ARTIFACTORY_BASE_URL}/$(DOCKER_REPO)/$(DOCKER_REPO_PATH)/$(DOCKER_IPK)
 
-DOCKER_IPK_URL						:= $(DOCKER_IPK_URL)/pfcXXX-docker-ipk-$(DOCKER_REPO_VERSION)/platform-wago-pfcXXX/packages/$(DOCKER_IPK)
 DOCKER_INTEGRATE_DIR			:= $(BUILDDIR)/$(DOCKER_INTEGRATE)
 DOCKER_MD5_FILE						:= ${DOCKER_INTEGRATE_DIR}/$(DOCKER)_$(DOCKER_VERSION)_$(DOCKER_IPK_SUFFIX).md5
 DOCKER_INTEGRATE_MD5			= $(shell [ -f "$(DOCKER_MD5_FILE)" ] && cat "$(DOCKER_MD5_FILE)")

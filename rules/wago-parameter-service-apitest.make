@@ -5,10 +5,10 @@
 #
 # This file is part of project parameter-service (PTXdist package wago-parameter-service-apitest).
 #
-# Copyright (c) 2021-2022 WAGO Kontakttechnik GmbH & Co. KG
+# Copyright (c) 2021-2022 WAGO GmbH & Co. KG
 #
 # Contributors:
-#   PEn: WAGO Kontakttechnik GmbH & Co. KG
+#   PEn: WAGO GmbH & Co. KG
 #######################################################################################################################
 # Makefile for PTXdist package wago-parameter-service-apitest.
 #
@@ -24,7 +24,7 @@ LAZY_PACKAGES-$(PTXCONF_WAGO_PARAMETER_SERVICE_APITEST) += wago-parameter-servic
 #
 # Paths and names
 #
-WAGO_PARAMETER_SERVICE_APITEST_VERSION        := 0.2.0
+WAGO_PARAMETER_SERVICE_APITEST_VERSION        := 0.3.0
 WAGO_PARAMETER_SERVICE_APITEST_MD5            :=
 WAGO_PARAMETER_SERVICE_APITEST_BASE           := parameter-service-apitest
 WAGO_PARAMETER_SERVICE_APITEST                := wago-$(WAGO_PARAMETER_SERVICE_APITEST_BASE)-$(WAGO_PARAMETER_SERVICE_APITEST_VERSION)
@@ -116,7 +116,7 @@ $(STATEDIR)/wago-parameter-service-apitest.targetinstall:
 	@$(call install_init, wago-parameter-service-apitest)
 	@$(call install_fixup, wago-parameter-service-apitest,PRIORITY,optional)
 	@$(call install_fixup, wago-parameter-service-apitest,SECTION,base)
-	@$(call install_fixup, wago-parameter-service-apitest,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, wago-parameter-service-apitest,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, wago-parameter-service-apitest,DESCRIPTION,missing)
 
 	@$(call install_copy, wago-parameter-service-apitest, 0, 0, 0755, -, /usr/sbin/apitest_client)

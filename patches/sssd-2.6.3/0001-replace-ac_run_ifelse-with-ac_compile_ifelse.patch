@@ -1,0 +1,21 @@
+--- a/src/external/ldap.m4	2022-03-21 13:56:44.698341351 +0100
++++ b/src/external/ldap.m4	2022-03-21 13:56:15.478451548 +0100
+@@ -70,7 +70,7 @@
+                 ldap_derefresponse_free \
+                 ldap_is_ldapc_url])
+ AC_CHECK_MEMBERS([struct ldap_conncb.lc_arg],
+-                 [AC_RUN_IFELSE(
++                 [AC_COMPILE_IFELSE(
+                    [AC_LANG_PROGRAM(
+                      [[ #include <ldap.h> ]],
+                      [[
+@@ -79,8 +79,7 @@
+                      ]] )],
+                    [AC_DEFINE([HAVE_LDAP_CONNCB], [1],
+                      [Define if LDAP connection callbacks are available])],
+-                   [AC_MSG_WARN([Found broken callback implementation])],
+-                   [])],
++                   [AC_MSG_WARN([Found broken callback implementation])],)],
+                  [], [[#include <ldap.h>]])
+ 
+ AC_CHECK_TYPE([LDAPDerefRes],

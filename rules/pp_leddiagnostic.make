@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2021 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -107,7 +107,7 @@ $(STATEDIR)/pp_leddiagnostic.targetinstall:
 	@$(call install_init, pp_leddiagnostic)
 	@$(call install_fixup, pp_leddiagnostic,PRIORITY,optional)
 	@$(call install_fixup, pp_leddiagnostic,SECTION,base)
-	@$(call install_fixup, pp_leddiagnostic,AUTHOR,"DMa - WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, pp_leddiagnostic,AUTHOR,"DMa - WAGO GmbH \& Co. KG")
 	@$(call install_fixup, pp_leddiagnostic,DESCRIPTION,missing)
 
 ifdef PTXCONF_PP_LEDDIAGNOSTIC_DAEMON

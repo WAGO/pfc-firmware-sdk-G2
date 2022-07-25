@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2021 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -105,7 +105,7 @@ $(STATEDIR)/pp_services.targetinstall:
 	@$(call install_init, pp_services)
 	@$(call install_fixup, pp_services,PRIORITY,optional)
 	@$(call install_fixup, pp_services,SECTION,base)
-	@$(call install_fixup, pp_services,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, pp_services,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, pp_services,DESCRIPTION,missing)
 
 ifdef PTXCONF_PP_SERVICES_DAEMON

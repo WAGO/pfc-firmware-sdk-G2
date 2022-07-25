@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2021 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -105,7 +105,7 @@ $(STATEDIR)/pp_modbus.targetinstall:
 	@$(call install_init, pp_modbus)
 	@$(call install_fixup, pp_modbus,PRIORITY,optional)
 	@$(call install_fixup, pp_modbus,SECTION,base)
-	@$(call install_fixup, pp_modbus,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, pp_modbus,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, pp_modbus,DESCRIPTION,missing)
 
 	@$(call install_copy, pp_modbus, 0, 0, 0755, -, /usr/bin/pp_modbus)

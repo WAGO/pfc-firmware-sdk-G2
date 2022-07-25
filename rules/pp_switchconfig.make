@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2021 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -105,7 +105,7 @@ endif
 # 	@$(call install_init, pp_switchconfig)
 # 	@$(call install_fixup, pp_switchconfig,PRIORITY,optional)
 # 	@$(call install_fixup, pp_switchconfig,SECTION,base)
-# 	@$(call install_fixup, pp_switchconfig,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+# 	@$(call install_fixup, pp_switchconfig,AUTHOR,"WAGO GmbH \& Co. KG")
 # 	@$(call install_fixup, pp_switchconfig,DESCRIPTION,missing)
 
 # 	@$(call install_lib, pp_switchconfig, 0, 0, 0644, libpp_switchconfig)

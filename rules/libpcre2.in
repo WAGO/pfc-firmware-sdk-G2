@@ -1,0 +1,43 @@
+## SECTION=system_libraries
+
+menuconfig LIBPCRE2
+	tristate
+	prompt "libpcre2                       "
+	select LIBC_M		if LIBPCRE2_LIBPCRECPP
+	select GCCLIBS_CXX	if LIBPCRE2_LIBPCRECPP
+	select GCCLIBS_GCC_S	if LIBPCRE2_LIBPCRECPP
+	select ZLIB		if LIBPCRE2_ENABLE_PCREGREP_LIBZ
+	select BZIP2		if LIBPCRE2_ENABLE_PCREGREP_LIBBZ2
+	select BZIP2_LIBBZ2	if LIBPCRE2_ENABLE_PCREGREP_LIBBZ2
+	help
+	  Perl 5 Compatible Regular Expression Library
+
+	  This is a library of functions to support regular
+	  expressions whose syntax and semantics are as close as
+	  possible to those of the Perl 5 language.
+
+if LIBPCRE2
+
+config LIBPCRE2_ENABLE_NEWLINE_IS_ANYCRLF
+	bool "Enable NL is any CRLF"
+	help
+	  If true, any CR/LF combination is interpreted as a newline.
+	  If false, only LF is interpreted as a newline.
+
+config LIBPCRE2_ENABLE_PCREGREP_LIBZ
+	bool "Enable grep libz"
+
+config LIBPCRE2_ENABLE_PCREGREP_LIBBZ2
+	bool "Enable grep libbz2"
+
+config LIBPCRE2_ENABLE_UTF8
+	bool "Enable UTF8"
+
+config LIBPCRE2_LIBPCREPOSIX
+	bool "install libpcreposix"
+
+config LIBPCRE2_PCREGREP
+	select LIBPCRE2_LIBPCREPOSIX
+	bool "install pcregrep on the target"
+
+endif

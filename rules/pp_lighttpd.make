@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2021 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -107,7 +107,7 @@ $(STATEDIR)/pp_lighttpd.targetinstall:
 	@$(call install_init, pp_lighttpd)
 	@$(call install_fixup, pp_lighttpd,PRIORITY,optional)
 	@$(call install_fixup, pp_lighttpd,SECTION,base)
-	@$(call install_fixup, pp_lighttpd,AUTHOR,"PEn - WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, pp_lighttpd,AUTHOR,"PEn - WAGO GmbH \& Co. KG")
 	@$(call install_fixup, pp_lighttpd,DESCRIPTION,missing)
 
 ifdef PTXCONF_PP_LIGHTTPD_DAEMON

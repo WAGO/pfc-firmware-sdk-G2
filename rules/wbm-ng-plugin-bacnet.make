@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2017 by Marius Hellmeier (marius.hellmeier@wago.com), WAGO Kontakttechnik GmbH & Co. KG
+# Copyright (C) 2017 by Marius Hellmeier (marius.hellmeier@wago.com), WAGO GmbH & Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -83,7 +83,7 @@ $(STATEDIR)/wbm-ng-plugin-bacnet.targetinstall:
 	@$(call install_init, wbm-ng-plugin-bacnet)
 	@$(call install_fixup, wbm-ng-plugin-bacnet, PRIORITY, optional)
 	@$(call install_fixup, wbm-ng-plugin-bacnet, SECTION, base)
-	@$(call install_fixup, wbm-ng-plugin-bacnet, AUTHOR,"Nico Baade, WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, wbm-ng-plugin-bacnet, AUTHOR,"Nico Baade, WAGO GmbH \& Co. KG")
 	@$(call install_fixup, wbm-ng-plugin-bacnet, DESCRIPTION, missing)
 
 	# create target directory itself

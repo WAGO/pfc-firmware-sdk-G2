@@ -1,0 +1,7 @@
+## SECTION=web
+config REDOC_UI
+	tristate
+	prompt "Redoc documentation generator"
+	depends on LIGHTTPD
+	help
+	  Redoc is an open-source tool for generating documentation from OpenAPI (fka Swagger) definitions.

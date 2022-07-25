@@ -5,6 +5,7 @@ config FP_REGULAR_FILE
 	select HOST_CT_BUILD
 	select GOOGLETEST
 	select WAGO_PARAMETER_SERVICE_CORE
+	select LIBCOMMONHEADER
 	prompt "fp_regular-file"
 	help
 	  This regular-file provider allows atomic Read/Write access to files

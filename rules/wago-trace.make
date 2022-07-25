@@ -5,10 +5,10 @@
 #
 # This file is part of project parameter-service (PTXdist package wago-parameter-service).
 #
-# Copyright (c) 2021 WAGO Kontakttechnik GmbH & Co. KG
+# Copyright (c) 2021 WAGO GmbH & Co. KG
 #
 # Contributors:
-#   PEn: WAGO Kontakttechnik GmbH & Co. KG
+#   PEn: WAGO GmbH & Co. KG
 #######################################################################################################################
 # Makefile for PTXdist package wago-trace.
 #
@@ -121,7 +121,7 @@ $(STATEDIR)/wago-trace.targetinstall:
 	@$(call install_init, wago-trace)
 	@$(call install_fixup, wago-trace,PRIORITY,optional)
 	@$(call install_fixup, wago-trace,SECTION,base)
-	@$(call install_fixup, wago-trace,AUTHOR,"PEn - WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, wago-trace,AUTHOR,"PEn - WAGO GmbH \& Co. KG")
 	@$(call install_fixup, wago-trace,DESCRIPTION,missing)
 
 	@$(call install_lib, wago-trace, 0, 0, 0644, libwtrace)

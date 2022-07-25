@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2021 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -105,7 +105,7 @@ $(STATEDIR)/pp_serialinterface.targetinstall:
 	@$(call install_init, pp_serialinterface)
 	@$(call install_fixup, pp_serialinterface,PRIORITY,optional)
 	@$(call install_fixup, pp_serialinterface,SECTION,base)
-	@$(call install_fixup, pp_serialinterface,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, pp_serialinterface,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, pp_serialinterface,DESCRIPTION,missing)
 
 	@$(call install_copy, pp_serialinterface, 0, 0, 0755, -, /usr/sbin/pp_serialinterface)

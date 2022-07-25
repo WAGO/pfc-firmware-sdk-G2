@@ -1,0 +1,7 @@
+## SECTION=system_libraries
+
+config LIBUNISTRING
+	tristate
+	prompt "libunistring"
+	help
+	  FIXME

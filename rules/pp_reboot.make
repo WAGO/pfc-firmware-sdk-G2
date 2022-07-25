@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2020 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2020 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -104,7 +104,7 @@ $(STATEDIR)/pp_reboot.targetinstall:
 	@$(call install_init, pp_reboot)
 	@$(call install_fixup, pp_reboot,PRIORITY,optional)
 	@$(call install_fixup, pp_reboot,SECTION,base)
-	@$(call install_fixup, pp_reboot,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, pp_reboot,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, pp_reboot,DESCRIPTION,missing)
 
 	@$(call install_copy, pp_reboot, 0, 0, 0750, -, /etc/init.d/set_bootstatus)

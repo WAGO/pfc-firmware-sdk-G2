@@ -4,7 +4,6 @@ config WAGO_PARAMETER_SERVICE
 	bool
 	default n
 	select HOST_CT_BUILD
-	select HOST_SYSTEM_PYTHON3
 	select GOOGLETEST
 	select WAGO_TRACE
 	select TYPELABEL                                            if WAGO_PARAMETER_SERVICE_LIB
@@ -52,11 +51,3 @@ config WAGO_PARAMETER_SERVICE_LIGHTTPD_INTEGRATION
 	select WAGO_PARAMETER_SERVICE_LIB
 	help
 	  WAGO Parameter Service integration for lighttpd webserver.
-
-config WAGO_PARAMETER_SERVICE_OPENAPI
-	bool
-	default n
-	prompt "WAGO Parameter Service OpenAPI"
-	select WAGO_PARAMETER_SERVICE_LIB
-	help
-	  WAGO Parameter Service OpenAPI definition for target.

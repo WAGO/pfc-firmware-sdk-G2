@@ -5,10 +5,10 @@
 #
 # This file is part of project parameter-service-model-files (PTXdist package wago-parameter-service-model-files).
 #
-# Copyright (c) 2021 WAGO Kontakttechnik GmbH & Co. KG
+# Copyright (c) 2021 WAGO GmbH & Co. KG
 #
 # Contributors:
-#   MaHe: WAGO Kontakttechnik GmbH & Co. KG
+#   MaHe: WAGO GmbH & Co. KG
 #######################################################################################################################
 # Makefile for PTXdist package wago-parameter-service-model-files.
 #
@@ -24,7 +24,7 @@ PACKAGES-$(PTXCONF_WAGO_PARAMETER_SERVICE_MODEL_FILES) += wago-parameter-service
 #
 # Paths and names
 #
-WAGO_PARAMETER_SERVICE_MODEL_FILES_VERSION        := 0.15.0
+WAGO_PARAMETER_SERVICE_MODEL_FILES_VERSION        := 0.18.0
 WAGO_PARAMETER_SERVICE_MODEL_FILES_MD5            :=
 WAGO_PARAMETER_SERVICE_MODEL_FILES_BASE           := parameter-service-model-files
 WAGO_PARAMETER_SERVICE_MODEL_FILES                := wago-$(WAGO_PARAMETER_SERVICE_MODEL_FILES_BASE)-$(WAGO_PARAMETER_SERVICE_MODEL_FILES_VERSION)
@@ -51,7 +51,7 @@ WAGO_PARAMETER_SERVICE_MODEL_FILES_PACKAGE_NAME := $(WAGO_PARAMETER_SERVICE_MODE
 WAGO_PARAMETER_SERVICE_MODEL_FILES_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
 
 # WDx artifacts
-WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_VERSION        := 0.0.15
+WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_VERSION        := 0.0.18
 WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX                := wago-parameter-service-model-files-wdx-$(WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_VERSION)
 WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_DIR            := $(BUILDDIR)/$(WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX)
 WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_URL            := $(call jfrog_template_to_url, WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX)
@@ -172,7 +172,7 @@ $(STATEDIR)/wago-parameter-service-model-files.targetinstall:
 	@$(call install_init, wago-parameter-service-model-files)
 	@$(call install_fixup, wago-parameter-service-model-files,PRIORITY,optional)
 	@$(call install_fixup, wago-parameter-service-model-files,SECTION,base)
-	@$(call install_fixup, wago-parameter-service-model-files,AUTHOR,"MaHe - WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, wago-parameter-service-model-files,AUTHOR,"MaHe - WAGO GmbH \& Co. KG")
 	@$(call install_fixup, wago-parameter-service-model-files,DESCRIPTION,missing)
 
 	# copy WDM and WDDs to target directories

@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2021 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -105,7 +105,7 @@ $(STATEDIR)/pp_eruntime.targetinstall:
 	@$(call install_init, pp_eruntime)
 	@$(call install_fixup, pp_eruntime,PRIORITY,optional)
 	@$(call install_fixup, pp_eruntime,SECTION,base)
-	@$(call install_fixup, pp_eruntime,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, pp_eruntime,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, pp_eruntime,DESCRIPTION,missing)
 
 	@$(call install_copy, pp_eruntime, 0, 0, 0755, -, /usr/sbin/pp_eruntime)

@@ -13,6 +13,7 @@ config PP_COMBO
   select PP_SECURESHELL
   select PP_NETWORKTIME
   select PP_ACTIVESYSTEM
+  select PP_PASSWORD_MANAGEMENT
   select PP_MEMORYCARD
   select PP_DOCKER
   select HOST_CT_BUILD

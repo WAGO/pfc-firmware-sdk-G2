@@ -22,9 +22,11 @@ menuconfig PHP7
 #	select XMLRPC_C		if PHP7_XML_LIBXML2_XMLRPC
 	select SQLITE		if PHP7_EXT_SQLITE3
 	select ZLIB		if PHP7_EXT_ZLIB
+	select LIBZIP		if PHP7_EXT_ZIP
 	select OPENSSL		if PHP7_EXT_OPENSSL
 	select LIBPNG		if PHP7_EXT_GD
 	select LIBGD		if PHP7_EXT_GD
+	select LIBGD_XPM    if PHP7_EXT_GD
 
 if PHP7
 

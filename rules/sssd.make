@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH & Co. KG
+# Copyright (C) 2021 by WAGO GmbH & Co. KG
 #
 # For further information about the PTXdist project and license conditions
 # see the README file.
@@ -14,8 +14,8 @@ PACKAGES-$(PTXCONF_SSSD) += sssd
 #
 # Paths and names
 #
-SSSD_VERSION	:= 2.5.2
-SSSD_MD5	:= d293e29897c7087281dbff3716018134
+SSSD_VERSION	:= 2.6.3
+SSSD_MD5	:= 1c74763e6caccb78f8fe9c8c4dc65689
 SSSD		:= sssd-$(SSSD_VERSION)
 SSSD_SUFFIX	:= tar.gz
 SSSD_URL	:= https://github.com/SSSD/sssd/archive/refs/tags/$(SSSD_VERSION).$(SSSD_SUFFIX)
@@ -40,7 +40,7 @@ $(STATEDIR)/sssd.extract: $(STATEDIR)/autogen-tools
 	@$(call clean, $(SSSD_DIR))
 	@$(call extract, SSSD)
 	@$(call patchin, SSSD)
-	cd $(SSSD_DIR) && [ -f configure ] || (autoreconf --install --force)
+	@cd $(SSSD_DIR) && [ -f configure ] || (autoreconf --install --force)
 	@$(call touch)
 
 # ----------------------------------------------------------------------------
@@ -63,10 +63,12 @@ SSSD_CONF_TOOL	:= autoconf
 
 SSSD_CONF_OPT	:=  \
 	$(CROSS_AUTOCONF_USR) \
+	--exec-prefix=/usr \
 	--disable-nls \
 	--disable-rpath \
 	--enable-nsslibdir=/usr/lib/ \
 	--enable-pammoddir=/usr/lib/security/ \
+	--disable-all-experimental-features \
 	--disable-cifs-idmap-plugin \
 	--disable-valgrind \
 	--disable-valgrind-memcheck \
@@ -74,18 +76,19 @@ SSSD_CONF_OPT	:=  \
 	--disable-valgrind-drd \
 	--disable-valgrind-sgcheck \
 	--with-gnu-ld \
-	--with-sysroot=$(PTXDIST_SYSROOT_TARGET) \
 	--without-nfsv4-idmapd-plugin \
 	--without-manpages \
 	--without-python2-bindings \
 	--without-python3-bindings \
 	--$(call ptx/wwo, PTXCONF_GLOBAL_SELINUX)-selinux \
 	--$(call ptx/wwo, PTXCONF_GLOBAL_SELINUX)-semanage \
+	--without-subid \
 	--with-syslog=syslog \
 	--with-samba \
 	--with-ldb-lib-dir=/usr/modules/ldb/ \
 	--with-smb-idmap-interface-version=6 \
 	--without-libnl \
+	--with-initscript=sysv \
 	NSUPDATE=/usr/sbin/nsupdate
 
 SSSD_LDFLAGS	:=  \
@@ -128,14 +131,18 @@ $(STATEDIR)/sssd.targetinstall:
 	@$(call install_init, sssd)
 	@$(call install_fixup, sssd,PRIORITY,optional)
 	@$(call install_fixup, sssd,SECTION,base)
-	@$(call install_fixup, sssd,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, sssd,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, sssd,DESCRIPTION,missing)
+
+#	#@$(call install_copy, sssd, 0, 0, 0755, /etc/dbus-1/system.d/)
+#	#@$(call install_copy, sssd, 0, 0, 0755, /etc/dbus-1/system.d/org.freedesktop.sssd.infopipe.conf)
+
+#	#@$(call install_copy, sssd, 0, 0, 0755, /usr/share/dbus-1/system-services/)
+#	#@$(call install_copy, sssd, 0, 0, 0755, /usr/share/dbus-1/system-services/org.freedesktop.sssd.infopipe.service)
 
 #	#
 #	# /var/lib/sss/*
 #	#
-	#@$(call install_copy, sssd, 0, 0, 0755, /etc/dbus-1/system.d/)
-	#@$(call install_copy, sssd, 0, 0, 0755, /usr/share/dbus-1/system-services/)
 	@$(call install_copy, sssd, 0, 0, 0750, /var/lib/sss/pipes/private/)
 	@$(call install_copy, sssd, 0, 0, 0700, /var/lib/sss/db/)
 	@$(call install_copy, sssd, 0, 0, 0700, /var/lib/sss/keytabs/)
@@ -144,22 +151,22 @@ $(STATEDIR)/sssd.targetinstall:
 	@$(call install_copy, sssd, 0, 0, 0755, /var/lib/sss/pubconf/)
 	@$(call install_copy, sssd, 0, 0, 0755, /var/lib/sss/pubconf/krb5.include.d/)
 	@$(call install_copy, sssd, 0, 0, 0755, /var/lib/sss/gpo_cache/)
-	# FIXME: CHECK PERMISSIONS
+#	# FIXME: CHECK PERMISSIONS
 	@$(call install_copy, sssd, 0, 0, 0755, /var/lib/sss/deskprofile/)
-	# FIXME: CHECK PERMISSIONS
+#	# FIXME: CHECK PERMISSIONS
 	@$(call install_copy, sssd, 0, 0, 0755, /var/lib/sss/secrets/)
 
 #	#
 #	# /var/lib/sssd/*
 #	#
-	# FIXME: CHECK PERMISSIONS
+#	# FIXME: CHECK PERMISSIONS
 	@$(call install_copy, sssd, 0, 0, 0755, /usr/lib/sssd/conf/)
 
 #	#
 #	# /etc/sssd/*
 #	#
 	@$(call install_copy, sssd, 0, 0, 0711, /etc/sssd/)
-	# FIXME: CHECK PERMISSIONS
+#	# FIXME: CHECK PERMISSIONS
 	@$(call install_alternative, sssd, 0, 0, 0600, /etc/sssd/sssd.conf)
 	@$(call install_copy, sssd, 0, 0, 0711, /etc/sssd/conf.d/)
 	@$(call install_copy, sssd, 0, 0, 0711, /etc/sssd/pki/)
@@ -168,6 +175,7 @@ $(STATEDIR)/sssd.targetinstall:
 #	# /usr/share/sssd/*
 #	#
 	@$(call install_copy, sssd, 0, 0, 0711, /usr/share/sssd/)
+
 	@$(call install_copy, sssd, 0, 0, 0600, -, /usr/share/sssd/cfg_rules.ini)
 
 	@$(call install_copy, sssd, 0, 0, 0600, -, /usr/share/sssd/sssd.api.conf)
@@ -188,21 +196,27 @@ $(STATEDIR)/sssd.targetinstall:
 #	#
 #	# /usr/lib/*
 #	#
-	@$(call install_copy, sssd, 0, 0, 0644, $(SSSD_DIR)/.libs/libsss_debug.so, /usr/lib/libsss_debug.so)
-	@$(call install_copy, sssd, 0, 0, 0644, $(SSSD_DIR)/.libs/libsss_child.so, /usr/lib/libsss_child.so)
-	@$(call install_copy, sssd, 0, 0, 0644, $(SSSD_DIR)/.libs/libsss_crypt.so, /usr/lib/libsss_crypt.so)
-	@$(call install_copy, sssd, 0, 0, 0644, $(SSSD_DIR)/.libs/libsss_cert.so, /usr/lib/libsss_cert.so)
-	@$(call install_copy, sssd, 0, 0, 0644, $(SSSD_DIR)/.libs/libsss_sbus.so, /usr/lib/libsss_sbus.so)
-	@$(call install_copy, sssd, 0, 0, 0644, $(SSSD_DIR)/.libs/libsss_sbus_sync.so, /usr/lib/libsss_sbus_sync.so)
-	@$(call install_copy, sssd, 0, 0, 0644, $(SSSD_DIR)/.libs/libsss_iface.so, /usr/lib/libsss_iface.so)
-	@$(call install_copy, sssd, 0, 0, 0644, $(SSSD_DIR)/.libs/libsss_iface_sync.so, /usr/lib/libsss_iface_sync.so)
-	@$(call install_copy, sssd, 0, 0, 0644, $(SSSD_DIR)/.libs/libsss_util.so, /usr/lib/libsss_util.so)
-	@$(call install_copy, sssd, 0, 0, 0644, $(SSSD_DIR)/.libs/libsss_secrets.so, /usr/lib/libsss_secrets.so)
-	@$(call install_copy, sssd, 0, 0, 0644, $(SSSD_DIR)/.libs/libsss_semanage.so, /usr/lib/libsss_semanage.so)
-	@$(call install_copy, sssd, 0, 0, 0644, $(SSSD_DIR)/.libs/libifp_iface.so, /usr/lib/libifp_iface.so)
-	@$(call install_copy, sssd, 0, 0, 0644, $(SSSD_DIR)/.libs/libifp_iface_sync.so, /usr/lib/libifp_iface_sync.so)
-	@$(call install_copy, sssd, 0, 0, 0644, $(SSSD_DIR)/.libs/libsss_krb5_common.so, /usr/lib/libsss_krb5_common.so)
-	@$(call install_copy, sssd, 0, 0, 0644, $(SSSD_DIR)/.libs/libsss_ldap_common.so, /usr/lib/libsss_ldap_common.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libifp_iface.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_ipa.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libifp_iface_sync.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_iface.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_sbus_sync.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_ldap_common.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_iface_sync.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_krb5_common.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_ldap.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_proxy.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_semanage.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_debug.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_util.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_ad.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_child.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_sbus.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_cert.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_krb5.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_simple.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_files.so)
+	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/libsss_crypt.so)
 
 #	#
 #	# /usr/lib/sssd/*
@@ -232,6 +246,7 @@ $(STATEDIR)/sssd.targetinstall:
 	@$(call install_copy, sssd, 0, 0, 0755, -, /usr/sbin/sss_override)
 	@$(call install_copy, sssd, 0, 0, 0755, -, /usr/sbin/sss_seed)
 	@$(call install_copy, sssd, 0, 0, 0755, -, /usr/sbin/sssctl)
+	@$(call install_copy, sssd, 0, 0, 0755, -, /usr/sbin/sss_debuglevel)
 
 #	#
 #	# /usr/libexec/sssd/*
@@ -252,18 +267,19 @@ $(STATEDIR)/sssd.targetinstall:
 	@$(call install_copy, sssd, 0, 0, 0755, -, /usr/libexec/sssd/p11_child)
 	@$(call install_copy, sssd, 0, 0, 0755, -, /usr/libexec/sssd/sssd_kcm)
 	@$(call install_copy, sssd, 0, 0, 0755, -, /usr/libexec/sssd/sssd_pac)
+	@$(call install_copy, sssd, 0, 0, 0755, -, /usr/libexec/sssd/sss_analyze)
+
+#	#
+#	# /usr/lib/sssd/modules/*
+#	#
+	@$(call install_copy, sssd, 0, 0, 0755, /usr/lib/sssd/modules/)
+	@$(call install_copy, sssd, 0, 0, 0755, -, \
+					/usr/lib/sssd/modules/sssd_krb5_localauth_plugin.so)
 
 #	#
 #	# install "autofs" module
 #	#
-	@$(call install_copy, sssd, 0, 0, 0755, /usr/lib/sssd/modules/)
 	@$(call install_copy, sssd, 0, 0, 0644, -, /usr/lib/sssd/modules/libsss_autofs.so)
-
-#	#
-#	# 
-#	#
-	@$(call install_copy, sssd, 0, 0, 0755, -, \
-					/usr/lib/sssd/modules/sssd_krb5_localauth_plugin.so)
 
 #	#
 #	# configuration for Kerberos cache

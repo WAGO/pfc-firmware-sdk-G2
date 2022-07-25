@@ -1,0 +1,15 @@
+## SECTION=system_libraries
+
+config LIBZIP
+	tristate
+	prompt "libzip"
+	select HOST_CMAKE
+	select ZLIB
+	select BZIP2
+	select BZIP2_LIBBZ2
+	help
+	  libzip is a C library for reading, creating, and modifying
+	  zip archives. Files can be added from data buffers, files,
+	  or compressed data copied directly from other zip archives.
+	  Changes made without closing the archive can be reverted.
+

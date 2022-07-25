@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2021 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -105,7 +105,7 @@ $(STATEDIR)/pp_systemtime.targetinstall:
 	@$(call install_init, pp_systemtime)
 	@$(call install_fixup, pp_systemtime,PRIORITY,optional)
 	@$(call install_fixup, pp_systemtime,SECTION,base)
-	@$(call install_fixup, pp_systemtime,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, pp_systemtime,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, pp_systemtime,DESCRIPTION,missing)
 
 	@$(call install_copy, pp_systemtime, 0, 0, 0750, -, /etc/config-tools/backup-restore/backup_custom_tzstring)

@@ -8,10 +8,11 @@ config SSSD
 	select TEVENT
 	select LDB
 	select DING_LIBS
+	select LIBUNISTRING
 	select KRB5
 	select PAM
 	select OPENLDAP
-	select LIBPCRE
+	select LIBPCRE2
 	select C_ARES
 	select JANSSON
 	select GLIB

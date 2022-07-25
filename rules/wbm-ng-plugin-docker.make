@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by Marius Warning (marius.warning@wago.com), WAGO Kontakttechnik GmbH & Co. KG
+# Copyright (C) 2021 by Marius Warning (marius.warning@wago.com), WAGO GmbH & Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -83,7 +83,7 @@ $(STATEDIR)/wbm-ng-plugin-docker.targetinstall:
 	@$(call install_init, wbm-ng-plugin-docker)
 	@$(call install_fixup, wbm-ng-plugin-docker, PRIORITY, optional)
 	@$(call install_fixup, wbm-ng-plugin-docker, SECTION, base)
-	@$(call install_fixup, wbm-ng-plugin-docker, AUTHOR,"Marius Warning, WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, wbm-ng-plugin-docker, AUTHOR,"Marius Warning, WAGO GmbH \& Co. KG")
 	@$(call install_fixup, wbm-ng-plugin-docker, DESCRIPTION, missing)
 
 	# create target directory itself

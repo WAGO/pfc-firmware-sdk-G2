@@ -1,0 +1,8 @@
+## SECTION=initmethod_bbinit
+
+config DATAAGENT_PARAMETER_PROVIDER_DAEMON_STARTSCRIPT_BBINIT_LINK
+	string
+	depends on DATAAGENT_PARAMETER_PROVIDER_DAEMON_STARTSCRIPT
+	prompt "pp_cloudconnect"
+	default "S97_pp_cloudconnect"
+

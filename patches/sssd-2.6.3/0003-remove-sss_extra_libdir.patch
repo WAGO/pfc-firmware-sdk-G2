@@ -1,0 +1,54 @@
+--- a/src/build_macros.m4	2022-03-21 11:35:16.767138517 +0100
++++ b/src/build_macros.m4	2022-03-21 11:34:47.535250974 +0100
+@@ -41,10 +41,4 @@
+ dnl "-L$sss_extra_libdir ".
+ AC_DEFUN([SSS_AC_EXPAND_LIB_DIR],
+ [
+-    AC_REQUIRE([AC_LIB_PREPARE_PREFIX])
+-    dnl By default, look in $includedir and $libdir.
+-    AC_LIB_WITH_FINAL_PREFIX([
+-        eval additional_libdir=\"$libdir\"
+-    ])
+-    sss_extra_libdir="$additional_libdir"
+ ])
+--- a/src/external/libunistring.m4	2022-03-21 11:35:16.771138501 +0100
++++ b/src/external/libunistring.m4	2022-03-21 11:34:47.539250959 +0100
+@@ -5,7 +5,7 @@
+                   [u8_strlen],
+                   [UNISTRING_LIBS="-lunistring"],
+                   [AC_MSG_ERROR([No usable libunistring library found])],
+-                  [-L$sss_extra_libdir])],
++                  )],
+     [AC_MSG_ERROR([libunistring header files are not installed])]
+ )
+ 
+@@ -14,7 +14,7 @@
+                   [u8_casecmp],
+                   [UNISTRING_LIBS="-lunistring"],
+                   [AC_MSG_ERROR([No usable libunistring library found])],
+-                  [-L$sss_extra_libdir])],
++                  )],
+     [AC_MSG_ERROR([libunistring header files are not installed])]
+ )
+ 
+@@ -23,9 +23,6 @@
+                   [u8_check],
+                   [UNISTRING_LIBS="-lunistring"],
+                   [AC_MSG_ERROR([No usable libunistring library found])],
+-                  [-L$sss_extra_libdir])],
++                  )],
+     [AC_MSG_ERROR([libunistring header files are not installed])]
+ )
+-
+-
+-UNISTRING_LIBS="-L$sss_extra_libdir $UNISTRING_LIBS "
+--- a/src/external/libresolv.m4	2022-03-21 12:52:38.860719944 +0100
++++ b/src/external/libresolv.m4	2022-03-21 12:52:08.928841574 +0100
+@@ -7,6 +7,6 @@
+              [ns_name_compress],
+              [RESOLV_LIBS="-L$sss_extra_libdir -lresolv"],
+              [AC_MSG_WARN([No libresolv detected, some tests will not run])],
+-             [-L$sss_extra_libdir])
++             )
+ 
+ AM_CONDITIONAL([HAVE_LIBRESOLV], [test x"$RESOLV_LIBS" != "x"])

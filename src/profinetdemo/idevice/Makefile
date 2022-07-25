@@ -1,7 +1,7 @@
 ##----------------------------------------------------------------------------------------------------------------------
-### Copyright (c) WAGO Kontakttechnik GmbH & Co. KG
+### Copyright (c) WAGO GmbH & Co. KG
 ###
-### PROPRIETARY RIGHTS of WAGO Kontakttechnik GmbH & Co. KG are involved in
+### PROPRIETARY RIGHTS of WAGO GmbH & Co. KG are involved in
 ### the subject matter of this material. All manufacturing, reproduction,
 ### use, and sales rights pertaining to this subject matter are governed
 ### by the license agreement. The recipient of this software implicitly
@@ -12,11 +12,11 @@
 ###
 ###  \file     makefile
 ###
-###  \version  $Revision: 53944 $
+###  \version  $Revision: 65684 $
 ###
 ###  \brief    Makefile of the Profinet iDevice "C" Application
 ###
-###  \author   Dietrich Derksen : WAGO Kontakttechnik GmbH & Co. KG
+###  \author   Dietrich Derksen : WAGO GmbH & Co. KG
 ##----------------------------------------------------------------------------------------------------------------------
 
 #------------------------------------------------------------------------------

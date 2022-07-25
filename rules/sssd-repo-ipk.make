@@ -13,7 +13,10 @@ PACKAGES-$(PTXCONF_SSSD_REPO_IPK) += sssd-repo-ipk
 
 SSSD_REPO_IPK_VERSION	:= 1.0
 SSSD_REPO_IPK		:= sssd-repo-ipk-$(SSSD_REPO_IPK_VERSION)
-SSSD_DIR		:= $(BUILDDIR)/$(SSSD_REPO_IPK)
+SSSD_REPO_IPK_DIR	:= $(BUILDDIR)/$(SSSD_REPO_IPK)
+
+SSSD_REPO_IPK_REVISIONS_FILE	=	$(call ptx/get-alternative, projectroot, etc/REVISIONS)
+SSSD_REPO_IPK_FW_REVISION	:=	$(shell grep 'FIRMWARE=' "$(SSSD_REPO_IPK_REVISIONS_FILE)" | cut -d= -f2 | sed -e 's/(/_/g;s/)//g')
 
 # ----------------------------------------------------------------------------
 # Get
@@ -26,6 +29,8 @@ SSSD_DIR		:= $(BUILDDIR)/$(SSSD_REPO_IPK)
 # ----------------------------------------------------------------------------
 # Extract
 # ----------------------------------------------------------------------------
+
+SSSD_REPO_IPK_CONF_TOOL		:= NO
 
 #$(STATEDIR)/sssd-repo-ipk.extract:
 #	@$(call targetinfo)
@@ -43,22 +48,19 @@ SSSD_DIR		:= $(BUILDDIR)/$(SSSD_REPO_IPK)
 # Compile
 # ----------------------------------------------------------------------------
 
-#$(STATEDIR)/sssd-repo-ipk.compile:
-#	@$(call targetinfo)
-#	@$(call touch)
+$(STATEDIR)/sssd-repo-ipk.compile: $(STATEDIR)/sssd.targetinstall
+	@$(call targetinfo)
+	@mkdir $(SSSD_REPO_IPK_DIR)
+#	# create repo IPK for SSSD and dependencies
+	@$(PTXDIST_WORKSPACE)/scripts/sssd-helpers/make-meta-ipk-sssd.sh $(SSSD_REPO_IPK_VERSION) $(SSSD_REPO_IPK_FW_REVISION) $(SSSD_REPO_IPK_DIR)
+	@$(call touch)
 
 # ----------------------------------------------------------------------------
 # Install
 # ----------------------------------------------------------------------------
 
-$(STATEDIR)/sssd-repo-ipk.install: $(STATEDIR)/wago-custom-install.targetinstall
+$(STATEDIR)/sssd-repo-ipk.install:
 	@$(call targetinfo)
-
-	# create repo IPK for SSSD and dependencies
-	$(PTXDIST_WORKSPACE)/scripts/sssd-helpers/make-meta-ipk-sssd.sh $(SSSD_REPO_IPK_VERSION) $(SSSD_DIR)
-#      #$(PTXDIST_WORKSPACE)/scripts/bacnet-helpers/make-metaipk_bacnet.sh $(BACNET_VERSION) $(BACNETSTACK_REVISION) \
-#      #       $(PTXCONF_PROJECT) $(PTXCONF_PROJECT_VERSION) $(PTXCONF_OPKG_OPKG_CONF_HOST)
-
 	@$(call touch)
 
 # ----------------------------------------------------------------------------

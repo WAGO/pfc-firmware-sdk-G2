@@ -16,6 +16,7 @@ config LIBBACNETSTACK
 	select DAL
 	select LIBWAGODRM
 	select LIBXML2
+	select CDS3_INCLUDES
 	prompt "BACnet Stack"
 	help
 	  Build the BACnet stack as a static library. This software component is the BACnet communication stack.

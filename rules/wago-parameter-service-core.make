@@ -5,11 +5,11 @@
 #
 # This file is part of project parameter-service (PTXdist package wago-parameter-service-core).
 #
-# Copyright (c) 2019-2022 WAGO Kontakttechnik GmbH & Co. KG
+# Copyright (c) 2019-2022 WAGO GmbH & Co. KG
 #
 # Contributors:
-#   MP:  WAGO Kontakttechnik GmbH & Co. KG
-#   PEn: WAGO Kontakttechnik GmbH & Co. KG
+#   MP:  WAGO GmbH & Co. KG
+#   PEn: WAGO GmbH & Co. KG
 #######################################################################################################################
 # Makefile for PTXdist package wago-parameter-service-core.
 #
@@ -28,7 +28,7 @@ PACKAGES-$(PTXCONF_WAGO_PARAMETER_SERVICE_CORE) += wago-parameter-service-core
 
 ifndef PTXCONF_WAGO_PARAMETER_SERVICE_CORE_DEV
 
-WAGO_PARAMETER_SERVICE_CORE_VERSION        := 1.2.22-164192153776
+WAGO_PARAMETER_SERVICE_CORE_VERSION        := 1.2.26-165181965083
 WAGO_PARAMETER_SERVICE_CORE                := wago-parameter-service-core-$(WAGO_PARAMETER_SERVICE_CORE_VERSION)
 WAGO_PARAMETER_SERVICE_CORE_DIR            := $(BUILDDIR)/$(WAGO_PARAMETER_SERVICE_CORE)
 WAGO_PARAMETER_SERVICE_CORE_URL            := $(call jfrog_template_to_url, WAGO_PARAMETER_SERVICE_CORE)
@@ -194,7 +194,7 @@ $(STATEDIR)/wago-parameter-service-core.targetinstall:
 	@$(call install_init, wago-parameter-service-core)
 	@$(call install_fixup, wago-parameter-service-core,PRIORITY,optional)
 	@$(call install_fixup, wago-parameter-service-core,SECTION,base)
-	@$(call install_fixup, wago-parameter-service-core,AUTHOR,"PEn - WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, wago-parameter-service-core,AUTHOR,"PEn - WAGO GmbH \& Co. KG")
 	@$(call install_fixup, wago-parameter-service-core,DESCRIPTION,missing)
 
 #	@$(call install_lib, wago-parameter-service-core, 0, 0, 0755, libparaservcore)

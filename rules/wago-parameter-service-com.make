@@ -5,10 +5,10 @@
 #
 # This file is part of project parameter-service (PTXdist package wago-parameter-service-com).
 #
-# Copyright (c) 2021-2022 WAGO Kontakttechnik GmbH & Co. KG
+# Copyright (c) 2021-2022 WAGO GmbH & Co. KG
 #
 # Contributors:
-#   PEn: WAGO Kontakttechnik GmbH & Co. KG
+#   PEn: WAGO GmbH & Co. KG
 #######################################################################################################################
 # Makefile for PTXdist package wago-parameter-service-com.
 #
@@ -24,7 +24,7 @@ PACKAGES-$(PTXCONF_WAGO_PARAMETER_SERVICE_COM) += wago-parameter-service-com
 #
 # Paths and names
 #
-WAGO_PARAMETER_SERVICE_COM_VERSION        := 0.4.2
+WAGO_PARAMETER_SERVICE_COM_VERSION        := 0.6.0
 WAGO_PARAMETER_SERVICE_COM_MD5            :=
 WAGO_PARAMETER_SERVICE_COM_BASE           := parameter-service-com
 WAGO_PARAMETER_SERVICE_COM                := wago-$(WAGO_PARAMETER_SERVICE_COM_BASE)-$(WAGO_PARAMETER_SERVICE_COM_VERSION)
@@ -117,7 +117,7 @@ $(STATEDIR)/wago-parameter-service-com.targetinstall:
 	@$(call install_init, wago-parameter-service-com)
 	@$(call install_fixup, wago-parameter-service-com,PRIORITY,optional)
 	@$(call install_fixup, wago-parameter-service-com,SECTION,base)
-	@$(call install_fixup, wago-parameter-service-com,AUTHOR,"PEn - WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, wago-parameter-service-com,AUTHOR,"PEn - WAGO GmbH \& Co. KG")
 	@$(call install_fixup, wago-parameter-service-com,DESCRIPTION,missing)
 
 # only install .so if checked

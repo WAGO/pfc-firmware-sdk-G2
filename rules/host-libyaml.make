@@ -3,10 +3,10 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2021 WAGO Kontakttechnik GmbH & Co. KG
+# Copyright (c) 2021 WAGO GmbH & Co. KG
 #
 # Contributors:
-#   MaHe: WAGO Kontakttechnik GmbH & Co. KG
+#   MaHe: WAGO GmbH & Co. KG
 #######################################################################################################################
 #
 # For further information about the PTXdist project and license conditions

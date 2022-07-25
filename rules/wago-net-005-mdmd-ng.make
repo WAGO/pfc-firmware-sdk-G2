@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2019 by Wago Kontakttechnik GmbH & Co. KG
+# Copyright (C) 2019 by WAGO GmbH & Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_MDMD_NG) += mdmd-ng
 #
 # Paths and names
 #
-MDMD_NG_VERSION        := 0.15.0
+MDMD_NG_VERSION        := 0.15.2
 MDMD_NG_MD5            := 
 MDMD_NG                := mdmd-ng
 MDMD_NG_URL            := file://$(PTXDIST_WORKSPACE)/wago_intern/mdmd-ng

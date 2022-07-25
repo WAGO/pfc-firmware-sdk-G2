@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH & Co. KG
+# Copyright (C) 2021 by WAGO GmbH & Co. KG
 #
 # For further information about the PTXdist project and license conditions
 # see the README file.
@@ -71,7 +71,7 @@ $(STATEDIR)/tevent.targetinstall:
 	@$(call install_init, tevent)
 	@$(call install_fixup, tevent,PRIORITY,optional)
 	@$(call install_fixup, tevent,SECTION,base)
-	@$(call install_fixup, tevent,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, tevent,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, tevent,DESCRIPTION,missing)
 
 	@$(call install_lib, tevent, 0, 0, 0644, libtevent)

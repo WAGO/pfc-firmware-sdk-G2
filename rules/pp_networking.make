@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2021 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -105,7 +105,7 @@ $(STATEDIR)/pp_networking.targetinstall:
 	@$(call install_init, pp_networking)
 	@$(call install_fixup, pp_networking,PRIORITY,optional)
 	@$(call install_fixup, pp_networking,SECTION,base)
-	@$(call install_fixup, pp_networking,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, pp_networking,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, pp_networking,DESCRIPTION,missing)
 
 	@$(call install_copy, pp_networking, 0, 0, 0755, -, /usr/bin/pp_networking)

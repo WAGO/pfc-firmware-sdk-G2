@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH & Co. KG
+# Copyright (C) 2021 by WAGO GmbH & Co. KG
 #
 # For further information about the PTXdist project and license conditions
 # see the README file.
@@ -71,7 +71,7 @@ $(STATEDIR)/tdb.targetinstall:
 	@$(call install_init, tdb)
 	@$(call install_fixup, tdb,PRIORITY,optional)
 	@$(call install_fixup, tdb,SECTION,base)
-	@$(call install_fixup, tdb,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, tdb,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, tdb,DESCRIPTION,missing)
 
 	@$(call install_lib, tdb, 0, 0, 0644, libtdb)

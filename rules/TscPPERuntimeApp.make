@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2021 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -107,7 +107,7 @@ $(STATEDIR)/tscpperuntimeapp.targetinstall:
 	@$(call install_init, tscpperuntimeapp)
 	@$(call install_fixup, tscpperuntimeapp,PRIORITY,optional)
 	@$(call install_fixup, tscpperuntimeapp,SECTION,base)
-	@$(call install_fixup, tscpperuntimeapp,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, tscpperuntimeapp,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, tscpperuntimeapp,DESCRIPTION,missing)
 
 	@$(call install_lib, tscpperuntimeapp, 0, 0, 0644, libTscPPERuntimeApp)

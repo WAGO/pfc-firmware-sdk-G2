@@ -5,10 +5,10 @@
 #
 # This file is part of project parameter-service (PTXdist package wago-parameter-service).
 #
-# Copyright (c) 2019-2022 WAGO Kontakttechnik GmbH & Co. KG
+# Copyright (c) 2019-2022 WAGO GmbH & Co. KG
 #
 # Contributors:
-#   PEn: WAGO Kontakttechnik GmbH & Co. KG
+#   PEn: WAGO GmbH & Co. KG
 #######################################################################################################################
 # Makefile for PTXdist package wago-parameter-service.
 #
@@ -24,7 +24,7 @@ PACKAGES-$(PTXCONF_WAGO_PARAMETER_SERVICE) += wago-parameter-service
 #
 # Paths and names
 #
-WAGO_PARAMETER_SERVICE_VERSION        := 0.21.0-beta
+WAGO_PARAMETER_SERVICE_VERSION        := 0.22.1-beta
 WAGO_PARAMETER_SERVICE_MD5            :=
 WAGO_PARAMETER_SERVICE_BASE           := parameter-service
 WAGO_PARAMETER_SERVICE                := wago-$(WAGO_PARAMETER_SERVICE_BASE)-$(WAGO_PARAMETER_SERVICE_VERSION)
@@ -33,7 +33,6 @@ WAGO_PARAMETER_SERVICE_SRC_DIR        := $(PTXDIST_WORKSPACE)/wago_intern/$(WAGO
 WAGO_PARAMETER_SERVICE_BUILDROOT_DIR  := $(BUILDDIR)/$(WAGO_PARAMETER_SERVICE)
 WAGO_PARAMETER_SERVICE_DIR            := $(WAGO_PARAMETER_SERVICE_BUILDROOT_DIR)/src
 WAGO_PARAMETER_SERVICE_BUILD_DIR      := $(WAGO_PARAMETER_SERVICE_BUILDROOT_DIR)/bin/$(WAGO_PARAMETER_SERVICE_BUILDCONFIG)
-WAGO_PARAMETER_SERVICE_OPENAPI_DIR    := /var/www/openapi
 WAGO_PARAMETER_SERVICE_LICENSE        := WAGO
 WAGO_PARAMETER_SERVICE_PATH           := PATH=$(CROSS_PATH)
 WAGO_PARAMETER_SERVICE_BIN            := 
@@ -121,7 +120,7 @@ $(STATEDIR)/wago-parameter-service.targetinstall:
 	@$(call install_init, wago-parameter-service)
 	@$(call install_fixup, wago-parameter-service,PRIORITY,optional)
 	@$(call install_fixup, wago-parameter-service,SECTION,base)
-	@$(call install_fixup, wago-parameter-service,AUTHOR,"PEn - WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, wago-parameter-service,AUTHOR,"PEn - WAGO GmbH \& Co. KG")
 	@$(call install_fixup, wago-parameter-service,DESCRIPTION,missing)
 
 ifdef PTXCONF_WAGO_PARAMETER_SERVICE_LIB
@@ -157,12 +156,6 @@ endif
 endif # PTXCONF_WAGO_PARAMETER_SERVICE_DAEMON_STARTSCRIPT
 endif # PTXCONF_INITMETHOD_BBINIT
 endif # PTXCONF_WAGO_PARAMETER_SERVICE_DAEMON
-
-ifdef PTXCONF_WAGO_PARAMETER_SERVICE_OPENAPI
-	# create target directory itself
-	@$(call install_copy, wago-parameter-service, 0, 0, 0755, $(WAGO_PARAMETER_SERVICE_OPENAPI_DIR))
-	@$(call install_glob, wago-parameter-service, 0, 0, -, $(WAGO_PARAMETER_SERVICE_OPENAPI_DIR), '*/var/www/openapi/*.json')
-endif
 
 	@$(call install_finish, wago-parameter-service)
 

@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2021 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -105,7 +105,7 @@ endif
 #	@$(call install_init, pp_hostdomainname)
 #	@$(call install_fixup, pp_hostdomainname,PRIORITY,optional)
 #	@$(call install_fixup, pp_hostdomainname,SECTION,base)
-#	@$(call install_fixup, pp_hostdomainname,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+#	@$(call install_fixup, pp_hostdomainname,AUTHOR,"WAGO GmbH \& Co. KG")
 #	@$(call install_fixup, pp_hostdomainname,DESCRIPTION,missing)
 #
 #	@$(call install_lib, pp_hostdomainname, 0, 0, 0644, libpp_hostdomainname)

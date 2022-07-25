@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2021 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -105,7 +105,7 @@ $(STATEDIR)/pp_filetransfer.targetinstall:
 	@$(call install_init, pp_filetransfer)
 	@$(call install_fixup, pp_filetransfer,PRIORITY,optional)
 	@$(call install_fixup, pp_filetransfer,SECTION,base)
-	@$(call install_fixup, pp_filetransfer,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, pp_filetransfer,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, pp_filetransfer,DESCRIPTION,missing)
 
 	@$(call install_finish, pp_filetransfer)

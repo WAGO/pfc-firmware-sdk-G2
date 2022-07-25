@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2021 by WAGO Kontakttechnik GmbH \& Co. KG
+# Copyright (C) 2021 by WAGO GmbH \& Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -105,7 +105,7 @@ $(STATEDIR)/pp_update-hs.targetinstall:
 	@$(call install_init, pp_update-hs)
 	@$(call install_fixup, pp_update-hs,PRIORITY,optional)
 	@$(call install_fixup, pp_update-hs,SECTION,base)
-	@$(call install_fixup, pp_update-hs,AUTHOR,"WAGO Kontakttechnik GmbH \& Co. KG")
+	@$(call install_fixup, pp_update-hs,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, pp_update-hs,DESCRIPTION,missing)
 
 
