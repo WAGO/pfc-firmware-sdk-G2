@@ -2,7 +2,7 @@
 <firewall xmlns="http://www.wago.com/security/firewall"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://www.wago.com/security/firewall ebwlist.xsd">
-    <ethernet mode="whitelist">
+    <ethernet mode="all-allow">
         <log state="on" tag="FIRE_EBWL" limit="3/minute" burst="6" level="notice"/>
         <interfaces>
             <interface if="br0" state="open"/>

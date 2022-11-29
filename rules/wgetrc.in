@@ -1,0 +1,7 @@
+## SECTION=wago_specific
+
+config WGETRC
+	tristate
+	prompt "wgetrc"
+	help
+	  FIXME

@@ -11,7 +11,7 @@
 ///
 ///  \file     ipdatacheck.c
 ///
-///  \version  $Revision: 65689 $
+///  \version  $Revision: 70192 $
 ///
 ///  \brief    Check functions of network parameters.
 ///
@@ -366,12 +366,12 @@ static char *usage_text =
 
 static struct option long_options[] =
 {
-    { "verify-ip", no_argument, NULL, 'i' },
-    { "verify-unsigned", no_argument, NULL, 'u' },
-    { "verify-hostname", no_argument, NULL, 'n' },
-    { "verify-domain", no_argument, NULL, 'd' },
-    { "verify-netmask", no_argument, NULL, 'm'},
-    { "verify-route-dest", no_argument, NULL, 'r'},
+    { "verify-ip", required_argument, NULL, 'i' },
+    { "verify-unsigned", required_argument, NULL, 'u' },
+    { "verify-hostname", required_argument, NULL, 'n' },
+    { "verify-domain", required_argument, NULL, 'd' },
+    { "verify-netmask", required_argument, NULL, 'm'},
+    { "verify-route-dest", required_argument, NULL, 'r'},
     { "help", no_argument, NULL, 'h' }
 };
 
@@ -382,35 +382,48 @@ static int eval_options(int argc, char **argv, prgconf_t *prgconf)
     int c;
     prgconf->dbg_root = NULL;
     int option_index = 0;
-
+    
     while((c = getopt_long(argc, argv, "iundmrh", long_options, &option_index)) != -1)
     {
-        switch(c)
+        if(c == 'i')
         {
-        case 'i':
             prgconf->command = VERIFY_IP;
             break;
-        case 'u':
+        }
+        else if(c == 'u')
+        {
             prgconf->command = VERIFY_UNSIGNED;
             break;
-        case 'n':
+        }
+        else if(c == 'n')
+        {
             prgconf->command = VERIFY_HOSTNAME;
             break;
-        case 'd':
+        }
+        else if(c == 'd') {
+        
             prgconf->command = VERIFY_DOMAIN;
             break;
-        case 'm':
+        }
+        else if(c == 'm')
+        {
             prgconf->command = VERIFY_NETMASK;
             break;
-        case 'r':
+        }
+        else if(c == 'r')
+        {
             prgconf->command = VERIFY_ROUTE;
             break;
-        case 'h':
+        }
+        else if(c == 'h')
+        {
             printf(usage_text);
             exit(0);
             /*NOTREACHED*/
-        default:
-            erh_set_error(INVALID_PARAMETER, "Illegal command line option", "");
+        }
+        else
+        {
+            erh_set_error(MISSING_PARAMETER, "Illegal command line option", "");
             break;
         }
     }
@@ -423,12 +436,11 @@ int main(int argc, char **argv)
 {
     static prgconf_t prgconf;
     int exitcode = 0;
-
+    
     // Check for running as root and evaluate command line.
     erh_init(basename(argv[0]));
     int loptind = eval_options(argc, argv, &prgconf);
-    argc -= loptind;
-    argv += loptind;
+    
     if(NULL == prgconf.dbg_root)
     {
         erh_assert(0 == getuid(), SYSTEM_CALL_ERROR, "Not running as root. Abort.", "");
@@ -440,20 +452,23 @@ int main(int argc, char **argv)
     {
         int rc;
 
-        erh_assert(argc >= 1, MISSING_PARAMETER, "Missing ip address.", "");
-        rc = conv_ip_ascii2bin(argv[0], NULL);
+        erh_assert(argc >= 3, MISSING_PARAMETER, "Missing ip address.", "");
+        erh_assert(argc == 3, INVALID_PARAMETER, "Too many arguments. Only one input can be validated per call.", "");
+        rc = conv_ip_ascii2bin(argv[2], NULL);
         exitcode = (rc == 0 ? 0 : 1);
     }
     else if (prgconf.command == VERIFY_UNSIGNED)
     {
-        erh_assert(argc >= 1, MISSING_PARAMETER, "Missing value.", "");
-        (void)ascto32(argv[0], &exitcode);
+        erh_assert(argc >= 3, MISSING_PARAMETER, "Missing value.", "");
+        erh_assert(argc == 3, INVALID_PARAMETER, "Too many arguments. Only one input can be validated per call.", "");
+        (void)ascto32(argv[2], &exitcode);
     }
     else if (prgconf.command == VERIFY_DOMAIN)
     {
         exitcode = 1;
-        erh_assert(argc >= 1, MISSING_PARAMETER, "Missing dns domain name.", "");
-        if (ctlib_VerifyDomainName(argv[0]))
+        erh_assert(argc >= 3, MISSING_PARAMETER, "Missing dns domain name.", "");
+        erh_assert(argc == 3, INVALID_PARAMETER, "Too many arguments. Only one input can be validated per call.", "");
+        if (ctlib_IsValidDomainName(argv[2]))
         {
             exitcode = 0;
         }
@@ -461,8 +476,9 @@ int main(int argc, char **argv)
     else if (prgconf.command == VERIFY_HOSTNAME)
     {
         exitcode = 1;
-        erh_assert(argc >= 1, MISSING_PARAMETER, "Missing hostname.", "");
-        if (strstr(argv[0], ".") == NULL && ctlib_VerifyDomainName(argv[0]))
+        erh_assert(argc >= 3, MISSING_PARAMETER, "Missing hostname.", "");
+        erh_assert(argc == 3, INVALID_PARAMETER, "Too many arguments. Only one input can be validated per call.", "");
+        if (ctlib_IsValidHostname(argv[2]))
         {
             exitcode = 0;
         }
@@ -470,20 +486,21 @@ int main(int argc, char **argv)
     else if (prgconf.command == VERIFY_NETMASK)
     {
         int returncode;
-        erh_assert(argc >= 1, MISSING_PARAMETER, "Missing netmask." , "");
-        returncode = conv_netmask2dec(argv[0], NULL);
+        erh_assert(argc >= 3, MISSING_PARAMETER, "Missing netmask." , "");
+        erh_assert(argc == 3, INVALID_PARAMETER, "Too many arguments. Only one input can be validated per call.", "");
+        returncode = conv_netmask2dec(argv[2], NULL);
         exitcode = (returncode == 0 ? 0 : 1);
     }
     else if (prgconf.command == VERIFY_ROUTE)
     {
         int returncode;
-        erh_assert(argc >= 2, MISSING_PARAMETER, "Missing destination ip and destination mask." , "");
-
+        erh_assert(argc >= 4, MISSING_PARAMETER, "Missing destination ip and destination mask." , "");
+        erh_assert(argc == 4, INVALID_PARAMETER, "Too many arguments. Only one input can be validated per call.", "");
         uint32_t net_ip;
         uint32_t netmask;
-        returncode = conv_ip_ascii2bin(argv[0], &net_ip);
+        returncode = conv_ip_ascii2bin(argv[2], &net_ip);
         erh_assert(SUCCESS == returncode , INVALID_PARAMETER, "Invalid destination ip." , "");
-        returncode = conv_ip_ascii2bin(argv[1], &netmask);
+        returncode = conv_ip_ascii2bin(argv[3], &netmask);
         erh_assert(SUCCESS == returncode , INVALID_PARAMETER, "Invalid destination mask." , "");
         exitcode = ((net_ip & netmask) == net_ip) ? 0 : 1;
     }

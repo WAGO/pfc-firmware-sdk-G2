@@ -10,93 +10,58 @@
 # Firewall: codesys and codesys3 demons events handler
 #
 
-enabled=$(/etc/config-tools/firewall firewall --is-enabled)
-[[ "enabled" != $enabled ]] && exit 0
-
-
-switch_versions()
-{
-    local run2_state=`/usr/bin/xmlstarlet sel -N f=http://www.wago.com/security/firewall -T -t -v "/f:firewall/f:ipv4/f:service/f:rules/f:rule[1]/@state" /etc/firewall/services/codesysr.xml`
-    local run3_state=`/usr/bin/xmlstarlet sel -N f=http://www.wago.com/security/firewall -T -t -v "/f:firewall/f:ipv4/f:service/f:rules/f:rule[2]/@state" /etc/firewall/services/codesysr.xml`
-    local run2_port=`/usr/bin/xmlstarlet sel -N f=http://www.wago.com/security/firewall -T -t -v "/f:firewall/f:ipv4/f:service/f:rules/f:rule[1]/@dst_port" /etc/firewall/services/codesysr.xml`
-    local run3_port=`/usr/bin/xmlstarlet sel -N f=http://www.wago.com/security/firewall -T -t -v "/f:firewall/f:ipv4/f:service/f:rules/f:rule[2]/@dst_port" /etc/firewall/services/codesysr.xml`
-
-    local web2_state=`/usr/bin/xmlstarlet sel -N f=http://www.wago.com/security/firewall -T -t -v "/f:firewall/f:ipv4/f:service/f:rules/f:rule[1]/@state" /etc/firewall/services/codesysw.xml`
-    local web3_state=`/usr/bin/xmlstarlet sel -N f=http://www.wago.com/security/firewall -T -t -v "/f:firewall/f:ipv4/f:service/f:rules/f:rule[2]/@state" /etc/firewall/services/codesysw.xml`
-    local web2_port=`/usr/bin/xmlstarlet sel -N f=http://www.wago.com/security/firewall -T -t -v "/f:firewall/f:ipv4/f:service/f:rules/f:rule[1]/@dst_port" /etc/firewall/services/codesysw.xml`
-    local web3_port=`/usr/bin/xmlstarlet sel -N f=http://www.wago.com/security/firewall -T -t -v "/f:firewall/f:ipv4/f:service/f:rules/f:rule[2]/@dst_port" /etc/firewall/services/codesysw.xml`
-
-    local run2_port_new=`/etc/config-tools/get_rts3scfg_value PLC TcpIpPort`
-
-    local sta2="off"
-    local sta3="off"
-
-    [ "2" == "$1" ] && sta2="on"
-    [ "3" == "$1" ] && sta3="on"
-    [ "$run2_port" != "$run2_port_new" ] && run2_port=$run2_port_new && run2_state="invalid_state"
-
-    [ "$sta2" != "$run2_state" ] && /etc/config-tools/firewall codesysr --upd-rule 1 ${sta2} tcp - ${run2_port} >/dev/null 2>&1
-    [ "$sta3" != "$run3_state" ] && /etc/config-tools/firewall codesysr --upd-rule 2 ${sta3} tcp - ${run3_port} >/dev/null 2>&1
-
-    [ "$sta2" != "$web2_state" ] && /etc/config-tools/firewall codesysw --upd-rule 1 ${sta2} tcp - ${web2_port} >/dev/null 2>&1
-    [ "$sta3" != "$web3_state" ] && /etc/config-tools/firewall codesysw --upd-rule 2 ${sta3} tcp - ${web3_port} >/dev/null 2>&1
-}
+if [[ 'enabled' != "$(/etc/config-tools/firewall firewall --is-enabled)" ]]; then
+  exit 0
+fi
 
 start()
 {
-    local running=$(/etc/config-tools/get_plc_config)
-    local actionr="down"
-    local actionw="down"
-    local action_opcua="down"
-    local action_bacnet="down"
+    local action_runtime; action_runtime='down'
+    local action_webvisu; action_webvisu='down'
+    local action_opcua;   action_opcua='down'
+    local action_bacnet;  action_bacnet='down'
+    local runtime_active; runtime_active=$(/etc/config-tools/get_plc_config)
 
-    switch_versions $running
+    if [[ 1 == $runtime_active ]] ; then
 
-    if [[ "2" == $running ]] ; then
+        action_runtime='up'
 
-        local stater=$(/etc/config-tools/get_rts3scfg_value PLC DisableTcpIpProgramming)
-        [[ "NO" == $stater ]] && actionr="up"
+        if [[ 'enabled' == "$(/etc/config-tools/get_port_state codesys3-webserver)" ]]; then
+            action_webvisu='up'
+        fi
+        if [[ 'enabled' == "$(/etc/config-tools/config_opcua state)" ]]; then
+            action_opcua='up'
+        fi
 
-        local statew=$(/etc/config-tools/get_port_state codesys-webserver)
-        [[ "enabled" == $statew ]] && actionw="up"
-
-    elif [[ "3" == $running ]] ; then
-
-        actionr="up"
-        local statew=$(/etc/config-tools/get_port_state codesys3-webserver)
-        [[ "enabled" == $statew ]] && actionw="up"
-
-        action_opcua="up"
-        local state_opcua=$(/etc/config-tools/config_opcua state)
-        [[ "enabled" == $state_opcua ]] && action_opcua="up"
-
-        if [[ -f "/etc/config-tools/bacnet_config" ]]; then
-          action_bacnet="up"
-          local state_bacnet=$(/etc/config-tools/bacnet_config -g config-state)
-          [[ "true" == $state_bacnet ]] && action_bacnet="up"
+        if [[ -x '/etc/config-tools/bacnet_config' ]]; then
+            if [[ 'true' == "$(/etc/config-tools/bacnet_config -g config-state)" ]]; then
+                action_bacnet='up'
+            fi
         fi
     fi
 
-    /etc/config-tools/firewall codesysr --apply ${actionr} >/dev/null 2>&1
-    /etc/config-tools/firewall codesysw --apply ${actionw} >/dev/null 2>&1
-    /etc/config-tools/firewall bacnet --apply ${action_bacnet} >/dev/null 2>&1
+    /etc/config-tools/firewall codesysr --apply "${action_runtime}"
+    /etc/config-tools/firewall codesysw --apply "${action_webvisu}"
+    /etc/config-tools/firewall opcua --apply "${action_opcua}"
 
-    if [[ ! -f "/etc/config-tools/config-opcua" ]]; then
-        /etc/config-tools/firewall opcua --apply ${action_opcua} >/dev/null 2>&1
+    if [[ -x '/etc/config-tools/bacnet_config' ]]; then
+        /etc/config-tools/firewall bacnet --apply "${action_bacnet}"
     fi
 }
- 
 
 stop()
 {
-    /etc/config-tools/firewall codesysr --apply down >/dev/null 2>&1
-    /etc/config-tools/firewall codesysw --apply down >/dev/null 2>&1
-    /etc/config-tools/firewall bacnet --apply down >/dev/null 2>&1
+    /etc/config-tools/firewall codesysr --apply down
+    /etc/config-tools/firewall codesysw --apply down
+    /etc/config-tools/firewall opcua --apply down
 
-    if [[ ! -f "/etc/config-tools/config-opcua" ]]; then
-        /etc/config-tools/firewall opcua --apply down >/dev/null 2>&1
+    if [[ -x '/etc/config-tools/bacnet_config' ]]; then
+        /etc/config-tools/firewall bacnet --apply down
     fi
 }
+
+exec 1>'/dev/null'
+exec 2>&1
 
 case "$1" in
     start|config)

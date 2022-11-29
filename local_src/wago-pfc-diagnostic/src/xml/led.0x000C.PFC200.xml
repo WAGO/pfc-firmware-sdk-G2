@@ -4,7 +4,7 @@
 <led name="U6" number="0" state="STATIC_OFF" id="00010500" />
 <led name="SYS" number="1" state="STATIC_GRN" id="000000C0" />
 <led name="U5"  number="2" state="STATIC_OFF" id="00010400" />
-<led name="RUN"  number="3" state="STATIC_OFF" id="00040004" />
+<led name="RUN"  number="3" state="STATIC_OFF" id="00110001" />
 <led name="U4"  number="4" state="STATIC_OFF" id="00010300" />
 <led name="IO"  number="5" state="STATIC_OFF" id="2FFFFFFF" />
 <led name="U3" number="6" state="STATIC_OFF" id="00010200" />

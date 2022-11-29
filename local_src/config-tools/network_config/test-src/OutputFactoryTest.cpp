@@ -41,7 +41,15 @@ TEST_F(OutputFactoryTest, NullOutput) {
 
 TEST_F(OutputFactoryTest, FilenameOutput) {
 
-  PutToVM("error-msg-dst"s, "bla"s);
+  PutToVM("error-msg-dst"s, "<ignored>"s);
+
+  auto output = OutputFactory::Create(map);
+  EXPECT_EQ(typeid(FileOutput), typeid(*output));
+}
+
+TEST_F(OutputFactoryTest, OutputToLastError) {
+
+  PutToVM("write-last-error"s);
 
   auto output = OutputFactory::Create(map);
   EXPECT_EQ(typeid(FileOutput), typeid(*output));
@@ -63,4 +71,3 @@ TEST_F(OutputFactoryTest, QuietIsPrefered) {
 }
 
 }  // namespace network_config
-

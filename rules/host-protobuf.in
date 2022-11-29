@@ -1,5 +1,0 @@
-## SECTION=hosttools_noprompt
-
-config HOST_PROTOBUF
-	tristate
-  select HOST_CMAKE

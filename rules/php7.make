@@ -18,13 +18,15 @@ PACKAGES-$(PTXCONF_PHP7) += php7
 #
 # Paths and names
 #
-PHP7_VERSION	:= 7.4.28
-PHP7_MD5	:= ca4f40f41d028465bc810c007c3ed935
-PHP7		:= php-$(PHP7_VERSION)
-PHP7_SUFFIX	:= tar.xz
-PHP7_SOURCE	:= $(SRCDIR)/$(PHP7).$(PHP7_SUFFIX)
-PHP7_DIR	:= $(BUILDDIR)/$(PHP7)
-PHP7_LICENSE		:= PHP License
+PHP7_BASE_VERSION  := 7.4.30
+PHP7_VERSION       := $(PHP7_BASE_VERSION)+wago1
+PHP7_ARCHIVE_NAME  := php-$(PHP7_BASE_VERSION)
+PHP7_MD5           := c373c0ea292e8a1d3e87a1153ee64199
+PHP7               := php-$(PHP7_VERSION)
+PHP7_SUFFIX        := tar.xz
+PHP7_SOURCE        := $(SRCDIR)/$(PHP7_ARCHIVE_NAME).$(PHP7_SUFFIX)
+PHP7_DIR           := $(BUILDDIR)/$(PHP7)
+PHP7_LICENSE       := PHP License
 
 #
 # Note: older releases are moved to the 'museum', but the 'de.php.net'
@@ -32,10 +34,10 @@ PHP7_LICENSE		:= PHP License
 # URL first
 #
 PHP7_URL := \
-	https://www.php.net/distributions/$(PHP7).$(PHP7_SUFFIX) \
-	http://museum.php.net/php7/$(PHP7).$(PHP7_SUFFIX) \
-	http://de.php.net/distributions/$(PHP7).$(PHP7_SUFFIX) \
-	http://de2.php.net/get/$(PHP7).$(PHP7_SUFFIX)/from/this/mirror
+	https://www.php.net/distributions/$(PHP7_ARCHIVE_NAME).$(PHP7_SUFFIX) \
+	http://museum.php.net/php7/$(PHP7_ARCHIVE_NAME).$(PHP7_SUFFIX) \
+	http://de.php.net/distributions/$(PHP7_ARCHIVE_NAME).$(PHP7_SUFFIX) \
+	http://de2.php.net/get/$(PHP7_ARCHIVE_NAME).$(PHP7_SUFFIX)/from/this/mirror
 
 # ----------------------------------------------------------------------------
 # Extract

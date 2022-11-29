@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_MDMD_NG) += mdmd-ng
 #
 # Paths and names
 #
-MDMD_NG_VERSION        := 0.15.2
+MDMD_NG_VERSION        := 0.15.4
 MDMD_NG_MD5            := 
 MDMD_NG                := mdmd-ng
 MDMD_NG_URL            := file://$(PTXDIST_WORKSPACE)/wago_intern/mdmd-ng
@@ -147,6 +147,7 @@ $(STATEDIR)/mdmd-ng.targetinstall:
 	@$(call install_copy, mdmd-ng, 0, 0, 0750, -, /usr/bin/mdmd-ng_wrapper)
 	@$(call install_copy, mdmd-ng, 0, 0, 0750, -, /etc/init.d/mdmd-ng)
 	@$(call install_copy, mdmd-ng, 0, 0, 0750, -, /etc/config-tools/config_mdmd-ng)
+	@$(call install_copy, mdmd-ng, 0, 0, 0750, -, /etc/config-tools/config_mdmd-ng_wrapper)
 	@$(call install_copy, mdmd-ng, 0, 0, 0750, -, /etc/config-tools/backup-restore/mdmd-ng_backup_restore)
 	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/mdmd-ng/settings.json)
 	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/mdmd-ng/libmodem.rc)
@@ -186,6 +187,7 @@ endif
 
 # Install sudoers.d file
 	@$(call install_copy, mdmd-ng, 0, 0, 0444, -, /etc/sudoers.d/config_mdmd-ng)
+	@$(call install_copy, mdmd-ng, 0, 0, 0444, -, /etc/sudoers.d/config_mdmd-ng_wrapper)
 
 # Install link to ec25.qmi_func due to usage of the qmi wwwan driver
 ifdef PTXCONF_MDMD_NG_EC25_QMI

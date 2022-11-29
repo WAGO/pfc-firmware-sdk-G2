@@ -2325,118 +2325,6 @@
     
   </event>
 </eventclass>
-<eventclass class_range="x0004" name="codesys">
-  <event id="x0000" name="Prg_Running">
-    <led name="RUN" state="STATIC_GRN">
-    </led>
-    <string>
-        <en>PLC-Program is running</en>
-      </string>
-    <rststr>
-        <en>PLC-Program stopped</en>
-      </rststr>
-  </event>
-  <event id="x0001" name="Reset-Warm">
-    <led name="RUN" state="FLASH_OFF_RED">
-      <on>300</on>
-    </led>
-    <string>
-        <en>warm reset performed</en>
-      </string>
-    
-  </event>
-  <event id="x0002" name="Reset-Cold">
-    <led name="RUN" state="FLASH_OFF_RED">
-      <on>1000</on>
-    </led>
-    <string>
-        <en>cold reset performed</en>
-      </string>
-    
-  </event>
-  <event id="x0003" name="PLC-up">
-    <led name="RUN" default="only" state="STATIC_RED">
-    </led>
-    <string>
-        <en>PLC is ready and stopped</en>
-      </string>
-    
-  </event>
-  <event id="x0004" name="PLC-down">
-    <led name="RUN" default="yes" state="STATIC_OFF">
-    </led>
-    <string>
-        <en>PLC is shut down</en>
-      </string>
-    
-  </event>
-  <event id="x0005" name="PLC-at-bp">
-    <led name="RUN" state="BLINK_GRN">
-      <on>500</on>
-      <off>500</off>
-    </led>
-    <string>
-        <en>PLC-Program stopped at Breakpoint</en>
-      </string>
-    
-  </event>
-  <event id="x0006" name="PLC-switchstop-at-bp">
-    <led name="RUN" state="BLINK_GRN_RED">
-      <on>500</on>
-      <off>500</off>
-    </led>
-    <string>
-        <en>PLC-Program stopped at Breakpoint</en>
-      </string>
-    
-  </event>
-  <event id="x0007" name="PLC-no-Bootproject">
-    <led name="SYS" state="BLINK_GRN">
-      <on>500</on>
-      <off>500</off>
-    </led>
-    <string>
-        <en>No Bootproject loaded</en>
-      </string>
-    
-  </event>
-  <event id="x0008" name="BootFailure">
-    <led name="RUN" state="BLINK_RED">
-      <on>50</on>
-      <off>50</off>
-    </led>
-    <string>
-        <en>PLC-Boot Failure</en>
-      </string>
-    
-  </event>
-  <event id="x0009" name="Reset-Warm-run">
-    <led name="RUN" state="FLASH_OFF_GRN">
-      <on>300</on>
-    </led>
-    <string>
-        <en>warm reset performed but PLC is already running</en>
-      </string>
-    
-  </event>
-  <event id="x000A" name="Reset-Cold-run">
-    <led name="RUN" state="FLASH_OFF_GRN">
-      <on>1000</on>
-    </led>
-    <string>
-        <en>cold reset performed but PLC is already running</en>
-      </string>
-    
-  </event>
-</eventclass>
-<eventclass class_range="x0005" name="IEC-Custom">
-  <event id="x0000" name="Custom-LogId">
-    <string>
-        <en>Example log entry</en>
-      </string>
-    
-  </event>
-</eventclass>
 <eventclass class_range="x0006" name="DPS">
   <event id="x0000" name="PROCESS_PLC_CONFIGURATION" persistent="none">
     <led name="DIA" state="STATIC_GRN">
@@ -3038,32 +2926,6 @@
     </led>
     <string>
         <en>The CAN device has been closed</en>
-      </string>
-    
-  </event>
-</eventclass>
-<eventclass class_range="x000D" name="cpulimit">
-  <event id="x0000" name="cpu_usage_low" persistent="none">
-    <led name="SYS" state="STATIC_GRN">
-    </led>
-    <string>
-            <en>CPU usage is low $1%.</en>
-        </string>
-    
-  </event>
-  <event id="x0001" name="cpu_usage_med" persistent="none">
-    <led name="SYS" state="STATIC_YLW">
-    </led>
-    <string>
-        <en>CPU usage is medium $1%</en>
-      </string>
-    
-  </event>
-  <event id="x0002" name="cpu_usage_high">
-    <led name="SYS" state="STATIC_RED">
-    </led>
-    <string>
-        <en>High CPU usage detected $1%</en>
       </string>
     
   </event>
@@ -3675,6 +3537,42 @@
     </led>
     <string>
         <en>drm eval-mode expired</en>
+      </string>
+    
+  </event>
+  <event id="x0010" name="CHECK_EXPLICIT_LICENSE_FAILED">
+    <string>
+        <en>License demand not met [type=$1,code=$2]</en>
+      </string>
+    
+  </event>
+  <event id="x0011" name="CHECK_EXPLICIT_LICENSE_SUCCESSFUL">
+    <string>
+        <en>License demand met [type=$1,code=$2]</en>
+      </string>
+    
+  </event>
+  <event id="x0012" name="CHECK_EXPLICIT_LICENSE_SUCCESSFUL_EVAL">
+    <string>
+        <en>License demand met by evaluation mode [type=$1,code=$2]</en>
+      </string>
+    
+  </event>
+  <event id="x0013" name="CHECK_CREDIT_LICENSE_FAILED">
+    <string>
+        <en>Credit demand not met [type=$1,credits=$2]</en>
+      </string>
+    
+  </event>
+  <event id="x0014" name="CHECK_CREDIT_LICENSE_SUCCESSFUL">
+    <string>
+        <en>Credit demand met [type=$1,credits=$2]</en>
+      </string>
+    
+  </event>
+  <event id="x0015" name="CHECK_CREDIT_LICENSE_SUCCESSFUL_EVAL">
+    <string>
+        <en>Credit demand met by evaluation mode [type=$1,credits=$2]</en>
       </string>
     
   </event>

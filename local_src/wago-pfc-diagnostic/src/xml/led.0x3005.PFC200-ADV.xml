@@ -11,7 +11,7 @@
 <led name="H12"  number="3" state="STATIC_OFF" id="00000004" >
 <alias>NS</alias>
 </led>
-<led name="RUN" number="4" state="STATIC_OFF" id="00040004" />
+<led name="RUN" number="4" state="STATIC_OFF" id="00110001" />
 <led name="APP" number="5" state="STATIC_OFF" id="00010000" >
 <alias>U1</alias>
 </led>

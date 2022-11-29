@@ -8,6 +8,9 @@ config PP_MEMORYCARD
 	select LIBCOMMONHEADER
 	select NLOHMANN_JSON
 	select LIBARCHIVE
+	select GSL
+	select HDPARM
+	select GLIB
 	prompt "pp_memorycard"
 	help
 	  Parameter provider for memorycard settings

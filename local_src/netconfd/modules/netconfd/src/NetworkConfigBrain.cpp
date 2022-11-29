@@ -17,6 +17,7 @@
 #include "LinkMode.hpp"
 #include "Logger.hpp"
 #include "NetDevManager.hpp"
+#include "Status.hpp"
 #include "TypesHelper.hpp"
 
 namespace netconf {
@@ -450,7 +451,7 @@ void NetworkConfigBrain::ReplaceSystemToLabelInterfaces(BridgeConfig &config) co
   return jc.ToJsonString(status);
 }
 
-::std::string NetworkConfigBrain::TempFixIp() {
+::std::string NetworkConfigBrain::SetTemporaryFixIp() {
   auto status = ip_manager_.ApplyTempFixIpConfiguration();
 
   if (status.IsOk()) {
@@ -458,6 +459,12 @@ void NetworkConfigBrain::ReplaceSystemToLabelInterfaces(BridgeConfig &config) co
   } else {
     LogError("Set temp fix IP: " + status.ToString());
   }
+  return jc.ToJsonString(status);
+}
+
+std::string NetworkConfigBrain::SetTemporaryDHCPClientID(const ::std::string& clientID) 
+{
+  Status status = ip_manager_.SetDhcpClientID(clientID);
   return jc.ToJsonString(status);
 }
 

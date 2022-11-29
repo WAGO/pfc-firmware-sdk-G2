@@ -65,10 +65,13 @@ void BOOTPClient::Start() {
 
   LOG_DEBUG("Run Bootp client for interface " + itf_name_);
 
-  auto argv_array = make_array(BOOTP_SCRIPT_PATH.c_str(), "start", itf_name_.c_str(), nullptr);
+  ::std::vector<const char *> options{BOOTP_SCRIPT_PATH.c_str(),
+                                      "start",
+                                      itf_name_.c_str(),
+                                      nullptr};
 
   GError *g_error = nullptr;
-  auto spawned = g_spawn_async(nullptr, const_cast<gchar**>(argv_array.data()), nullptr, G_SPAWN_DEFAULT, nullptr,  // NOLINT(cppcoreguidelines-pro-type-const-cast)
+  auto spawned = g_spawn_async(nullptr, const_cast<gchar**>(options.data()), nullptr, G_SPAWN_DEFAULT, nullptr,  // NOLINT(cppcoreguidelines-pro-type-const-cast)
                                nullptr, &pid_, &g_error);
 
   if (spawned != TRUE) {
@@ -96,8 +99,9 @@ void BOOTPClient::Renew() {
   Start();
 }
 
-void BOOTPClient::Restart(::std::string hostname){
-  (void)hostname;
-}
+void BOOTPClient::RestartWithHostname([[maybe_unused]] ::std::string hostname){}
+  
+void BOOTPClient::RestartWithClientID([[maybe_unused]] ::std::string clientID){}
+  
 
 } /* namespace netconf */

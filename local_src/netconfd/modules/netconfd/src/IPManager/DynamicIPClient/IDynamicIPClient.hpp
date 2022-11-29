@@ -27,7 +27,8 @@ class IDynamicIPClient {
   virtual void Release() = 0;
   virtual void Renew() = 0;
 
-  virtual void Restart(::std::string hostname) = 0;
+  virtual void RestartWithHostname(::std::string hostname) = 0;
+  virtual void RestartWithClientID(::std::string clientID) = 0;
 
   virtual DynamicIPType GetType() = 0;
 

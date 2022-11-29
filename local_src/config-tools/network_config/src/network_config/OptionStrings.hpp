@@ -41,6 +41,8 @@ struct Options {
     { "dsa-mode", "Set or Get dsa-mode configuration." };
   const Option fix_ip
     { "fix-ip", "Set fixed ip (192.168.1.17)" };
+  const Option dhcp_clientid
+    { "dhcp-clientid", "Set dhcp client ip (Machine_1)" };
   const Option dip_switch_config
     { "dip-switch-config", "Set or get DIP switch configuration. Caution: mode and last address byte cannot be changed." };
   const Option dynamic_ip_event
@@ -67,8 +69,13 @@ struct Options {
     { "help", "Print usage information about this tool" };
   const Option quiet
     { "quiet", "Suppress any outout to the console" };
+    // note:
+    // letting the caller (i.e. wbm) write to arbitrary locations as root opens the door for all kinds of security issues
+    // as a workaround: keep this option but ignore its parameter and only write to /tmp/last_error.txt
   const Option error_msg_dst
-    { "error-msg-dst", "filename where error messages are put into", "<filename>" };
+    { "error-msg-dst", "deprecated: is replaced with write-last-error option", "<ignored>" };
+  const Option write_last_error
+    { "write-last-error", "write error messages to /tmp/last_error.txt"};
   const Option dryrun
     { "dryrun", "do not actually write anything just validate the request" };
   // @formatter:on

@@ -5,7 +5,6 @@ config LIBWIDEOMS
 	prompt "libwideoms"
 	default n
 	select OMS
-	select PLCLINUXRT
 	help
 	  This package contains thebinding for CoDeSys to use the operating mode switch
 

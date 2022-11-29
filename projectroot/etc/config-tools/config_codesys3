@@ -125,9 +125,9 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
 fi
 
 # Check that codesys3 is running
-if [ "$($CTDIR/get_plc_config)" != "3" ];then
+if [ "$($CTDIR/get_plc_config)" != "1" ];then
     status=$INTERNAL_ERROR
-    emessage="No e!RUNTIME active. Cannot change configuration."
+    emessage="No codesys3 active. Cannot change configuration."
     ReportError $status $emessage
     SetLastError $emessage
     exit $status    
@@ -152,18 +152,18 @@ fi
 
 # Do the config changes.
 if [ "$newState" ]; then
-    emessage="Setting e!RUNTIME webserver state failed."
+    emessage="Setting codesys3 webserver state failed."
     setCs3WebServerState $newState
 elif [ "$newBootProjectLocation" ]; then
-    emessage="Setting e!RUNTIME boot project location failed."
+    emessage="Setting codesys3 boot project location failed."
     setCs3FilePath $newBootProjectLocation
 elif [ "$newPortAuth" ]; then
-    emessage="Setting e!RUNTIME port authentication failed."
+    emessage="Setting codesys3 port authentication failed."
     setCs3SecureLogin $newPortAuth
 fi
 status=$?
 
-/etc/init.d/codesys3 start > /dev/null 2>&1
+/etc/init.d/runtime start > /dev/null 2>&1
 if [ "$status" != "$SUCCESS" ]; then
     ReportError $status $emessage
     SetLastError $emessage

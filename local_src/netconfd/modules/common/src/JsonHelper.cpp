@@ -71,8 +71,8 @@ json IPConfigsToNJson(const IPConfigs &ip_configs) {
 
 json BridgeConfigToNJson(const BridgeConfig &bridge_config, const FirmwareVersion &target_fw) {
   auto j = json(bridge_config);
-  if (target_fw.GetFirmwareIndex() == 15) {
-    /* FW 15 needs br1 in bridge config in order to work cerrectly */
+  if (target_fw.IsEqualToMajorMinorOf(FIRMWARE_15)) {
+    /* FW 15 needs br1 in bridge config in order to work correctly */
     if (not j.contains("br1")) {
       j["br1"] = json::array();
     }
@@ -297,10 +297,12 @@ static json InterfaceConfigToNJson_fw15(const InterfaceConfig &interface_config)
 json InterfaceConfigsToNJson(const InterfaceConfigs &interface_configs, const FirmwareVersion &target_fw) {
   /* We changed the interface config json format in fw 16, so we need this ugly hack to generate a different config */
 
-  auto interfaceConfigToNJsonFn = (target_fw.GetFirmwareIndex() == 15) ? &InterfaceConfigToNJson_fw15
-                                  : (target_fw.GetFirmwareIndex() > 15 && target_fw.GetFirmwareIndex() < 22)
-                                      ? &InterfaceConfigToNJson_lower_than_fw22
-                                      : &InterfaceConfigToNJson;
+  auto interfaceConfigToNJsonFn =
+      (target_fw.IsEqualToMajorMinorOf(FIRMWARE_15)) ?
+          &InterfaceConfigToNJson_fw15 :
+          (target_fw.IsGreaterThanMajorMinorOf(FIRMWARE_15) && target_fw.IsLessThanMajorMinorOf(FIRMWARE_22)) ?
+              &InterfaceConfigToNJson_lower_than_fw22 :
+              &InterfaceConfigToNJson;
 
   if (interface_configs.size() > 1) {
     nlohmann::json jarray{};

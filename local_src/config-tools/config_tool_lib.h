@@ -203,7 +203,8 @@ void ctlib_ConfigSetString(config_t     config,
                            char const * pValue,
                            void       * pPrivate);
 
-int  ctlib_VerifyDomainName(char const * szName);
+int ctlib_IsValidHostname(char const * szName);
+int ctlib_IsValidDomainName(char const * szName);
 
 int  ctlib_IpaddrToInt(char const * szIpAddr,
                        uint32_t   * pResult);

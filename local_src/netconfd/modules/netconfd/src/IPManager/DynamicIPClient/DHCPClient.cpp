@@ -1,18 +1,22 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "DHCPClient.hpp"
-#include "CollectionUtils.hpp"
 
 #include <glib.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <array>
+#include <boost/filesystem.hpp>
 #include <csignal>
 #include <cstdlib>
+#include <optional>
+#include <string>
 #include <thread>
-#include <boost/filesystem.hpp>
+#include <vector>
 
+#include "CollectionUtils.hpp"
 #include "Logger.hpp"
 
 namespace netconf {
@@ -26,17 +30,14 @@ void RemoveFile(::std::string path) {
   }
 }
 
-}
+}  // namespace
 
-DHCPClient::DHCPClient(const ::std::string &itf_name, const ::std::string &hostname, const ::std::string &vendorclass)
-    : pid_ { },
-      hostname_ { hostname },
-      vendorclass_ { vendorclass } {
+DHCPClient::DHCPClient(::std::string itf_name, ::std::string hostname, ::std::string vendorclass,
+                       ::std::string clientid)
+    : pid_{}, itf_name_{::std::move(itf_name)}, hostname_{::std::move(hostname)}, vendorclass_{::std::move(vendorclass)}, clientID_{::std::move(clientid)} {
 
-  itf_name_ = itf_name;
   pid_file_path_ = "/var/run/udhcpc_" + itf_name_ + ".pid";
-
-  Start(hostname, vendorclass);
+  Start();
 }
 
 DHCPClient::~DHCPClient() {
@@ -44,8 +45,8 @@ DHCPClient::~DHCPClient() {
 }
 
 void DHCPClient::Release() {
-  LOG_DEBUG(
-      "DHCPClient::Release | Send SIGUSR2 to dhcp client for interface " + itf_name_ + " to release its ip address");
+  LOG_DEBUG("DHCPClient::Release | Send SIGUSR2 to dhcp client for interface " + itf_name_ +
+            " to release its ip address");
   kill(pid_, SIGUSR2);
 }
 
@@ -79,7 +80,7 @@ Netmask DHCPClient::GetNetmaskFromLease() {
 }
 
 static void OnProcessStop(GPid pid, gint status, gpointer user_data) {
-  (void) user_data;
+  (void)user_data;
   GError *err = nullptr;
   if (g_spawn_check_exit_status(status, &err) == FALSE) {
     LOG_DEBUG("Stopped DHCP client with pid " + ::std::to_string(pid) + " and exit status abnormally");
@@ -97,27 +98,50 @@ static void OnProcessStop(GPid pid, gint status, gpointer user_data) {
   // otherwise the child process will stay around as a zombie until this
   // process exits.
   g_spawn_close_pid(pid);
-
 }
 
-void DHCPClient::Restart(::std::string hostname) {
+void DHCPClient::RestartWithHostname(::std::string hostname) {
+  LOG_DEBUG("DHCP client restart with hostname: " + hostname);
   hostname_ = hostname;
 
   Stop();
-  Start(hostname_, vendorclass_);
+  Start();
 }
 
-void DHCPClient::Start(const ::std::string &hostname, const ::std::string &vendorclass) {
+void DHCPClient::RestartWithClientID(::std::string clientID) {
+  LOG_DEBUG("DHCP client restart with clientID: " + clientID);
+  clientID_ = clientID;
 
-  ::std::string hostname_option = "hostname:" + hostname;
+  Stop();
+  Start();
+}
 
-  auto options = make_array(DHCP_CLIENT_PATH.c_str(), "--foreground", "--interface", itf_name_.c_str(), "--vendorclass",
-                            vendorclass.c_str(), "--pidfile", pid_file_path_.c_str(), "-x", hostname_option.c_str(),
-                            "--syslog", "-R", nullptr);
+void DHCPClient::Start() {
+  auto hostname_option = "hostname:" + hostname_;
+  auto clientid_option = "61:'" + clientID_ + "'";
+
+  ::std::vector<const char *> options{DHCP_CLIENT_PATH.c_str(),
+                                      "--syslog",
+                                      "--foreground",
+                                      "--interface",
+                                      itf_name_.c_str(),
+                                      "--vendorclass",
+                                      vendorclass_.c_str(),
+                                      "--pidfile",
+                                      pid_file_path_.c_str(),
+                                      "-R",
+                                      "-x",
+                                      hostname_option.c_str()};
+  if (not clientID_.empty()) {
+    options.emplace_back("-x");
+    options.emplace_back(clientid_option.c_str());
+  }
+  options.push_back(nullptr);
 
   GError *g_error = nullptr;
-  auto spawned = g_spawn_async(nullptr, const_cast<gchar**>(options.data()), nullptr, G_SPAWN_DO_NOT_REAP_CHILD,  // NOLINT(cppcoreguidelines-pro-type-const-cast)
-                               nullptr, nullptr, &pid_, &g_error);
+  auto spawned    = g_spawn_async(nullptr, const_cast<gchar **>(options.data()), nullptr, // NOLINT(cppcoreguidelines-pro-type-const-cast)
+                                  G_SPAWN_DO_NOT_REAP_CHILD,
+                                  nullptr, nullptr, &pid_, &g_error);
 
   LOG_DEBUG("Started DHCP Client for interface " + itf_name_ + ", pid: " + ::std::to_string(pid_));
   if (g_error != nullptr) {
@@ -137,15 +161,14 @@ void DHCPClient::Start(const ::std::string &hostname, const ::std::string &vendo
   } else {
     LogError("Failed to spawn DHCP client for interface " + itf_name_);
   }
-
 }
 
 void DHCPClient::Stop() {
   /*
-   * TODO: Besser wäre hier ein SIGTERM. Damit der udhcp client das deconfig aufruft, selbstständig sein Lease File löscht
-   * und sich ordnungsgemäß beim DHCP-Server abmeldet. Dies führt aber dazu, dass kurzzeitig zwei Clients aktiv sind, wenn man
-   * eine schnelle umkonfiguration vornimmt (dhcp -> static -> dhcp). Wenn sich dann der erste Client beendet und am Ende
-   * das deconfig aufruft, löscht er das Lease des neu gestarteten Clients.
+   * TODO: Besser wäre hier ein SIGTERM. Damit der udhcp client das deconfig aufruft, selbstständig sein Lease File
+   * löscht und sich ordnungsgemäß beim DHCP-Server abmeldet. Dies führt aber dazu, dass kurzzeitig zwei Clients aktiv
+   * sind, wenn man eine schnelle umkonfiguration vornimmt (dhcp -> static -> dhcp). Wenn sich dann der erste Client
+   * beendet und am Ende das deconfig aufruft, löscht er das Lease des neu gestarteten Clients.
    */
   if (0 == kill(pid_, SIGKILL)) {
     LOG_DEBUG("Stopped DHCP Client for interface " + itf_name_ + ", pid: " + ::std::to_string(pid_));

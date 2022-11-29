@@ -369,6 +369,10 @@ void IPManager::OnHostnameChanged() {
   dyn_ip_client_admin_.RestartAllClients(hostname_manager_.GetHostname());
 }
 
+Status IPManager::SetDhcpClientID(const ::std::string& client_id) {
+  return dyn_ip_client_admin_.SetClientIDAndRestartAllClients(client_id);
+}
+
 bool IPManager::HasToBePersisted(const IPConfig &ip_config) const {
   auto netdev = netdev_manager_.GetByName(ip_config.interface_);
   if (netdev && (netdev->GetKind() && persistetDevices)) {

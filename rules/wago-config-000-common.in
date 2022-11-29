@@ -484,7 +484,7 @@ config CT_CONFIG_MODBUS
 config CT_CHANGE_RTS_CONFIG
   bool
   default n
-  depends on CONFIG_TOOLS && PLCLINUXRT
+  depends on CONFIG_TOOLS && (PLCLINUXRT || PLC_CODESYS_V3)
   prompt "change_rts3s_config"
   help
    Edit rts3s settings
@@ -493,7 +493,7 @@ config CT_CHANGE_RTS_CONFIG
 config CT_CONFIG_CODESYS3
   bool
   default n
-  depends on CONFIG_TOOLS && PLCLINUXRT
+  depends on CONFIG_TOOLS && PLC_CODESYS_V3
   prompt "config_codesys3"
   help
    Set codesys3 configuration options.
@@ -502,7 +502,7 @@ config CT_CONFIG_CODESYS3
 config CT_GET_RTS3SCFG_VALUE
   bool
   default n
-  depends on CONFIG_TOOLS && PLCLINUXRT
+  depends on CONFIG_TOOLS && (PLCLINUXRT || PLC_CODESYS_V3)
   prompt "get_rts3scfg_value"
   help
    Parse /etc/rts3s.cfg file.

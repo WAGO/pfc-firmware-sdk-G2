@@ -30,7 +30,6 @@ FW_EB_WLIST_XSD="$FW_EB/ebwlist.xsd"   # path to XML Schema file describing the 
 FW_EB_WLIST_XSL="$FW_EB/ebwlist.xsl"   # path to xslt style sheet used to transform ebwlist.xml into end ebwlist.rls form.
 FW_EB_RULES_AA="$FW_EB/ebwlist.aa.rls" # path to link-layer all-allow rules file
 FW_EB_RULES="$FW_EB/ebwlist.rls"       # path to link-layer rules file
-FW_EB_RULES_TEMP="/tmp/ebwlist.tmp"    # path to link-layer rules temporary file
 
 
 print_help()
@@ -94,7 +93,10 @@ check_prerequisites()
 
 set_firewall()
 {
-    local is_changed=0
+    local FW_EB_RULES_TEMP
+    # path to link-layer rules temporary file
+    FW_EB_RULES_TEMP="$(mktemp -p /tmp ebwlist.rls.XXXXXX)"
+
     if [[ "${FW_EB_TRANSFORM:-true}" != "false" ]]; then
         $FW_XST val --xsd $FW_EB_WLIST_XSD "$FW_EB_WLIST_XML" >/dev/null 2>&1
         result1=$?
@@ -103,27 +105,26 @@ set_firewall()
         if [[ $result1 -eq 0 ]] && [[ $result2 -eq 0 ]]; then
             $FW_XST tr "$FW_EB_WLIST_XSL" "$FW_EB_WLIST_XML" >"$FW_EB_RULES_TEMP"
             remove_duplicate_lines "$FW_EB_RULES_TEMP"
-            cmp "$FW_EB_RULES_TEMP" "$FW_EB_RULES" >/dev/null 2>&1
-            if [[ $? -ne 0 ]]; then
-                mv $FW_EB_RULES_TEMP "$FW_EB_RULES"
-                is_changed=1
+            if ! cmp -s "${FW_EB_RULES_TEMP}" "${FW_EB_RULES}"; then
+                # move file in two steps to replace file atomic
+                mv "${FW_EB_RULES_TEMP}" "${FW_EB}/" &&
+                mv "${FW_EB}/$(basename "${FW_EB_RULES_TEMP}")" "${FW_EB_RULES}" ||
+                (rm -f "${FW_EB_RULES_TEMP}"; rm -f "${FW_EB}/$(basename "$FW_EB_RULES_TEMP")")
                 sync
+            else
+                rm -f "${FW_EB_RULES_TEMP}"
             fi  
         else
             eblog "err" "$FW_EB_WLIST_XML or $FW_PARAMS_XML failed to validate. Setting all-allow mode."
             cp "$FW_EB_RULES_AA" "$FW_EB_RULES"
-            is_changed=1
             sync
         fi
     fi
-    if [[ $is_changed -ne 0 ]]; then
-        $FW_EBR >/dev/null 2>&1 <"$FW_EB_RULES"
-        if [[ $? -ne 0 ]]; then
-            eblog "err" "Failed do set-up link-layer firewall!"
-        fi
-    else
-        eblog "notice" "Link-layer firewall is not changed."
-    fi    
+
+    $FW_EBR >/dev/null 2>&1 <"$FW_EB_RULES"
+    if [[ $? -ne 0 ]]; then
+         eblog "err" "Failed do set-up link-layer firewall!"
+    fi
 }
 
 clean_firewall()

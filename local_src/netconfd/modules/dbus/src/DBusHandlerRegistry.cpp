@@ -51,6 +51,8 @@ DBusHandlerRegistry::DBusHandlerRegistry() {
 
   GSignalConnect(ip_config_, "handle-tempfixip", TemporaryFixIP, this);
 
+  GSignalConnect(ip_config_, "handle-settempdhcpclientid", SetTemporaryDHCPClientID, this);
+
   GSignalConnect(ip_config_, "handle-getdipswitchconfig", GetDipSwitchConfig, this);
 
   GSignalConnect(ip_config_, "handle-setdipswitchconfig", SetDipSwitchConfig, this);
@@ -328,6 +330,21 @@ gboolean DBusHandlerRegistry::TemporaryFixIP(netconfdIp_config *object, GDBusMet
   }
   return true;
 }
+
+gboolean DBusHandlerRegistry::SetTemporaryDHCPClientID(netconfdIp_config *object, GDBusMethodInvocation *invocation,
+                                          const gchar *arg_config, gpointer user_data) {
+  auto this_ = reinterpret_cast<DBusHandlerRegistry*>(user_data);
+
+  if (this_->set_tempdhcpclientid_handler_) {
+    auto result = this_->set_tempdhcpclientid_handler_(arg_config);
+    netconfd_ip_config_complete_set(object, invocation, result.c_str());
+  } else {
+    g_dbus_method_invocation_return_dbus_error(invocation, "de.wago.netconfd1.ip_config.Error.Set",
+                                               "No Handler for SetTemporaryDHCPClientID request");
+  }
+  return true;
+}
+
 
 gboolean DBusHandlerRegistry::GetDipSwitchConfig(netconfdIp_config *object, GDBusMethodInvocation *invocation,
                                                  gpointer user_data) {

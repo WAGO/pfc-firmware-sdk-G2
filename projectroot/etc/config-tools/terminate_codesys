@@ -25,15 +25,13 @@ if [[ ! -f /etc/config-tools/get_runtime_config ]]; then
     exit 255
 fi
 
-# general definitions
-SUCCESS=0
-
 RUNTIME_VERSION=$(/etc/config-tools/get_runtime_config running-version)
 
 PROCESS_NAME=""
 
 case "$RUNTIME_VERSION" in
     0) exit $SUCCESS;; # no runtime set - nothing to do
+    1) PROCESS_NAME="codesys3";;
     2) PROCESS_NAME="plclinux_rt";;
     3) PROCESS_NAME="codesys3";;
     *) exit $EXECUTABLE_ERROR

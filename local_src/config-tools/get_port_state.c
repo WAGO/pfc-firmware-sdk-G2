@@ -11,7 +11,7 @@
 ///
 ///  \file     get_port_config.c
 ///
-///  \version  $Revision: 65689 $1
+///  \version  $Revision: 68603 $1
 ///
 ///  \brief    
 ///

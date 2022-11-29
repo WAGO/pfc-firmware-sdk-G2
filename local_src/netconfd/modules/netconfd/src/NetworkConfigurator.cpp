@@ -179,8 +179,13 @@ NetworkConfiguratorImpl::NetworkConfiguratorImpl(InterprocessCondition &start_co
   });
 
   dbus_handler_registry_.RegisterTempFixIpHandler([this]() -> ::std::string {
-    LogDebug("DBUS Req: TempFixIp");
-    return this->network_config_brain_.TempFixIp();
+    LogDebug("DBUS Req: SetTemporaryFixIp");
+    return this->network_config_brain_.SetTemporaryFixIp();
+  });
+
+  dbus_handler_registry_.RegisterSetTempDHCPClientIDHandler([this](std::string data) {
+    LogDebug("DBUS Req: SetTemporaryDHCPClientID");
+    return this->network_config_brain_.SetTemporaryDHCPClientID(data);
   });
 
   dbus_handler_registry_.RegisterGetDipSwitchConfigHandler([this](std::string &data) -> std::string {

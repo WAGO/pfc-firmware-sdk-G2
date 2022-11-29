@@ -7,6 +7,7 @@
 #include "BaseTypes.hpp"
 #include "IDynamicIPClient.hpp"
 #include "DynamicIPType.hpp"
+#include "Status.hpp"
 
 namespace netconf {
 
@@ -24,7 +25,9 @@ class IDynamicIPClientAdministrator{
   virtual IDynamicIPClientPtr AddClient(DynamicIPType type, const ::std::string &itf_name, const ::std::string &hostname)  = 0;
   virtual void DeleteClient(const ::std::string &itf_name)  = 0;
   virtual IDynamicIPClientPtr GetClient(const ::std::string &itf_name) const  = 0;
+
   virtual void RestartAllClients(const ::std::string& hostname) = 0;
+  virtual Status SetClientIDAndRestartAllClients(::std::string clientid) = 0;
 };
 
 } /* namespace netconf */

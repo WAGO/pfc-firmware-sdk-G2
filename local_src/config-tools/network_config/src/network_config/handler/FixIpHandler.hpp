@@ -22,8 +22,6 @@ class FixIpHandler : public IHandler {
 
   void Execute() override;
  private:
-  void SetConfig();
-
   ::std::function<void()> execute_;
 };
 

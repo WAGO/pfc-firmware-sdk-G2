@@ -1182,105 +1182,65 @@ int ctlib_ConfigSaveChanges(config_t   portConfig,
 }
 
 
+static int IsMatchingPattern(char const * szString, char const * szRegex)
+{
+  GError *err = NULL;
+  GRegex *regex;
+  int is_matching_pattern = 0;
+
+  regex = g_regex_new(szRegex, 0, 0, &err);
+  if (err == NULL)
+  {
+    GMatchInfo *match_info;
+
+    g_regex_match(regex, szString, 0, &match_info);
+    is_matching_pattern = (g_match_info_matches(match_info) == TRUE) ? 1 : 0;
+
+    g_match_info_free(match_info);
+  }
+  else
+  {
+    g_error_free (err);
+  }
+
+  g_regex_unref(regex);
+
+  return is_matching_pattern;
+}
+
+/**
+ * @brief Check for valid hostnames.
+ *
+ * A hostname string has maximum length of 63 characters and only contains
+ * ascii-characters a-z, A-Z, 0-9 and '-', but no '-' at start of label"
+ *
+ * @param name  Hostname to check.
+ *
+ * @return 1 (true)  Hostname valid
+ *         0 (false) Hostname invalid
+ */
+int ctlib_IsValidHostname(char const * szName)
+{
+  return IsMatchingPattern(szName, "(?=^.{0,63}$)[0-9A-Za-z](?:(?:[0-9A-Za-z]|-){0,61}[0-9A-Za-z])?$");
+}
+
 /**
  * @brief Check for valid domain names.
  *
- * A domain name string has maximum length of 255 chararcters. The string consists of labels each max 63
- * characters long, separated by dots.
+ * A domain name string has maximum length of 255 characters. The string consists of labels each max 63
+ * characters long, separated by dots. Each label contains only ascii-characters a-z, A-Z, 0-9 and '-',
+ * but no '-' at start of the label.
  *
  * @param name  Domain name to check.
  *
- * @return != 0 (true)  Domain name valid
+ * @return 1 (true)  Domain name valid
  *         0 (false)    Domain name invalid 
  */
-
-// Map character code to character class for state machine to check a domain name. Available classes:
-//   0 = Illegal character
-//   1 = digits
-//   2 = alphabetic
-//   3 = Hyphen
-//   4 = Label terminating '.'
-//   5 = String terminating '\0'
-static char dom_cclass[] = 
+int ctlib_IsValidDomainName(char const * szName)
 {
-  5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 4, 0,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
-  0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0,
-  0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-};
-
-// States of the domain name check routine.
-typedef enum
-{
-  ERR = -1,
-  STOP = 0,
-  START,
-  INLABEL,
-  HYPHEN                         // Input character was a hyphen
-} dom_state;
-
-// Domain check state transition table.
-static dom_state dom_transitions[] =
-{
-  /*             ill. digit    letter   -       .      \0 */
-  /* STOP */     ERR, ERR,     ERR,     ERR,    ERR,   ERR,
-  /* START */    ERR, ERR,     INLABEL, ERR,    ERR,   ERR,
-  /* INLABEL */  ERR, INLABEL, INLABEL, HYPHEN, START, STOP,
-  /* HYPHEN */   ERR, INLABEL, INLABEL, HYPHEN, ERR,   ERR,
-};
-
-// Statemachine to check domain/host name according to RFC 1034.
-int ctlib_VerifyDomainName(char const * szName)
-{
-  bool isname = true;
-  int labelidx = 0;
-  int max_label_size = 0;
-  int charidx = 0;
-  dom_state state = START;
-  while(state > 0 && isname && charidx <= 255)
-  {
-    unsigned int c = *szName & 255;
-    int ccl = dom_cclass[c];
-    dom_state nstate = dom_transitions[state * 6 + ccl];
-    switch(state)
-    {
-    case START:
-      isname = (ccl == 2);
-      labelidx = -1;
-      break;
-    case INLABEL:
-      isname = (ccl > 0);
-      break;
-    case HYPHEN:
-      isname = (ccl == 1 || ccl == 2 || ccl == 3);
-      break;
-    case STOP:
-      labelidx = -1;
-      break;
-    default:
-      break;
-    }
-    state = nstate;
-    szName++;
-    labelidx++;
-    charidx++;
-
-    if (max_label_size < labelidx) { max_label_size = labelidx; }
-  }
-  return (isname && (state == STOP) && (max_label_size < 64));
+  return IsMatchingPattern(szName, "(?=^.{1,255}$)(?!^.*\\.\\d+$)[0-9A-Za-z](?:(?:[0-9A-Za-z]|-){0,61}[0-9A-Za-z])?(?:\\.[0-9A-Za-z](?:(?:[0-9A-Za-z]|-){0,61}[0-9A-Za-z])?)*$");
 }
+
 
 /**
  * @brief Convert ip address from ascii to unsigned int

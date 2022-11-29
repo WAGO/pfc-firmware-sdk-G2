@@ -36,7 +36,6 @@ config CANOPENWIDE
     default n
 	prompt "CANopen WIDE Library "
 	select CANOPEN
-	select PLCLINUXRT
  	help
 	  Build a CAN Master and Slave WAGO I/O Extension Library for using with CoDeSys Runtime System
 endif
@@ -63,7 +62,6 @@ config LIBMBSWIDE
     default n
     prompt "Modbus Slave WIDE Library"
     select LIBMBS
-    select PLCLINUXRT
     help
         Modbus Slave WAGO I/O Extension Library for using with CoDeSys Runtime System
 endif

@@ -64,6 +64,7 @@ class IPManager : public IIPManager, public INetDevEvents, public IIPLinks, publ
                        ::std::string netmask) override;
   void OnDynamicIPEvent(const ::std::string &interface, DynamicIPEventAction action) override;
   void OnHostnameChanged() override;
+  Status SetDhcpClientID(const ::std::string& client_id) override;
 
  private:
   Status Configure(const IPConfigs &config);

@@ -24,17 +24,27 @@ config CDS3_IODRVDAL
 menu "Codesys 3 Configuration Libraries"
 
 
-menuconfig CDS3_IODRVKBUS
+config CDS3_IODRVKBUS
 	bool "Io Driver Kbus"
 	default n
 	select LIBPACKBUS
 	select CDS3_IODRVDAL
 	select CDS3_INCLUDES
+	select CDS3_TSCIODRVKBUS
 	select CDS3_TSCEXTTASK
 	select CDS3_TSCLED
 	help
 		Builds and installs the Kbus device Driver.
 
+
+config CDS3_TSCIODRVKBUS
+	bool "KBUS communication helper"
+	default n
+	select CODESYS3
+	select CDS3_INCLUDES
+	select CDS3_IODRVDAL
+	help
+		Builds and installs communication helper for KBUS Driver.
 
 
 config CDS3_IODRVDPS

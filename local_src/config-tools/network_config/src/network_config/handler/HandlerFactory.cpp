@@ -1,28 +1,29 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
-#include <ReloadHostConfHandler.hpp>
 #include "HandlerFactory.hpp"
 
+#include <ReloadHostConfHandler.hpp>
 #include <memory>
 
 #include "BackupRestoreHandler.hpp"
 #include "BridgeConfigHandler.hpp"
+#include "DHCPClientIDHandler.hpp"
+#include "DSAModeHandler.hpp"
 #include "DeviceInfoHandler.hpp"
 #include "DipSwitchHandler.hpp"
-#include "DSAModeHandler.hpp"
-#include "FixIpHandler.hpp"
-#include "InterfaceConfigHandler.hpp"
-#include "IPConfigHandler.hpp"
-#include "MacAddressHandler.hpp"
 #include "DynamicIPEventHandler.hpp"
-#include "OptionStrings.hpp"
+#include "FixIpHandler.hpp"
+#include "IPConfigHandler.hpp"
+#include "InterfaceConfigHandler.hpp"
 #include "InterfaceStatusHandler.hpp"
+#include "MacAddressHandler.hpp"
+#include "OptionStrings.hpp"
 
 namespace network_config {
 
 ::std::unique_ptr<IHandler> HandlerFactory::CreateHandler(const OptionParser &parser) {
   const auto &opts = GetOptions();
-  const auto &map = parser.GetVariableMap();
+  const auto &map  = parser.GetVariableMap();
 
   if (parser.IsSet(opts.bridge_config.name)) {
     return ::std::make_unique<BridgeConfigHandler>(map);
@@ -42,8 +43,8 @@ namespace network_config {
   } else if (parser.IsSet(opts.interface_status.name)) {
     return ::std::make_unique<InterfaceStatusHandler>(map);
 
-  } else if (parser.IsSet(opts.backup.name) || parser.IsSet(opts.restore.name)
-      || parser.IsSet(opts.get_backup_parameter_count.name)) {
+  } else if (parser.IsSet(opts.backup.name) || parser.IsSet(opts.restore.name) ||
+             parser.IsSet(opts.get_backup_parameter_count.name)) {
     return ::std::make_unique<BackupRestoreHandler>(map);
 
   } else if (parser.IsSet(opts.dsa_mode.name)) {
@@ -51,6 +52,9 @@ namespace network_config {
 
   } else if (parser.IsSet(opts.fix_ip.name)) {
     return ::std::make_unique<FixIpHandler>();
+
+  } else if (parser.IsSet(opts.dhcp_clientid.name)) {
+    return ::std::make_unique<DCHPClientIDHandler>(map);
 
   } else if (parser.IsSet(opts.dip_switch_config.name)) {
     return ::std::make_unique<DipSwitchHandler>(map);

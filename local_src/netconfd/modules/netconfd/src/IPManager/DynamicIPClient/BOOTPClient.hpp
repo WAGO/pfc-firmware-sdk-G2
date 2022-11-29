@@ -25,7 +25,8 @@ class BOOTPClient : public IDynamicIPClient {
 
   DynamicIPType GetType() override;
 
-  void Restart(::std::string hostname) override;
+  void RestartWithHostname(::std::string hostname) override;
+  void RestartWithClientID(::std::string clientID) override;
 
   void UpdateContentFromLease() override;
   Address GetAddressFromLease() override;

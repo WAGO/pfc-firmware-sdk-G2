@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <string>
 
+#include "OptionStrings.hpp"
 #include "Utils.hpp"
 
 using std::string;
@@ -108,6 +109,7 @@ po::options_description OptionParser::CreateDescriptions() const {
     (options_.get_backup_parameter_count.name, options_.get_backup_parameter_count.description)
     (options_.dsa_mode.name, options_.dsa_mode.description)
     (options_.fix_ip.name, options_.fix_ip.description)
+    (options_.dhcp_clientid.name, options_.dhcp_clientid.description)
     (options_.dynamic_ip_event.name, options_.dynamic_ip_event.description)
     (options_.reload_host_conf.name, options_.reload_host_conf.description);
 
@@ -199,6 +201,7 @@ po::options_description OptionParser::CreateDescriptions() const {
     (options_.error_msg_dst.name,
      po::value<::std::string>()->value_name(options_.error_msg_dst.parameter),
      options_.error_msg_dst.description)
+    (options_.write_last_error.name, options_.write_last_error.description)
     (options_.dryrun.name, options_.dryrun.description);
   // @formatter:on
   options.add(operations).add(fields).add(formats).add(misc);
@@ -215,7 +218,7 @@ void OptionParser::Parse(int argc, const char **argv) {
   MutuallyExclusiveAndOnlyOnce(map_, options_.bridge_config, options_.interface_config, options_.ip_config,
                                options_.dip_switch_config, options_.mac_address, options_.device_info,
                                options_.interface_status, options_.backup, options_.restore,
-                               options_.get_backup_parameter_count, options_.dsa_mode, options_.fix_ip,
+                               options_.get_backup_parameter_count, options_.dsa_mode, options_.fix_ip, options_.dhcp_clientid,
                                options_.dynamic_ip_event, options_.reload_host_conf, options_.help);
 
   OptionalAndMutuallyExclusive(map_, options_.error_msg_dst, options_.quiet);
@@ -231,7 +234,10 @@ void OptionParser::Parse(int argc, const char **argv) {
     throw po::error(::std::string("Both options netmask and prefix are set although they are mutually exclusive"));
   }
 
-  ExpectValueOrField(map_, options_.set.name, fields_.device.name);
+  //To reset clientID it is allowed to set an empty value.
+  if(map_.count("dhcp-clientid") == 0){
+    ExpectValueOrField(map_, options_.set.name, fields_.device.name);
+  }
   ExpectValueOrField(map_, options_.mac_address.name, fields_.device.name);
 }
 

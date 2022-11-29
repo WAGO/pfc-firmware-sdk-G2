@@ -1,7 +1,7 @@
 ## -*-makefile-*-
 # $Id$
 #
-# Copyright (C) 2013 by WAGO GmbH & Co. KG
+# Copyright (C) 2013-2022 by WAGO GmbH & Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -78,8 +78,7 @@ CDS3_IODRVKBUS_MAKE_ENV  := $(CROSS_ENV)
 #CDS3_IODRVKBUS_MAKE_OPT += "DBGMODE=-g3"
 #CDS3_IODRVKBUS_MAKE_OPT += "OPTIMIZE=-O3"
 
-#this switch is Temporary and needs to be removed when switching to CODESYS Only developement
-CDS3_IODRVKBUS_MAKE_OPT += "SCAN_MODULES=$(PTXCONF_PFC_200_G2_CDS3)"
+CDS3_IODRVKBUS_MAKE_OPT += "DEP_CDS3_IODRVKBUS=$(PTXCONF_CDS3_IODRVKBUS)"
 
 
 $(STATEDIR)/cds3-iodrvkbus.compile:

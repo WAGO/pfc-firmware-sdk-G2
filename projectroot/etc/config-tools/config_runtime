@@ -253,25 +253,6 @@ cds2_config_serial_programming()
   return $?
 }
 
-print_possible_rts()
-{
-  local REQUEST=$@
-  local FIRST=0
-  local POSSIBLE_RUNTIMES=$(/etc/config-tools/get_possible_runtimes)
-  for POSSIBLE in $POSSIBLE_RUNTIMES
-  do
-    if [[ $REQUEST == *$POSSIBLE* ]]
-    then
-      if [ $FIRST -eq 1 ]
-      then
-        printf " | "
-      fi
-      printf "%s" $POSSIBLE
-      FIRST=1
-    fi
-  done
-}
-
 ###################### MAIN ############################
 
 # show help-text if requested
@@ -289,14 +270,16 @@ if [ "$1" = "-h" -o "$1" = "--help" ]; then
     echo "or     config_runtime [cfg-version=<cfg-version-value>] comm-port=<comm-port-value>"
     echo
     echo "-w|--wait                   on start of the runtime wait for termination of init script"
-    echo "<runtime-version-value>     = $(print_possible_rts 0 2 3)   Run the requested PLC runtime or none if arg = 0."
-    echo "                                          If -w|--wait option is present, config_runtime waits"
-    echo "                                          until the runtime is started. Otherwise startup of"
-    echo "                                          runtime occurs in background."
+    echo "<runtime-version-value>     = 0 | 1 | 2 | 3   Run the requested PLC runtime or none if arg = 0."
+    echo "                                              0 = None, 1 = CODESYS3, 2 = CODESYS2, 3 = e!Runtime."
+    echo "                                              If -w|--wait option is present, config_runtime waits"
+    echo "                                              until the runtime is started. Otherwise startup of"
+    echo "                                              runtime occurs in background."
     echo "<default-webpage-value>     = WBM | Webvisu"
     echo "<restart-server-value>      = YES | NO    Restart system webserver. Defaults to YES."
-    echo "<cfg-version-value>         = $(print_possible_rts 2 3)  Change config of given PLC runtime version."
-    echo "                                          Defaults to running version"
+    echo "<cfg-version-value>         = 1 | 2 | 3   Change config of given PLC runtime version."
+    echo "                                          1 = CODESYS3, 2 = CODESYS2, 3 = e!Runtime."
+    echo "                                          Defaults to running version."
     echo "<homedir-on-sdcard-value>   = enabled | disabled"
     echo "<webserver-state-value>     = enabled | disabled"
     echo "<authentication-value>      = enabled | disabled"
@@ -356,6 +339,10 @@ if [ ! "$NEW_RUNTIME_VERSION" -a ! "$NEW_DEFAULT_WEBPAGE" -a ! "$NEW_HOMEDIR_SD"
         status=$INVALID_PARAMETER
         SetLastError "Need valid runtime version to change config for"
         exit $status
+    fi
+    # support cds3 native
+    if [ "$CONFIG_SET" == "1" ]; then
+        CONFIG_SET=3
     fi
 fi
 
@@ -463,27 +450,27 @@ elif [ "$NEW_RUNTIME_VERSION" ] && [ "$NEW_RUNTIME_VERSION" != "$CURRENT_RUNTIME
             ;;
 
         1)  bg_wbm_webserver "$RESTART_SERVER" &
-            sleep 5
+            sleep 2
             start_runtime
             if [ "$WAIT_OPTION" ]; then
                 wait
-                sleep 10
+                sleep 5
             fi
             ;;
 
         2)  bg_cds_webserver &
             bg_wbm_webserver "$RESTART_SERVER" &
-            sleep 5
+            sleep 2
             start_runtime
             [ "$WAIT_OPTION" ] && wait
             ;;
 
         3)  bg_wbm_webserver "$RESTART_SERVER" &
-            sleep 5
+            sleep 2
             start_runtime
             if [ "$WAIT_OPTION" ]; then
                 wait
-                sleep 10
+                sleep 5
             fi
             ;;
 

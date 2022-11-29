@@ -376,6 +376,11 @@ struct _netconfdIp_configIface
     GDBusMethodInvocation *invocation,
     const gchar *arg_config);
 
+  gboolean (*handle_settempdhcpclientid) (
+    netconfdIp_config *object,
+    GDBusMethodInvocation *invocation,
+    const gchar *arg_config);
+
   gboolean (*handle_tempfixip) (
     netconfdIp_config *object,
     GDBusMethodInvocation *invocation);
@@ -418,6 +423,11 @@ void netconfd_ip_config_complete_getallcurrent (
     const gchar *result);
 
 void netconfd_ip_config_complete_tempfixip (
+    netconfdIp_config *object,
+    GDBusMethodInvocation *invocation,
+    const gchar *result);
+
+void netconfd_ip_config_complete_settempdhcpclientid (
     netconfdIp_config *object,
     GDBusMethodInvocation *invocation,
     const gchar *result);
@@ -552,6 +562,26 @@ gboolean netconfd_ip_config_call_tempfixip_finish (
 
 gboolean netconfd_ip_config_call_tempfixip_sync (
     netconfdIp_config *proxy,
+    gchar **out_result,
+    GCancellable *cancellable,
+    GError **error);
+
+void netconfd_ip_config_call_settempdhcpclientid (
+    netconfdIp_config *proxy,
+    const gchar *arg_config,
+    GCancellable *cancellable,
+    GAsyncReadyCallback callback,
+    gpointer user_data);
+
+gboolean netconfd_ip_config_call_settempdhcpclientid_finish (
+    netconfdIp_config *proxy,
+    gchar **out_result,
+    GAsyncResult *res,
+    GError **error);
+
+gboolean netconfd_ip_config_call_settempdhcpclientid_sync (
+    netconfdIp_config *proxy,
+    const gchar *arg_config,
     gchar **out_result,
     GCancellable *cancellable,
     GError **error);

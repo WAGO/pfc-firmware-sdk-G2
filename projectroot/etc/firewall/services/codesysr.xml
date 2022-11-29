@@ -13,7 +13,6 @@
                 <interface state="on"  if="VPN"/>
             </interfaces>
             <rules>
-                <rule state="on" proto="tcp" dst_port="2455"/>
                 <rule state="on" proto="tcp" dst_port="11740"/>
             </rules>
         </service>

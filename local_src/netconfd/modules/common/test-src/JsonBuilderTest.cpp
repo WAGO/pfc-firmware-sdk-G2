@@ -42,7 +42,7 @@ TEST(JsonBuilderTest, BuildInterfaceConfig_lt_fw22) {
   InterfaceConfigs itfcfg { { "br0", InterfaceState::UP, Autonegotiation::ON, 100, Duplex::FULL, MacLearning::ON }, { "br1",
       InterfaceState::UP, Autonegotiation::OFF, 10, Duplex::HALF, MacLearning::OFF } };
 
-  jb.Append("interface-config", itfcfg, FirmwareVersion { 3, 3, 10, 21});
+  jb.Append("interface-config", itfcfg, FirmwareVersion { 3, 9, 4, 21});
 
   EXPECT_EQ(expected_json.dump(), jb.ToString());
 

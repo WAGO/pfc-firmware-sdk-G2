@@ -1,0 +1,33 @@
+From: Jan Sondhauss <jan.sondhauss@wago.com>
+Date: Mon, 5 Sep 2022 09:45:44 +0200
+Subject: [PATCH] unload_all_mibs: fix memory leak by freeing tclist instead of
+ memset to zero
+
+tclist is allocated on init.
+---
+ snmplib/parse.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/snmplib/parse.c b/snmplib/parse.c
+index 9406f4f881b2..e4aa3958f4a4 100644
+--- a/snmplib/parse.c
++++ b/snmplib/parse.c
+@@ -28,7 +28,7 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
+ SOFTWARE.
+ ******************************************************************/
+ /*
+- * Copyright © 2003 Sun Microsystems, Inc. All rights reserved.
++ * Copyright ï¿½ 2003 Sun Microsystems, Inc. All rights reserved.
+  * Use is subject to license terms specified in the COPYING file
+  * distributed with the Net-SNMP package.
+  */
+@@ -4225,7 +4225,8 @@ unload_all_mibs(void)
+         if (ptc->description)
+             free(ptc->description);
+     }
+-    memset(tclist, 0, tc_alloc * sizeof(struct tc));
++    tc_alloc = 0;
++    SNMP_FREE(tclist);
+ 
+     memset(buckets, 0, sizeof(buckets));
+     memset(nbuckets, 0, sizeof(nbuckets));

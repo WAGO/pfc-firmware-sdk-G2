@@ -49,5 +49,12 @@ Status SetTempFixIp() {
   return result.error_;
 }
 
+Status SetTempDHCPClientID(const ::std::string& clientID){
+  NetconfdDbusClient client;
+  auto result = client.SetTemporaryDHCPClientID(clientID);
+  return result.error_;
+};
+
+
 }  // namespace api
 }  // namespace netconfd

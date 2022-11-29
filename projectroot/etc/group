@@ -30,4 +30,4 @@ iot:x:118:iot
 wagoupload:x:234:wagoupload,admin
 wbmuser:x:130:user,admin,root
 wbmadmin:x:131:admin,root
-netconf:x:501:admin,iot,opc
+netconf:x:501:admin,iot

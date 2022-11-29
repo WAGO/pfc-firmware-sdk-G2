@@ -188,6 +188,23 @@ case $1 in
         fi
         ;;
 
+    restart)
+        echo "${PREFIX}restart"
+        if stop; then
+            echo "${PREFIX}stop done"
+            if start; then
+                echo "${PREFIX}start done"
+                exit 0
+            else
+                echo "${PREFIX}error, could not start server" >&2
+                exit 1
+            fi
+        else
+            echo "${PREFIX}error, could not stop server" >&2
+            exit 1
+        fi
+        ;;
+
     reload)
         echo "${PREFIX}reload"
         if reload; then
@@ -200,7 +217,7 @@ case $1 in
         ;;
 
     *)
-        echo "${PREFIX}usage: ${0} [start|stop|status|reload]" >&2
+        echo "${PREFIX}usage: ${0} [start|stop|status|restart|reload]" >&2
         exit 1
         ;;
 

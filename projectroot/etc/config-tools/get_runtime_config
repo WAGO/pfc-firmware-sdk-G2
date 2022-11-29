@@ -23,11 +23,14 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
     echo "or     get_runtime_config running-version"
     echo "or     get_runtime_config default-webpage"
     echo "or     get_runtime_config homedir-on-sdcard"
-    echo "or     get_runtime_config cfg-version=2|3 webserver-state"
-    echo "or     get_runtime_config cfg-version=2|3 authentication"
-    echo "or     get_runtime_config cfg-version=2|3 serial-programming"
+    echo "or     get_runtime_config cfg-version=1|2|3 webserver-state"
+    echo "or     get_runtime_config cfg-version=1|2|3 authentication"
+    echo "or     get_runtime_config cfg-version=1|2|3 serial-programming"
     echo "or     get_runtime_config service-state"
     echo "or     get_runtime_config comm-port>"
+    echo 
+    echo "<cfg-version>   = 1 | 2 | 3   Get config of given PLC runtime version."
+    echo "                              1 = CODESYS3, 2 = CODESYS2, 3 = e!Runtime."
     echo
     exit 0
 fi
@@ -100,6 +103,11 @@ getrtval()
     local var=$2
     local varname
 
+    # support CDS3 native
+    if [ "$version" == "1" ]; then
+        version=3
+    fi
+
     varname="V${version}_$var"
     echo "${!varname}"
 }
@@ -107,7 +115,7 @@ getrtval()
 CONFIG_VERSION=$(GetParameterValue "cfg-version" $*)
 if [ "$CONFIG_VERSION" ]; then
     shift
-    if [ "$CONFIG_VERSION" != "2" -a "$CONFIG_VERSION" != "3" ]; then
+    if [ "$CONFIG_VERSION" != "1" -a "$CONFIG_VERSION" != "2" -a "$CONFIG_VERSION" != "3" ]; then
         setLastError "Illegal cfg-version argument"
         exit $INVALID_PARAMETER
     fi
@@ -132,15 +140,15 @@ case $1 in
         fi
         ;;
     webserver-state)
-        arg_assert ${CONFIG_VERSION:-0} "2 3" "Missing or wrong argument cfg-version"
+        arg_assert ${CONFIG_VERSION:-0} "1 2 3" "Missing or wrong argument cfg-version"
         result=$(getrtval $CONFIG_VERSION "WEBSERVER_STATE")
         ;;
     authentication)
-        arg_assert ${CONFIG_VERSION:-0} "2 3" "Missing or wrong argument cfg-version"
+        arg_assert ${CONFIG_VERSION:-0} "1 2 3" "Missing or wrong argument cfg-version"
         result=$(getrtval $CONFIG_VERSION "PORT_AUTH")
         ;;
     serial-programming)
-        arg_assert ${CONFIG_VERSION:-0} "2 3" "Missing or wrong argument cfg-version"
+        arg_assert ${CONFIG_VERSION:-0} "1 2 3" "Missing or wrong argument cfg-version"
         result=$(getrtval $CONFIG_VERSION "SERIAL_PROGRAMMING")
         ;;
     service-state)

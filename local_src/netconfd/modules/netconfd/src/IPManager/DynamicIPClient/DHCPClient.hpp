@@ -2,11 +2,11 @@
 
 #pragma once
 
-#include "IDynamicIPClient.hpp"
-#include "LeaseFile.hpp"
+#include <glib.h>
 #include <string>
 
-#include <glib.h>
+#include "IDynamicIPClient.hpp"
+#include "LeaseFile.hpp"
 
 namespace netconf {
 
@@ -17,20 +17,22 @@ enum class DHCPClientStatus {
 
 class DHCPClient : public IDynamicIPClient {
  public:
-  DHCPClient(const ::std::string &itf_name, const ::std::string &hostname, const ::std::string &vendorclass);
+  DHCPClient(::std::string itf_name, ::std::string hostname, ::std::string vendorclass,
+             ::std::string clientid);
   virtual ~DHCPClient();
 
-  DHCPClient(const DHCPClient &other) = delete;
-  DHCPClient(DHCPClient &&other) = delete;
-  DHCPClient& operator=(const DHCPClient &other) = delete;
-  DHCPClient& operator=(DHCPClient &&other) = delete;
+  DHCPClient(const DHCPClient &other)            = delete;
+  DHCPClient(DHCPClient &&other)                 = delete;
+  DHCPClient &operator=(const DHCPClient &other) = delete;
+  DHCPClient &operator=(DHCPClient &&other)      = delete;
 
   void Release() override;
   void Renew() override;
 
   DynamicIPType GetType() override;
 
-  void Restart(::std::string hostname) override;
+  void RestartWithHostname(::std::string hostname) override;
+  void RestartWithClientID(::std::string clientID) override;
 
   void UpdateContentFromLease() override;
   Address GetAddressFromLease() override;
@@ -44,14 +46,15 @@ class DHCPClient : public IDynamicIPClient {
   LeaseFile lease_file_;
 
   GPid pid_;
-  ::std::string hostname_;
   ::std::string itf_name_;
+  ::std::string hostname_;
   ::std::string vendorclass_;
   ::std::string pid_file_path_;
+  ::std::string clientID_;
 
-
-  void Start(const ::std::string &hostname, const ::std::string &vendorclass);
+  void Start();
   void Stop();
+
 };
 
 } /* namespace netconf */

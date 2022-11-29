@@ -4,8 +4,7 @@
 Find the table of supported devices at the end of the document [Link to table](#supported-devices)
 
 # ..:: Attention ::.. 
-## Starting with firmware 20.1 you need to update the ptxdist buildsystem. 
-[Ptxdist-Buildsystem](https://github.com/WAGO/ptxdist)
+## Starting with firmware 23 only Codesys 3 will be supported. The last version for eCockpit will be FW22.x.
 
 # Install WAGO-PFC-SDK on Ubuntu 16.04.5 (64bit) LTS
 
@@ -234,7 +233,7 @@ The output looks like this:
     >cd ~/wago/ptxproj
     >ptxdist select configs/wago-pfcXXX/ptxconfig_pfc_g2
     info: selected ptxconfig:
-        'configs/wago-pfcXXX/ptxconfig_pfc_g2'
+        'configs/wago-pfcXXX/ptxconfig_pfc_g2_cds3'
 ```
 
 ### 4.2) Select "hardware platform" to dial with

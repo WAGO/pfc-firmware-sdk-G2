@@ -11,8 +11,6 @@
 ///
 ///  \file     get_coupler_details.c
 ///
-///  \version  $Revision: 65689 $1
-///
 ///  \brief
 ///
 ///  \author   Stefanie Meihöfer : WAGO GmbH & Co. KG
@@ -148,6 +146,7 @@ int GetProductDescription(char *pOutputString);
 int GetBootloaderVersion(char *pOutputString);
 int GetRS232OwnerAfterReboot(char *pOutputString);
 int GetSerialNumber(char *pOutputString);
+int GetSerialNumberLegacy(char *pOutputString);
 
 #ifdef __CT_WITH_TYPELABEL
 int GetOrderNumber(char* pOrderNumberString);
@@ -186,7 +185,8 @@ static tParameterJumptab astParameterJumptab[] =
 #ifdef __CT_WITH_TYPELABEL
   { "order-number",               GetOrderNumber },
   { "product-description",        GetProductDescription },  // requires information from typelabel
-  { "serial-number",              GetSerialNumber },  // requires information from typelabel
+  { "serial-number",              GetSerialNumber },        // requires information from typelabel
+  { "serial-number-legacy",       GetSerialNumberLegacy },  // requires information from typelabel
 #endif
 
   // this line must always be the last one - don't remove it!
@@ -1605,7 +1605,27 @@ int GetSerialNumber(char *pOutputString)
     return SUCCESS;
   }
 
-  // clear output-string
+  status = GetSerialNumberLegacy(pOutputString);
+
+  return(status);
+}
+
+int GetSerialNumberLegacy(char *pOutputString)
+{
+  int   status                 = SUCCESS;
+  char  stPrgdate[MAX_LENGTH_COUPLER_DETAIL_STRING + 1] = "";
+  char  stWagoNr[MAX_LENGTH_COUPLER_DETAIL_STRING + 1] = "";
+  uint32_t iWagoNr = 0;
+  char  stMarking[MAX_LENGTH_COUPLER_DETAIL_STRING + 1] = "";
+  char stMac[MAX_LENGTH_COUPLER_DETAIL_STRING + 1] = "";
+  unsigned int macInt[6]={0,0,0,0,0,0};
+
+  if(pOutputString == NULL)
+  {
+    return(INVALID_PARAMETER);
+  }
+
+  // initialise output-string
   pOutputString[0] = '\0';
 
   do{

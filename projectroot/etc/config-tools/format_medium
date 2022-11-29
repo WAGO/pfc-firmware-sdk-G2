@@ -30,10 +30,10 @@ function GetPureDevicename
 }
 
 
-function UnmountDevice
 #
 # Unmount all partitions of a specified device
 #
+function UnmountDevice
 {
   local deviceName=$1
   local partitionIndex=1
@@ -191,7 +191,6 @@ else
     attempts=10
 
     while ! blockdev --rereadpt $deviceName > /dev/null 2> /dev/null; do
-      status=$?
       sleep 1
       attempts=$((attempts - 1))
       if [ $attempts -le 0 ]; then

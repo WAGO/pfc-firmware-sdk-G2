@@ -23,7 +23,7 @@ class INetDevManager;
 
 class NetworkConfigBrain {
  public:
-  NetworkConfigBrain(IBridgeManager &interface_manager, IBridgeInformation &itf_info, IIPManager &ip_manager,
+  NetworkConfigBrain(IBridgeManager &bridge_manager, IBridgeInformation &itf_info, IIPManager &ip_manager,
                      IEventManager &event_manager, IDeviceProperties &device_properties_provider,
                      IPersistenceProvider &persistence_provider, IDipSwitch &ip_dip_switch,
                      InterfaceConfigManager &interface_config_manager, INetDevManager &netdev_manager,
@@ -57,7 +57,8 @@ class NetworkConfigBrain {
   ::std::string Backup(const ::std::string &file_path, const ::std::string &targetversion) const;
   ::std::string Restore(const std::string &file_path);
 
-  ::std::string TempFixIp();
+  ::std::string SetTemporaryFixIp();
+  ::std::string SetTemporaryDHCPClientID(const ::std::string&);
 
   ::std::string ReceiveDynamicIPEvent(const ::std::string&);
   ::std::string ReceiveReloadHostConfEvent();
@@ -96,5 +97,7 @@ class NetworkConfigBrain {
   IHostnameWillChange &hostname_will_change_;
 
 };
+
+
 
 } /* namespace netconf */

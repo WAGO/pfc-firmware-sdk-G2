@@ -2,7 +2,7 @@
 <firewall xmlns="http://www.wago.com/security/firewall"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://www.wago.com/security/firewall ebwlist.xsd">
-    <ethernet mode="whitelist">
+    <ethernet mode="all-allow">
         <log state="on" tag="FIRE_EBWL" limit="3/minute" burst="6" level="notice"/>
         <interfaces>
             <interface if="br0" state="open"/>
@@ -19,8 +19,8 @@
             <protocol eproto="0x8100"/>
         </protocols>
         <whitelist>
-            <!-- All WAGO devices. -->
-            <host state="off" mac="00:30:DE:00:00:00" mask="ff:ff:ff:00:00:00"/>
+            <host state="off" description="All WAGO devices" mac="00:30:DE:00:00:00" mask="ff:ff:ff:00:00:00"/>
+            <host state="off" description="Enable docker bridges" mac="02:42:00:00:00:00" mask="ff:ff:00:00:00:00"/>
         </whitelist>
     </ethernet>
 </firewall>

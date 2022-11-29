@@ -6,16 +6,16 @@ namespace netconf {
 
 class DynamicIPClientFactory : public IDynamicIPClientFactory {
  public:
-  DynamicIPClientFactory() = default;
+  DynamicIPClientFactory()          = default;
   virtual ~DynamicIPClientFactory() = default;
 
-  DynamicIPClientFactory(const DynamicIPClientFactory&) = delete;
-  DynamicIPClientFactory& operator=(const DynamicIPClientFactory&) = delete;
-  DynamicIPClientFactory(const DynamicIPClientFactory&&) = delete;
-  DynamicIPClientFactory& operator=(const DynamicIPClientFactory&&) = delete;
+  DynamicIPClientFactory(const DynamicIPClientFactory &)             = delete;
+  DynamicIPClientFactory &operator=(const DynamicIPClientFactory &)  = delete;
+  DynamicIPClientFactory(const DynamicIPClientFactory &&)            = delete;
+  DynamicIPClientFactory &operator=(const DynamicIPClientFactory &&) = delete;
 
   IDynamicIPClientPtr Create(DynamicIPType type, const ::std::string &itf_name, const ::std::string &hostname,
-                             const ::std::string &vendorclass) override;
+                             const ::std::string &vendorclass, const ::std::string &clientid) override;
 };
 
 } /* namespace netconf */

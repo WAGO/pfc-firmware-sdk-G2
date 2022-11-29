@@ -13,7 +13,7 @@ NetDev::NetDev(uint if_index, ::std::string name, ::std::string label, DeviceTyp
       label_ { ::std::move(label) },
       kind_ { kind },
       ip_addressable_ { ip_addressable },
-      mac_ { "" },
+      mac_ {},
       link_state_ { link_state } {
 }
 

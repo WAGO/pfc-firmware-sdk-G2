@@ -1,3 +1,75 @@
+Firmware Release 04.01.10 (99)
+
+System:
+[NEW] The client ID for all running DHCP clients can be specified using the
+      config tool network_config. The assignment of the client ID via WBM/WDM is
+      not supported.
+[NEW] Allow to access legacy serial number via config tool: get_coupler_de-tails
+      serial-number-legacy
+[FIXED] It is possible to downgrade to a hardened FW-Image without network
+        connection lost.
+[DEPRECATED] PHP 7 will be replaced by PHP 8.
+
+Operating System:
+[FIXED] Fixed erroneous logrotate configuration which leads to crash of 
+        CODESYS runtime when OpenVPN is used.
+[FIXED] MAC Address filter configuration is loaded at boot time not only in event
+        of changed configuration.
+[FIXED] MAC Address filter was active by default, from now on it is off as
+        default (cf. IP firewall).
+[FIXED] Fixed error that prevents restore of system backup when Docker is activated.
+[DEPRECATED] The config tool "activate_download" is deprecated an will be removed
+             in future versions.
+
+Runtime System:
+[REMOVED] Codesys2 Runtime-System is no longer available on PFC Plattform
+[CHANGED] Codesys3 Runtime-System supported on PFC Plattform
+[KNOWN] “PLC load watchdog” might not work as espected: the plc load watchdog 
+        will detect (e.g. an endless loop) but the IEC task might not be stopped
+        in any case. This might lead to a complete stop of the runtime process.
+        As workaround and improve “hardening” of your IEC application we recommend
+        to use an IEC Task watchdog on all your relevant IEC tasks in your
+        IEC application.
+
+Fieldbus Interface & Protocols:
+[REMOVED] The OPC UA Server and Client are not included in this Firmware.
+          Will be available in an upcoming Firmware.
+[REMOVED] PROFINET and PROFIBUS are not included in this Firmware. 
+          Will be available in an upcoming Firmware.
+[CHANGED] MODBUS TCP changed to CODESYS solution
+[CHANGED] MODBUS RTU available only by IEC library
+
+Libraries:
+[KNOWN] Simulation might fail with some libraries within IDE
+[KNOWN] WagoAppEtherNetIP_Adapter: CommonPacketFormat Interfaces 
+        4.2.0.0 causes compile errors. CommonPacketFormat Interfaces 
+        3.5.17.0 must be used instead. 
+        In order to use the correct version CommonPacketFormat 
+        Interfaces 4.2.0.0 needs to be deinstalled via CODESYS library manager.
+
+Web Based Management:
+[NEW] SNMPv3: Add support for strong privacy and encryption.
+      Authentication: SHA224, SHA256, SHA384, SHA512
+      Encryption: AES128, AES192, AES192C, AES256, AES256C
+[NEW] WBM - Firewall - MAC Address Filter Whitelist: For the default entries,
+      an additional description text is displayed to avoid incorrect operation.
+[CHANGED] Codesys 2 no longer available in "Information - PLC Runtime",
+          "Configuration - PLC Runtime" and "Ports and Services - PLC Runtime Services".
+          Removed WBM page "Fieldbus - Modbus" (WAGO Modbus im-plementation).
+[FIXED] Update WDx and Config Tools to allow leading digits for host names.
+
+Beta functionalities:
+[BETA] "Wago Device Access" for parametrization and configuration. REST-API is
+        active under path "<host>/wda" on port 443.
+        File-Access-API is active under path "<host>/files" on port 443.
+        To disable the service, delete symlink "/etc/rc.d/S11_paramd" or 
+        move it to subdirectory "disabled"
+[BETA]  A documentation for the REST-API of "Wago Device Access" is available
+        from device by calling specified URL:
+        OpenAPI-JSON: <ip/hostname>/openapi/wda.openapi.json
+        HTML format: <ip/hostname>/openapi/wda.openapi.html
+
+################################################################################
 Firmware Release 03.10.08 (99)
 
 System:

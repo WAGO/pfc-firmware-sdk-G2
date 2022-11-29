@@ -18,7 +18,7 @@ class IDynamicIPClientFactory {
   IDynamicIPClientFactory& operator=(const IDynamicIPClientFactory&&) = delete;
 
   virtual IDynamicIPClientPtr Create(DynamicIPType type, const ::std::string &itf_name, const ::std::string &hostname="",
-                                     const ::std::string &vendorclass="") = 0;
+                                     const ::std::string &vendorclass="", const ::std::string &clientid="") = 0;
 
 };
 

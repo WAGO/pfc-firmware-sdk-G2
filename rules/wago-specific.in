@@ -53,9 +53,6 @@ endmenu
 
 comment "------------------------------------"
 
-menu "OPC UA"
-source "generated/wago_specific_opcua.in"
-endmenu
 
 menu "WAGO Parameter Service        "
 source "generated/wago_specific_config_parameterservice.in"
@@ -72,7 +69,6 @@ menuconfig PLC_CODESYS
 		Builds and installs the codesys runtime system.
 	
 if PLC_CODESYS
-source "generated/wago_specific_codesys_2.in"
 endif
 
 

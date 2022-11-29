@@ -88,9 +88,10 @@
 </xs:complexType>
 
 <xs:complexType name="host">
-    <xs:attribute name="state" type="onoff" use="required"/>
-    <xs:attribute name="mac"   type="ifmac" use="required"/>
-    <xs:attribute name="mask"  type="ifmac_mask" use="optional"/>
+    <xs:attribute name="state"       type="onoff" use="required"/>
+    <xs:attribute name="mac"         type="ifmac" use="required"/>
+    <xs:attribute name="mask"        type="ifmac_mask" use="optional"/>
+    <xs:attribute name="description" type="xs:string"  use="optional"/>
 </xs:complexType>
 
 </xs:schema>

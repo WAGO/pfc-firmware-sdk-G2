@@ -227,6 +227,12 @@ DbusResult NetconfdDbusClient::SetTemporaryFixedIpAddress() {
   return Send(msg);
 }
 
+DbusResult NetconfdDbusClient::SetTemporaryDHCPClientID(const ::std::string& clientID) 
+{
+  auto msg = CreateIpMessage("settempdhcpclientid");
+  return Send(msg, clientID);
+}
+
 DbusResult NetconfdDbusClient::GetDipSwitchConfig() {
   auto msg = CreateIpMessage("getdipswitchconfig");
   return GetStrings(msg);

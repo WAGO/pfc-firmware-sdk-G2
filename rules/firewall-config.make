@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_FIREWALL_CONFIG) += firewall-config
 #
 # Paths and names
 #
-FIREWALL_CONFIG_VERSION        := 1.1.0
+FIREWALL_CONFIG_VERSION        := 1.3.1
 FIREWALL_CONFIG_MD5            :=
 FIREWALL_CONFIG                := firewall.elf
 FIREWALL_CONFIG_URL            := file://local_src/config-tools/$(FIREWALL_CONFIG)
@@ -170,7 +170,6 @@ endif
 	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/iec60870_5_104/firewall)
 	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/iec61850_mms/firewall)
 	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/profinet/firewall)
-	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/opcua/firewall)
 
 ifdef PTXCONF_INITMETHOD_BBINIT
 	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/init.d/firewall)

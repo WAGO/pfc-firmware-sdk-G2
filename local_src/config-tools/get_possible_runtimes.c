@@ -10,7 +10,7 @@
 ///
 ///  \file     get_possible_runtimes.c
 ///
-///  \version  $Rev: 66947 $
+///  \version  $Rev: 68028 $
 ///
 ///  \brief    <Insert description here>
 ///
@@ -25,10 +25,10 @@
 #define CUSTOM   0x01
 #define CODESYS2 0x02
 #define ERUNTIME 0x04
-#define CODESYS35 0x08
+#define CODESYS3 0x08
 
 static const char * custom = "0";
-static const char * codesys35 = "1";
+static const char * codesys3 = "1";
 static const char * codesys2 = "2";
 static const char * eruntime = "3";
 static const char * true = "true";
@@ -67,7 +67,7 @@ static tOptions _ParseOptions(int argc, char ** argv)
           {
             ret.help = 1;
           }
-          ret.runtime = CODESYS35;
+          ret.runtime = CODESYS3;
           break;
       case 'c':
       case '2':
@@ -111,10 +111,10 @@ static void _Usage(void)
   puts("The Options -u, -0, -n ,-1, -c, -2, -e and -3 are exclusive and result in true or false.\n");
   puts("options:");
   puts("  -j       print in json format");
-  puts("  -u or -0 is custom runtime posible");
-  puts("  -n or -1 is codesys3.5 runtime posible"); // n for native
+  puts("  -u or -0 is custom runtime possible");
+  puts("  -n or -1 is codesys3 runtime possible"); // n for native
   puts("  -c or -2 is codesys2 possible");
-  puts("  -e or -3 is eruntime posible\n");
+  puts("  -e or -3 is eruntime possible\n");
 }
 
 void jsonTrueFalse(const char * start,const char * key,uint32_t trueFalse,const char * end)
@@ -141,8 +141,8 @@ static void printTrueFalse(uint32_t runtime,uint32_t runtimeBits,uint8_t json)
       case CUSTOM:
         pRuntime = custom;
         break;
-      case CODESYS35:
-        pRuntime = codesys35;
+      case CODESYS3:
+        pRuntime = codesys3;
         break;
       case CODESYS2:
         pRuntime = codesys2;
@@ -192,13 +192,13 @@ static void printRuntimes(uint32_t runtimeBits,uint8_t json)
       printf("%s",custom);
       havePrinted=1;
     }
-    if(runtimeBits & CODESYS35)
+    if(runtimeBits & CODESYS3)
     {
       if(havePrinted)
       {
         printf(pDelimitter);
       }
-      printf("%s",codesys35);
+      printf("%s",codesys3);
       havePrinted=1;
     }
     if(runtimeBits & CODESYS2)
@@ -292,21 +292,23 @@ static uint32_t checkBlacklist(char * value)
   return blacklist;
 }
 
-static uint32_t checkCodesys35(void)
+static uint32_t checkCodesys3(void)
 {
-  uint32_t checkCodesys35 = 0;
+  uint32_t ret = 0;
   char revisions[32];
   FILE * fp = fopen("/etc/REVISIONS","r");
   if(fp != NULL)
   {
-    fread(revisions, sizeof(revisions), 1, fp);
-    fclose(fp);
-    if (revisions[10] >= '4') // FIRMWARE=04.xx.xx(xx)
+    if (fread(revisions, 1, sizeof(revisions), fp) > 14)
     {
-      checkCodesys35 = 1;
+      if ((strstr(revisions,"FIRMWARE=04.") != NULL))  // FIRMWARE=04.xx.xx(xx)
+      {
+        ret = 1;
+      }
     }
+    fclose(fp);
   }
-  return checkCodesys35;
+  return ret;
 }
 
 int main(int argc,char *argv[])
@@ -354,9 +356,9 @@ int main(int argc,char *argv[])
     free(cds3);
   }
 
-  if (checkCodesys35() == 1)
+  if (checkCodesys3())
   {
-    runtimeBits = CODESYS35 + CUSTOM;
+    runtimeBits = CODESYS3 | CUSTOM;
   }
 
   if(opt.runtime)

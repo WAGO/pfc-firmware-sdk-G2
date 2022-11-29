@@ -22,7 +22,6 @@ fi
 
 . /etc/config-tools/config_tool_lib
 
-
 #--------------------------------------------------------------------
 # help text (requested with specified parameter).
 #--------------------------------------------------------------------
@@ -47,11 +46,14 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
   exit $SUCCESS
 fi
 
-
 DOCKER=docker
 DOCKER_PATH=/opt/wago-docker
 DOCKER_DAEMON=dockerd
 DOCKER_START_SCRIPT=S99_docker
+
+EBT_CONFIG='/etc/firewall/ebtables/ebwlist.xml'
+DOCKER_MAC='02:42:00:00:00:00'
+DOCKER_MASK='ff:ff:00:00:00:00'
 
 #--------------------------------------------------------------------
 # functions
@@ -67,8 +69,8 @@ checkBootDevice() {
 
 install() {
     if [ -d $DOCKER_PATH ]; then
-        DOCKER_IPK=$(ls $DOCKER_PATH | tail -1)
-        opkg install "${DOCKER_PATH}/${DOCKER_IPK}" > /dev/null 2>&1
+        DOCKER_IPK=$(ls $DOCKER_PATH | grep -E ^docker.*ipk$ | tail -1)
+        opkg install --force-reinstall "${DOCKER_PATH}/${DOCKER_IPK}" > /dev/null 2>&1
         if [ -f "/etc/rc.d/${DOCKER_START_SCRIPT}" ]; then
             mv "/etc/rc.d/${DOCKER_START_SCRIPT}" "/etc/rc.d/disabled/${DOCKER_START_SCRIPT}" 
         fi
@@ -102,7 +104,9 @@ activate() {
     if [[ $IP_FORWARDING == "state=disabled" ]]; then
         /etc/config-tools/config_routing -c general state=enabled > /dev/null 2>&1
     fi
-    
+
+    add_or_enable_docker_ebt_rule
+
     /etc/init.d/$DOCKER_DAEMON start > /dev/null 2>&1
 }
 
@@ -114,6 +118,117 @@ deactivate() {
     if pidof dockerd; then
         killall dockerd
     fi
+
+    disable_docker_ebt_rule
+}
+
+query_ebt_config ()
+{
+  local path; path="$1"
+
+  xmlstarlet sel -N f=http://www.wago.com/security/firewall -T -t -v "${path}" "${EBT_CONFIG}"
+}
+
+ebt_mode ()
+{
+  query_ebt_config '/f:firewall/f:ethernet/@mode'
+}
+
+ebt_count_rules ()
+{
+  query_ebt_config 'count(/f:firewall/f:ethernet/f:whitelist/f:host)'
+}
+
+ebt_rule_state ()
+{
+  local index; index="$1"
+
+  query_ebt_config "/f:firewall/f:ethernet/f:whitelist/f:host[${index}]/@state"
+}
+
+ebt_rule_mac ()
+{
+  local index; index="$1"
+
+  query_ebt_config "/f:firewall/f:ethernet/f:whitelist/f:host[${index}]/@mac"
+}
+
+ebt_rule_mask ()
+{
+  local index; index="$1"
+
+  query_ebt_config "/f:firewall/f:ethernet/f:whitelist/f:host[${index}]/@mask"
+}
+
+ebt_enable_docker_rule ()
+{
+  local index; index="$1"
+
+  /etc/config-tools/firewall ebtables --upd-host ${index} on "${DOCKER_MAC}" "${DOCKER_MASK}" --apply 1>/dev/null 2>&1
+}
+
+ebt_disable_docker_rule ()
+{
+  local index; index="$1"
+
+  /etc/config-tools/firewall ebtables --upd-host ${index} off "${DOCKER_MAC}" "${DOCKER_MASK}" --apply 1>/dev/null 2>&1
+}
+
+ebt_add_docker_rule ()
+{
+  /etc/config-tools/firewall ebtables --add-host on "${DOCKER_MAC}" "${DOCKER_MASK}" --apply 1>/dev/null 2>&1
+}
+
+ebt_find_docker_rule ()
+{
+  local number_of_rules
+  number_of_rules=$(ebt_count_rules)
+  local i; i=1
+
+  while [ ${number_of_rules} -ge ${i} ]; do
+    # check if this is special docker rule matching
+    # docker bridge MAC address and mask
+    if [ "${DOCKER_MAC}" = "$(ebt_rule_mac ${i})" ] && \
+         [ "${DOCKER_MASK}" = "$(ebt_rule_mask ${i})" ]; then
+      echo ${i}
+      return
+    fi
+
+    i=$((i+1))
+  done
+
+  return 1
+}
+
+add_or_enable_docker_ebt_rule ()
+{
+  local rule
+
+  if [ "whitelist" = "$(ebt_mode)" ]; then
+    if rule=$(ebt_find_docker_rule); then
+      if [ "off" = "$(ebt_rule_state ${rule})" ]; then
+        # rule exists, but is inactive
+        ebt_enable_docker_rule ${rule}
+      fi
+    else
+      # rule not found
+      ebt_add_docker_rule
+    fi
+  fi
+}
+
+disable_docker_ebt_rule ()
+{
+  local rule
+
+  if [ "whitelist" = "$(ebt_mode)" ]; then
+    if rule=$(ebt_find_docker_rule); then
+      if [ "on" = "$(ebt_rule_state ${rule})" ]; then
+        # rule exists and is inactive
+        ebt_disable_docker_rule ${rule}
+      fi
+    fi
+  fi
 }
 
 #--------------------------------------------------------------------
