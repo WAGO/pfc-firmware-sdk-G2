@@ -133,6 +133,11 @@ http://www.github.com/wago/gcc-toolchain-2019.12
     >sudo apt install g++
     >sudo apt install dialog
     >sudo apt install libc6-dev
+    >sudo apt install gettext
+    >sudo apt install pkg-config
+    >sudo apt install bc
+    >sudo apt install zip
+    >sudo apt install unzip
     >sudo apt install lzop       #used to build kernel image, ./configure did not check if installed
     >sudo apt install autoconf   #used to build kernel image, ./configure did not check if installed
     >sudo apt install libtool    #used to build kernel image, ./configure did not check if installed
@@ -146,7 +151,7 @@ http://www.github.com/wago/gcc-toolchain-2019.12
 or in one-shot:
 
 ```
-    >sudo apt install libncurses5-dev gawk flex bison texinfo python-dev g++ dialog libc6-dev lzop autoconf libtool xmlstarlet xsltproc doxygen autopoint python3-setuptools
+    >sudo apt install libncurses5-dev gawk flex bison texinfo python-dev g++ dialog libc6-dev lzop autoconf libtool xmlstarlet xsltproc doxygen autopoint python3-setuptools gettext pkg-config bc zip unzip
 ```
 
 ### 3.2) Clone the build tool "ptxdist" somewhere, we expect ~/ptxdist
@@ -231,7 +236,7 @@ The output looks like this:
 ### 4.1) Select "software config" we want to build
 ```
     >cd ~/wago/ptxproj
-    >ptxdist select configs/wago-pfcXXX/ptxconfig_pfc_g2
+    >ptxdist select configs/wago-pfcXXX/ptxconfig_pfc_g2_cds3
     info: selected ptxconfig:
         'configs/wago-pfcXXX/ptxconfig_pfc_g2_cds3'
 ```
