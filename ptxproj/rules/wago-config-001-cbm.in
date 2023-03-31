@@ -1,0 +1,22 @@
+## SECTION=wago_specific_config
+
+menuconfig CBM
+	bool
+	default n
+	prompt "cbm"
+	select XMLSTARLET
+	select CT_WDIALOG
+	select CONFIG_TOOLS
+	help
+ 	 FIXME
+
+if CBM
+
+config CT_WDIALOG
+	bool
+	default n
+	help
+	 wdialog is an small text-based widget toolkit (like dialog, but w/o ncurses dep.)
+
+endif #CBM
+

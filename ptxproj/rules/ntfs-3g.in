@@ -1,0 +1,11 @@
+## SECTION=disk_and_file
+
+config NTFS_3G
+	tristate
+	prompt "ntfs-3g"
+	select FUSE
+	select FUSE_LIB
+	select LIBUUID
+	help
+	  The NTFS-3G driver is an open source, freely available NTFS driver
+	  for Linux with read and write support.

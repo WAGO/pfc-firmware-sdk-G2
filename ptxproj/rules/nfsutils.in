@@ -1,0 +1,56 @@
+## SECTION=networking
+menuconfig NFSUTILS
+	tristate
+	prompt "nfsutils                      "
+	select HOST_NFSUTILS
+	select GCCLIBS_GCC_S
+	select LIBBLKID
+	select LIBTIRPC
+	select UTIL_LINUX_NG
+	select UTIL_LINUX_NG_LIBMOUNT
+	select RPCBIND			if RUNTIME
+	select ROOTFS_PROTOCOLS		if NFSUTILS_CLIENT
+	select PYTHON3			if NFSUTILS_PYTHON && RUNTIME
+	select PYTHON3_SYMLINK		if NFSUTILS_PYTHON && RUNTIME
+	select ROOTFS_VAR_LIB		if RUNTIME
+	help
+	  The Sun Network Filesystem (NFS) protocol provides transparent remote
+	  access to shared files across networks. The NFS protocol is designed
+	  to be portable across different machines, operating systems, network
+	  architectures, and transport protocols.
+	  Note: this package expects write permissions to '/var/lib/nfs' for
+	  its state information.
+
+if NFSUTILS
+
+config NFSUTILS_CLIENT
+	bool
+	prompt "client"
+	help
+	  Install all tools and daemons to mount nfs filesystems.
+
+config NFSUTILS_SERVER
+	bool
+	prompt "server"
+	help
+	  Install all tools and daemons to run an NFS server.
+
+config NFSUTILS_PYTHON
+	bool
+	prompt "install python utilities"
+	help
+	  Install tools depending on Python. Currently this affects nfsiostat only
+
+config NFSUTILS_NFSD_STARTSCRIPT
+	bool
+	depends on NFSUTILS_SERVER && INITMETHOD_BBINIT
+	default y
+	prompt "install /etc/init.d/nfsd"
+
+config NFSUTILS_SYSTEMD_UNIT
+	bool
+	default y
+	depends on SYSTEMD
+	prompt "install systemd unit files"
+
+endif

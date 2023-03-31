@@ -1,0 +1,62 @@
+#!/usr/bin/env sh
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2022 WAGO GmbH & Co. KG
+
+# Setup IPv6-Part of the Firewall
+
+ WAGO_ST_DIR="/usr/sbin"
+ IP6TABLES_RESTORE="/usr/sbin/ip6tables-restore"
+ IP6_BASE_RULES=/etc/firewall/ip6tables/ipbase.rls
+ IP6_DISABLED_RULES=/etc/firewall/ip6tables/ipdisabled.rls
+
+. "$WAGO_ST_DIR/fwupdate_basic_defines"
+if [ -f "${WAGO_FW_UPDATE_FIRST_BOOT_MARKER}" ]; then
+    echo "$WAGO_CT_SYSTEM_MODULE Refuse any network access during first boot"
+    /usr/sbin/ip6tables -I INPUT -j DROP
+    exit 0
+fi
+
+
+enable_firewall ()
+{
+    echo "enable ipv6 firewall"
+
+    if [ ! -s $IP6_BASE_RULES ]; then
+        echo "$IP6_BASE_RULES is missing - can't execute."
+        exit 1
+    fi
+
+    $IP6TABLES_RESTORE "$IP6_BASE_RULES"
+}
+
+disable_firewall ()
+{
+    echo "disable ipv6 firewall"
+
+    if [ ! -s $IP6_DISABLED_RULES ]; then
+        echo "$IP6_DISABLED_RULES is missing - can't execute."
+        exit 1
+    fi
+
+    $IP6TABLES_RESTORE "$IP6_DISABLED_RULES"
+}
+
+case $1 in
+start)
+    enable_firewall
+    ;;
+stop)
+    disable_firewall
+    ;;
+restart|reload|force-reload)
+    enable_firewall
+    ;;
+*)
+    echo "Usage: $0 {stop|start|restart|reload|force-reload}" >&2
+    exit 1
+    ;;
+esac

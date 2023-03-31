@@ -1,0 +1,74 @@
+#!/bin/bash
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2022 WAGO GmbH & Co. KG
+
+#-----------------------------------------------------------------------------#
+# Script-name: config_wbm
+#
+# Enable/Disable access to Web-based Management
+#
+# Author: Marius Hellmeier
+#-----------------------------------------------------------------------------#
+
+# load general definitions and functions
+if [ ! -f "/etc/config-tools/config_tool_lib" ]; then
+  echo "config_tool_lib missing" >&2
+  exit 255
+fi
+
+. /etc/config-tools/config_tool_lib
+
+restartWebserver()
+{
+    local restart=$1
+    if [ "$restart" = "YES" ]; then
+        /etc/init.d/lighttpd stop > /dev/null
+        /etc/init.d/lighttpd start > /dev/null
+    fi
+}
+
+#-------------- main-program ------------------------#
+
+status=$SUCCESS
+
+# show help-text if requested
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+  echo
+  echo "* Enable/Disable access to Web-based Management *"
+  echo
+  echo "Usage: config_wbm wbm-enabled=<wbm-enabled-value> [restart-server=<restart-server-value>]"
+  echo
+  echo "wbm-enabled-value:    \"YES\" | \"NO\""
+  echo "restart-server-value: \"YES\" | \"NO\" Default is YES"
+  echo 
+  exit "$status"
+fi
+
+# filter input parmeter of input-string
+newWBMEnabled=$(GetParameterValue wbm-enabled "$*")
+restartOption=$(GetParameterValue restart-server "$*")
+restartOption=${restartOption:-YES}
+
+if [ "$restartOption" != "YES" ] && [ "$restartOption" != "NO" ]; then
+    echo "Invalid value for restart-server option" >&2
+    exit "$INVALID_PARAMETER"
+fi
+
+case "$newWBMEnabled" in
+
+"YES")    (cd /etc/lighttpd && ln -sf wbm_enabled.conf wbm.conf)
+          restartWebserver "$restartOption"
+          ;;
+
+"NO")     (cd /etc/lighttpd && ln -sf wbm_disabled.conf wbm.conf)
+          restartWebserver "$restartOption"
+          ;;
+
+*)        status=$INVALID_PARAMETER
+          echo "Invalid argument" >&2
+          ;;
+esac
+exit "$status"

@@ -1,0 +1,14 @@
+## SECTION=system_libraries
+
+config LDB
+	tristate
+	prompt "ldb"
+	select TDB
+	select TALLOC
+	select TEVENT
+	select LIBBSD
+	select LIBPOPT
+	select OPENLDAP
+	select HOST_SYSTEM_PYTHON3
+	help
+	  LDB is the database engine used within Samba.

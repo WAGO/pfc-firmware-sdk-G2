@@ -1,0 +1,10 @@
+## SECTION=wago_specific
+
+config WAGO_SYSTEM
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select BOOST
+	prompt "wago-system"
+	help
+	  FIXME

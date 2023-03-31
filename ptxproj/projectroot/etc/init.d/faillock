@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+#
+# /etc/init.d/faillock
+#
+
+mktally ()
+{
+	local tally;
+	tally="$(mktemp -d -p '/var/run/')"
+
+	if chown root:shadow "${tally}" && chmod 2770 "${tally}"; then
+		mv "${tally}" "/var/run/faillock/" || rm -rf "${tally}"
+	fi
+}
+
+case $1 in
+	start)
+		echo "Create folder '/var/run/faillock'..."
+		mktally
+		;;
+	stop)
+		;;
+	*)
+		echo "Usage: $0 [start|stop]"
+		;;
+esac

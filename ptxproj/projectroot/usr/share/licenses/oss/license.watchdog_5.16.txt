@@ -1,0 +1,67 @@
+Watchdog developer and credits list
+===================================
+
+Michael Meskes <meskes@debian.org>
+
+- Maintainer and overall author
+- Original Debian patches
+
+Sascha Schumann <sas@schell.de>
+
+- GNU automake/autoconf support
+- some compatibility patches
+
+Johnie Ingram <johnie@debian.org>
+
+- more Debian patches
+
+Marc Merlin <marcsoft@merlins.org>
+
+- RedHat Patches
+
+Miquel van Smoorenburg <miquels@cistron.nl>
+
+- The stuff borrowed from sysvinit
+
+Marcel Jansen <marcel@appliancestudio.com>
+
+- Quite a lot of additions. 
+
+Several people who worked on mount/umount and/or send me patches.
+Copyright (C) 1996-2020 Michael Meskes, Paul Crawford
+
+WATCHDOG is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2, or (at your option) any later
+version.
+
+WATCHDOG is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+more details.
+
+This is the Debian GNU/Linux prepackaged version of watchdog.
+Watchdog was written by Michael Meskes <meskes@debian.org>
+
+Copying:
+
+   Copyright (C) 1996-2020 Michael Meskes, Paul Crawford
+
+   WATCHDOG is free software; you can redistribute it and/or modify it under
+   the terms of the GNU General Public License as published by the Free
+   Software Foundation; either version 2, or (at your option) any later
+   version.
+
+   WATCHDOG is distributed in the hope that it will be useful, but WITHOUT
+   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+   more details.
+
+On Debian GNU/Linux systems, the complete text of the GNU General
+Public License can be found in `/usr/share/common-licenses/GPL-2'.
+
+* Michael Meskes <meskes@debian.org> Fri 24 Apr 2020 10:29:55 AM CEST
+
+Modifications for Debian are copyright (C) 1997-2020 Michael Meskes, (C)
+1997-2000 Johnie Ingram, and also released under the terms of the GPL
+as stated above.

@@ -1,0 +1,206 @@
+# -*-makefile-*-
+#
+# Copyright (C) 2017 by WAGO GmbH & Co. KG
+#
+# See CREDITS for details about who has contributed to this project.
+#
+# For further information about the PTXdist project and license conditions
+# see the README file.
+#
+
+#
+# We provide this package
+#
+PACKAGES-$(PTXCONF_FIREWALL_CONFIG) += firewall-config
+
+#
+# Paths and names
+#
+FIREWALL_CONFIG_VERSION        := 1.4.1
+FIREWALL_CONFIG_MD5            :=
+FIREWALL_CONFIG                := firewall.elf
+FIREWALL_CONFIG_URL            := file://local_src/config-tools/$(FIREWALL_CONFIG)
+FIREWALL_CONFIG_BUILDCONFIG    := Release
+#FIREWALL_CONFIG_BUILDCONFIG    := Debug
+FIREWALL_CONFIG_SRC_DIR        := $(PTXDIST_WORKSPACE)/local_src/config-tools/firewall
+#FIREWALL_CONFIG_BUILDROOT_DIR  := $(BUILDDIR)/config-tools/firewall
+FIREWALL_CONFIG_BUILDROOT_DIR  := $(BUILDDIR)/firewall-config
+FIREWALL_CONFIG_DIR            := $(FIREWALL_CONFIG_BUILDROOT_DIR)/src
+FIREWALL_CONFIG_BUILD_DIR      := $(FIREWALL_CONFIG_BUILDROOT_DIR)/bin/$(FIREWALL_CONFIG_BUILDCONFIG)
+FIREWALL_CONFIG_LICENSE        := unknown
+FIREWALL_CONFIG_CONF_TOOL      := NO
+FIREWALL_CONFIG_MAKE_ENV       := $(CROSS_ENV) \
+BUILDCONFIG=$(FIREWALL_CONFIG_BUILDCONFIG) \
+BIN_DIR=$(FIREWALL_CONFIG_BUILD_DIR) \
+SCRIPT_DIR=$(PTXDIST_SYSROOT_HOST)/lib/ct-build
+
+# ptxdist update: ptx/get_alternative has been renamed to ptx/get-alternative.
+# FIXME PTXDIST_UPDATE
+ifeq ($(PTXCONF_CONFIGFILE_VERSION),"2020.08.0")
+FIREWALL_CONFIG_IPTABLES        := $(call ptx/get-alternative, projectroot, etc/firewall/iptables)
+FIREWALL_CONFIG_SERVICES        := $(call ptx/get-alternative, projectroot, etc/firewall/services)
+FIREWALL_CONFIG_TEMPLATES       := $(call ptx/get-alternative, projectroot, etc/firewall/templates)
+else
+FIREWALL_CONFIG_IPTABLES        := $(call ptx/get_alternative, projectroot, etc/firewall/iptables)
+FIREWALL_CONFIG_SERVICES        := $(call ptx/get_alternative, projectroot, etc/firewall/services)
+FIREWALL_CONFIG_TEMPLATES       := $(call ptx/get_alternative, projectroot, etc/firewall/templates)
+endif
+
+# ----------------------------------------------------------------------------
+# Extract
+# ----------------------------------------------------------------------------
+
+$(STATEDIR)/firewall-config.extract:
+	@$(call targetinfo)
+	mkdir -p $(FIREWALL_CONFIG_BUILDROOT_DIR)
+	@if [ ! -L $(FIREWALL_CONFIG_DIR) ]; then \
+		ln -s $(FIREWALL_CONFIG_SRC_DIR) $(FIREWALL_CONFIG_DIR); \
+	fi
+	@$(call touch)
+
+# ----------------------------------------------------------------------------
+# Prepare
+# ----------------------------------------------------------------------------
+
+#$(STATEDIR)/firewall-config.prepare:
+#	@$(call targetinfo)
+#	@$(call world/prepare, FIREWALL_CONFIG)
+#	@$(call touch)
+
+# ----------------------------------------------------------------------------
+# Compile
+# ----------------------------------------------------------------------------
+
+#$(STATEDIR)/firewall-config.compile:
+#	@$(call targetinfo)
+#	@$(call world/compile, FIREWALL_CONFIG)
+#	@$(call touch)
+
+# ----------------------------------------------------------------------------
+# Install
+# ----------------------------------------------------------------------------
+
+$(STATEDIR)/firewall-config.install:
+	@$(call targetinfo)
+	@$(call world/install, FIREWALL_CONFIG)
+	@$(call touch)
+
+# ----------------------------------------------------------------------------
+# Target-Install
+# ----------------------------------------------------------------------------
+
+$(STATEDIR)/firewall-config.targetinstall:
+	@$(call targetinfo)
+
+	@$(call install_init, firewall-config)
+	@$(call install_fixup, firewall-config,PRIORITY,optional)
+	@$(call install_fixup, firewall-config,SECTION,base)
+	@$(call install_fixup, firewall-config,AUTHOR,"WAGO GmbH \& Co. KG")
+	@$(call install_fixup, firewall-config,DESCRIPTION,missing)
+
+	@$(call install_copy, firewall-config, 0, 0, 0750, $(PTXDIST_SYSROOT_TARGET)/usr/bin/firewall.elf, /usr/bin/firewall);
+	@$(call install_link, firewall-config, /usr/bin/firewall, /etc/config-tools/firewall)
+
+	@$(call install_alternative, firewall-config, 0, 0, 0750, /etc/config-tools/firewall_apply.sh)
+
+	@$(call install_copy, firewall-config, 0, 0, 0700, /etc/firewall)
+
+	@$(call install_alternative, firewall-config, 0, 0, 0750, /etc/firewall/firewall)
+	@$(call install_alternative, firewall-config, 0, 0, 0750, /etc/firewall/fwbackup.sh)
+	@$(call install_alternative, firewall-config, 0, 0, 0750, /etc/firewall/fwrestore.sh)
+	@$(call install_alternative, firewall-config, 0, 0, 0750, /etc/firewall/ipsecfirewall.sh)
+	@$(call install_alternative, firewall-config, 0, 0, 0750, /etc/firewall/permissions.sh)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/firewall.conf)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/params_gen.xml)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/params.xml)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/params.xsd)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/patterns.xsd)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/transform.xsl)
+
+	@$(call install_copy, firewall-config, 0, 0, 0700, /etc/firewall/ebtables)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/ebtables/ebfirewall.sh)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/ebtables/ebwbkp.xsl)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/ebtables/ebwlist.aa.rls)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/ebtables/ebwlist.xml)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/ebtables/ebwlist.xsd)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/ebtables/ebwlist.xsl)
+
+	@$(call install_copy, firewall-config, 0, 0, 0700, /etc/firewall/iptables)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/iptables/ipbase.rls)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/iptables/ipbkp.xsl)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/iptables/ipcmn.aa.rls)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/iptables/ipcmn.xml)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/iptables/ipcmn.xsd)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/iptables/ipcmn.xsl)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/iptables/ipfirewall.sh)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/iptables/ipnat.xsl)
+
+	@$(call install_copy, firewall-config, 0, 0, 0700, /etc/firewall/services)
+	@cd $(FIREWALL_CONFIG_SERVICES) && \
+	for object in $$( find ./* -maxdepth 0 -iname '*.xml' -type f -print ); do \
+		if test -f $$object; then \
+			$(call install_copy, firewall-config, 0, 0, 0600, $(FIREWALL_CONFIG_SERVICES)/$$object, /etc/firewall/services/$$object); \
+		fi; \
+	done;
+
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/services/servicebkp.xsl)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/services/service_down.xsl)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/services/service_up.xsl)
+
+	@$(call install_copy, firewall-config, 0, 0, 0700, /etc/firewall/templates)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/templates/ebwlist.xml)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/templates/ipcmn.xml)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/templates/README.txt)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/templates/service.xml)
+
+	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/codesys/firewall)
+	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/dhcp/firewall)
+	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/dns/firewall)
+	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/snmp/firewall)
+	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/ssh/firewall)
+	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/ssl/firewall)
+ifdef PTXCONF_WAGO_CUSTOM_INSTALL_PROTOCOL_TELNET_ON
+	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/telnet/firewall)
+endif
+ifdef PTXCONF_WAGO_CUSTOM_INSTALL_PROTOCOL_TFTP_ON
+	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/tftp/firewall)
+endif
+	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/iocheckport/firewall)
+	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/dnp3/firewall)
+	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/iec60870_5_104/firewall)
+	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/iec61850_mms/firewall)
+
+	@$(call install_copy, firewall-config, 0, 0, 0700, /etc/firewall/ip6tables)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/ip6tables/ipbase.rls)
+	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/ip6tables/ipdisabled.rls)
+
+ifdef PTXCONF_INITMETHOD_BBINIT
+	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/init.d/firewall)
+	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/init.d/firewallv6)
+ifneq ($(PTXCONF_FIREWALL_CONFIG_RC_LINK),"")
+	@$(call install_link, firewall-config, ../init.d/firewall, /etc/rc.d/$(PTXCONF_FIREWALL_CONFIG_RC_LINK))
+endif
+ifneq ($(PTXCONF_FIREWALL_V6_CONFIG_RC_LINK),"")
+	@$(call install_link, firewall-config, ../init.d/firewallv6, /etc/rc.d/disabled/$(PTXCONF_FIREWALL_V6_CONFIG_RC_LINK))
+endif
+
+else
+	$(error "Please supply an init file for your init system!")
+endif
+
+	@$(call install_finish, firewall-config)
+	@$(call touch)
+
+# ----------------------------------------------------------------------------
+# Clean
+# ----------------------------------------------------------------------------
+
+$(STATEDIR)/firewall-config.clean:
+	@$(call targetinfo)
+	@if [ -d $(FIREWALL_CONFIG_DIR) ]; then \
+		$(FIREWALL_CONFIG_MAKE_ENV) $(FIREWALL_CONFIG_PATH) $(MAKE) $(MFLAGS) -C $(FIREWALL_CONFIG_DIR) clean; \
+	fi
+	@$(call clean_pkg, FIREWALL_CONFIG)
+	@rm -rf $(FIREWALL_CONFIG_BUILDROOT_DIR)
+
+# vim: syntax=make

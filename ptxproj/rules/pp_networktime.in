@@ -1,0 +1,14 @@
+## SECTION=wago_specific_paramprovider
+
+config PP_NETWORKTIME
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select WAGO_PARAMETER_SERVICE_CORE
+	select LIBCOMMONHEADER
+	select NLOHMANN_JSON
+	select LIBARCHIVE
+	select WAGO_SYSTEM
+	prompt "pp_networktime"
+	help
+		Parameter provider for network time protocol settings

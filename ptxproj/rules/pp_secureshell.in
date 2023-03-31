@@ -1,0 +1,14 @@
+## SECTION=wago_specific_paramprovider
+
+config PP_SECURESHELL
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select WAGO_PARAMETER_SERVICE_CORE
+	select LIBCOMMONHEADER
+	select NLOHMANN_JSON
+	select LIBARCHIVE
+	select WAGO_SYSTEM
+	prompt "pp_secureshell"
+	help
+		Parameter provider for secure shell protocol settings

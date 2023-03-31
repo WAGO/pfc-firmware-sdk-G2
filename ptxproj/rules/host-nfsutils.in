@@ -1,0 +1,6 @@
+## SECTION=hosttools_noprompt
+
+config HOST_NFSUTILS
+	tristate
+	select HOST_LIBBLKID
+	default y if ALLYES

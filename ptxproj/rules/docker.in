@@ -1,0 +1,15 @@
+## SECTION=applications
+
+config DOCKER
+	bool
+	default n
+	select RUNC
+	select CONTAINERD
+	select TINI
+	select DOCKER_USERLAND_PROXY
+	select ROOTLESSKIT
+	select DOCKER_CLI
+	select DOCKERD
+	prompt "docker"
+	help
+	  selects all docker dependencies and bundels them in an xz archive

@@ -1,3 +1,55 @@
+Firmware Release 04.02.13 (24) – CODESYS 3
+
+System:
+[FIXED] WAT33700 WAT-33700 Fixed erroneous logrotate configuration which leads to crash of CODESYS runtime when OpenVPN is used.
+[DEPRECATED] Config tool “config_mdmd” and “update_modem_firmware” will be re-moved in future firmware versions
+[CHANGED] Reduced CBM functionality to basic use cases
+
+Operating System:
+[FIXED] Replaced Busybox wget by upstream wget
+[FIXED] SECURITY CVE-2022-0529, CVE-2022-0530, CVE-2022-35260, CVE-2022-32221, CVE-2013-4235, CVE-2022-43995, CVE-2022-44792, CVE-2022-44793,
+                 CVE-2022-43680, CVE-2022-2309, CVE-2022-40303 , CVE-2022-40304, CVE-2022-40476, CVE-2022-2905, CVE-2022-35252, CVE-2022-40674, CVE-2022-40284, CVE-2022-1012, CVE-2022-37434, CVE-2021-33656, CVE-2022-2327, CVE-2022-36879, CVE-2022-1671, CVE-2022-34494, CVE-2022-34495, CVE-2020-35501, CVE-2022-1998, CVE-2022-30788, CVE-2022-30789, CVE-2022-30783,CVE-2022-30785, CVE-2022-30786, CVE-2022-30784, CVE-2022-1882, CVE-2022-32296, CVE-2022-29581, CVE-2022-30594, CVE-2022-1015, CVE-2022-1048, CVE-2022-1353, CVE-2022-29824, CVE-2022-29824, CVE-2022-1055, CVE-2022-28391, CVE-2022-37434, CVE-2021-45868, CVE-2022-27666, CVE-2022-23219, CVE-2022-23219, CVE-2022-1348, CVE-2022-23471, CVE-2022-31030
+[KNOWN] SECURITY Improper handling of unicode string could crash unzip 6.0(CVE-2021-4217)
+
+Runtime Sytem
+[NEW] Codesys3 Runtime-System 3.5.18.20
+[FIXED] Sporadic error while running the Codesys3 WebVisu with HTTP
+[FIXED] “PLC load watchdog” might not work as espected: the plc load watchdog will detect (e.g. an endless loop) but the IEC task might not be 
+        stopped in any case. This might lead to a complete stop of the runtime process. As workaround and improve “hardening” of your IEC application we recom-mend to use an IEC Task watchdog on all your relevant IEC tasks in your IEC application.
+[FIXED] SECURITY CVE-2022-22516, CVE-2021-21863, CVE-2021-21864, CVE-2021-21865, CVE-2021-21866, CVE-2021-21867, CVE-2021-21868,
+                 CVE-2021-21869, CVE-2022-1794, CVE-2022-22517, CVE-2022-22518, CVE-2022-22513, CVE-2022-22514, CVE-2022-22519, CVE-2022-30791, CVE-2022-30792
+
+Fieldbus Interface & Protocols:
+[NEW] Support of CODESYS OPC UA Server and OPC UA Client
+[KNOWN] Support of CODESYS OPC UA PubSub Libraries
+[KNOWN] If the subscription of the CmpOPCUAClient cannot be established cor-rectly and the OPC UA server is then shut down, a SIGABRT occurs
+        in Runtime.
+[CHANGED] The “WagoSysVisuBACnet” library is not support with firmware 24 
+          Saving trap receiver address after firmware up-/downgrade
+
+Libraries:
+[NEW] Support of CODESYS OPC UA PubSub Libraries
+[FIXED] Docker Bridge Networking not working with Docker Swarm
+[REMOVED] WagoAppEtherNetIP_Adapter and WagoSysEtherNetIP_Adapter Please use native CODESYS 3.5 EtherNet/IP adapter
+[KNOWN] Simulation might fail with some libraries within IDE
+
+Web Based Management:
+[NEW] Update to PHP 8.1.9
+[NEW] Diagnostic information for Cloud-Connectivity on status page
+[FIXED] Do not start a restore of the system package if the device has booted from the memory card 
+[FIXED] Leading digits for host names
+[FIXED] Backup & Restore is executable by user “root”
+[FIXED] Added note text to explain the hostname behavior 
+[REMOVED] “guest” access
+[CHANGED] Description for the certificate folder and configuration
+
+Beta functionalities:
+[BETA] "Wago Device Access" for parametrization and configuration. REST-API is active under path "<host>/wda" on port 443. File-Access-API is
+        active under path "<host>/files" on port 443. To disable the service, delete symlink "/etc/rc.d/S11_paramd" or move it to subdirectory "disabled"
+[BETA] A documentation for the REST-API of "Wago Device Access" is availa-ble from device by calling specified URL: OpenAPI-JSON: <ip/
+        hostname>/openapi/wda.openapi.json HTML format: <ip/hostname>/openapi/wda.openapi.html
+
+################################################################################
 Firmware Release 04.01.10 (99)
 
 System:

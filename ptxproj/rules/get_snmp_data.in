@@ -1,0 +1,11 @@
+## SECTION=wago_specific_config
+
+config GET_SNMP_DATA
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select SNMP_CONFIG_LIB
+	select CONFIG_TOOLS
+	prompt "get_snmp_data"
+	help
+	  config tool to read the snmp configuration files.

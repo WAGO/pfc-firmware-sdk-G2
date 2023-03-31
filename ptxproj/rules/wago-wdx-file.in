@@ -1,0 +1,18 @@
+## SECTION=wago_specific_config_parameterservice
+
+config WAGO_WDX_FILE
+	bool
+	default n
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select LIBCOMMONHEADER
+	select WAGO_PARAMETER_SERVICE_CORE
+	select WAGO_PARAMETER_SERVICE_COM
+	select WAGO_PARAMETER_SERVICE_TEST_LIB
+	prompt "WAGO Parameter Service (WDx) File Library"
+	help
+	  This file library allows atomic Read/Write access to files
+	  with fixed (non-user modifiable) file name, maximum size,
+	  owner and access mode.
+	  This library supports realization of
+	  WAGO Parameter Service (WDx) File Providers.

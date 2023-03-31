@@ -1,0 +1,110 @@
+#!/bin/bash
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2022 WAGO GmbH & Co. KG
+
+#-----------------------------------------------------------------------------#
+# Script-name: update_link_local_ipv6
+#
+# Updates link local ipv6 addresses.
+#
+# Author: WAGO GmbH & Co. KG.
+#-----------------------------------------------------------------------------#
+
+set -u # error exit on undefined shell variables
+
+readonly DO_NOT_GENERATE_LINK_LOCAL=1
+
+function get_mac_address
+{
+    local bridge; bridge="$1"
+
+    ip link show "$bridge" | sed -e '/.*link\/ether.*/!d' -e 's/.*link\/ether \(.*\) brd.*/\1/g'
+}
+
+function get_link_local_ipv6_address
+{
+    local bridge; bridge="$1"
+
+    ip -6 address show "$bridge" scope link | sed -e '/.*inet6.*\(fe80::.*ff:fe.{2}:.{1,4}\)\/64 scope link.*/!d' -e 's/.*inet6.*\(fe80::.*ff:fe.{2}:.{1,4}\)\/64 scope link.*/\1/g'
+}
+
+function flip_eui64_bit
+{
+    local octet; octet="$1"
+
+    flipped=$(("0x$octet" ^ 2))
+    echo "ibase=10;obase=16;$flipped" | bc
+}
+
+function generate_link_local_eui64_address
+{
+    local mac_address; mac_address="$1"
+    local -a mac_octets;
+    local first_octet;
+    local eui64_address;
+
+    IFS=':' read -ra mac_octets <<< "$mac_address"
+    first_octet=$(flip_eui64_bit "${mac_octets[0]}")
+    eui64_address=$(printf "fe80::%x:%xff:fe%02x:%x" "0x$first_octet${mac_octets[1]}" "0x${mac_octets[2]}" "0x${mac_octets[3]}" "0x${mac_octets[4]}${mac_octets[5]}")
+    echo "${eui64_address/::0:/::}"
+}
+
+# Check if the last 24 bits of the link local ipv6 address match the last 24 bits of the mac address.
+function has_valid_link_local_eui64_address
+{
+    local bridge; bridge="$1"
+
+    local mac_address
+    local -a ip_addresses
+
+    mac_address=$(get_mac_address "$bridge")
+
+    # shellcheck disable=SC2207
+    ip_addresses=($(get_link_local_ipv6_address "$bridge"))
+    
+    if [[ ${#ip_addresses[@]} -eq 1 && -n "${ip_addresses[0]}" ]]; then
+        local expected_address; expected_address=$(generate_link_local_eui64_address "$mac_address")
+        
+        [[ "${ip_addresses[0]}" == "$expected_address" ]]
+    else
+        return 1
+    fi
+}
+
+function reset_link_local_address
+{
+    local bridge; bridge="$1"
+    local addr_gen_mode;
+
+    ip -6 addr flush dev "$bridge" scope link
+
+    addr_gen_mode=$(cat "/proc/sys/net/ipv6/conf/$bridge/addr_gen_mode")
+
+    echo 1 > "/proc/sys/net/ipv6/conf/$bridge/addr_gen_mode"
+    echo "$addr_gen_mode" > "/proc/sys/net/ipv6/conf/$bridge/addr_gen_mode"
+}
+
+function read_ipv6_applied_bridges
+{
+    for bridge in br0 br1 br2 br3; do
+        if [[ -d "/proc/sys/net/ipv6/conf/$bridge" ]]; then
+            local ipv6_disabled; ipv6_disabled="$(cat "/proc/sys/net/ipv6/conf/$bridge"/disable_ipv6)"
+            local address_generation_mode; address_generation_mode="$(cat "/proc/sys/net/ipv6/conf/$bridge"/addr_gen_mode)"
+            [[ $ipv6_disabled == 0 && $address_generation_mode != "$DO_NOT_GENERATE_LINK_LOCAL" ]] && echo "${bridge}";
+        fi
+    done
+}
+
+bridges=$(read_ipv6_applied_bridges)
+
+for bridge in $bridges; do
+    if ! has_valid_link_local_eui64_address "$bridge"; then
+        reset_link_local_address "$bridge"
+    fi
+done
+
+exit 0

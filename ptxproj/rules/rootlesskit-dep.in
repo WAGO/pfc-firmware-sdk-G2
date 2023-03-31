@@ -1,0 +1,9 @@
+## SECTION=applications
+
+config ROOTLESSKIT_DEP
+	bool
+	default n
+	select HOST_GO
+	prompt "rootlesskit-dep"
+	help
+	  Dependecy of rootlessKit.

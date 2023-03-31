@@ -1,0 +1,248 @@
+## SECTION=wago_specific_codesys_3
+
+config CODESYS3
+	bool "CODESYS v3"
+	default n
+	select TYPELABEL
+	select LED_SERVER_META
+	select WAGO_PFC_DIAGNOSTIC
+	select CDS3_INCLUDES
+	select LIBPTHREADCGROUP if CDS3_RTS_CGROUPS_SUPPORT
+	select GOOGLETEST
+	select HOST_CT_BUILD
+	select OPENSSL
+	select WAGO_DBUS if CDS3_RTS_PRODUCT_VTPCTP
+	select PAM
+	help
+		Builds and installs the CODESYS v3 plc.
+
+config CDS3_RTS_DEBUG
+  bool "Complile with debug options"
+  default n
+  help
+    Compile a debuggable version of the runtime
+
+config CDS3_RTS_TESTS
+  bool "Build Test for runtime system"
+  default n
+  help
+    Build gTest executable for this runtime system
+
+menuconfig PLC_CODESYS_V3_WAGOCMP
+        bool
+        prompt "WAGO Components                "
+        help
+                Configure WAGO Components
+
+if PLC_CODESYS_V3_WAGOCMP
+source "generated/wago_specific_codesys_3_wagocmp.in"
+endif
+
+if CODESYS3
+
+menu "Codesys 3 Settings"
+
+config CDS3_PLCCONFIGFILE
+	string "Codesys 3 config file"
+	default "RtsMain.cfg"
+	help
+	  Path and file name on the target
+
+config CDS3_PLCCONFIGDIR
+	string "Codesys 3 config dir"
+	default "/etc/codesys3.d"
+	help
+	  Path and file name on the target
+
+config CDS3_HOME_PATH
+	string "Codesys 3 home"
+	default "/home/codesys"
+	help
+	  Path to the codesys 3 home folder
+
+config CDS3_HOME
+	bool "install /home/codesys"
+	default y
+	help
+		Installs Codesys v3 fonts and other files into /home/codesys
+
+choice
+	prompt "Select Platform implementation of Runtime"
+	default CDS3_RTS_PLATFORM_LINUX
+
+	config CDS3_RTS_PLATFORM_LINUX
+		bool
+		prompt "3S Linux Implementation"
+		help
+			Original 3S implemenation of Runtime
+
+	config CDS3_RTS_PLATFORM_WOSL
+		bool
+		prompt "WOSL Implementation"
+		help
+			WOSL Implementation of Runitime
+
+endchoice
+
+choice
+	prompt "Select Retain Type"
+		default CDS3_RETAIN_TYPE_NONE
+
+	config  CDS3_RETAIN_TYPE_NONE
+		bool
+		prompt "None"
+		help
+			No special Handlich for Retains
+
+	config CDS3_RETAIN_TYPE_INSRAM
+		bool
+		prompt "InSRAM"
+		help
+			Save Retains in a SRAM or NVRAM
+	config CDS3_RETAIN_TYPE_ONPOWERFAIL
+		bool
+		prompt "OnPowerfail"
+		help
+			Save Retains in a file when event "On Porwefail Occurs"
+
+endchoice
+
+config CDS3_RETAIN_TYPE_CFG
+	string
+	default "None"
+	depends on CDS3_RETAIN_TYPE_NONE
+
+config CDS3_RETAIN_TYPE_CFG
+	string
+	default "InSRAM"
+	depends on CDS3_RETAIN_TYPE_INSRAM
+
+config CDS3_RETAIN_TYPE_CFG
+        string
+        default "OnPowerfail"
+	depends on CDS3_RETAIN_TYPE_ONPOWERFAIL
+
+config CDS3_SECURE_LOGIN_ENABLE
+        string
+	prompt "Enable Secure Login"
+        default "1"
+        help
+             activate secure-login
+config CDS3_RTS_CGROUPS_SUPPORT
+	bool "Link libpthreadcgroups to intercept creation of threads"
+	default n
+	help
+		Adds pthread-create and friends overload-functions to syslayer, for handling threads in cgroups.
+
+
+
+endmenu
+
+menu "Products"
+
+choice
+        prompt "Select global Product"
+        default CDS3_RTS_PRODUCT_PFCXXX
+
+
+        config CDS3_RTS_PRODUCT_PFCXXX
+                bool
+                prompt "PFCXXX"
+                help
+                        Use PFCXXX Productes
+
+        config CDS3_RTS_PRODUCT_PAC
+                bool
+                prompt "PAC"
+                help
+                        Use PAC Products
+        
+	config CDS3_RTS_PRODUCT_VTPCTP
+                bool
+                prompt "e!DISPLAY"
+                help
+                        Use e!DISPLAY Products
+                        
+	config CDS3_RTS_PRODUCT_CC100
+                bool
+                prompt "CC100"
+                help
+                        Use CC100 Products
+
+
+endchoice
+
+endmenu
+
+menu "Features             "
+#source "generated/wago_specific_codesys_3_rtsfeature.in"
+
+config CDS3_RTS_FEATURE_BASIC_CONTROLLER
+	tristate "Basic Controller Config"
+	default n
+	help
+		this is the basic Configuration for an PLC
+
+config CDS3_RTS_FEATURE_WEBVISU
+	tristate "WebVisu"
+	default n
+	help
+		If you want to have a WebVisu In you device say y
+
+config CDS3_RTS_FEATURE_SERIAL
+	tristate "Serial"
+	default n
+	help
+		If you have a Serial interace (e.g. RS232) say Y here
+
+config CDS3_RTS_FEATURE_ENCRYPTION
+	tristate "Ecryption"
+	default n
+	help
+		If you want to enable eycryption like openssl say Y here
+
+config CDS3_RTS_FEATURE_PROFINET
+	tristate "Profinet"
+	default n
+	help
+		If you want to use the 3S profinet iec stack say Y here
+
+config CDS3_RTS_FEATURE_PROFINET_HILSCHER
+	tristate "Hilscher NetX" if CDS3_RTS_FEATURE_PROFINET
+	select PCIUTILS
+	default n
+	depends on !BUSYBOX_LSPCI || ALLYES
+	help
+		If you have a Hilscher PCI Profinet I/O Controller (e.g. CIFX70E-RE) say Y here
+		
+comment "Profinet Hilscher NetX | please unselect BusyBox' lspci first"
+        depends on BUSYBOX_LSPCI && CDS3_RTS_FEATURE_PROFINET
+
+config CDS3_RTS_FEATURE_TARGETVISU
+        tristate "Targetvisu"
+        default n
+        help
+                If you have a Display an want to use the Targetvisu say Y here
+
+config CDS3_RTS_FEATURE_USER_MANAGEMENT
+        tristate "User Management"
+        default n
+	select PAM
+        help
+                If you want to have the user Management say Y here
+
+config CDS3_RTS_FEATURE_OPCUA
+        tristate "OPCUA"
+        default n
+        help
+                If you want to have the OPCUA Feature say Y here
+
+config CDS3_RTS_FEATURE_MULTICORE
+        tristate "MULTICORE"
+        default n
+        help
+                If you want to have the Multicore Feature say Y here
+
+endmenu
+
+endif

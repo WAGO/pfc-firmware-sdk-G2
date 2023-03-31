@@ -1,0 +1,28 @@
+*filter
+# Flush all rules, delete all chains and zero counters
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+:ICMPFLOOD - [0:0]
+# Allow loopback interface
+-A INPUT -i lo -j ACCEPT
+
+# Drop packets with INVALID connection state
+-A INPUT -m conntrack --ctstate INVALID -j DROP
+
+# Accept icmp v6 packets but limit the rate to prevent dos attacks
+-A INPUT -p ipv6-icmp -m icmp6 --icmpv6-type 128 -j ICMPFLOOD
+
+# Allow return connections initiated from the host
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+# Allow connections from SSH clients
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
+# Accept all ICMP v6 packets
+-A INPUT -p ipv6-icmp -j ACCEPT
+
+# Add chain to avoid ping flooding
+-A ICMPFLOOD -m limit --limit 1/sec -j ACCEPT
+-A ICMPFLOOD -j DROP
+
+COMMIT

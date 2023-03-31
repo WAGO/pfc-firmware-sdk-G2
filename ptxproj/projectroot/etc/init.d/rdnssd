@@ -1,0 +1,59 @@
+#! /bin/sh
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2018-2022 WAGO GmbH & Co. KG
+
+# IPv6 Recursive DNS Server discovery Daemon
+
+RDNSSD=/sbin/rdnssd
+PID_FILE=/var/run/rdnssd.pid
+RESOLV_FILE=/tmp/slaac-data
+MERGE_HOOK=/etc/config-tools/events/networking/update_dns_conf
+PROC_SYS_DISABLE_IPV6="/proc/sys/net/ipv6/conf/all/disable_ipv6"
+
+
+[ -x "$RDNSSD" ] || exit 0
+
+if [ -n "$RESOLV_FILE" ]; then
+	OPTIONS="$OPTIONS --resolv-file $RESOLV_FILE"
+fi
+
+if [ -n "$MERGE_HOOK" ]; then
+	OPTIONS="$OPTIONS --merge-hook $MERGE_HOOK"
+fi
+
+IPV6_ENABLED=false
+[ -f "$PROC_SYS_DISABLE_IPV6" ] && grep -q 0 "$PROC_SYS_DISABLE_IPV6" && IPV6_ENABLED=true 
+
+case "$1" in
+  start)
+	if [ "$IPV6_ENABLED" = "true" ]; then
+		start-stop-daemon --start --quiet --pidfile "$PID_FILE" \
+			--exec "$RDNSSD" --oknodo -- $OPTIONS
+	fi
+	;;
+
+  stop)
+	start-stop-daemon --stop --quiet --pidfile "$PID_FILE" \
+		--retry 1 --oknodo
+
+	# Remove dns servers provided by slaac.
+	rm "$RESOLV_FILE"
+	$MERGE_HOOK config
+	;;
+
+  restart)
+	$0 stop
+	sleep 1
+	$0 start
+	;;
+  *)
+	echo "Usage: rdnssd {start|stop|restart}" >&2
+	exit 1
+	;;
+esac
+
+exit $?

@@ -1,0 +1,26 @@
+--- mosquitto-1.6.7/lib/loop.c	2022-11-07 15:05:24.122234000 +0100
++++ mosquitto-1.6.7/lib/loop.c	2022-11-07 15:11:02.703597613 +0100
+@@ -226,6 +226,7 @@
+ 			case MOSQ_ERR_EAI:
+ 			case MOSQ_ERR_PROXY:
+ 				log__printf(mosq, MOSQ_LOG_ERR, "mosquitto_loop_forever: fatal error %i: %s", rc, mosquitto_strerror(rc));
++				_mosquitto_handle_fatal_error(mosq, rc);
+ 				_mosquitto_handle_fatal_error(mosq, MOSQ_ERR_LOOP_FOREVER_EXITED);
+ 				return rc;
+ 			case MOSQ_ERR_ERRNO:
+@@ -233,6 +234,7 @@
+ 		}
+ 		if(errno == EPROTO){
+ 			log__printf(mosq, MOSQ_LOG_ERR, "mosquitto_loop_forever: fatal error errno == EPROTO, rc = %i: %s", rc, mosquitto_strerror(rc));
++			_mosquitto_handle_fatal_error(mosq, rc);
+ 			_mosquitto_handle_fatal_error(mosq, MOSQ_ERR_LOOP_FOREVER_EXITED);
+ 			return rc;
+ 		}
+@@ -278,6 +280,7 @@
+ 		}while(run && rc != MOSQ_ERR_SUCCESS);
+ 	}
+ 	log__printf(mosq, MOSQ_LOG_ERR, "mosquitto_loop_forever: Exiting with run = %i, rc = %i: %s", run, rc, mosquitto_strerror(rc));
++	_mosquitto_handle_fatal_error(mosq, rc);
+ 	_mosquitto_handle_fatal_error(mosq, MOSQ_ERR_LOOP_FOREVER_EXITED);
+ 	return rc;
+ }

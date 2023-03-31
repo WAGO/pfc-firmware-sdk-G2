@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "stdexcept": "cpp",
-        "exception": "cpp",
-        "system_error": "cpp"
-    }
-}

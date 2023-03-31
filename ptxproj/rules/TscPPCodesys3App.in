@@ -1,0 +1,17 @@
+## SECTION=wago_specific_codesys_3_wagocmp
+
+config TSCPPCODESYS3APP
+	bool
+	default n
+	select HOST_CT_BUILD
+	select CODESYS3
+	select CDS3_INCLUDES
+	select TSCPARAMSERV
+	select GOOGLETEST
+	select WAGO_PARAMETER_SERVICE_CORE
+	select WAGO_PARAMETER_SERVICE_COM
+	select WAGO_PARAMETER_SERVICE_CLIENT_LIB
+	select WAGO_PARAMETER_SERVICE_TEST_LIB
+	prompt "TscPPCodesys3App"
+	help
+	  Codesys 3 component for parameter provider Codesys3App.

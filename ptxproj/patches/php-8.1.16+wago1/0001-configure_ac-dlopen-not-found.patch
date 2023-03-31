@@ -1,0 +1,11 @@
+--- php-8.1.9+wago1/configure.ac.orig	2022-08-11 14:42:50.135626994 +0200
++++ php-8.1.9+wago1/configure.ac	2022-08-11 14:43:13.575847368 +0200
+@@ -360,7 +360,7 @@
+ PHP_CHECK_FUNC(gethostbyaddr, nsl, network)
+ PHP_CHECK_FUNC(dlopen, dl, root)
+ PHP_CHECK_FUNC(dlsym, dl, root)
+-if test "$ac_cv_func_dlopen" = "yes"; then
++if test "$ac_cv_func_dlopen" = "yes" || test "$ac_cv_lib_dl_dlopen" = "yes"; then
+   AC_DEFINE(HAVE_LIBDL, 1, [ ])
+ fi
+ AC_CHECK_LIB(m, sin)

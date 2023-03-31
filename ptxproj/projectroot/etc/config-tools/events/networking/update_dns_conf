@@ -1,0 +1,165 @@
+#!/bin/bash
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2018-2022 WAGO GmbH & Co. KG
+
+#-----------------------------------------------------------------------------#
+# Script-name: update_dns_conf
+#
+# Uses all DNS-server entries static and dynamic to create the resolv.conf
+# All entries will be sorted by the given sorting algorithm.
+#
+# Author: WAGO GmbH & Co. KG.
+#-----------------------------------------------------------------------------#
+
+usage() {
+    cat <<EOF
+* Sorting all dynamic and static DNS-entries and build the final resolv.conf. *
+
+Usage: update_dns_conf <--dry> <config> <--help>
+
+    --dry       Only prints the sorted list to STDOUT
+    config      writes the list to the resolv.conf
+    --help      Shows this output
+
+EOF
+}
+
+DNS_SERVER_STATIC_FILE="/etc/dns_static_list"
+SLAAC_FILE="/tmp/slaac-data"
+DHCP_TEMPLATE="/tmp/dhcp-bootp-data-"
+DELIMITER="="
+SORTING_ALGO="dynSingleTopStaticBelow"
+RESOLV_CONF="/etc/resolv.conf"
+
+if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+    usage
+    exit 0
+fi
+
+getEntryWithDelimiter() {
+    local FILENAME="$1"
+    local DELIMITER="$2"
+    local SEARCH_PARAM="$3"
+    local RETURN=""
+    local ENTRY=$(grep $SEARCH_PARAM "$FILENAME")
+
+    if [ -n "$DELIMITER" ]; then
+        while IFS=$DELIMITER read -r f1 f2; do
+            RETURN="$RETURN $f2"
+        done <<<"$ENTRY"
+    else
+        RETURN=$ENTRY
+    fi
+    #remove quotes
+    RETURN=$(echo "$RETURN" | tr -d '\042')
+    echo "$RETURN"
+}
+
+generateList() {
+    local data=("${!1}")
+    local data_length=$2
+    local sorting_algorithm=$3
+    local result[0]=""
+    local return_value=0
+
+    case "$sorting_algorithm" in
+    dynSingleTopStaticBelow)
+        local found_elements=1 #only for starting behaviour
+
+        local field_row=0
+        while [ $found_elements -gt 0 ]; do
+            local found_elements=0
+
+            for i in $(seq 0 "$data_length"); do
+                # dummy=(${data[$i]})
+                IFS=" " read -r -a dummy <<<"${data[$i]}"
+                local entry=${dummy[$field_row]}
+                if [ "$entry" ] && [ ${#entry} -gt 0 ]; then
+                    result=("${result[@]}" "$entry")
+                    found_elements=$((found_elements + 1))
+                fi
+            done
+            field_row=$((field_row + 1))
+        done
+        ;;
+    dynTopStaticBelow)
+        for i in $(seq 0 "$data_length"); do
+            result=("${result[@]}" "${data[$i]}")
+        done
+        ;;
+    *)
+        result=("wrong sorting algorithm")
+        return_value=1
+        ;;
+    esac
+
+    echo "${result[@]}"
+    return $return_value
+}
+
+getList() {
+    declare -a STORAGE_ARRAY=()
+
+    local index=0
+
+    # Read slaac file
+    if [[ -e $SLAAC_FILE ]]; then
+        STORAGE_ARRAY[$index]=$(getEntryWithDelimiter $SLAAC_FILE ' ' "nameserver")
+        index=$((index + 1))
+    fi
+
+    #Read dynamic files
+    DYNAMIC_FILE_LIST=$(ls $DHCP_TEMPLATE* 2>/dev/null)
+    for file in $DYNAMIC_FILE_LIST; do
+        STORAGE_ARRAY[$index]=$(getEntryWithDelimiter $file $DELIMITER "DNS_SERVER_")
+        index=$((index + 1))
+    done
+
+    # Read static files
+    STORAGE_ARRAY[$index]=$(getEntryWithDelimiter $DNS_SERVER_STATIC_FILE ' ' "nameserver")
+
+    # Generate the sorted list
+    list=$(generateList STORAGE_ARRAY[@] $index $SORTING_ALGO)
+
+    if [ "$?" -gt 0 ]; then
+        echo "ERROR: $list"
+        exit 1
+    fi
+
+    IFS=" " read -r -a arr <<<"$list"
+    echo "${arr[@]::3}"
+}
+
+buildServerList() {
+    local entries=$(getList)
+    # clear old list by removing every line that contains "nameserver" entry. Avoids leftovers from previous settings/restore
+    sed -i "/^nameserver/d" $RESOLV_CONF
+    if [ -n "$entries" ]; then
+        for entry in $entries; do
+            echo "nameserver $entry" >>$RESOLV_CONF
+        done
+    fi
+}
+
+# Only do a dryrun and print out the list of servers in the correct order
+if [ "$1" == "--dry" ]; then
+    entries=$(getList)
+    echo $entries
+    exit 0
+fi
+
+# Only if triggered from udhcp script, wbm or via slaac build the new server list.
+#   The rdnssd does not allow to hand arguments to the hook script. Therefore, it is not possible to set the "config" option.
+#   To avoid adding an extra script that only wraps the hook script, we check for the caller of this script. If this script
+#   is called from the rdnssd we infer that the resolv.conf should be updated.
+parent_name=$(cat /proc/$PPID/comm)
+if [[ "$1" == "config" || "$parent_name" == "rdnssd" ]]; then
+    buildServerList
+fi
+
+
+exit 0

@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2018-2022 WAGO GmbH & Co. KG
+
+#
+# Firewall: codesys and codesys3 demons events handler
+#
+
+if [[ 'enabled' != "$(/etc/config-tools/firewall firewall --is-enabled)" ]]; then
+  exit 0
+fi
+
+start()
+{
+    local action_runtime; action_runtime='down'
+    local action_webvisu; action_webvisu='down'
+    local action_opcua;   action_opcua='down'
+    local action_bacnet;  action_bacnet='down'
+    local runtime_active; runtime_active=$(/etc/config-tools/get_plc_config)
+
+    if [[ 1 == $runtime_active ]] ; then
+
+        action_runtime='up'
+
+        if [[ 'enabled' == "$(/etc/config-tools/get_port_state codesys3-webserver)" ]]; then
+            action_webvisu='up'
+        fi
+        if [[ 'true' == "$(/etc/config-tools/config_opcua -g enabled -o)" ]]; then
+            action_opcua='up'
+        fi
+
+        if [[ -x '/etc/config-tools/bacnet_config' ]]; then
+            if [[ 'true' == "$(/etc/config-tools/bacnet_config -g config-state)" ]]; then
+                action_bacnet='up'
+            fi
+        fi
+    fi
+
+    /etc/config-tools/firewall codesysr --apply "${action_runtime}"
+    /etc/config-tools/firewall codesysw --apply "${action_webvisu}"
+    /etc/config-tools/firewall opcua --apply "${action_opcua}"
+
+    if [[ -x '/etc/config-tools/bacnet_config' ]]; then
+        /etc/config-tools/firewall bacnet --apply "${action_bacnet}"
+    fi
+}
+
+stop()
+{
+    /etc/config-tools/firewall codesysr --apply down
+    /etc/config-tools/firewall codesysw --apply down
+    /etc/config-tools/firewall opcua --apply down
+
+    if [[ -x '/etc/config-tools/bacnet_config' ]]; then
+        /etc/config-tools/firewall bacnet --apply down
+    fi
+}
+
+exec 1>'/dev/null'
+exec 2>&1
+
+case "$1" in
+    start|config)
+        start;;
+    stop)
+        stop;;
+    *)
+        ;;
+esac

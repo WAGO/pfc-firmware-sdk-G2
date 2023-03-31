@@ -1,0 +1,9 @@
+## SECTION=applications
+
+config DOCKER_USERLAND_PROXY
+	bool
+	default n
+	select HOST_GO
+	prompt "docker-userland-proxy"
+	help
+	  Libnetwork provides a native Go implementation for connecting containers

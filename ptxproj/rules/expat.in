@@ -1,0 +1,9 @@
+## SECTION=system_libraries
+
+config EXPAT
+	tristate
+	prompt "expat"
+	select GCCLIBS_GCC_S
+	help
+	  This is an XML parsing library, written in C
+

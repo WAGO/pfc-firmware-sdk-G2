@@ -1,3 +1,3 @@
-src/boost_1_68_0.tar.bz2 filter=lfs diff=lfs merge=lfs -text
-src/production-wago-pfcXXX-r46083.tar filter=lfs diff=lfs merge=lfs -text
-src/linux-5.15.19.tar.xz filter=lfs diff=lfs merge=lfs -text
+ptxproj/src/boost_1_68_0.tar.bz2 filter=lfs diff=lfs merge=lfs -text
+ptxproj/src/go1.18.7.linux-amd64.tar.gz filter=lfs diff=lfs merge=lfs -text
+ptxproj/src/linux-5.15.86-rt56-w04.01.07.tgz filter=lfs diff=lfs merge=lfs -text

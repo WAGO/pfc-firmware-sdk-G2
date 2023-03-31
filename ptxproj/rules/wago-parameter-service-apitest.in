@@ -1,0 +1,15 @@
+## SECTION=wago_specific_config_parameterservice
+
+config WAGO_PARAMETER_SERVICE_APITEST
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select LIBCOMMONHEADER
+	select WAGO_PARAMETER_SERVICE_CORE
+	select WAGO_PARAMETER_SERVICE_COM
+	select WAGO_PARAMETER_SERVICE_CLIENT_LIB
+	select WAGO_WDX_FILE
+	prompt "WAGO Parameter Service API-Test client"
+	help
+	  API-Test client for WAGO Parameter Service.
+	  Used for automated tests of REST-API and file-API.

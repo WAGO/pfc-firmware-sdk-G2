@@ -1,0 +1,12 @@
+## SECTION=wago_specific_config
+
+config CONFIG_OPCUA
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select GLIB
+	select NLOHMANN_JSON
+	select TYPELABEL
+	prompt "config_opcua"
+	help
+	  config tool to modify the OPC UA configuration.

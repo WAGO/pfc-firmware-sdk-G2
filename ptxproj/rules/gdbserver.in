@@ -1,0 +1,24 @@
+## SECTION=debug_tools_gdb
+
+menuconfig GDBSERVER
+	tristate
+	prompt "gdbserver                     "
+	select GCCLIBS_CXX
+	select GCCLIBS_GCC_S
+	select LIBC_THREAD_DB if GDBSERVER_SHARED
+	help
+	  GDBSERVER is a program that allows you to run GDB on a
+	  different machine than the one which is running the
+	  program being debugged.
+
+if GDBSERVER
+
+config GDBSERVER_SHARED
+	bool "shared gdbserver"
+	default y
+	help
+	  If not set, the build option LDFLAGS=-static
+	  will be activated.
+
+endif
+

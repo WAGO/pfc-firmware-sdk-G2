@@ -1,0 +1,59 @@
+## SECTION=bootloader
+
+menuconfig BAREBOX_MLO
+	prompt "barebox mlo                   "
+	bool
+	help
+	  Build mlo from barebox sources.
+
+if BAREBOX_MLO
+
+config BAREBOX_MLO_URL_TEMPLATE
+	string
+	depends on BAREBOX_MLO
+	prompt "URL template"
+	default "%ARTIFACTORY_BASE_URL%/kernel-generic-prod/wago/barebox/release/am3xxx_pfc/am3xxx_pfc-%VERSION%/.build/deploy/barebox-source.tgz"
+	help
+	  Encodes the desired artifact version. Can be configured to a specific version or to a latest compatible version of an artifact.
+	  See Confluence for further details.
+#config BAREBOX_MLO_URL_TEMPLATE
+#    string
+#    depends on BAREBOX_MLO
+#    prompt "URL template"
+#    default "%ARTIFACTORY_BASE_URL%/kernel-generic-prod/wago/barebox/release/am3xxx_pfc/am3xxx_pfc-%VERSION%/.build/deploy/barebox-source.tgz"                                                                              
+#    help
+#      Encodes the desired artifact version. Can be configured to a specific version or to a latest compatible version of an artifact.
+#      See Confluence for further details.
+
+config BAREBOX_MLO_VERSION
+	prompt "barebox version"
+	string
+	default "${PTXCONF_BAREBOX_VERSION}"	if BAREBOX
+	default "2014.01.0"
+
+config BAREBOX_MLO_LOCALVERSION
+	prompt "Internal barebox version (i.e. w04.01.01_14)"
+	string
+	default "${BAREBOX_LOCALVERSION}"		if BAREBOX
+	default "w04.01.01_14"
+
+config BAREBOX_MLO_MD5
+	prompt "barebox source md5sum"
+	string
+	default "${PTXCONF_BAREBOX_MD5}"	if BAREBOX
+
+config BAREBOX_MLO_ARCH_STRING
+	string
+	default "arm"			if ARCH_ARM
+	default "blackfin"		if ARCH_BLACKFIN
+	default "ppc"			if ARCH_PPC
+	default "x86"			if ARCH_X86
+
+config BAREBOX_MLO_CONFIG
+	prompt "mlo config file"
+	string
+	default "barebox_mlo.config"
+	help
+	  This entry specifies the .config file used to compile mlo.
+
+endif

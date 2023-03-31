@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configtool_config>
+  <frontend id="cbm" uid="MAIN">
+    <simple_level ressource="information.sh" text="Information" uid="INFO">
+      <simple_level ressource="info_controller_details.sh" text="Controller Details" uid="INFO_CPL_DET"/>
+      <simple_level ressource="info_actual_tcpip_switch.sh" text="Network Details" uid="INFO_NET_DET_SWITCH"/>
+    </simple_level>
+    <simple_level ressource="networking.sh" text="Networking" uid="NETWORKING">
+      <simple_level ressource="tcpip_hostname.sh" text="Host-/Domain Name" uid="NETWORKING_HOSTNAME"/>
+      <simple_level ressource="tcpip.sh" text="TCP/IP" uid="NETWORKING_TCPIP">
+        <simple_level ressource="tcpip_switch.sh" text="IP Address" uid="NETWORKING_SWITCH"/>
+        <simple_level ressource="tcpip_default_gateway.sh" text="Default Gateway" uid="NETWORKING_DEF_GW"/>
+        <simple_level ressource="tcpip_dns_server.sh" text="DNS Server" uid="NETWORKING_DNS_SRV"/>
+      </simple_level>
+      <simple_level ressource="tcpip_ethernet.sh" text="Ethernet" uid="ETHERNET">
+        <simple_level ressource="tcpip_dsa.sh" text="Switch Configuration" uid="NETWORKING_DSA"/>
+        <simple_level ressource="tcpip_ethernet_ports.sh" text="Ethernet Ports" uid="ETHERNET_PORTS"/>
+      </simple_level>
+    </simple_level>
+    <simple_level ressource="clock.sh" text="Clock" uid="CLOCK"/>
+    <simple_level ressource="administration.sh" text="Administration" uid="ADMIN">
+      <simple_level ressource="adm_bootable_image.sh" text="Create Image" uid="ADMIN_IMG"/>
+      <simple_level ressource="adm_reboot_ipc.sh" text="Reboot Controller" uid="ADMIN_REBOOT"/>
+    </simple_level>
+    <simple_level ressource="package_server.sh" text="Package Server" uid="PKGSRV">
+      <simple_level ressource="pkgsrv_backup.sh" text="Firmware Backup" uid="PKGSRV_BACKUP"/>
+      <simple_level ressource="pkgsrv_restore.sh" text="Firmware Restore" uid="PKGSRV_RESTORE"/>
+      <simple_level ressource="pkgsrv_system_partition.sh" text="System Partition" uid="PKGSRV_SYSPART"/>
+    </simple_level>
+    <simple_level ressource="mass_storage.sh" text="Mass Storage" uid="MASSSTORAGE"/>
+  </frontend>
+</configtool_config>

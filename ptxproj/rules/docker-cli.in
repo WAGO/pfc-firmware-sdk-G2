@@ -1,0 +1,9 @@
+## SECTION=applications
+
+config DOCKER_CLI
+	bool
+	default n
+	select HOST_GO
+	prompt "docker-cli"
+	help
+	  Docker Client

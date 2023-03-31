@@ -1,0 +1,33 @@
+Index: shadow-4.12.3/src/Makefile.am
+===================================================================
+--- shadow-4.12.3.orig/src/Makefile.am
++++ shadow-4.12.3/src/Makefile.am
+@@ -51,10 +51,11 @@ usbin_PROGRAMS = \
+ 	useradd \
+ 	userdel \
+ 	usermod \
+-	vipw
++	vipw \
++	sulogin
+ 
+ # id and groups are from gnu, sulogin from sysvinit
+-noinst_PROGRAMS = id sulogin
++noinst_PROGRAMS = id
+ 
+ suidusbins     =
+ suidbins       =
+Index: shadow-4.12.3/src/Makefile.in
+===================================================================
+--- shadow-4.12.3.orig/src/Makefile.in
++++ shadow-4.12.3/src/Makefile.in
+@@ -102,8 +102,8 @@ usbin_PROGRAMS = chgpasswd$(EXEEXT) chpa
+ 	grpunconv$(EXEEXT) logoutd$(EXEEXT) newusers$(EXEEXT) \
+ 	pwck$(EXEEXT) pwconv$(EXEEXT) pwunconv$(EXEEXT) \
+ 	useradd$(EXEEXT) userdel$(EXEEXT) usermod$(EXEEXT) \
+-	vipw$(EXEEXT)
+-noinst_PROGRAMS = id$(EXEEXT) sulogin$(EXEEXT) $(am__EXEEXT_3)
++	vipw$(EXEEXT) sulogin$(EXEEXT)
++noinst_PROGRAMS = id$(EXEEXT) $(am__EXEEXT_3)
+ @WITH_SU_TRUE@am__append_3 = su
+ @WITH_TCB_FALSE@am__append_4 = passwd
+ @ACCT_TOOLS_SETUID_TRUE@am__append_5 = chgpasswd chpasswd groupadd groupdel groupmod newusers useradd userdel usermod

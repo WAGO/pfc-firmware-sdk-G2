@@ -1,0 +1,8 @@
+## SECTION=hosttools
+
+config HOST_GO
+	bool
+	default n
+	prompt "go"
+	help
+	  Go is a statically typed, compiled programming language

@@ -1,0 +1,25 @@
+Index: libmodbus-3.0.5/src/modbus-tcp.c
+===================================================================
+--- libmodbus-3.0.5.orig/src/modbus-tcp.c
++++ libmodbus-3.0.5/src/modbus-tcp.c
+@@ -376,6 +376,7 @@ static int _modbus_tcp_connect(modbus_t
+ 
+     if(_ip_get_host_addr_by_name(ctx, ctx_tcp->ip, &addr.sin_addr.s_addr))
+     {
++        close(ctx->s);
+         if (ctx->debug) printf("Couldn't resolve hostname: %s\n", ctx_tcp->ip);
+         return -1;
+     }
+Index: libmodbus-3.0.5/configure.ac
+===================================================================
+--- libmodbus-3.0.5.orig/configure.ac
++++ libmodbus-3.0.5/configure.ac
+@@ -41,7 +41,7 @@ AC_SUBST(LIBMODBUS_VERSION)
+ # ABI version
+ # http://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
+ LIBMODBUS_LD_CURRENT=750
+-LIBMODBUS_LD_REVISION=39
++LIBMODBUS_LD_REVISION=40
+ LIBMODBUS_LD_AGE=0
+ LIBMODBUS_LT_VERSION_INFO=$LIBMODBUS_LD_CURRENT:$LIBMODBUS_LD_REVISION:$LIBMODBUS_LD_AGE
+ AC_SUBST(LIBMODBUS_LT_VERSION_INFO)

@@ -1,0 +1,6 @@
+*filter
+# Flush all rules, delete all chains and zero counters
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+COMMIT

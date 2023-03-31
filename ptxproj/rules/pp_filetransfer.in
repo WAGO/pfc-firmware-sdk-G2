@@ -1,0 +1,14 @@
+## SECTION=wago_specific_paramprovider
+
+config PP_FILETRANSFER
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+  select WAGO_PARAMETER_SERVICE_CORE
+	select LIBCOMMONHEADER
+	select NLOHMANN_JSON
+	select LIBARCHIVE
+	select WAGO_SYSTEM
+	prompt "pp_filetransfer"
+	help
+	  Parameter provider for file transfer protocol settings

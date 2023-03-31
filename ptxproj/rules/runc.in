@@ -1,0 +1,10 @@
+## SECTION=applications
+
+config RUNC
+	bool
+	default n
+	select HOST_GO
+	select LIBSECCOMP
+	prompt "runc"
+	help
+	  runc is a CLI tool for spawning and running containers on Linux according to the OCI specification.

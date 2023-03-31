@@ -1,0 +1,7 @@
+0001-Add-error-message-for-keepalive-timeout.patch
+0002-Add-error-message-for-fatal-error-in-loop-forever.patch
+0003-Add-handling-of-fatal-errors.patch
+0004-fix_issue2130_mosquitto.c.patch
+0005-fix_issue2130_bridge.c.patch
+0006-fix_issue1453_rr_client_redefined_cfg.patch
+0007-report_reason_of_disconnect.patch

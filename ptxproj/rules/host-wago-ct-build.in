@@ -1,0 +1,28 @@
+## SECTION=wago_specific
+
+config HOST_CT_BUILD
+  bool
+  select GLIBC
+  select GCCLIBS
+  select VALGRIND
+  select USR_ROOTFS
+  prompt "Cross Toolchain Build"
+  default n
+  help 
+    Cross toolchain build scripts
+
+if HOST_CT_BUILD 
+config HOST_CT_BUILD_DEV
+  bool
+  prompt "Use development version."
+  help
+    Instead of released version use source code directly checked-out from repository.
+    Use only for development!
+
+config HOST_CT_BUILD_GIT_CHECKOUT_REF
+  string
+  prompt "Checkout this ref (branch/commit hash)."
+  default "master"
+  help
+    Check out this reference. This field is used as an argument for git checkout.
+endif

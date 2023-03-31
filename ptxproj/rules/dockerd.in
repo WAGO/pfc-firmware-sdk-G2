@@ -1,0 +1,9 @@
+## SECTION=applications
+
+config DOCKERD
+	bool
+	default n
+	select HOST_GO
+	prompt "dockerd"
+	help
+	  Docker Daemon

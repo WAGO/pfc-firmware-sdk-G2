@@ -1,0 +1,9 @@
+## SECTION=applications
+
+config CONTAINERD
+	bool
+	default n
+	prompt "containerd"
+	select HOST_GO
+	help
+	  containerd is an industry-standard container runtime with an emphasis on simplicity, robustness and portability

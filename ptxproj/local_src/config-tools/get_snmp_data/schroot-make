@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+schroot -pc flippy -- ./make-wrapper -j $@ | tee out/compile.log
+
+compiledb --parse out/compile.log

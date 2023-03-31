@@ -1,0 +1,40 @@
+## SECTION=networking
+
+menuconfig NDISC6
+	bool
+	prompt "ndisc6"
+	help
+	  Small collection of IPv6 networking tools.
+
+if NDISC6
+	config NDISC6_NDISC6
+	bool
+	prompt "ndisc6"
+	help
+		ICMPv6 Neighbor Discovery tool
+
+	config NDISC6_RDISC6
+	bool
+	prompt "rdisc6"
+	help
+		ICMPv6 Router Discovery tool
+
+	config NDISC6_TCPTRACEROUTE6
+	bool
+	prompt "tcptraceroute6"
+	help
+		lightweight IPv6 tcptraceroute
+
+	config NDISC6_TRACEROUTE6
+	bool
+	prompt "traceroute6"
+	help
+		IPv6 traceroute
+
+	config NDISC6_RDNSSD
+	bool
+	prompt "rdnssd"
+	help
+		IPv6 Recursive DNS Server discovery Daemon
+
+endif

@@ -1,0 +1,290 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2011-2023 WAGO GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
+# Script:   /etc/init.d/lighttpd
+#
+# Brief:    System V init script for lighttpd.
+#
+# Author:   PEn:  WAGO GmbH & Co. KG
+# Author:   MaHe: WAGO GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+
+PREFIX="lighttpd: "
+LIGHTTPD="/usr/sbin/lighttpd"
+LIGHTTPD_PROC="lighttpd"
+LIGHTTPD_CONF="/etc/lighttpd/lighttpd.conf"
+LIGHTTPD_LOGDIR="/var/log/lighttpd"
+LIGHTTPD_PHP_SESSION_DIR="/var/run/php/sessions"
+START_STOP_DAEMON="/sbin/start-stop-daemon"
+# According to setting "server.graceful-shutdown-timeout" in lighttpd.conf
+WAIT_FOR_STOP_TIMEOUT=60
+
+# Somehow we rarly get SIGHUP signals, which can cause
+# "start" or "stop" to be interrupted unexpectedly.
+# This can cause "reload" to not work as intended.
+# This trap handles SIGHUP to work around this problem.
+trap "echo \"Received signal SIGHUB\"" SIGHUP
+
+# Utility function to log and print an error message
+log_error()
+{
+    local error_text="$1"
+    local result=0
+
+    # Write to syslog
+    logger -t "${PREFIX}SysV-Init [$$] [ ERROR ]" -p user.err -- "$error_text"
+    result=$?
+
+    # Print also on stderr
+    echo "[ ERROR ] ${PREFIX}$error_text" 1>&2
+
+    return $result
+}
+
+# Utility function to log and print a warning message
+log_warning()
+{
+    local warn_text="$1"
+    local result=0
+
+    logger -t "${PREFIX}SysV-Init [$$] [ WARN  ]" -p user.warning -- "$warn_text"
+    result=$?
+
+    # Print also on stderr
+    echo "[ WARN  ] ${PREFIX}$warn_text" 1>&2
+
+    return $result
+}
+
+# Utility function to log and print an info message
+log_info()
+{
+    local info_text="$1"
+    local result=0
+
+    logger -t "${PREFIX}SysV-Init [$$] [ INFO  ]" -p user.notice -- "$info_text"
+    result=$?
+
+    # Print also on stdout
+    echo "[ INFO  ] ${PREFIX}$info_text"
+
+    return $result
+}
+
+# Utility function to create a directory and assign appropriate 
+# permissions as required by the service
+create_directory_if_needed()
+{
+    local directory="$1"
+    if [[ ! -d "${directory}" ]]; then
+        mkdir -p "${directory}"
+        chmod 700 "${directory}"
+        chown www:www "${directory}"
+    fi
+}
+
+lighttpd_pid_count()
+{
+    local lighttpd_pid_candidates
+    local pid_cmd
+    local pid_count=0
+
+    lighttpd_pid_candidates="$(pidof "${LIGHTTPD_PROC}")"
+    for pid in $lighttpd_pid_candidates; do
+        pid_cmd="$(cat /proc/$pid/cmdline 2>/dev/null | tr -d '\0')"
+        if [[ $pid_cmd =~ ${LIGHTTPD} ]]; then
+            pid_count=$((pid_count + 1))
+        fi
+    done
+
+    echo -n $pid_count
+    return 0
+}
+
+status_check()
+{
+    local pid_count=0
+
+    pid_count=$(lighttpd_pid_count)
+    if [[ $pid_count -eq 1 ]]; then
+        return 0
+    elif [[ $pid_count -lt 1 ]]; then
+        # No lighttpd process active
+        return 1
+    else
+        # Multiple lighttpd processes active => starting but not started, yet
+        return 2
+    fi
+}
+
+wait_for_start()
+{
+    local result=0
+
+    echo -n "${PREFIX}starting"
+    local try_count=0
+    while ! status_check; do
+        try_count=$((try_count+1))
+        if [[ $try_count -gt 20 ]]; then
+            result=1
+            log_warning "server does not start within expected time"
+            break
+        fi
+        echo -n "."
+        usleep 100000
+    done
+    echo ""
+
+    return $result
+}
+
+start()
+{
+    local result
+    create_directory_if_needed "${LIGHTTPD_LOGDIR}"
+    create_directory_if_needed "${LIGHTTPD_PHP_SESSION_DIR}"
+    $START_STOP_DAEMON --quiet --start --exec "${LIGHTTPD}" -- -f "${LIGHTTPD_CONF}"
+    result=$?
+    if [[ $result -eq 0 ]]; then
+        wait_for_start
+        result=$?
+    else
+        log_error "$START_STOP_DAEMON failed to start ${LIGHTTPD}"
+    fi
+
+    return $result
+}
+
+wait_for_stop()
+{
+    local result=0
+
+    echo -n "${PREFIX}stopping"
+    local try_count=0
+    while $START_STOP_DAEMON --stop -t --quiet --exec "${LIGHTTPD}"; do
+        try_count=$((try_count+1))
+        if [[ $try_count -gt ${WAIT_FOR_STOP_TIMEOUT} ]]; then
+            result=1
+            break
+        fi
+        echo -n "."
+        sleep 1
+    done
+    echo ""
+
+    return $result
+}
+
+stop()
+{
+    local result
+
+    $START_STOP_DAEMON --quiet --stop --oknodo --exec "${LIGHTTPD}"
+    result=$?
+    if [[ $result -eq 0 ]]; then
+        wait_for_stop
+        result=$?
+    fi
+
+    return $result
+}
+
+# Reload configuration of the service
+reload()
+{
+    local result=1
+    if $START_STOP_DAEMON --stop --signal SIGINT --oknodo --quiet --exec "${LIGHTTPD}"; then
+        wait_for_stop
+        if start; then
+            result=0
+        # Startup may fail rarely, try once more in that case
+        elif sleep 1 && start; then
+            result=0
+        fi
+    fi
+
+    return $result
+}
+
+# main
+exec {lock_fd}>/var/lock/lighttpd_init || exit 1
+trap "flock --unlock $lock_fd" EXIT
+flock --exclusive $lock_fd
+
+case $1 in
+
+    start)
+        log_info "start"
+        if start; then
+            log_info "start done"
+            exit 0
+        else
+            log_error "could not start server"
+            exit 1
+        fi
+        ;;
+
+    stop)
+        log_info "stop"
+        if stop; then
+            log_info "stop done"
+            exit 0
+        else
+            log_error "could not stop server"
+            exit 1
+        fi
+        ;;
+
+    status)
+        log_info "status check"
+        if status_check; then
+            log_info "status is running"
+            exit 0
+        else
+            log_info "status is stopped"
+            # This is not really an error case but for an automated status check
+            # an other return code than 0 is used here
+            exit 1
+        fi
+        ;;
+
+    restart)
+        log_info "restart"
+        if stop; then
+            log_info "stop done"
+            if start; then
+                log_info "start done"
+                exit 0
+            else
+                log_error "could not start server"
+                exit 1
+            fi
+        else
+            log_error "could not stop server"
+            exit 1
+        fi
+        ;;
+
+    reload)
+        log_info "reload"
+        if reload; then
+            log_info "reload done"
+            exit 0
+        else
+            log_error "could not reload server"
+            exit 1
+        fi
+        ;;
+
+    *)
+        echo "Usage: ${0} [start|stop|status|restart|reload]" >&2
+        exit 1
+        ;;
+
+esac

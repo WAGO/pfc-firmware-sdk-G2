@@ -1,0 +1,10 @@
+## SECTION=wago_specific_config
+
+config CONFIG_SNMP
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select SNMP_CONFIG_LIB
+	prompt "config_snmp"
+	help
+	  config tool to write the snmp configuration files.

@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2018-2022 WAGO GmbH & Co. KG
+
+#
+# NET-SNMP snmpd
+#
+PATH=/usr/bin:/usr/sbin:/usr/local/bin:/bin:/sbin
+
+PREFIX="snmpd: "
+SNMPD="/usr/sbin/snmpd"
+SNMPD_CONF="/var/lib/net-snmp/snmpd.conf"
+SNMPD_PID="/var/run/snmpd.pid"
+
+function start {
+    echo "${PREFIX}starting ..."
+    NAMES=""
+    shopt -s nullglob  # in case globbing was not successful
+    for NAME in /etc/snmp/snmpd_*.conf; do
+        if [[ "$NAMES" == "" ]]; then
+            NAMES=$NAME
+        else
+            NAMES=$NAMES,$NAME
+        fi
+    done
+    $SNMPD -c $NAMES,$SNMPD_CONF -p $SNMPD_PID
+    [[ $? == 0 ]] || exit 1
+    [[ -d /etc/config-tools/events/snmp/ ]] && run-parts -a start /etc/config-tools/events/snmp/ >/dev/null 2>&1
+}
+
+function stop {
+    echo "${PREFIX}stopping"
+    [[ -d /etc/config-tools/events/snmp/ ]] && run-parts -a stop /etc/config-tools/events/snmp/ >/dev/null 2>&1
+
+    if [ -f $SNMPD_PID ]; then
+        pid=$(< $SNMPD_PID)
+        start-stop-daemon --stop --exec $SNMPD  --pidfile $SNMPD_PID
+        pidof snmpd && sleep 1
+        pidof snmpd && kill -9 $pid
+        rm -f "$SNMPD_PID"
+    fi
+}
+
+function restart {
+#only restart if snmpd is running and pid-file exist
+    if [ -f $SNMPD_PID ]; then
+        stop
+    fi
+    start
+}
+
+case $1 in
+
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+
+    restart)
+        restart
+        ;;
+
+    *)
+        echo "${PREFIX}usage: ${0} [start|stop]"
+        exit 1
+        ;;
+
+esac

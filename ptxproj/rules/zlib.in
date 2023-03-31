@@ -1,0 +1,10 @@
+## SECTION=system_libraries
+config ZLIB
+	tristate
+	prompt "zlib"
+	select GCCLIBS_GCC_S
+	help
+	  A Massively Spiffy Yet Delicately Unobtrusive
+	  Compression Library
+
+	  (Also Free, Not to Mention Unencumbered by Patents)

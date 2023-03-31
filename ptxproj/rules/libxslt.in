@@ -1,0 +1,62 @@
+## SECTION=system_libraries
+
+menuconfig LIBXSLT
+	tristate
+	prompt "libxslt                       "
+	select LIBXML2
+	select LIBXML2_OUTPUT
+	select LIBXML2_XINCLUDE
+	select LIBXML2_XPTR
+	select LIBXML2_DOM
+	select LIBXML2_HTML
+	select LIBGCRYPT	if LIBXSLT_CRYPTO
+	help
+	  LibXSLT is a generic XSLT implementation. For details see the
+	  project homepage:
+
+		http://xmlsoft.org/XSLT/
+
+if LIBXSLT
+# ----- Compile Options
+
+comment "Compile Options"
+
+config LIBXSLT_CRYPTO
+	bool
+	prompt "Add crypto support to exslt"
+
+config LIBXSLT_PLUGINS
+	bool
+	prompt "Add plugin extension support "
+	default y
+
+config LIBXSLT_DEBUG
+	bool
+	prompt "Add the debugging support"
+
+config LIBXSLT_PROFILER
+	bool
+	prompt "Add the profiling support"
+
+comment "Install Components"
+
+config LIBXSLT_LIBXSLT
+	bool
+	prompt "libxslt"
+	default y
+
+config LIBXSLT_LIBEXSLT
+	bool
+	prompt "libexslt"
+	default y
+
+config LIBXSLT_XSLTPROC
+	bool
+	prompt "xsltproc"
+	select LIBXSLT_LIBEXSLT
+	select LIBXSLT_LIBXSLT
+	help
+	  xsltproc is an XML stylesheet processor. See
+	  http://xmlsoft.org/XSLT for details.
+
+endif

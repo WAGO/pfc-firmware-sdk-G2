@@ -1,0 +1,13 @@
+Index: mosquitto-1.6.7/client/rr_client.c
+===================================================================
+--- mosquitto-1.6.7.orig/client/rr_client.c
++++ mosquitto-1.6.7/client/rr_client.c
+@@ -47,7 +47,7 @@ enum rr__state {
+ 
+ static enum rr__state client_state = rr_s_new;
+ 
+-struct mosq_config cfg;
++extern struct mosq_config cfg;
+ bool process_messages = true;
+ int msg_count = 0;
+ struct mosquitto *mosq = NULL;

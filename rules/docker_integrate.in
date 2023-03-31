@@ -1,8 +1,0 @@
-## SECTION=applications
-
-config DOCKER_INTEGRATE
-	bool
-	default n
-	prompt "docker_integrate"
-	help
-	  docker ipk will be copied to fw image but not installed

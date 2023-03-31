@@ -1,0 +1,26 @@
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Date: Tue, 23 Oct 2018 00:21:54 +0200
+Subject: [PATCH] make the build reproducible
+
+Don't include the current date / time into the build.
+
+Original patch from Debian.
+
+Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+---
+ scripts/build/mkver.in | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/scripts/build/mkver.in b/scripts/build/mkver.in
+index 3aef1c816a7f..badd2cda8c1f 100644
+--- a/scripts/build/mkver.in
++++ b/scripts/build/mkver.in
+@@ -15,8 +15,6 @@ case "@VER_SUFFIX@" in
+  *) ConfStr="${ConfStr}-@VER_SUFFIX@" ;;
+ esac
+ 
+-ConfStr="$ConfStr `LC_TIME=C TZ=UTC date`"
+-
+ if [ ! -f .version ]; then
+   echo 0 > .version
+ fi

@@ -1,0 +1,10 @@
+## SECTION=applications
+
+config ROOTLESSKIT
+	bool
+	default n
+	select HOST_GO
+	select ROOTLESSKIT_DEP
+	prompt "rootlesskit"
+	help
+	  RootlessKit is a Linux-native implementation of "fake root" using user_namespaces(7)

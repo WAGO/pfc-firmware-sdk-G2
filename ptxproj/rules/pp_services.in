@@ -1,0 +1,34 @@
+## SECTION=wago_specific_paramprovider
+
+config PP_SERVICES
+	bool
+	select HOST_CT_BUILD
+	select WAGO_WDX_FILE
+	select FP_X509_PKEY
+	select GOOGLETEST
+	select BUSYBOX_START_STOP_DAEMON            if PP_SERVICES_STARTSCRIPT
+	select LIBCOMMONHEADER                      if PP_SERVICES_DAEMON
+	select WAGO_PARAMETER_SERVICE_CORE
+	select WAGO_PARAMETER_SERVICE_MODEL_FILES
+	select WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_CPP_HEADERS
+	select WAGO_PARAMETER_SERVICE_COM
+	select WAGO_PARAMETER_SERVICE_TEST_LIB
+	select WAGO_PARAMETER_SERVICE_CLIENT_LIB    if PP_SERVICES_DAEMON
+
+	prompt "pp_services"
+	help
+	  FIXME
+
+config PP_SERVICES_DAEMON
+        bool
+        default n
+        prompt "pp_services daemon"
+        depends on PP_SERVICES
+        help
+          WAGO Parameter Service client daemon for pp_services.
+
+config PP_SERVICES_STARTSCRIPT
+        bool
+        default n
+        depends on PP_SERVICES_DAEMON
+        prompt "install /etc/init.d/pp_services"

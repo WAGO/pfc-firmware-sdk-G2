@@ -1,0 +1,11 @@
+## SECTION=wago_specific
+
+config LOG_SYSTEM_INFO
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select WAGO_SYSTEM
+	select SYSLOGNG
+	prompt "log-system-info"
+	help
+	  FIXME

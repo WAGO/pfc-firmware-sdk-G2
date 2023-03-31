@@ -1,0 +1,462 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# This file is part of PTXdist package wago-custom-install.
+#
+# Copyright (c) 2018-2022 WAGO GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
+# Script:   settings_backup_restore
+#
+# Brief:    Restore the actual configuration settings of PFC.
+#
+# Author:   StM: WAGO GmbH & Co. KG
+# Author:   AGa: WAGO GmbH & Co. KG
+# Author:   HJH: WAGO GmbH & Co. KG
+# Author:   MOe: WAGO GmbH & Co. KG
+# Author:   OG: WAGO GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+
+# load common backup/restore functions and definitions
+if [ ! -f "/usr/sbin/settings_backup_lib" ]; then
+  echo "settings_backup_lib missing"
+  exit 64
+fi
+
+source /usr/sbin/settings_backup_lib
+
+#
+# Function to get the value of a parameter from settings backup file.
+#
+# Param 1: parameterName: name of the requested parameter
+# Param 2: backupFile: path and name of backup file
+#
+# Output (std): value of the requested parameter
+# Return: SUCCESS : parameteris found, output value is valid
+#         MISSING_PARAMETER: parameter is not found
+#         INVALID_PARAMETER: parameter is not valid
+#
+GetBackupValue ()
+{
+  local parameterName="${1:-}"
+  local backupFile="$2"
+  local status=$SUCCESS
+
+  # check if parameter is given
+  if [ -n "$parameterName" ]; then
+      # search for the line with the requested parameter and filter the string behind '='
+      local line=$(grep ^${parameterName}= "$backupFile")
+      local parameterValue=${line#*=} 
+      echo $parameterValue
+      if [[ "$line" != "" ]]; then
+          echo $parameterValue  >> "$progressFile"
+      else
+          status=$MISSING_PARAMETER
+      fi
+  else
+      status=$INVALID_PARAMETER 
+  fi  
+  return $status
+}
+
+#
+# Function to delete all SNMP trap-receivers or all SNMP users
+#
+# Param 1: prefix: v3-trap-receiver, v3-user or v3-ro-user
+#                  v3-trap-receiver: delete all trap receivers
+#                  v3-user:          delete all users with read-write access
+#                  v3-ro-user:       delete all users with read-only access
+#
+DeleteSnmpV3Entries ()
+{
+  local prefix="$1"
+  
+  local authName=$(/etc/config-tools/get_snmp_data "$prefix-auth-name" 1)
+    
+  while [ -n "$authName" ]; do
+    local authType=$(/etc/config-tools/get_snmp_data "$prefix-auth-type" 1)
+    local authKey=$(/etc/config-tools/get_snmp_data "$prefix-auth-key" 1)
+    local privacy=$(/etc/config-tools/get_snmp_data "$prefix-privacy" 1)
+    local privacyKey=$(/etc/config-tools/get_snmp_data "$prefix-privacy-key" 1)
+    local notificationReceiver=$(/etc/config-tools/get_snmp_data "$prefix-host" 1)
+    /etc/config-tools/config_snmp v3-edit=delete "v3-auth-name=$authName" "v3-auth-type=$authType" "v3-auth-key=$authKey" "v3-privacy=$privacy" "v3-privacy-key=$privacyKey" "v3-notification-receiver=$notificationReceiver"
+    snmpStatus=$?
+    if [[ $snmpStatus -ne 0 ]]; then
+      ProcessErrRestoreOperation $snmpStatus "Failed to remove existing snmp $prefix." "$authName"
+      break
+    fi
+    authName=$(/etc/config-tools/get_snmp_data "$prefix-auth-name" 1)
+  done
+}
+
+#
+# Function to restore SNMP trap-receivers or users
+#
+# Param 1: prefix: v3-user or v3-ro-user
+#                  v3-user:     restore trap-receivers and users with read-write access
+#                  v3-ro-users: restore users with read-only access
+#
+RestoreSnmpV3Entries ()
+{
+  local prefix="$1"
+
+  local userIndex=1
+  local authName=$(GetBackupValue "$prefix-auth-name-$userIndex" "$backupFile")
+
+  while [ -n "$authName" ]; do
+    authType=$(GetBackupValue "$prefix-auth-type-$userIndex" "$backupFile")
+    authKey=$(GetBackupValue "$prefix-auth-key-$userIndex" "$backupFile")
+    privacy=$(GetBackupValue "$prefix-privacy-$userIndex" "$backupFile")
+    privacyKey=$(GetBackupValue "$prefix-privacy-key-$userIndex" "$backupFile")
+    notificationReceiver=$(GetBackupValue "$prefix-notification-receiver-$userIndex" "$backupFile")
+    
+    if [[ -n "$notificationReceiver" ]]; then
+      /etc/config-tools/config_snmp v3-trap-receiver-edit=add "v3-auth-name=$authName" "v3-auth-type=$authType" "v3-auth-key=$authKey" "v3-privacy=$privacy" "v3-privacy-key=$privacyKey" "v3-notification-receiver=$notificationReceiver"
+    else
+      local access="read-write"
+      [[ "$prefix" == "v3-ro-user" ]] && access="read-only"
+
+      /etc/config-tools/config_snmp v3-user-edit=add "v3-auth-name=$authName" "v3-auth-type=$authType" "v3-auth-key=$authKey" "v3-privacy=$privacy" "v3-privacy-key=$privacyKey" "v3-user-access=$access"
+    fi
+
+    userIndex=$((userIndex + 1))
+    authName=$(GetBackupValue "$prefix-auth-name-$userIndex" "$backupFile")
+  done
+}
+
+#-------------- main-programm ------------------------#
+
+status=0
+ret=0
+
+restore_error_count=0
+
+#-------------------------------------------------------------
+# show help-text if requested
+#-------------------------------------------------------------
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+  echo
+  echo "* restore all configuration settings from backup file *"
+  echo
+  echo "Usage: $(basename "$0") < backup file name >" 
+  echo
+  echo "Note: after restoring a reboot is necessary to make the changes active"
+  echo
+  exit $status
+fi
+
+
+if [[ "$RELEASE_VERSION" == "yes" ]]; then
+  SuppressMessageOutput
+fi
+
+
+backupFile="$1"
+
+#-------------------------------------------------------------
+# restore of settings
+#-------------------------------------------------------------
+
+if [ -n "${backupFile}" ]; then
+
+  # prepare progress bar
+  m=$(umask)
+  umask 0177
+  rm -f "$progressFile"
+  : > "$progressFile"
+  umask "$m"
+  (
+  # check if backup file is existing and valid
+  if [ ! -f "$backupFile" ]; then
+    status=$CONFIG_FILE_MISSING
+    ProcessErrRestoreOperation $status "Invalid config file: " "$backupFile"
+  elif grep -q '[[:cntrl:]]' "$backupFile"; then
+    status="$CONFIG_FILE_INCONSISTENT"
+    ProcessErrRestoreOperation $status "Invalid config file: " "$backupFile"
+  else
+
+    # read all requested values from backup file and change them in the actual configuration
+
+    # process the values from the global list in a loop 
+    configParamIndex=0
+    while [ "$configParamIndex" -lt "${#configParam[*]}" ]; do
+  
+      # filter param name from parameter list
+      paramName=`echo ${configParam[$configParamIndex]} | cut -d\; -f1`
+      writeFunction=`echo "${configParam[$configParamIndex]}" | cut -d\; -f3`
+      paramValue=`GetBackupValue $paramName "$backupFile"`
+      paramStatus=$?
+      ProcessErrRestoreOperation "$paramStatus" " : " "$paramName"
+      if [[ "$paramStatus" -eq "$SUCCESS" ]]; then
+          $writeFunction$paramValue
+      fi
+      ProcessErrRestoreOperation $? "Failed to restore parameter:" "$paramName"
+
+      configParamIndex=$[$configParamIndex + 1]
+    done
+
+    # add other single values to restore - read from backup file and initiate the change
+    #
+    # example:
+    # keyboardLayout=`GetBackupValue "keyboard-layout" "$backupFile"
+    # /etc/config-tools/change_keyboard_layout keyboard-layout=$keyboardLayout
+    #
+     
+    #-------------------------------------------------------------
+    # restore gprs access settings
+
+    gprs_username=`GetBackupValue "gprs-username" "$backupFile"`
+    gprs_password=`echo $(GetBackupValue "gprs-password" "$backupFile") | base64 -d`
+    gprs_auth_type=`GetBackupValue "gprs-auth-type" "$backupFile"`  
+    gprs_apn=`GetBackupValue "gprs-apn" "$backupFile"`
+             
+    if [[ -x /etc/config-tools/settings_backup_mdmd ]]; then
+      	/etc/config-tools/settings_backup_mdmd restore gprs-access "$gprs_apn" "$gprs_auth_type" "$gprs_username" "$gprs_password"
+      	ProcessErrRestoreOperation $? "Restore grps user account settings failed"
+    else
+        ProcessErrRestoreOperation $? "Invalid grps backup user accounts settings config tool file"    
+    fi 
+    
+      
+    #-------------------------------------------------------------
+    # delete all existing dns-server before we restore the ones from backup
+    # we only must delete allways the r one in sequential list, until none is existing
+    dnsServerName=$(/etc/config-tools/get_dns_server 1)
+    ProcessErrRestoreOperation $? "Failed to get dns server:" $dnsServerName
+    while [ -n "$dnsServerName" ]; do
+      print_dbg "delete dnsServer:" $dnsServerNo $dnsServerName
+      /etc/config-tools/edit_dns_server delete=DELETE dns-server-nr=1 dns-server-name=$dnsServerName
+      ProcessErrRestoreOperation $? "Failed to delete dns server:" $dnsServerName
+      dnsServerName=$(/etc/config-tools/get_dns_server 1)
+      ProcessErrRestoreOperation $? "Failed to get dns server:" $dnsServerName
+    done
+    
+    # and now read all dns server from backup and install them one after the other
+    dnsServerNo=1
+    dnsServerName=$(GetBackupValue "dns-server-$dnsServerNo" "$backupFile")
+    while [ -n "$dnsServerName" ]; do
+      print_dbg "add dnsServer:" $dnsServerNo $dnsServer
+      /etc/config-tools/edit_dns_server add=add dns-server-name=$dnsServerName
+      ProcessErrRestoreOperation "Failed to add backup dns server:" $dnsServerName
+      dnsServerNo=$((dnsServerNo + 1))
+      dnsServerName=$(GetBackupValue "dns-server-$dnsServerNo" "$backupFile")
+    done
+    
+    #-------------------------------------------------------------
+    # restore netconfd settings
+    /etc/config-tools/network_config --restore $backupFile
+    ProcessErrRestoreOperation $? "Failed to set network parameters by " "/etc/config-tools/network_config"
+
+    #-------------------------------------------------------------
+    # restore DHCP-Service settings.
+    /etc/config-tools/config_dnsmasq_c --restore-config "$backupFile"
+    ProcessErrRestoreOperation $? "Failed to set config_dnsmasq by " "/etc/config-tools/config_dnsmasq_c"
+    
+    #-------------------------------------------------------------
+    # restore DNS-Service settings.
+    state=$(GetBackupValue "dns-state" "$backupFile")
+    mode=$(GetBackupValue "dns-mode" "$backupFile")
+    fixhosts=$(GetBackupValue "dns-fixhosts" "$backupFile")
+    /etc/config-tools/config_dns_service --no-dnsmasq-restart dns-state=$state dns-mode=$mode dns-fix-host=$fixhosts
+    ProcessErrRestoreOperation $? "Failed to set dns_mode by " "/etc/config-tools/config_dns_service"
+
+    #-------------------------------------------------------------
+    # restore snmp user definitions.
+
+    USE_USER_DEFINED_DEVICE_NAME=no
+    USE_USER_DEFINED_DESCRIPTION=no
+
+    use_user_defined_device_name=$(GetBackupValue "snmp-use-user-defined-device-name" "$backupFile")
+    if [[ $? -eq $SUCCESS ]]; then
+      USE_USER_DEFINED_DEVICE_NAME=$use_user_defined_device_name
+    else
+      USE_USER_DEFINED_DEVICE_NAME=yes
+    fi
+
+    use_user_defined_description=$(GetBackupValue "snmp-use-user-defined-description" "$backupFile")
+    if [[ $? -eq $SUCCESS ]]; then
+      USE_USER_DEFINED_DESCRIPTION=$use_user_defined_description
+    else
+      USE_USER_DEFINED_DESCRIPTION=yes
+    fi
+  
+    # During restore process the config_snmp tool is used to set device-name and description.
+    # Therefore, config_snmp sets both user defines (USE_USER_DEFINED_*) to yes. Here, we 
+    # reset these values to the desired ones from the backup file.
+    echo "USE_USER_DEFINED_DEVICE_NAME=$USE_USER_DEFINED_DEVICE_NAME" > "$SNMP_USER_DEFINES_FILE"
+    echo "USE_USER_DEFINED_DESCRIPTION=$USE_USER_DEFINED_DESCRIPTION" >> "$SNMP_USER_DEFINES_FILE"
+    
+    /etc/init.d/writeSnmpDefaultConf start
+
+
+    #-------------------------------------------------------------
+    # SNMP v1/v2c communities
+    # Delete all existing snmp v1/v2c communities before we restore the ones from backup.
+    # We only must delete allways the first one in sequential list, until none is existing.
+    communityName=$(/etc/config-tools/get_snmp_data v1-v2c-community-name 1)
+    while [ -n "$communityName" ]; do
+      communityAccess=$(/etc/config-tools/get_snmp_data v1-v2c-community-access 1)
+      /etc/config-tools/config_snmp v1-v2c-community-edit=delete "v1-v2c-community-name=${communityName}" "v1-v2c-community-access=${communityAccess}"
+      snmpStatus=$?
+      if [[ $snmpStatus -ne 0 ]]; then
+        ProcessErrRestoreOperation $snmpStatus "Failed to remove existing snmp community." "$communityName"
+        break
+      fi
+      communityName=$(/etc/config-tools/get_snmp_data v1-v2c-community-name 1)
+    done
+
+    # Read all v1/v2c communities from backup and install them one after the other.
+    communityIndex=1
+    communityName=$(GetBackupValue "v1-v2c-community-name-$communityIndex" "$backupFile")
+    if [[ -n "$communityName" ]]; then
+      while [ -n "$communityName" ]; do
+        communityAccess=$(GetBackupValue "v1-v2c-community-access-$communityIndex" "$backupFile")
+        /etc/config-tools/config_snmp v1-v2c-community-edit=add "v1-v2c-community-name=${communityName}" "v1-v2c-community-access=${communityAccess}"
+        communityIndex=$((communityIndex + 1))
+        communityName=$(GetBackupValue "v1-v2c-community-name-$communityIndex" "$backupFile")
+      done
+    else
+      communityName=$(GetBackupValue "snmp-v1-v2-community-name" "$backupFile")
+      /etc/config-tools/config_snmp v1-v2c-community-edit=add "v1-v2c-community-name=${communityName}" "v1-v2c-community-access=read-write"
+    fi
+
+    #-------------------------------------------------------------
+    # SNMP v1/v2c trap receiver
+    # Delete all existing snmp v1/v2c trap receivers before we restore the ones from backup.
+    # We only must delete allways the first one in sequential list, until none is existing.
+    address=$(/etc/config-tools/get_snmp_data v1-v2c-trap-receiver-address 1)
+    
+    while [ -n "$address" ]; do
+      communityName=$(/etc/config-tools/get_snmp_data v1-v2c-trap-receiver-community-name 1)
+      version=$(/etc/config-tools/get_snmp_data v1-v2c-trap-receiver-version 1)
+      /etc/config-tools/config_snmp v1-v2c-trap-receiver-edit=delete "v1-v2c-trap-receiver-address=${address}" "v1-v2c-trap-receiver-community-name=${communityName}" "v1-v2c-trap-receiver-version=${version}"
+      snmpStatus=$?
+      if [[ $snmpStatus -ne 0 ]]; then
+        ProcessErrRestoreOperation $snmpStatus "Failed to remove existing snmp trap receiver." "$address"
+        break
+      fi
+      address=$(/etc/config-tools/get_snmp_data v1-v2c-trap-receiver-address 1)
+    done
+    
+    # Read all v1/v2c trap receivers from backup and install them one after the other.
+    trapReceiverIndex=1
+    address=$(GetBackupValue "v1-v2c-trap-receiver-address-$trapReceiverIndex" "$backupFile")
+    while [ -n "$address" ]; do
+      communityName=$(GetBackupValue "v1-v2c-trap-receiver-community-name-$trapReceiverIndex" "$backupFile")
+      version=$(GetBackupValue "v1-v2c-trap-receiver-version-$trapReceiverIndex" "$backupFile") 
+      /etc/config-tools/config_snmp v1-v2c-trap-receiver-edit=add "v1-v2c-trap-receiver-address=${address}" "v1-v2c-trap-receiver-community-name=${communityName}" "v1-v2c-trap-receiver-version=${version}"
+      trapReceiverIndex=$((trapReceiverIndex + 1))
+      address=$(GetBackupValue "v1-v2c-trap-receiver-address-$trapReceiverIndex" "$backupFile")
+    done
+
+    #-------------------------------------------------------------
+    # SNMP v3 trap receivers and users
+    # Delete all existing snmp v3 trap receivers and users before we restore the ones from backup.
+    DeleteSnmpV3Entries "v3-trap-receiver"
+    DeleteSnmpV3Entries "v3-user"
+    DeleteSnmpV3Entries "v3-ro-user"
+
+    # Read all v3 trap receivers and users with read-write access from backup and install them one after the other.
+    RestoreSnmpV3Entries "v3-user"
+
+    # Read all v3 user with read-only access from backup and install them one after the other
+    RestoreSnmpV3Entries "v3-ro-user"
+
+
+    adminShadowInfo=$(GetBackupValue "linux-admin-pwd-info" "$backupFile")
+    ProcessErrRestoreOperation $? "Failed to get linux-admin-pwd-info."
+    /etc/config-tools/config_linux_user user=admin hash=$adminShadowInfo
+    ProcessErrRestoreOperation $? "Failed to set linux-admin-pwd-info."
+
+    # restore firewall settings
+    if [[ -x /etc/config-tools/firewall ]]; then
+        cat "$backupFile" | /etc/config-tools/firewall firewall --restore
+        ProcessErrRestoreOperation $? "Failed to set firewall settings"
+    else
+        ProcessErrRestoreOperation $CONFIG_FILE_MISSING "Invalid firewall config tool file:" "/etc/config-tools/firewall"
+    fi
+    
+    # restore general firewall state
+    general_firewall_state=$(GetBackupValue "general-firewall-state" "$backupFile")
+    ProcessErrRestoreOperation $? "Failed to get " "general-firewall-state" 
+    if [[ "enabled" == "$general_firewall_state" ]]; then
+            /etc/config-tools/firewall firewall --enable
+    else
+            /etc/config-tools/firewall firewall --disable
+    fi
+    ProcessErrRestoreOperation $? "Failed to restore general_firewall_state to: " $general_firewall_state
+    
+    # restore VPN settings
+    if [[ -x /etc/config-tools/settings_backup_vpn ]]; then
+        cat "$backupFile" | /etc/config-tools/settings_backup_vpn restore
+        ProcessErrRestoreOperation $? "Restore backup_vpn failed"
+    else
+        ProcessErrRestoreOperation $? "Invalid backup VPN config tool file: " "/etc/config-tools/settings_backup_vpn"   
+    fi
+    
+    # restore Check-System settings
+    if [[ -x /usr/sbin/settings_backup_checksys ]]; then
+        cat "$backupFile" | /usr/sbin/settings_backup_checksys restore
+        ProcessErrRestoreOperation $? "Failed to restore Check-System settings"
+    else
+        ProcessErrRestoreOperation $? "Invalid backup Check-System config tool file: " "/usr/sbin/settings_backup_checksys"
+    fi
+    
+    # restore Docker-Daemon settings
+    if [[ -x /usr/sbin/settings_backup_docker ]]; then
+        cat "$backupFile" | /usr/sbin/settings_backup_docker restore
+        ProcessErrRestoreOperation $? "Failed to restore Docker Daemon settings"
+    else
+        ProcessErrRestoreOperation $? "Invalid backup Docker-Daemon config tool file: " "/usr/sbin/settings_backup_docker"
+    fi
+    
+    # Restore parameters of modular restore scripts.
+    for file in "$BACKUP_RESTORE_SCRIPT_DIR/"*; do
+        if [[ -x "$file" ]]; then
+            "$file" --restore "$backupFile"
+            ProcessErrRestoreOperation $? "Failed to run modular restore script: " "$file"
+        else
+            ProcessErrRestoreOperation $? "Invalid modular restore script: " "$file"
+        fi
+    done
+
+    # end of other values to restore
+    
+    if [ "$restore_error_count" -gt 0 ]; then
+        report_info "\"$restore_error_count\" restore error(s) found" "$LOG_PREFIX"
+    fi  
+    
+    # remove file with last error (at this point we are not interested in errors of the single scripts)
+    rm -f "$LAST_ERROR_FILENAME"
+
+  fi
+  exit "$status"
+  ) &
+  pid_restore=$!
+
+  # display progress bar 
+  if [ -x "$(which pv)" ]; then
+
+    if [[ "$RELEASE_VERSION" == "yes" ]]; then
+      RestoreMessageOutput
+    fi
+    (tail -f "$progressFile" | pv -N "settings" -l -pt -w 70 >/dev/null ) &
+
+    # wait for completion of backup, kill progress bar when finished
+    wait "$pid_restore" || status="$?"
+    killall tail
+
+    if [[ "$RELEASE_VERSION" == "yes" ]]; then
+      rm -f "$progressFile"
+    fi
+  fi
+
+#unknown operation
+else
+  status=$INVALID_PARAMETER
+fi
+
+exit $status

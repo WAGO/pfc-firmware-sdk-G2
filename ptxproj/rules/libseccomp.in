@@ -1,0 +1,30 @@
+## SECTION=system_libraries
+
+menuconfig LIBSECCOMP
+	bool
+	prompt "libseccomp                    "
+	select HOST_GPERF
+	select SED if LIBSECCOMP_UTILS && RUNTIME
+	select STRACE if LIBSECCOMP_UTILS && RUNTIME
+	select WHICH if LIBSECCOMP_UTILS && RUNTIME
+	help
+	  An Enhanced Seccomp (mode 2) Helper Library
+
+	  The libseccomp library provides an easy to use, platform independent, interface
+	  to the Linux Kernel's syscall filtering mechanism.  The libseccomp API is
+	  designed to abstract away the underlying BPF based syscall filter language and
+	  present a more conventional function-call based filtering interface that should
+	  be familiar to, and easily adopted by, application developers.
+
+if LIBSECCOMP
+
+config LIBSECCOMP_UTILS
+	bool
+	prompt "install utils"
+	help
+	  Install some utils, useful for development.
+	  Note: in order to run some of these utils the tools 'uniq', 'sort',
+	  'expr' and 'mktemp' from the 'Busybox' *or* 'Coreutils' package is
+	  required.
+
+endif

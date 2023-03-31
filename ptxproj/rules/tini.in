@@ -1,0 +1,10 @@
+## SECTION=applications
+
+config TINI
+	bool
+	default n
+	select HOST_CMAKE
+	select HOST_GO
+	prompt "tini"
+	help
+	  Tini is the simplest init you could think of.

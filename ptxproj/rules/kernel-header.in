@@ -1,0 +1,25 @@
+## SECTION=core
+
+menuconfig KERNEL_HEADER
+	tristate
+	select BASE
+	select HOST_SYSTEM_PERL
+	prompt "Linux kernel headers          "
+	help
+	  Kernel headers used to build tools that need newer kernel
+	  headers than those provided by the toolchain.
+
+if KERNEL_HEADER
+
+config KERNEL_HEADER_VERSION
+	prompt "kernel version"
+	string
+	default "${PTXCONF_KERNEL_VERSION}"
+
+config KERNEL_HEADER_MD5
+	prompt "kernel source md5sum"
+	string
+	default "${PTXCONF_KERNEL_MD5}"
+
+endif
+

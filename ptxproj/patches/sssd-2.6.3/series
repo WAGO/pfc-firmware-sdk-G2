@@ -1,0 +1,4 @@
+0001-disable-cmocka-detection.patch
+0001-replace-ac_run_ifelse-with-ac_compile_ifelse.patch
+0002-drop-nsupdate-test.patch
+0003-remove-sss_extra_libdir.patch
