@@ -154,8 +154,6 @@ $(STATEDIR)/firewall-config.targetinstall:
 	@$(call install_alternative, firewall-config, 0, 0, 0640, /etc/firewall/templates/service.xml)
 
 	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/codesys/firewall)
-	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/dhcp/firewall)
-	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/dns/firewall)
 	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/snmp/firewall)
 	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/ssh/firewall)
 	@$(call install_alternative, firewall-config, 0, 0, 0700, /etc/config-tools/events/ssl/firewall)

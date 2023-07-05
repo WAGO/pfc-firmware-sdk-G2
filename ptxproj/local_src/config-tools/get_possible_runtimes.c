@@ -10,7 +10,7 @@
 ///
 ///  \file     get_possible_runtimes.c
 ///
-///  \version  $Rev: 67932 $
+///  \version  $Rev$
 ///
 ///  \brief    <Insert description here>
 ///

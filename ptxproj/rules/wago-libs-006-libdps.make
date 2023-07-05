@@ -32,6 +32,8 @@ LIBDPS_MAKE_PARAMETER		:= CROSS_COMPILE=$(COMPILER_PREFIX) \
 
 LIBDPS_PACKAGE_NAME := libdps_$(LIBDPS_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 LIBDPS_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+LIBDPS_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(LIBDPS_PACKAGE_NAME)
+
 # ----------------------------------------------------------------------------
 # Get
 # ----------------------------------------------------------------------------
@@ -124,10 +126,10 @@ $(STATEDIR)/libdps.targetinstall:
 		@$(call install_fixup, libdps,DESCRIPTION,missing)
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES 
 		# Extract precompiled binaries from archive
-		rm -rf $(LIBDPS_PLATFORMCONFIGPACKAGEDIR)/tmp/*  
-		cd $(LIBDPS_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+		mkdir -p $(LIBDPS_PACKAGE_DIR)
+		cd $(LIBDPS_PACKAGE_DIR) && \
 		ar -xov $(LIBDPS_PLATFORMCONFIGPACKAGEDIR)/$(LIBDPS_PACKAGE_NAME).ipk  
-		@$(call install_archive, libdps, 0, 0, $(LIBDPS_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+		@$(call install_archive, libdps, 0, 0, $(LIBDPS_PACKAGE_DIR)/data.tar.gz, /)
 else
 		# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
 		@$(call install_copy, libdps, 0, 0, 0755, $(PTXCONF_SYSROOT_TARGET)/usr/lib/$(LIBDPS_NAME).so.$(LIBDPS_VERSION), /usr/lib/$(LIBDPS_NAME).so.$(LIBDPS_VERSION))

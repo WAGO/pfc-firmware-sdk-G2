@@ -1,69 +1,176 @@
-Firmware Release 04.02.13 (24) – CODESYS 3
+Firmware Release 04.03.03 (25) – CODESYS 3
+
+Engineering by CODESYS IDE V. 3.5 is supported
+Engineering by e!COCKPIT IDE is not supported
+CODESYS 2.3 is not supported
+
+Migration Guide – from e!COCKPIT to CODEYS V3.5:
+• https://techdocs.wago.com/Software/eCOCKPIT_Migration/en-US/index.html#index_content
 
 System:
-[FIXED] WAT33700 WAT-33700 Fixed erroneous logrotate configuration which leads to crash of CODESYS runtime when OpenVPN is used.
-[DEPRECATED] Config tool “config_mdmd” and “update_modem_firmware” will be re-moved in future firmware versions
+[NEW] Support for Azure IoT Hub Device Provisioning Service (DSP)
+[NEW] VLAN and Dummy interfaces can be configured via WAGO Device Manager (WDM)
+[FIXED] Does not try to connect to all configurated NTP servers after a
+        connection failure with the original server
+[FIXED] Sometimes it does not load all firewall rules and block legitimate traffic
+[KNOWN] If separated ports are setup for WebVisu and WBM and no CODESYS webserver
+        is running, the WebVisu port will be blocked by the firewall as soon as
+        the firewall is armed, regardless of the setting of the firewall.
+        Workaround: 1) temporally disable the firewall,
+                    2) switch on CODESYS web server,
+                    3) switch on the firewall again
+[REMOVED] DNS-server and DHCP-server (dnsmasq) are removed
+[CHANGED] The library for the device abstraction layer (DAL) will be changed
+          from a static (libdal.a) to a dynamic library (libdal.so).
+          Libdal.a is deprecated and will be removed in future versions.
+          Users should link against libdal.so
+[RELEASED]  "Wago Device Access" for parametrization and configuration.
+            REST-API is active under path "<host>/wda" on port 443.
+            File-Access-API is active under path "<host>/files" on port 443.
+            To disable the service, delete symlink "/etc/rc.d/S11_paramd"
+            or move it to subdirectory "disabled"
+[RELEASED]  A documentation for the REST-API of "Wago Device Access"
+            is available from device by calling specified URL:
+            OpenAPI-JSON: <ip/hostname>/openapi/wda.openapi.json
+            HTML format: <ip/hostname>/openapi/wda.openapi.html
+
+Operating System:
+[FIXED] Update curl to v8.0.1
+[FIXED] Update OpenSSH to v9.3p1
+[FIXED] SECURITY  CVE-2023-23914, CVE-2023-23915, CVE-2023-23916, CVE-2023-28531
+
+Runtime System:
+[NEW] Codesys3 Runtime-System 3.5.18.40
+[NEW] Add support for CODESYS 3 CoreDumps
+[NEW] Add support of PROFIBUS Device configuration for 750-8216
+[FIXED] SECURITY  CVE-2022-4048, CVE-2022-22515, CVE-2022-22508
+
+Fieldbus Interface & Protocols:
+[FIXED] EtherNet/IP scanner 4.3.0.0 generates exception during simulation
+[FIXED] SIGABRT exception on RESET COLD of MODBUS slave applications
+        Workaround: Disable PLC Settings “always update variables”
+[FIXED] WagoSysVisuBACnet library is supported with FW25
+
+Libraries:
+[NEW] Support of CODESYS IoT Libraries (Royalty free)
+[FIXED] WagoSysModule_75x_511: SetScaledProcessValue doesn’t work
+
+Web Based Management:
+[NEW] Network configuration for vlan and dummy interfaces
+[NEW] New option on page “Port and Services – PLC Runtime Services” to set
+      a separate interface for the PLC WebVisu
+[FIXED] The representation of UII number does not comply with the company standard
+[KNOWN] With separate ports for the WebVisu and WBM there is no redirect to the
+        set option WBM or WebVisu
+        Workaround: add “/wbm” or “/webvisu” to the URL
+
+################################################################################
+
+Firmware Release 04.02.13 (24) – CODESYS 3
+
+Engineering by CODESYS IDE V. 3.5 is supported
+Engineering by e!COCKPIT IDE is not supported
+CODESYS 2.3 is not supported
+
+Migration Guide – from e!COCKPIT to CODEYS V3.5:
+• https://techdocs.wago.com/Software/eCOCKPIT_Migration/en-US/index.html#index_content
+
+System:
+[FIXED] WAT33700 WAT-33700 Fixed erroneous logrotate configuration
+        which leads to crash of CODESYS runtime when OpenVPN is used.
+[DEPRECATED] Config tool “config_mdmd” and “update_modem_firmware”
+             will be removed in future firmware versions
 [CHANGED] Reduced CBM functionality to basic use cases
 
 Operating System:
 [FIXED] Replaced Busybox wget by upstream wget
-[FIXED] SECURITY CVE-2022-0529, CVE-2022-0530, CVE-2022-35260, CVE-2022-32221, CVE-2013-4235, CVE-2022-43995, CVE-2022-44792, CVE-2022-44793,
-                 CVE-2022-43680, CVE-2022-2309, CVE-2022-40303 , CVE-2022-40304, CVE-2022-40476, CVE-2022-2905, CVE-2022-35252, CVE-2022-40674, CVE-2022-40284, CVE-2022-1012, CVE-2022-37434, CVE-2021-33656, CVE-2022-2327, CVE-2022-36879, CVE-2022-1671, CVE-2022-34494, CVE-2022-34495, CVE-2020-35501, CVE-2022-1998, CVE-2022-30788, CVE-2022-30789, CVE-2022-30783,CVE-2022-30785, CVE-2022-30786, CVE-2022-30784, CVE-2022-1882, CVE-2022-32296, CVE-2022-29581, CVE-2022-30594, CVE-2022-1015, CVE-2022-1048, CVE-2022-1353, CVE-2022-29824, CVE-2022-29824, CVE-2022-1055, CVE-2022-28391, CVE-2022-37434, CVE-2021-45868, CVE-2022-27666, CVE-2022-23219, CVE-2022-23219, CVE-2022-1348, CVE-2022-23471, CVE-2022-31030
+[FIXED] SECURITY CVE-2022-0529, CVE-2022-0530, CVE-2022-35260, CVE-2022-32221,
+                 CVE-2013-4235, CVE-2022-43995, CVE-2022-44792, CVE-2022-44793,
+                 CVE-2022-43680, CVE-2022-2309, CVE-2022-40303 , CVE-2022-40304,
+                 CVE-2022-40476, CVE-2022-2905, CVE-2022-35252, CVE-2022-40674,
+                 CVE-2022-40284, CVE-2022-1012, CVE-2022-37434, CVE-2021-33656,
+                 CVE-2022-2327, CVE-2022-36879, CVE-2022-1671, CVE-2022-34494,
+                 CVE-2022-34495, CVE-2020-35501, CVE-2022-1998, CVE-2022-30788,
+                 CVE-2022-30789, CVE-2022-30783,CVE-2022-30785, CVE-2022-30786,
+                 CVE-2022-30784, CVE-2022-1882, CVE-2022-32296, CVE-2022-29581,
+                 CVE-2022-30594, CVE-2022-1015, CVE-2022-1048, CVE-2022-1353,
+                 CVE-2022-29824, CVE-2022-29824, CVE-2022-1055, CVE-2022-28391,
+                 CVE-2022-37434, CVE-2021-45868, CVE-2022-27666, CVE-2022-23219,
+                 CVE-2022-23219, CVE-2022-1348, CVE-2022-23471, CVE-2022-31030
 [KNOWN] SECURITY Improper handling of unicode string could crash unzip 6.0(CVE-2021-4217)
 
 Runtime Sytem
 [NEW] Codesys3 Runtime-System 3.5.18.20
 [FIXED] Sporadic error while running the Codesys3 WebVisu with HTTP
-[FIXED] “PLC load watchdog” might not work as espected: the plc load watchdog will detect (e.g. an endless loop) but the IEC task might not be 
-        stopped in any case. This might lead to a complete stop of the runtime process. As workaround and improve “hardening” of your IEC application we recom-mend to use an IEC Task watchdog on all your relevant IEC tasks in your IEC application.
-[FIXED] SECURITY CVE-2022-22516, CVE-2021-21863, CVE-2021-21864, CVE-2021-21865, CVE-2021-21866, CVE-2021-21867, CVE-2021-21868,
-                 CVE-2021-21869, CVE-2022-1794, CVE-2022-22517, CVE-2022-22518, CVE-2022-22513, CVE-2022-22514, CVE-2022-22519, CVE-2022-30791, CVE-2022-30792
+[FIXED] “PLC load watchdog” might not work as espected: the plc load watchdog
+        will detect (e.g. an endless loop) but the IEC task might not be stopped
+        in any case. This might lead to a complete stop of the runtime process.
+        As workaround and improve “hardening” of your IEC application we recommend
+        to use an IEC Task watchdog on all your relevant IEC tasks in your IEC application.
+[FIXED] SECURITY CVE-2022-22516, CVE-2021-21863, CVE-2021-21864, CVE-2021-21865,
+                 CVE-2021-21866, CVE-2021-21867, CVE-2021-21868,CVE-2021-21869,
+                 CVE-2022-1794, CVE-2022-22517, CVE-2022-22518, CVE-2022-22513,
+                 CVE-2022-22514, CVE-2022-22519, CVE-2022-30791, CVE-2022-30792
 
 Fieldbus Interface & Protocols:
 [NEW] Support of CODESYS OPC UA Server and OPC UA Client
 [KNOWN] Support of CODESYS OPC UA PubSub Libraries
-[KNOWN] If the subscription of the CmpOPCUAClient cannot be established cor-rectly and the OPC UA server is then shut down, a SIGABRT occurs
-        in Runtime.
-[CHANGED] The “WagoSysVisuBACnet” library is not support with firmware 24 
+[KNOWN] If the subscription of the CmpOPCUAClient cannot be established correctly
+        and the OPC UA server is then shut down, a SIGABRT occurs in Runtime.
+[CHANGED] The “WagoSysVisuBACnet” library is not support with firmware 24
           Saving trap receiver address after firmware up-/downgrade
 
 Libraries:
 [NEW] Support of CODESYS OPC UA PubSub Libraries
 [FIXED] Docker Bridge Networking not working with Docker Swarm
-[REMOVED] WagoAppEtherNetIP_Adapter and WagoSysEtherNetIP_Adapter Please use native CODESYS 3.5 EtherNet/IP adapter
+[REMOVED] WagoAppEtherNetIP_Adapter and WagoSysEtherNetIP_Adapter Please use
+          native CODESYS 3.5 EtherNet/IP adapter
 [KNOWN] Simulation might fail with some libraries within IDE
 
 Web Based Management:
 [NEW] Update to PHP 8.1.9
 [NEW] Diagnostic information for Cloud-Connectivity on status page
-[FIXED] Do not start a restore of the system package if the device has booted from the memory card 
+[FIXED] Do not start a restore of the system package if the device has booted
+        from the memory card
 [FIXED] Leading digits for host names
 [FIXED] Backup & Restore is executable by user “root”
-[FIXED] Added note text to explain the hostname behavior 
+[FIXED] Added note text to explain the hostname behavior
 [REMOVED] “guest” access
 [CHANGED] Description for the certificate folder and configuration
 
 Beta functionalities:
-[BETA] "Wago Device Access" for parametrization and configuration. REST-API is active under path "<host>/wda" on port 443. File-Access-API is
-        active under path "<host>/files" on port 443. To disable the service, delete symlink "/etc/rc.d/S11_paramd" or move it to subdirectory "disabled"
-[BETA] A documentation for the REST-API of "Wago Device Access" is availa-ble from device by calling specified URL: OpenAPI-JSON: <ip/
-        hostname>/openapi/wda.openapi.json HTML format: <ip/hostname>/openapi/wda.openapi.html
+[BETA] "Wago Device Access" for parametrization and configuration. REST-API is
+       active under path "<host>/wda" on port 443. File-Access-API is active
+       under path "<host>/files" on port 443. To disable the service,
+       delete symlink "/etc/rc.d/S11_paramd" or move it to subdirectory "disabled"
+[BETA] A documentation for the REST-API of "Wago Device Access" is available from
+       device by calling specified URL:
+       OpenAPI-JSON: <ip/hostname>/openapi/wda.openapi.json
+       HTML format: <ip/hostname>/openapi/wda.openapi.html
 
 ################################################################################
-Firmware Release 04.01.10 (99)
+
+Firmware Release 04.01.10 (23)
+
+Engineering by CODESYS IDE V. 3.5 is supported
+Engineering by e!COCKPIT IDE is not supported
+CODESYS 2.3 will no longer be supported
+
+Migration Guide – from e!COCKPIT to CODEYS V3.5:
+• https://techdocs.wago.com/Software/eCOCKPIT_Migration/en-US/index.html#index_content
 
 System:
 [NEW] The client ID for all running DHCP clients can be specified using the
       config tool network_config. The assignment of the client ID via WBM/WDM is
       not supported.
-[NEW] Allow to access legacy serial number via config tool: get_coupler_de-tails
+[NEW] Allow to access legacy serial number via config tool: get_coupler_details
       serial-number-legacy
 [FIXED] It is possible to downgrade to a hardened FW-Image without network
         connection lost.
 [DEPRECATED] PHP 7 will be replaced by PHP 8.
 
 Operating System:
-[FIXED] Fixed erroneous logrotate configuration which leads to crash of 
+[FIXED] Fixed erroneous logrotate configuration which leads to crash of
         CODESYS runtime when OpenVPN is used.
 [FIXED] MAC Address filter configuration is loaded at boot time not only in event
         of changed configuration.
@@ -76,7 +183,7 @@ Operating System:
 Runtime System:
 [REMOVED] Codesys2 Runtime-System is no longer available on PFC Plattform
 [CHANGED] Codesys3 Runtime-System supported on PFC Plattform
-[KNOWN] “PLC load watchdog” might not work as espected: the plc load watchdog 
+[KNOWN] “PLC load watchdog” might not work as espected: the plc load watchdog
         will detect (e.g. an endless loop) but the IEC task might not be stopped
         in any case. This might lead to a complete stop of the runtime process.
         As workaround and improve “hardening” of your IEC application we recommend
@@ -86,17 +193,17 @@ Runtime System:
 Fieldbus Interface & Protocols:
 [REMOVED] The OPC UA Server and Client are not included in this Firmware.
           Will be available in an upcoming Firmware.
-[REMOVED] PROFINET and PROFIBUS are not included in this Firmware. 
+[REMOVED] PROFINET and PROFIBUS are not included in this Firmware.
           Will be available in an upcoming Firmware.
 [CHANGED] MODBUS TCP changed to CODESYS solution
 [CHANGED] MODBUS RTU available only by IEC library
 
 Libraries:
 [KNOWN] Simulation might fail with some libraries within IDE
-[KNOWN] WagoAppEtherNetIP_Adapter: CommonPacketFormat Interfaces 
-        4.2.0.0 causes compile errors. CommonPacketFormat Interfaces 
-        3.5.17.0 must be used instead. 
-        In order to use the correct version CommonPacketFormat 
+[KNOWN] WagoAppEtherNetIP_Adapter: CommonPacketFormat Interfaces
+        4.2.0.0 causes compile errors. CommonPacketFormat Interfaces
+        3.5.17.0 must be used instead.
+        In order to use the correct version CommonPacketFormat
         Interfaces 4.2.0.0 needs to be deinstalled via CODESYS library manager.
 
 Web Based Management:
@@ -107,14 +214,14 @@ Web Based Management:
       an additional description text is displayed to avoid incorrect operation.
 [CHANGED] Codesys 2 no longer available in "Information - PLC Runtime",
           "Configuration - PLC Runtime" and "Ports and Services - PLC Runtime Services".
-          Removed WBM page "Fieldbus - Modbus" (WAGO Modbus im-plementation).
+          Removed WBM page "Fieldbus - Modbus" (WAGO Modbus implementation).
 [FIXED] Update WDx and Config Tools to allow leading digits for host names.
 
 Beta functionalities:
 [BETA] "Wago Device Access" for parametrization and configuration. REST-API is
         active under path "<host>/wda" on port 443.
         File-Access-API is active under path "<host>/files" on port 443.
-        To disable the service, delete symlink "/etc/rc.d/S11_paramd" or 
+        To disable the service, delete symlink "/etc/rc.d/S11_paramd" or
         move it to subdirectory "disabled"
 [BETA]  A documentation for the REST-API of "Wago Device Access" is available
         from device by calling specified URL:
@@ -122,7 +229,8 @@ Beta functionalities:
         HTML format: <ip/hostname>/openapi/wda.openapi.html
 
 ################################################################################
-Firmware Release 03.10.08 (99)
+
+Firmware Release 03.10.08 (22)
 
 System:
 [NEW] Uptdated lighttpd to version 1.4.64 Updated PHP to version 7.4.28
@@ -155,7 +263,7 @@ Operating System:
 Runtime System:
 [NEW] e!RUNTIME Upgrade to version 3.5.17.3 (based on CODESYS 3.5, SP 17,
       Patch 3) Fixed CVE-2021-29242, CVE-2021-36765, CVE-2021-33485,
-	  CVE-2021-36763, CVE-2021-36764, CVE-2022-1989
+                     CVE-2021-36763, CVE-2021-36764, CVE-2022-1989
 
 Fieldbus Interface & Protocols:
 -CAN
@@ -187,7 +295,7 @@ Functional change:
 [CHANGED] Update of the Sparkplug integration supporting Sparkplug devices
           connected to a Sparkplug node. IEC library seperated from
           Wago-AppCloud to WagoAppSparkplug. ATTENTION: Incompatible to
-          previ-ous version. Exising projects need to be adapted manually.
+          previous version. Exising projects need to be adapted manually.
 [DEPRECATED] Config tool function get_telecontrol_state will be removed in
              future releases. The config tool was used to determine whether a
              device is a telecontrol. Since telecontrol services can be added
@@ -204,13 +312,14 @@ Beta functionalities:
        "<host>/files" on port 443. To disable the service, delete symlink
        "/etc/rc.d/S11_paramd" or move it to subdirectory "disabled". Compared
        to the last firmware, many more parameter providers have been added.
-[BETA] A documentation for the REST-API of "Wago Device Access" is availa-ble
-       from device by calling specified URL: 
-       OpenAPI-JSON:  <ip/hostname>/openapi/wda.openapi.json 
+[BETA] A documentation for the REST-API of "Wago Device Access" is available
+       from device by calling specified URL:
+       OpenAPI-JSON:  <ip/hostname>/openapi/wda.openapi.json
        HTML format:   <ip/hostname>/openapi/wda.openapi.html
 
 ################################################################################
-Firmware Release 03.09.04 (99)
+
+Firmware Release 03.09.04 (21)
 
 System:
 [NEW] Improved robustness of application control with operating mode switch and
@@ -234,7 +343,7 @@ Fieldbus Interface & Protocols:
 -OPC UA
  [NEW] OPC UA client that can establish a connection to an OPC UA server via
        standardized PLCopen function blocks.
--CAN 
+-CAN
  [FIXED] CAN interface goes into BusOff by TxOverflow
 -BACnet
  [NEW] The BACnet revision has been updated from revision 14 to revision 22
@@ -243,56 +352,57 @@ Fieldbus Interface & Protocols:
 
 Functional change:
 [DEPRECATED] Config tool function get_telecontrol_state will be removed in
-			 future re-leases. The config tool was used to determine whether a
-			 device is a telecontrol. Since telecontrol services can be added
-			 by dynamic licensing, the tool is no longer needed.
+             future releases. The config tool was used to determine whether a
+             device is a telecontrol. Since telecontrol services can be added
+             by dynamic licensing, the tool is no longer needed.
 [DEPRECATED] DHCP and DNS Server will be removed in future releases. For the
-			 transition, it will be included for now. In the next release, the
-			 servers will still be part of the firmware.
+             transition, it will be included for now. In the next release, the
+             servers will still be part of the firmware.
 
 Beta functionalities:
 [BETA] "Wago Device Access" for parametrization and configuration. The service
-	   is available and can already be tested. Changes in the model and behavior
-	   are possible for future versions. 
-	   REST-API is active under path "<host>/wda" on port 443. 
-	   File-Access-API is active under path "<host>/files" on port 443. 
-	   To disable the service, delete symlink "/etc/rc.d/S11_paramd" or move it to
-	   subdirectory "disabled". Compared to the last firmware, many more
-	   parameter providers have been added.
+       is available and can already be tested. Changes in the model and behavior
+       are possible for future versions.
+       REST-API is active under path "<host>/wda" on port 443.
+       File-Access-API is active under path "<host>/files" on port 443.
+       To disable the service, delete symlink "/etc/rc.d/S11_paramd" or move it to
+       subdirectory "disabled". Compared to the last firmware, many more
+       parameter providers have been added.
+
 ################################################################################
 
-Firmware Release 03.08.08 (99)
+Firmware Release 03.08.08 (20)
 
 System:
 [NEW] Integration of Docker Deamon. Docker now can be installed and activited via. WBM.
-[NEW] Users of WBM and Linux where harmonized. User "user" and "admin" can still be 
+[NEW] Users of WBM and Linux where harmonized. User "user" and "admin" can still be
       used for authorization in WBM as default, but they are no longer exclusive for WBM.
       Every WBM user can only change his own password now. To use WBM, linux user can be
       added to group "wbm-admin" or "wbm-user". All other users where treated as "guest".
       Note: Configuration/change of password in WBM will directly change the configuration
             of the corresponding linux user and vice versa. After upgrade to FW 20, login
             in WBM is not possible with the old WBM passwords; you must use the passwords
-            of the corresponding linux us-ers. After a following downgrade to FW 19 
+            of the corresponding linux users. After a following downgrade to FW 19
             (or less), WBM will use the WBM default passwords.
 [NEW] "Codesys port authentication password" can no longer be changed via WBM.
-[NEW] From FW20 the HTTPS port is always active and cannot be disabled via WBM or configtool.     
-      Please note that this will be the state after a firmware update, regardless which 
-      state was configured before. If nec-essary, the HTTPS port can be blocked via the firewall.
+[NEW] From FW20 the HTTPS port is always active and cannot be disabled via WBM or configtool.
+      Please note that this will be the state after a firmware update, regardless which
+      state was configured before. If necessary, the HTTPS port can be blocked via the firewall.
 [NEW] PTXdist update to version 2020.8.0
 [NEW] openSSL update to version 1.1.1.L
 [NEW] Busybox update to version 1.34.1
-[FIXED] PFC200 with 4G: Fix issue with sporadic high system load leading to a KBus watchdog 
+[FIXED] PFC200 with 4G: Fix issue with sporadic high system load leading to a KBus watchdog
         timeout when modem starts unexpected re-initialisation of SIM card in operational state.
 [KNOWN] PFC200 with 4G: 2kB Memoryleak for each Modem-Reset.
 [FIXED] IPsec: SHA512 based ESP algorithms not available.
 
 Runtime System:
-[FIXED] Fix possible deadlock when using multiple tasks in an e!Cockpit applica-tion on
+[FIXED] Fix possible deadlock when using multiple tasks in an e!Cockpit application on
         PFC based controllers leading to a KBus watchdog timeout (signalled by IO LED
         error blinkcode 9-5)
-[FIXED] Fixed CODESYS 2.3 webserver vulnerabilities regarding CODESYS 
+[FIXED] Fixed CODESYS 2.3 webserver vulnerabilities regarding CODESYS
         advisory 2021-15_LCDS-358
-[FIXED] Fixed CODESYS 2.3 runtime vulnerabilities regarding CODESYS 
+[FIXED] Fixed CODESYS 2.3 runtime vulnerabilities regarding CODESYS
         advisory 2021-16_LCDS-361
 [FIXED] Fixed CODESYS 2.3 runtime vulnerabilities regarding CODESYS
         advisory 2021-17_LCDS-362
@@ -303,7 +413,7 @@ Fieldbus Interface & Protocols:
 -CAN
  [NEW] It is now possible to use extended CAN configuration in e!COCKPIT
 -BACnet
- [FIXED] When using BACnet, there is no longer an increase in open file discrep-tors.
+ [FIXED] When using BACnet, there is no longer an increase in open file discreptors.
 -Cloud Connectivity
  [NEW] Cloud Connectivity: Update Azure SDK to 1.6.0
 -SNMP
@@ -327,9 +437,9 @@ Beta functionalities:
 
 ################################################################################
 
-Firmware Release 03.07.14 (99)
+Firmware Release 03.07.14 (19)
 
-Starting with firmware 19, the PFC200 of the first generation and PFC100 has its own 
+Starting with firmware 19, the PFC200 of the first generation and PFC100 has its own
 image and release notes.
 
 System:
@@ -339,7 +449,7 @@ System:
 [NEW] Extend the Fix-IP-Feature to address all configured bridges. (Not only bridge 0)
 [NEW] Updated kernel to version 5.10
 [FIXED] SEC: Disabled local and remote port forwarding for SSH server
-        by de-fault (conforming to in BDEW whitepaper)
+        by default (conforming to in BDEW whitepaper)
 [FIXED] Fixed invalid progress of 30% during firmware update.
 [FIXED] Prevent dropbear from logging "no such file or directory"
 [FIXED] PFC 3G: Show correct connection state and signal strength with
@@ -357,7 +467,7 @@ System:
 [FIXED] Updated webserver lighttpd to version 1.4.59
 [FIXED] PFC 3G: Modem Management: Unexpected network traffic with
         deactivated wireless data service
-[FIXED] Fix temporary network loop/network bridge within the FW update process, 
+[FIXED] Fix temporary network loop/network bridge within the FW update process,
         if the network is separated and connected to more than one network
 
 Runtime System:
@@ -394,13 +504,14 @@ Functional change:
 [DEPRECATED] Config tool function get_telecontrol_state will be removed in future releases.
              The config tool was used to determine whether a device is a telecontrol. Since telecontrol
              services can be added by dynamic licensing, the tool is no longer needed.
-[REMOVED] 3S OPC UA Server removed from the firmware. 
+[REMOVED] 3S OPC UA Server removed from the firmware.
           (Can be installed for firmware 19, available via support: support@wago.com).
 [CHANGED] In future releases, HTTPS-Port is always active and can only be switched off by the firewall.
 
 ################################################################################
 
-Firmware Release 03.06.19 (99)
+Firmware Release 03.06.19 (18)
+
 System:
 [NEW] PFC200 with 4G: Send and receive SMS via e!COCKPIT IEC-Library
 [NEW] PFC200 with 4G: Modem configuration can now be prepared in WBM even when
@@ -422,7 +533,7 @@ Fieldbus Interface & Protocols:
 -OPC UA
  [FIXED] Nested IEC structures are now supported
  [NEW] The Endpoint URL can be set in the WBM between the Hostname and the IP
-       ad-dresses of the bridges
+       addresses of the bridges
  [NEW] StructureFields are now supported. Structured DataType is used to provide the
        metadata for a field of a custom Structure DataType. (OPC UA Specification
        Part 3 - 8.51 StructureField)
@@ -433,7 +544,8 @@ Fieldbus Interface & Protocols:
 
 ################################################################################
 
-Firmware Release 03.06.09 (99)
+Firmware Release 03.06.09 (18)
+
 System:
 [NEW] PFC200 with 4G: Modem reset possible
 [NEW] The invalid IP adress 0.0.0.0 is not accepted by the system.
@@ -445,7 +557,7 @@ System:
 [FIXED] Connection problems with roaming SIM cards
 [FIXED] Config tool bootproject argument not available
 [FIXED] PFC sends undocumented emergency telegram
-[REMOVED] Removed deprecated function ct_liblog_reportError 
+[REMOVED] Removed deprecated function ct_liblog_reportError
 
 Runtime System:
 [NEW] e!RUNTIME Upgrade to Version 3.5.15.4 (based on CODESYS 3.5, SP 15, Patch 4)
@@ -465,7 +577,8 @@ Fieldbus Interface & Protocols:
 
 ################################################################################
 
-Firmware Release 03.05.10 (99)
+Firmware Release 03.05.10 (17)
+
 System:
 [NEW] Each bridge contains its own MAC address for 2nd generation PFC200(750-821X)
 [NEW] PFC 4G: Configurable data service
@@ -483,21 +596,21 @@ System:
 [NEW] Cloud Connectivity: Add statically configuration of protocol version
 [NEW] Cloud Connectivity: Add support for certificate based authentification for
       Azure IoT Hub connections
-[NEW] Cloud Connectivity: Add option for application specific property for Az-ure
+[NEW] Cloud Connectivity: Add option for application specific property for Azure
       IoT Hub connections
 [FIXED] Cloud Connectivity: Improve robustness of Azure IoT hub connection when using
         an unreliable network connection
 [FIXED] SEC: WBM-NG: Cookies can no longer be deleted or modified over an
         insecure connection
 [FIXED] PFC 3G: The options PREFER_GSM and PREFER_UMTS for mobile networks are no
-        longer supported because they are not correctly con-sidered by the modem
+        longer supported because they are not correctly considered by the modem
 [FIXED] PFC 3G: Visibility of the signal strength restored
 [FIXED] PFC 3G: Provider list for manual selection is also displayed if a SIM card
         without PIN is used
 [FIXED] Fixed restore of NTP server settings
 [FIXED] SEC: PPPD updated
 [KNOWN] Under Firefox, the old WBM allowed to accept passwords of any length but only
-        the first 32 characters were saved. In order to use these pass-words in
+        the first 32 characters were saved. In order to use these passwords in
         WBM-NG, only the first 32 characters of these passwords must be entered.
 
 Runtime System:
@@ -539,7 +652,8 @@ Libraries:
 
 ################################################################################
 
-Firmware Release 03.04.10 (99)
+Firmware Release 03.04.10 (16)
+
 System:
 [NEW] New Web Based Management integrated. WBM has a contemporary look and feel such
       as an improved handling.
@@ -556,7 +670,7 @@ System:
 [NEW] Updated sudo (1.8.28 -> 1.8.31)
 [NEW] Updated PHP (7.3.5 -> 7.3.15)
 [NEW] Updated mdmd (0.5.3 -> 0.7.6)
-      Several and improvements for configuration of internal 3G modem and ad-ditional
+      Several and improvements for configuration of internal 3G modem and additional
       failure diagnostics (see new version of 750-8207 manual)
 [NEW] Added EXT4 filesystem as SD card formatting option.
 [NEW] Enlargement of the CANopen master configuration memory now enables more complex
@@ -583,7 +697,7 @@ Fieldbus Interface & Protocols:
  - CAN
    [FIXED] Added method CAN_RX_ALL in Codesys2 CANLayer2 library. This method
            allows processing of CAN telegrams in order of their receiption.
-           New ver-sion of WagoCANLayer2_03.lib is required.
+           New version of WagoCANLayer2_03.lib is required.
  - MQTT
    [FIXED] Fixed timestamp creation for Sparkplug NDATA messages: Use data
            creation time instead of transmission time
@@ -593,13 +707,15 @@ Fieldbus Interface & Protocols:
 
 ################################################################################
 
-Firmware Release 03.03.11 (99)
+Firmware Release 03.03.11 (15)
+
 System:
 [FIXED] Improved robustness by heavy ethernet traffic.
 
 ################################################################################
 
-Firmware Release 03.03.10 (99)
+Firmware Release 03.03.10 (15)
+
 System:
 [NEW]   The switch mode on 4-port PFC devices (750-8215) may now be configured
     like 2-port devices for ports X1 & X2 via WBM.
@@ -607,7 +723,7 @@ System:
     separated to an all switched setting.
     It is now possible to configure all 4 ports, as you like via config-tool.
     Our next release will make this feature available via WBM.
-[NEW]   By download of the CDS3 PROFINET i-Device functionality, the 
+[NEW]   By download of the CDS3 PROFINET i-Device functionality, the
     PROFINET-designated ports X11 & X12 are automatically combined in one bridge.
 [FIXED] Cloud-Connectivity: Improve robustness of Azure IoT hub connection
     when using an unreliable network connection.
@@ -619,13 +735,14 @@ Runtime System:
 
 Fieldbus Interface & Protocols:
  - Profibus
-   [FIXED] Correct mapping of PROFIBUS Bool variables for PFC. Possible wrong 
+   [FIXED] Correct mapping of PROFIBUS Bool variables for PFC. Possible wrong
            configuration of Bool arrays is now blocked in the
            CODESYS 2.3 PROFIBUS configurator (requires new TSP).
 
 ################################################################################
 
-Firmware Release 03.02.02 (99)
+Firmware Release 03.02.02 (14)
+
 System:
 [FIXED] e!COCKPIT BlkDrvTcp Exception
 [FIXED] "force" on the Software Uploads page in the Web based Management does not work
@@ -648,7 +765,10 @@ Fieldbus Interface & Protocols:
 Libraries:
 [FIXED] WagoSysCurl does not consider the udiStringLength of the method curl_easy_setopt_STRING2
 
-Firmware Release 03.01.07 (99)
+################################################################################
+
+Firmware Release 03.01.07 (13)
+
 System:
 [NEW] New Device: PFC200 with BACnet (750-8212/000-100)
 [NEW] Backups can be encrypted via password.
@@ -675,7 +795,8 @@ Libraries:
 
 ################################################################################
 
-Firmware Release 03.00.39 (99)
+Firmware Release 03.00.39 (12)
+
 System:
 [FIXED] Unreliable behavior of the mobile connection (750-8207)
 [FIXED] Directory structure of /home folder was destroyed after system backup

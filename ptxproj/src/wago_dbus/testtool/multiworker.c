@@ -10,7 +10,7 @@
 ///
 ///  \file     user2.c
 ///
-///  \version  $Revision: 65684 $
+///  \version  $Revision$
 ///
 ///  \brief    this program regisers an Object an wait for incoming messages
 ///

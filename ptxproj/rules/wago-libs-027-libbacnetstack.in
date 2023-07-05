@@ -1,8 +1,9 @@
-## SECTION=wago_specific_libs
+## SECTION=wago_specific_device_bacnet
 
 config LIBBACNETSTACK
 	bool
 	default n
+	depends on BACNET
 	select WAGO_PFC_DIAGNOSTIC
 	select HOST_CT_BUILD
 	select GOOGLETEST

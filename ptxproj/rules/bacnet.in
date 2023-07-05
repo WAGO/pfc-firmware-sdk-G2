@@ -1,0 +1,11 @@
+## SECTION=wago_specific_device
+
+menuconfig BACNET
+	bool
+	prompt "BACnet                        "
+	help
+	  Provides BACnet functionality.
+
+if BACNET
+source "generated/wago_specific_device_bacnet.in"
+endif

@@ -98,15 +98,27 @@ size_t GetSizeOfElementMacroC()
 }
 
 
+size_t GetArrayLengthPlainC()
+{
+  return (sizeof(arDoubles) / sizeof(double));
+}
+
+
+size_t GetArrayLengthMacroC()
+{
+  return WC_ARRAY_LENGTH(arDoubles);
+}
+
+
 int  * GetArrayPointerPlainC(int array[])
 {
-    return &(array[0]);
+  return &(array[0]);
 }
 
 
 int  * GetArrayPointerMacroC(int array[])
 {
-    return WC_ARRAY_TO_PTR(array);
+  return WC_ARRAY_TO_PTR(array);
 }
 
 
@@ -118,7 +130,10 @@ void * GetContainerAddressPlainC()
 
 void * GetContainerAddressMacroC()
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-align"
   return WC_CONTAINER_OF(struct TestStructC, doubleMember, &(stTestContainer.doubleMember));
+#pragma GCC diagnostic pop
 }
 
 
@@ -130,9 +145,11 @@ void const * GetContainerAddressReadonlyPlainC()
 
 void const * GetContainerAddressReadonlyMacroC()
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-align"
   return WC_CONTAINER_OF_R(struct TestStructC, doubleMember, &(stTestContainerR.doubleMember));
+#pragma GCC diagnostic pop
 }
 
 
 //---- End of source file ------------------------------------------------------
-

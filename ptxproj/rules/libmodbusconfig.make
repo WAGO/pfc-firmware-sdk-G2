@@ -29,6 +29,8 @@ LIBMODBUSCONFIG_LICENSE	:= unknown
 
 LIBMODBUSCONFIG_PACKAGE_NAME := libmodbusconfig_$(LIBMODBUSCONFIG_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 LIBMODBUSCONFIG_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+LIBMODBUSCONFIG_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(LIBMODBUSCONFIG_PACKAGE_NAME)
+
 # ----------------------------------------------------------------------------
 # Extract
 # ----------------------------------------------------------------------------
@@ -140,10 +142,10 @@ $(STATEDIR)/libmodbusconfig.targetinstall:
 
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES 
 # Extract precompiled binaries from archive
-	rm -rf $(LIBMODBUSCONFIG_PLATFORMCONFIGPACKAGEDIR)/tmp/*  
-	cd $(LIBMODBUSCONFIG_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(LIBMODBUSCONFIG_PACKAGE_DIR)
+	cd $(LIBMODBUSCONFIG_PACKAGE_DIR) && \
 	ar -xov $(LIBMODBUSCONFIG_PLATFORMCONFIGPACKAGEDIR)/$(LIBMODBUSCONFIG_PACKAGE_NAME).ipk  
-	@$(call install_archive, libmodbusconfig, 0, 0, $(LIBMODBUSCONFIG_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+	@$(call install_archive, libmodbusconfig, 0, 0, $(LIBMODBUSCONFIG_PACKAGE_DIR)/data.tar.gz, /)
 else
 # WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE	
 

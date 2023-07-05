@@ -206,22 +206,6 @@ if [ -n "${backupFile}" ]; then
     #
      
     #-------------------------------------------------------------
-    # restore gprs access settings
-
-    gprs_username=`GetBackupValue "gprs-username" "$backupFile"`
-    gprs_password=`echo $(GetBackupValue "gprs-password" "$backupFile") | base64 -d`
-    gprs_auth_type=`GetBackupValue "gprs-auth-type" "$backupFile"`  
-    gprs_apn=`GetBackupValue "gprs-apn" "$backupFile"`
-             
-    if [[ -x /etc/config-tools/settings_backup_mdmd ]]; then
-      	/etc/config-tools/settings_backup_mdmd restore gprs-access "$gprs_apn" "$gprs_auth_type" "$gprs_username" "$gprs_password"
-      	ProcessErrRestoreOperation $? "Restore grps user account settings failed"
-    else
-        ProcessErrRestoreOperation $? "Invalid grps backup user accounts settings config tool file"    
-    fi 
-    
-      
-    #-------------------------------------------------------------
     # delete all existing dns-server before we restore the ones from backup
     # we only must delete allways the r one in sequential list, until none is existing
     dnsServerName=$(/etc/config-tools/get_dns_server 1)
@@ -249,19 +233,6 @@ if [ -n "${backupFile}" ]; then
     # restore netconfd settings
     /etc/config-tools/network_config --restore $backupFile
     ProcessErrRestoreOperation $? "Failed to set network parameters by " "/etc/config-tools/network_config"
-
-    #-------------------------------------------------------------
-    # restore DHCP-Service settings.
-    /etc/config-tools/config_dnsmasq_c --restore-config "$backupFile"
-    ProcessErrRestoreOperation $? "Failed to set config_dnsmasq by " "/etc/config-tools/config_dnsmasq_c"
-    
-    #-------------------------------------------------------------
-    # restore DNS-Service settings.
-    state=$(GetBackupValue "dns-state" "$backupFile")
-    mode=$(GetBackupValue "dns-mode" "$backupFile")
-    fixhosts=$(GetBackupValue "dns-fixhosts" "$backupFile")
-    /etc/config-tools/config_dns_service --no-dnsmasq-restart dns-state=$state dns-mode=$mode dns-fix-host=$fixhosts
-    ProcessErrRestoreOperation $? "Failed to set dns_mode by " "/etc/config-tools/config_dns_service"
 
     #-------------------------------------------------------------
     # restore snmp user definitions.

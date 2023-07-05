@@ -13,7 +13,7 @@
  * Last Modification:
  *  $Author: u010391 $
  *  $Modtime: 27.02.2009 $
- *  $Revision: 65684 $
+ *  $Revision$
  */
 #ifndef OS_API_H_
 #define OS_API_H_

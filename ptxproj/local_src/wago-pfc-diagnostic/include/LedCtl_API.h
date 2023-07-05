@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 /// \file LED_ctl.h
 ///
-/// \version $Revision: 65689 $
+/// \version $Revision$
 ///
 /// \brief <short description of the file contents>
 ///

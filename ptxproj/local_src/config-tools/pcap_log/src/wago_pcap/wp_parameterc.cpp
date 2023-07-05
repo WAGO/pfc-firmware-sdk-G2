@@ -18,6 +18,7 @@
 // include files
 //------------------------------------------------------------------------------
 #include "wp_parameterc.hpp"
+#include "wp_util.hpp"
 #include <unistd.h>
 
 //------------------------------------------------------------------------------
@@ -284,13 +285,50 @@ namespace wp {
     if (this->data.storage == STORAGE_MEMORY_CARD)
     {
       Debug_Printf("Purging old logs in %s...\n", FOLDER_FLASH);
-      std::filesystem::remove_all(getLogFolder(FOLDER_FLASH));
+      cleanLogs(FOLDER_FLASH);
     }
     else if (getOptMemoryCard() && this->data.storage == STORAGE_INTERNAL_FLASH)
     {
       Debug_Printf("Purging old logs in %s...\n", FOLDER_SD);
-      std::filesystem::remove_all(getLogFolder(FOLDER_SD));
+      cleanLogs(FOLDER_SD);
     }
+  }
+
+  void Config::cleanLogs(const std::string& storage)
+  {
+    const auto dir = getLogFolder(storage);
+    if (!std::filesystem::exists(dir))
+    {
+      return;
+    }
+    
+    for (const auto & entry : std::filesystem::directory_iterator(dir))
+    {
+      std::filesystem::remove_all(entry.path());
+    }
+  }
+
+  std::uintmax_t Config::calcMaxPartitionSize()
+  {
+    auto available_mem = get_avail_mem();
+
+    std::uint8_t percentage = data.maxPartitionSizePct > MAX_PART_SIZE_PERC ? MAX_PART_SIZE_PERC : data.maxPartitionSizePct;
+    auto allowed_size = available_mem * percentage / 100;
+
+    std::uintmax_t target_mem_size = data.maxFilesize;
+    if (data.rotateFiles)
+    {
+      target_mem_size *= DFLT_MAX_FILE_COUNT;
+    }
+    target_mem_size += 1 * 1024 * 1024; // 1 MB buffer in case the files are slightly larger than maxFilesize
+
+    if (allowed_size >= target_mem_size)
+    {
+      // return target_mem_size; // use this instead to create partitions that allow the currently needed space only
+      return allowed_size;
+    }
+
+    return 0;
   }
 
   //----------------------------------------------------------------------------

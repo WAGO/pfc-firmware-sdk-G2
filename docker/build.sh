@@ -2,7 +2,7 @@
 
 set -e
 
-TOOLCHAIN_PATH="/opt/gcc-Toolchain-2022.02/LINARO.Toolchain-2022.02/arm-linux-gnueabihf/bin/"
+TOOLCHAIN_PATH="/opt/gcc-Toolchain-2022.08/LINARO.Toolchain-2022.08/arm-linux-gnueabihf/bin/"
 
 print_usage() {
     cat << EOF
@@ -29,7 +29,7 @@ case "$1" in
         ptxdist clean -q
         ;;
     build | "")
-        ptxdist go -q
+        ptxdist go -q -j -n19
         ;;
     get)
         ptxdist select configs/wago-pfcXXX/ptxconfig_pfc_g2

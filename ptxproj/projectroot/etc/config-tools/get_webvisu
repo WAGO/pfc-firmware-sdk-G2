@@ -1,0 +1,48 @@
+#!/bin/bash
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2023 WAGO GmbH & Co. KG
+
+#-----------------------------------------------------------------------------#
+# Script-name: get_webvisu
+#
+# WebVisu related settings
+#
+# Author: Marius Hellmeier
+#-----------------------------------------------------------------------------#
+
+# load general definitions and functions
+if [ ! -f "/etc/config-tools/config_tool_defines" ]; then
+  echo "config_tool_defines missing" >&2
+  exit 255
+fi
+
+. /etc/config-tools/config_tool_defines
+
+
+#-------------- main-program ------------------------#
+
+status=$SUCCESS
+
+# show help-text if requested
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+  echo
+  echo "* Read WebVisu related configuration *"
+  echo
+  echo "Usage: get_webvisu use-separated-ports"
+  echo 
+  exit "$status"
+fi
+
+case "$1" in
+
+"use-separated-ports")    (cd /etc/lighttpd && [[ $(readlink webvisu_ports.conf) == "webvisu_ports_separated.conf" ]] && echo -n "YES" || echo -n "NO")
+          ;;
+
+*)        status="$INVALID_PARAMETER"
+          echo "Invalid argument" >&2
+          ;;
+esac
+exit "$status"

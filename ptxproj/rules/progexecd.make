@@ -37,6 +37,7 @@ SCRIPT_DIR=$(PTXDIST_SYSROOT_HOST)/lib/ct-build
 
 PROGEXECD_PACKAGE_NAME := $(PROGEXECD)_$(PROGEXECD_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 PROGEXECD_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+PROGEXECD_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(PROGEXECD_PACKAGE_NAME)
 
 # ----------------------------------------------------------------------------
 # Extract
@@ -115,10 +116,10 @@ $(STATEDIR)/progexecd.targetinstall:
 
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES 
 	# Extract precompiled binaries from archive
-	rm -rf $(PROGEXECD_PLATFORMCONFIGPACKAGEDIR)/tmp/*  
-	cd $(PROGEXECD_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(PROGEXECD_PACKAGE_DIR)
+	cd $(PROGEXECD_PACKAGE_DIR) && \
 	ar -xov $(PROGEXECD_PLATFORMCONFIGPACKAGEDIR)/$(PROGEXECD_PACKAGE_NAME).ipk  
-	@$(call install_archive, progexecd, 0, 0, $(PROGEXECD_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+	@$(call install_archive, progexecd, 0, 0, $(PROGEXECD_PACKAGE_DIR)/data.tar.gz, /)
 else
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE	
 

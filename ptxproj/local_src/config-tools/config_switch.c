@@ -11,7 +11,7 @@
 ///
 ///  \file     config_switch.c
 ///
-///  \version  $Revision: 66689 $1
+///  \version  $Revision$1
 ///
 ///  \brief    
 ///

@@ -11,7 +11,7 @@
 ///
 ///  \file     print_program_output.c
 ///
-///  \version  $Revision: 65689 $1
+///  \version  $Revision$1
 ///
 ///  \brief    Get the output-string of another program as input-parameter and
 ///            write it to stdout.

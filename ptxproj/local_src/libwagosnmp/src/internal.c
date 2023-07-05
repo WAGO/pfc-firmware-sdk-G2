@@ -10,7 +10,7 @@
 ///
 ///  \file     internal.c
 ///
-///  \version  $Rev: 70157 $
+///  \version  $Rev$
 ///
 ///  \brief    <Insert description here>
 ///

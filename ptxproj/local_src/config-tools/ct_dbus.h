@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 ///  \file     ct_dbus.h
 ///
-///  \version  $Revision: 65689 $1
+///  \version  $Revision$1
 ///
 ///  \brief    <short description of the file contents>
 ///

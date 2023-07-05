@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 /// \file main.c
 ///
-/// \version $Revision: 65689 $
+/// \version $Revision$
 ///
 /// \brief Main-Function of the LED-Error-Servers
 ///

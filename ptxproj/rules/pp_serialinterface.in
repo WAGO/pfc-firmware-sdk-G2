@@ -10,6 +10,7 @@ config PP_SERIALINTERFACE
   select WAGO_PARAMETER_SERVICE_TEST_LIB
   select WAGO_PARAMETER_SERVICE_MODEL_FILES
   select WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_CPP_HEADERS
+  select LIBWSERIAL
   prompt "pp_serialinterface"
   help
     Enable serial interface parameter provider

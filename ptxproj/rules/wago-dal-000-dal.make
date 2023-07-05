@@ -26,6 +26,7 @@ DAL_SRC     := $(call ptx/in-path, PTXDIST_PATH, wago_intern/dal)
 
 DAL_PACKAGE_NAME := $(DAL)_$(DAL_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 DAL_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+DAL_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(DAL_PACKAGE_NAME)
 
 # ----------------------------------------------------------------------------
 # Get
@@ -109,6 +110,7 @@ ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 	cp $(DAL_DIR)/include/sdi_stack_interface.h  $(PTXCONF_SYSROOT_TARGET)/usr/include/dal/
 	cp $(DAL_DIR)/include/events/events.h $(PTXCONF_SYSROOT_TARGET)/usr/include/dal/events/
 	cp $(DAL_DIR)/project/libdal.a $(PTXCONF_SYSROOT_TARGET)/usr/lib
+	cp $(DAL_DIR)/project/libdal.so $(PTXCONF_SYSROOT_TARGET)/usr/lib
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_RELEASE
 	#Backup header files as archive for later use in configs/@platform@/packages
 	cd $(PTXCONF_SYSROOT_TARGET) && \
@@ -119,7 +121,8 @@ ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_RELEASE
 	usr/include/dal/dal_types.h  \
 	usr/include/dal/sdi_stack_interface.h \
 	usr/include/dal/events/events.h  \
-	usr/lib/libdal.a  && \
+	usr/lib/libdal.a \
+	usr/lib/libdal.so  && \
 	mv $(DAL_PACKAGE_NAME).tgz $(DAL_PLATFORMCONFIGPACKAGEDIR)
 endif
 else
@@ -134,7 +137,33 @@ endif
 # ----------------------------------------------------------------------------
 
 $(STATEDIR)/dal.targetinstall:
-	@$(call targetinfo)
+	@$(call targetinfo, $@)
+	@$(call install_init, dal)
+	
+	@$(call install_fixup,dal,PRIORITY,optional)
+	@$(call install_fixup,dal,VERSION,$(DAL_VERSION))	
+	@$(call install_fixup,dal,SECTION,base)
+	@$(call install_fixup,dal,AUTHOR,"WAGO")
+	@$(call install_fixup,dal,DESCRIPTION,missing)
+	
+	
+ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES 
+		# Extract precompiled binaries from archive
+	mkdir -p $(DAL_PACKAGE_DIR)
+	cd $(DAL_PACKAGE_DIR) && \
+	ar -xov $(DAL_PLATFORMCONFIGPACKAGEDIR)/$(DAL_PACKAGE_NAME).ipk  
+	@$(call install_archive, dal, 0, 0, $(DAL_PACKAGE_DIR)/data.tar.gz, /)
+else
+    # WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
+	@$(call install_copy, dal, 0, 0, 0644, $(DAL_DIR)/project/libdal.so,     /usr/lib/libdal.so.$(DAL_VERSION))
+	@$(call install_link, dal, libdal.so.$(DAL_VERSION) , /usr/lib/libdal.so)
+endif
+	@$(call install_finish,dal)
+ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_RELEASE
+	# Backup binaries in configs/@platform@/packages/
+	cp $(PKGDIR)/$(DAL_PACKAGE_NAME).ipk $(DAL_PLATFORMCONFIGPACKAGEDIR)/
+endif
+	
 	@$(call touch)
 
 # ----------------------------------------------------------------------------

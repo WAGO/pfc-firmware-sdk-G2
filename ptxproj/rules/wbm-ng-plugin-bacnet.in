@@ -20,6 +20,7 @@ config WBM_NG_PLUGIN_BACNET
 	prompt "BACnet Plugin"
 
 	depends on WBM_NG
+	depends on BACNET
 
 	# This plugin requires the wbm-fieldbus plugin to be installed
 	# as it provided the required wbm menu entry point

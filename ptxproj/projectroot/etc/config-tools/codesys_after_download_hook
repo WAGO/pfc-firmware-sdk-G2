@@ -14,7 +14,7 @@
 # source/Linux/Standard/RtsCst.c and source/RtsApi.[ch] to implement hook calls
 # and script execution. 
 #
-# $Id: codesys_after_download_hook 65770 2022-03-15 15:34:32Z falk.werner@wago.com $
+# $Id$
 # Author: HJH, WAGO GmbH
 #-----------------------------------------------------------------------------#
 

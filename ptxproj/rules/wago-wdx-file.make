@@ -24,7 +24,7 @@ PACKAGES-$(PTXCONF_WAGO_WDX_FILE) += wago-wdx-file
 #
 # Paths and names
 #
-WAGO_WDX_FILE_VERSION        := 2.1.1
+WAGO_WDX_FILE_VERSION        := 2.1.2
 WAGO_WDX_FILE_MD5            :=
 WAGO_WDX_FILE_BASE           := wdx-file
 WAGO_WDX_FILE                := wago-$(WAGO_WDX_FILE_BASE)-$(WAGO_WDX_FILE_VERSION)

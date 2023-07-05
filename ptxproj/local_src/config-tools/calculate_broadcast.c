@@ -11,7 +11,7 @@
 ///
 ///  \file     calculate_broadcast.c
 ///
-///  \version  $Revision: 65689 $1
+///  \version  $Revision$1
 ///
 ///  \brief    
 ///

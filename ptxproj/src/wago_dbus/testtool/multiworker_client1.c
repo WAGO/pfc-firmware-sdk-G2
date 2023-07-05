@@ -10,7 +10,7 @@
 ///
 ///  \file     user4.c
 ///
-///  \version  $Revision: 65684 $
+///  \version  $Revision$
 ///
 ///  \brief    this program initiate a direct connection
 ///

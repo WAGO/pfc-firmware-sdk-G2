@@ -106,7 +106,7 @@ $(STATEDIR)/dockerd.install:
 	@$(call targetinfo)
 	mkdir -p $(DOCKERD_INSTALLDIR) && \
 	cp $(DOCKERD_DIR)/bundles/cross/linux/armv7/dockerd-$(DOCKERD_VERSION)-wago $(DOCKERD_INSTALLDIR)/ && \
-	ln -s dockerd-$(DOCKERD_VERSION)-wago $(DOCKERD_INSTALLDIR)/dockerd
+	ln -sf dockerd-$(DOCKERD_VERSION)-wago $(DOCKERD_INSTALLDIR)/dockerd
 	@$(call touch)
 
 # ----------------------------------------------------------------------------

@@ -42,31 +42,31 @@
 uint8_t GetUint8MaxCPP(void)
 {
   return UINT8_MAX;
-};
+}
 
 
 int_fast64_t GetFastInt64MaxCPP(void)
 {
   return INT_FAST64_MAX;
-};
+}
 
 
 size_t GetPtrDiffSizeCPP(void)
 {
   return sizeof(ptrdiff_t);
-};
+}
 
 
 bool GetTrueCPP(void)
 {
   return true;
-};
+}
 
 
 bool GetFalseCPP(void)
 {
   return false;
-};
+}
 
 
 //---- End of source file ------------------------------------------------------

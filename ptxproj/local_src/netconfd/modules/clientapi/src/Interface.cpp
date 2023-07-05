@@ -3,6 +3,7 @@
 
 #include "JsonConverter.hpp"
 #include "NetconfdDbusClient.hpp"
+#include "InterfaceValidator.hpp"
 
 namespace netconf {
 namespace api {
@@ -30,6 +31,10 @@ Status DeleteInterface(const Interface &interface) {
   NetconfdDbusClient client;
   auto result = client.DeleteInterface(ToJson(interface));
   return result.error_;
+}
+
+Status ValidateInterface(const Interface &interface, const Interfaces &existing_interfaces){
+  return netconf::Validate(interface, existing_interfaces, existing_interfaces);
 }
 
 }  // namespace api

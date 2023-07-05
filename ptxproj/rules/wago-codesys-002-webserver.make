@@ -24,6 +24,8 @@ PLCLINUXRT_WEBSERVER_DIR		:= $(BUILDDIR)/$(PLCLINUXRT_WEBSERVER)
 
 PLCLINUXRT_WEBSERVER_PACKAGE_NAME := plclinuxrt-webserver_$(PLCLINUXRT_WEBSERVER_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 PLCLINUXRT_WEBSERVER_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+PLCLINUXRT_WEBSERVER_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(PLCLINUXRT_WEBSERVER_PACKAGE_NAME)
+
 # ----------------------------------------------------------------------------
 # Extract
 # ----------------------------------------------------------------------------
@@ -95,10 +97,10 @@ $(STATEDIR)/plclinuxrt-webserver.targetinstall:
 
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES 
 	# Extract precompiled binaries from archive
-	rm -rf $(PLCLINUXRT_WEBSERVER_PLATFORMCONFIGPACKAGEDIR)/tmp/*  
-	cd $(PLCLINUXRT_WEBSERVER_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(PLCLINUXRT_WEBSERVER_PACKAGE_DIR)
+	cd $(PLCLINUXRT_WEBSERVER_PACKAGE_DIR) && \
 	ar -xov $(PLCLINUXRT_WEBSERVER_PLATFORMCONFIGPACKAGEDIR)/$(PLCLINUXRT_WEBSERVER_PACKAGE_NAME).ipk  
-	@$(call install_archive, plclinuxrt-webserver, 0, 0, $(PLCLINUXRT_WEBSERVER_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+	@$(call install_archive, plclinuxrt-webserver, 0, 0, $(PLCLINUXRT_WEBSERVER_PACKAGE_DIR)/data.tar.gz, /)
 else
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
 	@$(call install_copy, plclinuxrt-webserver, 0, 0, 0644, $(PTXDIST_WORKSPACE)/projectroot/etc/webserver_conf.xml, /etc/webserver_conf.xml)

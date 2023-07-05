@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_PP_NETWORKING) += pp_networking
 #
 # Paths and names
 #
-PP_NETWORKING_VERSION        := 1.0.0
+PP_NETWORKING_VERSION        := 1.1.0
 PP_NETWORKING_MD5            :=
 PP_NETWORKING                := pp_networking
 PP_NETWORKING_BUILDCONFIG    := Release

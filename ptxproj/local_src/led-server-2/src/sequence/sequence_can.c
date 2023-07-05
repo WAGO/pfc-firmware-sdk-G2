@@ -10,7 +10,7 @@
 ///
 ///  \file     sequence_can.c
 ///
-///  \version  $Rev: 65689 $
+///  \version  $Rev$
 ///
 ///  \brief    <Insert description here>
 ///

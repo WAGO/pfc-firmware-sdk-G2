@@ -34,5 +34,7 @@ Status AddInterface(const Interface &interface);
  */
 Status DeleteInterface(const Interface &interface);
 
+Status ValidateInterface(const Interface &interface, const Interfaces &existing_interfaces);
+
 }  // namespace api
 }  // namespace netconf

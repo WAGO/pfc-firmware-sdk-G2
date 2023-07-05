@@ -10,7 +10,7 @@
 ///
 ///  \file     wagosnmp_internal.h
 ///
-///  \version  $Revision: 69201 $
+///  \version  $Revision$
 ///
 ///  \brief    <Insert description here>
 ///

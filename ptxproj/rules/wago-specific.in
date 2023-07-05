@@ -99,6 +99,10 @@ source "generated/wago_specific_dal.in"
 endmenu
 
 
+menu "Device                        "
+source "generated/wago_specific_device.in"
+endmenu
+
 
 menu "Frontend config (web/console) " 
 source "generated/wago_specific_config.in"

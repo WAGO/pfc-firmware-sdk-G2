@@ -25,7 +25,7 @@ CDS3_IODRVBACNET_BIN        := lib$(CDS3_IODRVBACNET_NAME).so.$(CDS3_IODRVBACNET
 
 CDS3_IODRVBACNET_PACKAGE_NAME := cds3-iodrvbacnet_$(CDS3_IODRVBACNET_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 CDS3_IODRVBACNET_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
-
+CDS3_IODRVBACNET_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(CDS3_IODRVBACNET_PACKAGE_NAME)
 
 # ----------------------------------------------------------------------------
 # Get
@@ -33,7 +33,7 @@ CDS3_IODRVBACNET_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packag
 
 $(STATEDIR)/cds3-iodrvbacnet.get:
 	@$(call targetinfo)
-#JB???	make -C $(CDS3_IODRVBACNET_SRC_DIR) m4headers
+#JB???	$(MAKE) -C $(CDS3_IODRVBACNET_SRC_DIR) m4headers
 	@$(call touch)
 
 # ----------------------------------------------------------------------------
@@ -111,10 +111,10 @@ $(STATEDIR)/cds3-iodrvbacnet.targetinstall:
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 
 	# Extract precompiled binaries from archive
-	rm -rf $(CDS3_IODRVBACNET_PLATFORMCONFIGPACKAGEDIR)/tmp/*
-	cd $(CDS3_IODRVBACNET_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(CDS3_IODRVBACNET_PACKAGE_DIR)
+	cd $(CDS3_IODRVBACNET_PACKAGE_DIR) && \
 	ar -xov $(CDS3_IODRVBACNET_PLATFORMCONFIGPACKAGEDIR)/$(CDS3_IODRVBACNET_PACKAGE_NAME).ipk
-	@$(call install_archive, cds3-iodrvbacnet, 0, 0, $(CDS3_IODRVBACNET_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, )
+	@$(call install_archive, cds3-iodrvbacnet, 0, 0, $(CDS3_IODRVBACNET_PACKAGE_DIR)/data.tar.gz, )
 else
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
 

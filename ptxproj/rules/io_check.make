@@ -30,6 +30,7 @@ IO_CHECK_LICENSE	:= unknown
 
 IO_CHECK_PACKAGE_NAME := io-check_$(IO_CHECK_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 IO_CHECK_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+IO_CHECK_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(IECSSL_PACKAGE_NAME)
 
 # ----------------------------------------------------------------------------
 # Extract
@@ -220,10 +221,10 @@ $(STATEDIR)/io_check.targetinstall:
 	@$(call install_fixup, io_check, DESCRIPTION, missing)
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES 
 	# Extract precompiled binaries from archive
-	rm -rf $(IO_CHECK_PLATFORMCONFIGPACKAGEDIR)/tmp/*  
-	cd $(IO_CHECK_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(IO_CHECK_PACKAGE_DIR)
+	cd $(IO_CHECK_PACKAGE_DIR) && \
 	ar -xov $(IO_CHECK_PLATFORMCONFIGPACKAGEDIR)/$(IO_CHECK_PACKAGE_NAME).ipk  
-	@$(call install_archive, io_check, 0, 0, $(IO_CHECK_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+	@$(call install_archive, io_check, 0, 0, $(IO_CHECK_PACKAGE_DIR)/data.tar.gz, /)
 else
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE	
 

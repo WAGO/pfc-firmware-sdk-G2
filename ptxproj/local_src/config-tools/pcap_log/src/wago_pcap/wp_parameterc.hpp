@@ -55,6 +55,11 @@ namespace wp {
   #define DFLT_MAX_FILE_COUNT 3
   #define DFLT_STORAGE STORAGE_INTERNAL_FLASH
   #define DFLT_ROTATE_FILES true
+  #define DFLT_MAX_PART_SIZE_PERC 60
+
+  // percentage of the available memory that should be used as the partition max size
+  // (upper limit)
+  #define MAX_PART_SIZE_PERC 80
 
   //----------------------------------------------------------------------------
   struct config_t{
@@ -63,6 +68,7 @@ namespace wp {
       std::string storage {DFLT_STORAGE};
       std::uintmax_t maxFilesize {DFLT_MAX_FILE_SIZE};
       bool rotateFiles {DFLT_ROTATE_FILES};
+      std::uint8_t maxPartitionSizePct {DFLT_MAX_PART_SIZE_PERC};
   };
 
   NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(config_t, // NOLINT
@@ -70,7 +76,8 @@ namespace wp {
                                                   filter,
                                                   storage,
                                                   maxFilesize,
-                                                  rotateFiles)
+                                                  rotateFiles,
+                                                  maxPartitionSizePct)
 
   //----------------------------------------------------------------------------
   struct info_t{
@@ -133,7 +140,7 @@ namespace wp {
     return json;
   }
 
-  std::filesystem::path getLogFolder(const std::filesystem::path &root);
+  std::filesystem::path getLogFolder(const std::filesystem::path & root);
 
   bool getOptMemoryCard();
 
@@ -222,6 +229,8 @@ namespace wp {
       Config();
       std::filesystem::path getNewSavefile();
       void cleanLogsFromNonActiveStorage();
+      void cleanLogs(const std::string & root_path);
+      std::uintmax_t calcMaxPartitionSize();
   };
 
   //----------------------------------------------------------------------------

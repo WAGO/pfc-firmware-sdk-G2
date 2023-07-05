@@ -233,10 +233,14 @@ DbusResult NetconfdDbusClient::SetTemporaryFixedIpAddress() {
   return Send(msg);
 }
 
-DbusResult NetconfdDbusClient::SetTemporaryDHCPClientID(const ::std::string& clientID)
-{
+DbusResult NetconfdDbusClient::SetTemporaryDHCPClientID(const ::std::string& client_id){
   auto msg = CreateIpMessage("settempdhcpclientid");
-  return Send(msg, clientID);
+  return Send(msg, client_id);
+}
+
+DbusResult NetconfdDbusClient::GetDHCPClientID(){
+  auto msg = CreateIpMessage("gettempdhcpclientid");
+  return GetStrings(msg);
 }
 
 DbusResult NetconfdDbusClient::GetDipSwitchConfig() {

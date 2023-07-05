@@ -51,6 +51,23 @@ void RemoveEmptyBridges(BridgeConfig &config) {
   }
 }
 
+void RemoveVlanInterfacesWithInvalidLink(Interfaces &interfaces, INetDevManager &netdev_manager) {
+
+  auto linkDoesNotExist = [&](Interface& interface){
+    if(interface.GetProperties().count(InterfaceProperty::Link) > 0){
+      ::std::string name = ::boost::get<::std::string>(interface.GetProperties().at(InterfaceProperty::Link));
+      NetDevPtr link = netdev_manager.GetByName(name);
+      if(not link){
+        return true;
+      }
+    }
+    return false;
+  };
+
+  interfaces.erase(::std::remove_if(interfaces.begin(), interfaces.end(), linkDoesNotExist), interfaces.end());
+}
+
+
 }  // namespace
 
 using namespace ::std::literals;
@@ -301,22 +318,10 @@ Status NetworkConfigBrain::ApplyConfig(BridgeConfig &bridge_config, const Interf
     if(persistence_status.IsOk()){
       //INFO: we have to check whether link references have been omitted due to a new bridge configuration
       //and remove the affected virtual interfaces.
-
       Interfaces interfaces;
       persistence_provider_.Read(interfaces);
 
-      auto linkDoesNotExist = [&](Interface& interface){
-        if(interface.GetProperties().count(InterfaceProperty::Link) > 0){
-          ::std::string name = ::boost::get<::std::string>(interface.GetProperties().at(InterfaceProperty::Link));
-          NetDevPtr link = netdev_manager_.GetByName(name);
-          if(not link){
-            return true;
-          }
-        }
-        return false;
-      };
-
-      interfaces.erase(::std::remove_if(interfaces.begin(), interfaces.end(), linkDoesNotExist), interfaces.end());
+      RemoveVlanInterfacesWithInvalidLink(interfaces, netdev_manager_);
 
       persistence_status = persistence_provider_.Write(interfaces);
     }
@@ -548,6 +553,11 @@ std::string NetworkConfigBrain::SetTemporaryDHCPClientID(const ::std::string &cl
   return jc.ToJsonString(status);
 }
 
+::std::string NetworkConfigBrain::GetDHCPClientID(::std::string &client_id){
+  client_id = ip_manager_.GetDhcpClientID();
+  return jc.ToJsonString(Status{});
+}
+
 ::std::string NetworkConfigBrain::GetDipSwitchConfig(::std::string &config) const {
   DipSwitchIpConfig dip_switch_ip_config;
   Status status = persistence_provider_.Read(dip_switch_ip_config);
@@ -664,6 +674,8 @@ std::string NetworkConfigBrain::SetTemporaryDHCPClientID(const ::std::string &cl
     persistence_provider_.Read(persisted_interfaces);
 
     RemoveInterfaceByName(interface_to_delete, persisted_interfaces);
+
+    RemoveVlanInterfacesWithInvalidLink(persisted_interfaces, netdev_manager_);
 
     status = persistence_provider_.Write(persisted_interfaces);
   }

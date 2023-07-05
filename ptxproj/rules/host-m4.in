@@ -1,0 +1,4 @@
+## SECTION=hosttools_noprompt
+
+config HOST_M4
+	bool

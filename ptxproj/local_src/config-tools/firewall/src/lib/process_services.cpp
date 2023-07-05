@@ -67,12 +67,12 @@ bool status::operator<(const status& rhs) const
 }
 
 
-std::vector<std::string> filter_files(const std::vector<struct dirent>& des)
+std::vector<std::string> filter_files(const std::vector<dirent>& des)
 {
     regex::regex rex("^.*\\.xml$");
     std::vector<std::string> fnames;
 
-    for (const struct dirent& de : des)
+    for (const dirent& de : des)
     {
 // d_type check doesn't work on target platform.
 //        if (DT_REG == de.d_type && regex::is_match(rex, de.d_name))
@@ -83,7 +83,7 @@ std::vector<std::string> filter_files(const std::vector<struct dirent>& des)
     return fnames;
 }
 
-std::vector<struct dirent> scan_dir(const std::string& dir)
+std::vector<dirent> scan_dir(const std::string& dir)
 {
     assert(0 < dir.length());
 
@@ -92,8 +92,8 @@ std::vector<struct dirent> scan_dir(const std::string& dir)
     if (nullptr == d)
         throw invalid_param_error("Can't access requested directory.");
 
-    std::vector<struct dirent> des;
-    struct dirent* de;
+    std::vector<dirent> des;
+    dirent* de;
 
     while (nullptr != (de = readdir(d)))
         des.push_back(*de);

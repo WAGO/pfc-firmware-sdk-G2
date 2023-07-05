@@ -280,6 +280,26 @@
         </doc:description>
       </doc:doc>
     </method>
+    <method name="gettempdhcpclientid">
+      <arg name="config" direction="out" type="s">
+        <doc:doc>
+          <doc:summary>DHCP ClientID for dhcp request</doc:summary>
+        </doc:doc>
+      </arg>
+      <arg name="result" direction="out" type="s">
+        <doc:doc>
+          <doc:summary>Error object containing the result</doc:summary>
+        </doc:doc>
+      </arg>
+      <doc:doc>
+        <doc:description>
+          <doc:para>
+            Get the DHCP ClientID as string.
+            Example: 'Machine_1a'
+          </doc:para>
+        </doc:description>
+      </doc:doc>
+    </method>
     <method name="getdipswitchconfig">
       <arg name="config" direction="out" type="s">
         <doc:doc>

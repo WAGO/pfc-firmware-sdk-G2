@@ -1,0 +1,60 @@
+## SECTION=wago_specific_device_bacnet
+
+config CDS3_TSCIOBACNET
+	bool "cds3-tsciobacnet"
+	default n
+	depends on BACNET
+	select CDS3_INCLUDES
+	select CODESYS3
+	select CDS3_IODRVDAL
+	select CDS3_IODRVBACNET
+	select LIBBACNET
+	help
+	  BACnet for CODESYS V3
+
+if CDS3_TSCIOBACNET
+
+choice
+	prompt "Origin of Code"
+	default CDS3_TSCIOBACNET_SOURCE_RELEASED
+
+	config CDS3_TSCIOBACNET_SOURCE_RELEASED
+		bool
+		prompt "released / Artifactory"
+		help
+		  Use released version of source code, taken from Artifactory.
+
+	config CDS3_TSCIOBACNET_SOURCE_DEV
+		bool
+		prompt "development / Git"
+		help
+		  Instead of released version use source code directly checked-out from repository.
+		  Use only for development!
+
+endchoice
+
+if CDS3_TSCIOBACNET_SOURCE_DEV
+
+config CDS3_TSCIOBACNET_SOURCE_DEV_BRANCH
+	string
+	prompt "Branch to be checked-out."
+	default "master"
+	help
+	  Name of branch which should be checked out or empty for default.
+
+endif
+
+if CDS3_TSCIOBACNET_SOURCE_RELEASED
+
+config CDS3_TSCIOBACNET_URL_TEMPLATE
+	string
+	depends on CDS3_TSCIOBACNET
+	prompt "URL template"
+	default "%ARTIFACTORY_BASE_URL%/pl_controller-generic-prod-local/wago_intern/TscIoBacnet/releases/TscIoBacnet-Source/TscIoBacnet-Source-%VERSION%.tgz"
+	help
+	  Encodes the desired artifact version. Can be configured to a specific version or to a latest compatible version of an artifact.
+	  See Confluence for further details.
+
+endif
+
+endif

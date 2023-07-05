@@ -8,6 +8,9 @@ config PCAP_LOG
 	select LIBCURL
 	select NLOHMANN_JSON
 	select NETCONFD
+	select GLIB
+	select CONFIG_TOOL_BASE
+	select CONFIG_TOOLS
 	prompt "pcap_log"
 	help
 	  FIXME

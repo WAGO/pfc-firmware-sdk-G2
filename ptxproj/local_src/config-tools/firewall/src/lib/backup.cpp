@@ -90,14 +90,6 @@ file::file()
 {
 }
 
-file::file(const std::string& _name, const std::string& _tmpl, const std::string& _path,
-           const bool load_tmpl)
-    : name(_name), tmpl(_tmpl), path(_path), conf()
-{
-    if (load_tmpl)
-        load();
-}
-
 file::~file()
 {
 }
@@ -156,7 +148,7 @@ void split_key_value(std::vector<sline>& source)
     // Expectation: line is pre-checked and deemed firewall related.
     // If match will not be found an exception is thrown.
 
-    regex::regex source_match("^\\s*firewall-([a-zA-Z0-9-].+)\\s*=\\s*(\\S*)\\s*");
+    regex::regex source_match("^\\s*firewall-([a-zA-Z0-9-].+)\\s*=\\s*(\\S*\\s*\\S*)\\s*");
 
     for (sline& line : source)
     {
@@ -350,24 +342,21 @@ void restore_iptables(xmldoc& doc, std::vector<sline>& source)
         else if ("input-openif" == key)
             cmd = "--set-open-if";
         else if ("input-filter" == key)
-            cmd = "--add-filter";
-
-//        std::cout << "cmd: " << cmd;
-//        if (0 < values.size())
-//        {
-//            std::cout << ", values ";
-//            for (std::string& value : values)
-//                std::cout << "[" << value << "] ";
-//        }
-//        std::cout << std::endl;
-
-        if (0 != cmd.size())
         {
-            iptables::process(doc, cmd, values);
-            line.processed = true;
+            if(values.size() == 10)
+            {
+                cmd = "--add-filter";
+            }
+            else
+            {
+                cmd = "--internal-add-filter2";
+            }
         }
         else
             throw invalid_param_error("Unrecognized iptables restore configuration line.");
+
+        iptables::process_internal(doc, cmd, values);
+        line.processed = true;
     }
 }
 

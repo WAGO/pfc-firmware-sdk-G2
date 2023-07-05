@@ -82,7 +82,7 @@ Alternatively you can also run pfc-builder in bash mode (```make bash```) and en
 
     ptxdist select configs/wago-pfcXXX/ptxconfig_pfc_g2 && \ 
     ptxdist platform configs/wago-pfcXXX/platformconfig && \      
-    ptxdist toolchain /opt/gcc-Toolchain-2022.02/LINARO.Toolchain-2022.02/arm-linux-gnueabihf/bin/ && \
+    ptxdist toolchain /opt/gcc-Toolchain-2022.08/LINARO.Toolchain-2022.08/arm-linux-gnueabihf/bin/ && \
     ptxdist clean -q
     
 #### 3.1) Get and download all packages
@@ -145,12 +145,11 @@ It is possible to create the WUP for an easier update of the firmware via ethern
    
     make wup
     
-Documentation on how to use the WUP can be found in the pfc manual (12.2.1): [https://www.wago.com/de/sps/controller-pfc200/p/750-8212#downloads](https://www.wago.com/de/sps/controller-pfc200/p/750-8212#downloads).
+Documentation on how to use the WUP can be found in the pfc manual: [https://www.wago.com/de/sps/controller-pfc200/p/750-8212#downloads](https://www.wago.com/de/sps/controller-pfc200/p/750-8212#downloads).
 
 RAUC uses a certificate based approach to authenticate the origin of a bundle. To ease creating of WUP files during development, the BSP contains test certificates. In order to use RAUC's authentication mechanism to ensure the origin of a bundle, it is stricly recommended to to use custom certificates. A HowTo for this can be found here: [https://github.com/WAGO/pfc-howtos/tree/master/HowTo_GenerateWUPFile](https://github.com/WAGO/pfc-howtos/tree/master/HowTo_GenerateWUPFile).
 
 ### 6.) Write the binary image file "sd.hdimg" to SD-Card
-ATTENTION: Size of generated 'sd.hdimg' has been changed to 204MB.
 
 #### 6.1) Virtual machine on a windows host
 

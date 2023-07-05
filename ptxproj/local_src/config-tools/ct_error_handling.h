@@ -11,7 +11,7 @@
 ///
 ///  \file     config_tool_lib.h
 ///
-///  \version  $Revision: 65689 $1
+///  \version  $Revision$1
 ///
 ///  \brief    
 ///

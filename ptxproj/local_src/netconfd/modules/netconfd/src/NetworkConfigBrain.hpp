@@ -55,6 +55,7 @@ class NetworkConfigBrain {
 
   ::std::string SetTemporaryFixIp();
   ::std::string SetTemporaryDHCPClientID(const ::std::string& client_id);
+  ::std::string GetDHCPClientID(::std::string &client_id);
 
   ::std::string ReceiveDynamicIPEvent(const ::std::string& event);
   ::std::string ReceiveReloadHostConfEvent();

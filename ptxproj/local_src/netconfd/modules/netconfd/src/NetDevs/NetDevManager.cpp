@@ -171,12 +171,16 @@ NetDevPtr NetDevManager::UpdateOrCreateNetdev(LinkInfo &link_info) {
   if (netdev) {
     netdev->SetLinkInfo(link_info);
   } else {
-    netdev = make_shared<NetDev>(link_info);
-    net_devs_.push_back(netdev);
-
-    LOG_DEBUG("Create netdev " + link_info.name_ + " with index " + ::std::to_string(link_info.index_));
-
-    OnNetDevCreated(netdev);
+    Interface itf = LinkHelper::LinkToInterface(link_info);
+    if(itf.GetType() != DeviceType::Other){
+      netdev = make_shared<NetDev>(link_info);
+      net_devs_.push_back(netdev);
+      LOG_DEBUG("Create netdev " + link_info.name_ + " with index " + ::std::to_string(link_info.index_));
+      OnNetDevCreated(netdev);
+    }
+    else{
+      LogInfo("Ignore interface " + link_info.name_ + " of unsupported type " + link_info.type_);
+    }
   }
 
   return netdev;

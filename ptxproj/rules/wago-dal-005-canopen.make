@@ -24,6 +24,7 @@ CANOPEN_DIR		:= $(BUILDDIR)/$(CANOPEN)
 
 CANOPEN_PACKAGE_NAME := $(CANOPEN)_$(CANOPEN_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 CANOPEN_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+CANOPEN_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(CANOPEN_PACKAGE_NAME)
 
 # ----------------------------------------------------------------------------
 # Get
@@ -143,10 +144,10 @@ $(STATEDIR)/canopen.targetinstall:
 
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES 
     # Extract precompiled binaries from archive
-	rm -rf $(CANOPEN_PLATFORMCONFIGPACKAGEDIR)/tmp/*  
-	cd $(CANOPEN_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(CANOPEN_PACKAGE_DIR)
+	cd $(CANOPEN_PACKAGE_DIR) && \
 	ar -xov $(CANOPEN_PLATFORMCONFIGPACKAGEDIR)/$(CANOPEN_PACKAGE_NAME).ipk  
-	@$(call install_archive, canopen, 0, 0, $(CANOPEN_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+	@$(call install_archive, canopen, 0, 0, $(CANOPEN_PACKAGE_DIR)/data.tar.gz, /)
 else
     # WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
 	@$(call install_copy, canopen, 0, 0, 0644, $(CANOPEN_DIR)/lib_CANopen/libcanopen.so.1.4,     /usr/lib/libcanopen.so.1.4)

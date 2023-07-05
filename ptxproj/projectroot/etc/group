@@ -17,7 +17,6 @@ video:x:113:
 sdcard:x:114:root,admin
 @GROUP_ADMIN@
 @GROUP_USER@
-@GROUP_VISUALISATION@
 @GROUP_CODESYS3@
 nogroup:x:65534:
 rts:x:3540:admin

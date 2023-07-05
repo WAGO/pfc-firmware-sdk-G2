@@ -11,7 +11,7 @@
 ///
 ///  \file     get_filesystem_data.c
 ///
-///  \version  $Revision: 65689 $1
+///  \version  $Revision$1
 ///
 ///  \brief
 ///

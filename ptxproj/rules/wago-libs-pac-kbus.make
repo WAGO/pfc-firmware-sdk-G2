@@ -42,6 +42,8 @@ endif
 
 LIBPACKBUS_PACKAGE_NAME := $(LIBPACKBUS)_$(LIBPACKBUS_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 LIBPACKBUS_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+LIBPACKBUS_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(LIBPACKBUS_PACKAGE_NAME)
+
 # ----------------------------------------------------------------------------
 # Extract
 # ----------------------------------------------------------------------------
@@ -134,10 +136,10 @@ $(STATEDIR)/libpackbus.targetinstall:
 	@$(call install_fixup, libpackbus,DESCRIPTION, "DAL device library for the kbus terminal rail")
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES 
 # Extract precompiled binaries from archive
-	rm -rf $(LIBPACKBUS_PLATFORMCONFIGPACKAGEDIR)/tmp/*  
-	cd $(LIBPACKBUS_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(LIBPACKBUS_PACKAGE_DIR)
+	cd $(LIBPACKBUS_PACKAGE_DIR) && \
 	ar -xov $(LIBPACKBUS_PLATFORMCONFIGPACKAGEDIR)/$(LIBPACKBUS_PACKAGE_NAME).ipk  
-	@$(call install_archive, libpackbus, 0, 0, $(LIBPACKBUS_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+	@$(call install_archive, libpackbus, 0, 0, $(LIBPACKBUS_PACKAGE_DIR)/data.tar.gz, /)
 else
 # WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE	
 #--------------------- Copy and link library file

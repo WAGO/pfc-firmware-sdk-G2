@@ -24,6 +24,7 @@ CANOPENWIDE_DIR		:= $(BUILDDIR)/$(CANOPENWIDE)
 
 CANOPENWIDE_PACKAGE_NAME := $(CANOPENWIDE)_$(CANOPENWIDE_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 CANOPENWIDE_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+CANOPENWIDE_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(CANOPENWIDE_PACKAGE_NAME)
 
 # ----------------------------------------------------------------------------
 # Get
@@ -112,10 +113,10 @@ $(STATEDIR)/canopenwide.targetinstall:
 
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES 
 	# Extract precompiled binaries from archive
-	rm -rf $(CANOPENWIDE_PLATFORMCONFIGPACKAGEDIR)/tmp/*  
-	cd $(CANOPENWIDE_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(CANOPENWIDE_PACKAGE_DIR)
+	cd $(CANOPENWIDE_PACKAGE_DIR) && \
 	ar -xov $(CANOPENWIDE_PLATFORMCONFIGPACKAGEDIR)/$(CANOPENWIDE_PACKAGE_NAME).ipk  
-	@$(call install_archive, canopenwide, 0, 0, $(CANOPENWIDE_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+	@$(call install_archive, canopenwide, 0, 0, $(CANOPENWIDE_PACKAGE_DIR)/data.tar.gz, /)
 else
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
 	@$(call install_copy,  canopenwide, 0, 0, 0644, $(CANOPENWIDE_DIR)/libwidecanopen.so, /usr/lib/libwidecanopen.so)

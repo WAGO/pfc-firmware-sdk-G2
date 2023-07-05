@@ -1,9 +1,0 @@
-## SECTION=networking
-
-config QFLASH
-	bool
-	default n
-	prompt "qflash"
-	help
-	  Quectel UC20 firmware update tool
-

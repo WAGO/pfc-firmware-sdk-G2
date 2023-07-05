@@ -10,7 +10,7 @@
 ///
 ///  \file     set_serial_mode.c
 ///
-///  \version  $Revision: 65689 $
+///  \version  $Revision$
 ///
 ///  \brief    This config tool sets the PFCXXX transceiver to RS232 or RS485
 ///           Based on tty0modeswitch
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 	char szFileMode[5];
 	strcpy(szFileMode, "rb");
 	char szOut[256] = "";
-
+  
 	if(argc != 2)
 	{
         usage(argv[0]);
@@ -132,19 +132,23 @@ int main(int argc, char **argv)
     	{
       		perror("ERROR: tcgetattr() - Can't read settings");
             ret = SYSTEM_CALL_ERROR;
-        }
+      }
+      if( (iPanelFound == 0 )
+        &&(ioctl(serialFd, TIOCGRS485, &srs) < 0))
+      {
+        perror("ERROR: ioctl(TIOCGRS485)  - Can't read settings");
+        ret = SYSTEM_CALL_ERROR;
+      }
     }
 
     if(SUCCESS == ret)
     {
-        /* Set communication parameters: */
-    	memset(&tp, 0, sizeof(tp));
-
         if( !strcmp(argv[1], "rs485"))
     	{
             /* Enable RS485 mode */
         	srs.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND;
-		    tp.c_cflag |= IGNBRK;  	//Ignore break condition(required by RS485?)
+		    tp.c_iflag |= IGNBRK;  	//Ignore break condition(required by RS485?)
+		    tp.c_cflag |= CREAD;   //it was detected by coincidence that this bit need to be set 
 			/* vtpctp enable rs485 */
 			if ( iPanelFound == 1 ) {
 				strcpy(szFileMode, "rb+");
@@ -164,7 +168,9 @@ int main(int argc, char **argv)
         }
         else if( !strcmp(argv[1], "rs232"))
         {
-		    tp.c_cflag &= ~IGNBRK;
+		    tp.c_iflag &= ~IGNBRK;
+		    tp.c_cflag &= ~CREAD;
+		    srs.flags &= ~(SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND);
 			/* vtpctp disable rs485 */
 			if ( iPanelFound == 1 ) {
 				strcpy(szFileMode, "rb+");

@@ -22,7 +22,7 @@ DALSHELL_SRC_DIR    := $(PTXDIST_WORKSPACE)/wago_intern/plc/c/$(DALSHELL)
 
 DALSHELL_PACKAGE_NAME := dalshell_$(DALSHELL_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 DALSHELL_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
-
+DALSHELL_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(DALSHELL_PACKAGE_NAME)
 # ----------------------------------------------------------------------------
 # Get
 # ----------------------------------------------------------------------------
@@ -87,10 +87,10 @@ $(STATEDIR)/dalshell.targetinstall:
 	@$(call install_fixup,dalshell,DESCRIPTION,missing)
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES 
 	# Extract precompiled binaries from archive
-	rm -rf $(DALSHELL_PLATFORMCONFIGPACKAGEDIR)/tmp/*  
-	cd $(DALSHELL_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(DALSHELL_PACKAGE_DIR)
+	cd $(DALSHELL_PACKAGE_DIR) && \
 	ar -xov $(DALSHELL_PLATFORMCONFIGPACKAGEDIR)/$(DALSHELL_PACKAGE_NAME).ipk  
-	@$(call install_archive, dalshell, 0, 0, $(DALSHELL_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+	@$(call install_archive, dalshell, 0, 0, $(DALSHELL_PACKAGE_DIR)/data.tar.gz, /)
 else
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
 	@$(call install_copy, dalshell, 0, 0, 0755, $(DALSHELL_DIR)/project/output/dalshell, /usr/sbin/dalshell);

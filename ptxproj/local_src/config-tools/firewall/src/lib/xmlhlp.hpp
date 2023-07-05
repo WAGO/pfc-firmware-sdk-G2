@@ -18,6 +18,7 @@
 
 #include <libxml/parser.h>
 #include <libxml/xpath.h>
+#include <filesystem>
 #include <string>
 #include <vector>
 
@@ -213,6 +214,30 @@ xmldoc parse_string(const std::string& xmldata);
 /// \param doc xml document to be stored
 //------------------------------------------------------------------------------
 void store_file(const std::string& fname, const xmldoc& doc);
+
+//------------------------------------------------------------------------------
+/// Move a file.
+/// \param which file to move
+/// \param where to move file
+//------------------------------------------------------------------------------
+void move(const std::filesystem::path from,
+          const std::filesystem::path to);
+
+//------------------------------------------------------------------------------
+/// Copy a file and delete source.
+/// \param which file to copy
+/// \param where to copy file
+//------------------------------------------------------------------------------
+void move_copy(const std::filesystem::path from,
+          const std::filesystem::path to);
+
+//------------------------------------------------------------------------------
+/// Rename a file.
+/// \param old name including path
+/// \param new name including path
+//------------------------------------------------------------------------------
+void rename(const std::filesystem::path old_name,
+            const std::filesystem::path new_name);
 
 //------------------------------------------------------------------------------
 /// Serializes xml document to a string.

@@ -10,6 +10,26 @@
 # config_rs232 
 #
 
+# Function to switch current mode if configured and serial owner is not Linux.
+#
+# Param 1: current owner of serial interface
+#
+# Return: 0 on success, unequal to 0 otherwise
+update_current_mode()
+{
+  owner="$1"
+
+  if [[ -L /dev/serial && "$owner" == "None" ]]; then
+    configured_mode="$(/etc/config-tools/config_serial_mode -g configured)"
+    current_mode="$(/etc/config-tools/config_serial_mode -g current)"
+    if [[ "$current_mode" != "$configured_mode" ]]; then
+      echo -n "change serial mode from ${current_mode} to ${configured_mode}..."
+      /etc/config-tools/config_serial_mode -s $configured_mode
+      echo "done"
+    fi
+  fi
+}
+
 # config_rs232 edits the config files to set the serial interface owner
 # according to the /etc/config-tools/owner-RS232 file which can be
 # changed via wbm or config-tools
@@ -45,6 +65,7 @@ case $1 in
     echo -n "setting RS232 owner to $rs232_owner..."
     if /etc/config-tools/config_RS232 start; then
       echo "done"
+      update_current_mode $rs232_owner
     else
       echo "ERROR"
     fi

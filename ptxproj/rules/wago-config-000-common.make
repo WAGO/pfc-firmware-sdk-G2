@@ -17,7 +17,7 @@ PACKAGES-$(PTXCONF_CONFIG_TOOLS) += config-tools
 #
 # Paths and names
 #
-CONFIG_TOOLS_VERSION 	      := 1.5.0
+CONFIG_TOOLS_VERSION 	      := 2.0.0
 CONFIG_TOOLS		            := config-tools
 CONFIG_TOOLS_URL            := file://$(PTXDIST_WORKSPACE)/local_src/$(CONFIG_TOOLS)
 CONFIG_TOOLS_DIR	          := $(BUILDDIR)/$(CONFIG_TOOLS)
@@ -70,10 +70,6 @@ endif
 
 ifdef PTXCONF_CT_MODBUS_CONFIG
 	CONFIG_TOOLS_ENV+=WITH_LIBMODBUSCONFIG=yes
-endif
-
-ifdef PTXCONF_CT_CONFIG_MDMD
-	CONFIG_TOOLS_ENV+=WITH_LIBCONFIGMDMD=yes
 endif
 
 ifneq ($(CT_CFLAGS), "")
@@ -192,10 +188,6 @@ ifdef PTXCONF_CT_MODBUS_CONFIG
 	CT_MAKE_ARGS+=modbus_config
 endif
 
-ifdef PTXCONF_CT_CONFIG_MDMD
-	CT_MAKE_ARGS+=config_mdmd
-endif
-
 ifdef PTXCONF_CT_GET_ETH_CONFIG
 	CT_MAKE_ARGS+=get_eth_config
 endif
@@ -212,6 +204,9 @@ ifdef PTXCONF_CT_CONFIG_SWITCH
 endif
 ifdef PTXCONF_CT_IPDATACHECK
 	CT_MAKE_ARGS+=ipdatacheck
+endif
+ifdef PTXCONF_CT_GET_RS485_SETTINGS
+	CT_MAKE_ARGS+=get_rs485_settings
 endif
 ifdef PTXCONF_CT_SET_SERIAL_MODE
 	CT_MAKE_ARGS+=set_serial_mode
@@ -315,6 +310,22 @@ endif
 
 ifdef PTXCONF_CT_CHANGE_DEFAULT_WEBSERVER
 	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/change_default_webserver);
+endif
+
+ifdef PTXCONF_CT_GET_WEBVISU
+	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/get_webvisu);
+endif
+
+ifdef PTXCONF_CT_CONFIG_WEBVISU
+	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/config_webvisu);
+endif
+
+ifdef PTXCONF_CT_GET_WEBVISU
+ifdef PTXCONF_CT_CONFIG_WEBVISU
+ifdef PTXCONF_CT_SETTINGS_BACKUP
+	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/backup-restore/backup_webvisu);
+endif
+endif
 endif
 
 ifdef PTXCONF_CT_CHANGE_HOSTNAME
@@ -547,14 +558,6 @@ ifdef PTXCONF_CT_CONFIG_TFTP
 	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/config_tftp);
 endif
 
-ifdef PTXCONF_CT_CONFIG_DHCPD
-	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/config_dhcpd)
-endif
-
-ifdef PTXCONF_CT_CONFIG_DNS_SERVICE
-	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/config_dns_service)
-endif
-
 ifdef PTXCONF_CT_CONFIG_IOCHECKPORT
 	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/config_iocheckport)
 endif
@@ -565,14 +568,6 @@ endif
 
 ifdef PTXCONF_CT_GET_TFTP_CONFIG
 	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/get_tftp_config);
-endif
-
-ifdef PTXCONF_CT_GET_DHCPD_CONFIG
-	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/get_dhcpd_config)
-endif
-
-ifdef PTXCONF_CT_GET_DNS_SERVICE_CONFIG
-	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/get_dns_service_config)
 endif
 
 ifdef PTXCONF_CT_GET_IOCHECKPORT_CONFIG
@@ -610,10 +605,6 @@ endif
 ifdef PTXCONF_CT_GET_POSSIBLE_RUNTIMES
 	@$(call install_copy, config-tools, 0, 0, 0750, $(CONFIG_TOOLS_DIR)/get_possible_runtimes, /etc/config-tools/get_possible_runtimes);
 	@$(call install_alternative, config-tools, 0, 0, 0440, /etc/specific/rtsbl);
-endif
-
-ifdef PTXCONF_CT_UPDATE_MODEM_FIRMWARE
-	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/update_modem_firmware)
 endif
 
 ifdef PTXCONF_CT_HTTPS_CIPHER_SELECTION
@@ -749,13 +740,6 @@ ifdef PTXCONF_CT_MODBUS_CONFIG
 	@$(call install_copy, config-tools, 0, 0, 0750, $(CONFIG_TOOLS_DIR)/modbus_config, /etc/config-tools/modbus_config);
 endif
 
-ifdef PTXCONF_CT_CONFIG_MDMD
-	@$(call install_copy, config-tools, 0, 0, 0750, $(CONFIG_TOOLS_DIR)/config_mdmd, /etc/config-tools/config_mdmd);
-	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/settings_backup_mdmd);
-	@$(call install_alternative, config-tools, 0, 0, 0755, /etc/init.d/mdmd_check);
-	@$(call install_link, config-tools, ../init.d/mdmd_check, /etc/rc.d/S90_mdmd_check);
-endif
-
 #
 # New networking tools
 #
@@ -765,8 +749,6 @@ endif
 ifdef PTXCONF_CT_LIBCTNETWORK
 	@$(call install_alternative, config-tools, 0, 0, 0644, /etc/config-tools/events/README);
 	@$(call install_copy, config-tools, 0, 0, 0755, /etc/config-tools/events/codesys/);
-	@$(call install_copy, config-tools, 0, 0, 0755, /etc/config-tools/events/dhcp/);
-	@$(call install_copy, config-tools, 0, 0, 0755, /etc/config-tools/events/dns/);
 	@$(call install_copy, config-tools, 0, 0, 0755, /etc/config-tools/events/modbus/);
 	@$(call install_copy, config-tools, 0, 0, 0755, /etc/config-tools/events/snmp/);
 	@$(call install_copy, config-tools, 0, 0, 0755, /etc/config-tools/events/ssh/);
@@ -821,6 +803,9 @@ ifdef PTXCONF_CT_CONFIG_SWITCH
 endif
 ifdef PTXCONF_CT_IPDATACHECK
 	@$(call install_copy, config-tools, 0, 0, 0750, $(CONFIG_TOOLS_DIR)/ipdatacheck, /etc/config-tools/ipdatacheck);
+endif
+ifdef PTXCONF_CT_GET_RS485_SETTINGS
+	@$(call install_copy, config-tools, 0, 0, 0750, $(CONFIG_TOOLS_DIR)/get_rs485_settings, /etc/config-tools/get_rs485_settings);
 endif
 ifdef PTXCONF_CT_SET_SERIAL_MODE
 	@$(call install_copy, config-tools, 0, 0, 0750, $(CONFIG_TOOLS_DIR)/set_serial_mode, /etc/config-tools/set_serial_mode);

@@ -118,15 +118,6 @@ config CDS3_IODRVSERIAL
 	help
 		Builds and installs the Serial Driver.
 
-config CDS3_IODRVBACNET
-	bool "Io Driver Bacnet"
-	default n
-	select CDS3_IODRVDAL
-	select CDS3_INCLUDES
-	select LIBBACNET
-	help
-		Builds and installs the BACnet Io Driver
-
 endmenu
 
 
@@ -413,64 +404,6 @@ config CDS3_TSCSHAREDPOINTER
 	help
 		SNMP-abstraction for CODESYS V3
 
-config CDS3_TSCIOBACNET
-	bool "cds3-tsciobacnet"
-	default n
-	select CDS3_INCLUDES
-	select CODESYS3
-	select CDS3_IODRVDAL
-	select CDS3_IODRVBACNET
-	select LIBBACNET
-	help
-		BACnet for CODESYS V3
-
-if CDS3_TSCIOBACNET
-
-choice
-        prompt "Origin of Code"
-        default CDS3_TSCIOBACNET_SOURCE_RELEASED
-
-        config CDS3_TSCIOBACNET_SOURCE_RELEASED
-                bool
-                prompt "released / Artifactory"
-                help
-                  Use released version of source code, taken from Artifactory.
-
-        config CDS3_TSCIOBACNET_SOURCE_DEV
-                bool
-                prompt "development / Git"
-                help
-                  Instead of released version use source code directly checked-out from repository.
-                  Use only for development!
-
-endchoice
-
-if CDS3_TSCIOBACNET_SOURCE_DEV
-
-config CDS3_TSCIOBACNET_SOURCE_DEV_BRANCH
-	string
-	prompt "Branch to be checked-out."
-	default "master"
-	help
-	  Name of branch which should be checked out or empty for default.
-
-endif
-
-if CDS3_TSCIOBACNET_SOURCE_RELEASED
-
-config CDS3_TSCIOBACNET_URL_TEMPLATE
-	string
-    depends on CDS3_TSCIOBACNET
-	prompt "URL template"
-	default "%ARTIFACTORY_BASE_URL%/pl_controller-generic-prod-local/wago_intern/TscIoBacnet/releases/TscIoBacnet-Source/TscIoBacnet-Source-%VERSION%.tgz"
-	help
-	  Encodes the desired artifact version. Can be configured to a specific version or to a latest compatible version of an artifact.
-	  See Confluence for further details.
-
-endif
-
-endif
-
 config CDS3_TSCWEBSOCKETSERVER
   bool "cds3-tscwebsocketserver"
   default n
@@ -506,6 +439,14 @@ config CDS3_TSCIODRVCTP
         select CODESYS3
         help
                 IoDrv for CTP (currently elrest)
+
+config CDS3_TSCVIRTUALKEYBOARD
+        bool "cds3-tscvirtualkeyboard"
+        default n
+        select CDS3_INCLUDES
+        select CODESYS3
+        help
+                Virtualkeyboard Events for CTP (currently elrest)
 
 config CDS3_TSCWAGOSYSBEEPER
         bool "cds3-tscwagosysbeeper"

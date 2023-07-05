@@ -35,8 +35,8 @@
 //------------------------------------------------------------------------------
 // variables' and constants' definitions
 //------------------------------------------------------------------------------
-static struct TestStructCPP stTestContainer = { 7.88 };
-static struct TestStructCPP const stTestContainerR = { 3.22 };
+static TestStructCPP stTestContainer = { 7.88 };
+static TestStructCPP const stTestContainerR = { 3.22 };
 static double const arDoubles[2] = { 1.23, 4.56 };
 
 //------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ size_t GetSizeOfMemberPlainCPP()
 
 size_t GetSizeOfMemberMacroCPP()
 {
-  return WC_SIZEOF_MEMBER(struct TestStructCPP, doubleMember);
+  return WC_SIZEOF_MEMBER(TestStructCPP, doubleMember);
 }
 
 
@@ -98,15 +98,27 @@ size_t GetSizeOfElementMacroCPP()
 }
 
 
+size_t GetArrayLengthPlainCPP()
+{
+  return (sizeof(arDoubles) / sizeof(double));
+}
+
+
+size_t GetArrayLengthMacroCPP()
+{
+  return WC_ARRAY_LENGTH(arDoubles);
+}
+
+
 int  * GetArrayPointerPlainCPP(int array[])
 {
-    return &(array[0]);
+  return &(array[0]);
 }
 
 
 int  * GetArrayPointerMacroCPP(int array[])
 {
-    return WC_ARRAY_TO_PTR(array);
+  return WC_ARRAY_TO_PTR(array);
 }
 
 
@@ -118,7 +130,10 @@ void * GetContainerAddressPlainCPP()
 
 void * GetContainerAddressMacroCPP()
 {
-  return WC_CONTAINER_OF(struct TestStructCPP, doubleMember, &(stTestContainer.doubleMember));
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-align"
+  return WC_CONTAINER_OF(TestStructCPP, doubleMember, &(stTestContainer.doubleMember));
+#pragma GCC diagnostic pop
 }
 
 
@@ -130,9 +145,11 @@ void const * GetContainerAddressReadonlyPlainCPP()
 
 void const * GetContainerAddressReadonlyMacroCPP()
 {
-  return WC_CONTAINER_OF_R(struct TestStructCPP, doubleMember, &(stTestContainerR.doubleMember));
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-align"
+  return WC_CONTAINER_OF_R(TestStructCPP, doubleMember, &(stTestContainerR.doubleMember));
+#pragma GCC diagnostic pop
 }
 
 
 //---- End of source file ------------------------------------------------------
-

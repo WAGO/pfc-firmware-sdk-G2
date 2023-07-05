@@ -1,5 +1,5 @@
 ## -*-makefile-*-
-# $Rev: 66127 $
+# $Rev$
 #
 # Copyright (C) 2021 by WAGO GmbH & Co. KG
 #
@@ -24,6 +24,7 @@ CDS3_TSCMOFWUP_BIN          := lib$(CDS3_TSCMOFWUP).so.$(CDS3_TSCMOFWUP_VERSION)
 
 CDS3_TSCMOFWUP_PACKAGE_NAME := cds3-tscmofwup_$(CDS3_TSCMOFWUP_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 CDS3_TSCMOFWUP_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+CDS3_TSCMOFWUP_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(CDS3_TSCMOFWUP_PACKAGE_NAME)
 
 # ----------------------------------------------------------------------------
 # Get
@@ -119,10 +120,10 @@ $(STATEDIR)/cds3-tscmofwup.targetinstall:
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 
 	# Extract precompiled binaries from archive
-	rm -rf $(CDS3_TSCMOFWUP_PLATFORMCONFIGPACKAGEDIR)/tmp/*
-	cd $(CDS3_TSCMOFWUP_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(CDS3_TSCMOFWUP_PACKAGE_DIR)
+	cd $(CDS3_TSCMOFWUP_PACKAGE_DIR) && \
 	ar -xov $(CDS3_TSCMOFWUP_PLATFORMCONFIGPACKAGEDIR)/$(CDS3_TSCMOFWUP_PACKAGE_NAME).ipk
-	@$(call install_archive, cds3-tscmofwup, 0, 0, $(CDS3_TSCMOFWUP_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, )
+	@$(call install_archive, cds3-tscmofwup, 0, 0, $(CDS3_TSCMOFWUP_PACKAGE_DIR)/data.tar.gz, )
 else
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
 

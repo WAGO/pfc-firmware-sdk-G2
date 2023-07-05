@@ -28,6 +28,7 @@ class IDynamicIPClientAdministrator{
 
   virtual void RestartAllClients(const ::std::string& hostname) = 0;
   virtual Status SetClientIDAndRestartAllClients(::std::string clientid) = 0;
+  virtual ::std::string GetClientID() = 0;
 };
 
 } /* namespace netconf */

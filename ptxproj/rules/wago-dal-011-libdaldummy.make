@@ -34,6 +34,7 @@ endif
 
 LIBDALDUMMY_PACKAGE_NAME := $(LIBDALDUMMY)_$(LIBDALDUMMY_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 LIBDALDUMMY_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+LIBDALDUMMY_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(LIBDALDUMMY_PACKAGE_NAME)
 
 # ----------------------------------------------------------------------------
 # Get
@@ -83,7 +84,7 @@ ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 		$(LIBDALDUMMY_PATH)  \
 		$(LIBDALDUMMY_ENV)   \
 		$(LIBDALDUMMY_BUILD_PARAMS) \
-		make $(PARALLELMFLAGS)
+		$(MAKE) $(PARALLELMFLAGS)
 endif
 	@$(call touch)
 
@@ -109,10 +110,10 @@ $(STATEDIR)/libdaldummy.targetinstall:
 
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 	# Extract precompiled binaries from archive
-	rm -rf $(LIBDALDUMMY_PLATFORMCONFIGPACKAGEDIR)/tmp/*
-	cd $(LIBDALDUMMY_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(LIBDALDUMMY_PACKAGE_DIR)
+	cd $(LIBDALDUMMY_PACKAGE_DIR) && \
 	ar -xov $(LIBDALDUMMY_PLATFORMCONFIGPACKAGEDIR)/$(LIBDALDUMMY_PACKAGE_NAME).ipk
-	@$(call install_archive, libdaldummy, 0, 0, $(LIBDALDUMMY_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+	@$(call install_archive, libdaldummy, 0, 0, $(LIBDALDUMMY_PACKAGE_DIR)/data.tar.gz, /)
 else
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
 	@$(call install_copy, libdaldummy, 0, 0, 0755, $(LIBDALDUMMY_DIR)/libdaldummy.so.0.0.1, /usr/lib/libdaldummy.so.0.0.1)

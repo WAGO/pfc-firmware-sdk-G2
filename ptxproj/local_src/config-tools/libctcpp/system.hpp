@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------ 
 /// \file system.hpp
 /// 
-/// \version $Id: system.hpp 65689 2022-03-11 14:37:43Z falk.werner@wago.com $ 
+/// \version $Id$ 
 /// 
 /// \brief System related helper functions.
 /// 

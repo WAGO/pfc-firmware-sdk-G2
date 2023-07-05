@@ -121,23 +121,19 @@
                 },
                 {
                     "name":"S1",
-                    "startid":"0x00100013"
+                    "startid":"0x00160020"
                 },
                 {
                     "name":"S2",
-                    "startid":"0x00100017"
+                    "startid":"0x00160028"
                 },
                 {
                     "name":"S3",
-                    "startid":"0x00100019"
+                    "startid":"0x0016002A"
                 },
                 {
                     "name":"S4",
-                    "startid":"0x0010001B"
-                },
-                {
-                    "name":"S5",
-                    "startid":"0x0010001D"
+                    "startid":"0x0016002C"
                 }
             ]
         }

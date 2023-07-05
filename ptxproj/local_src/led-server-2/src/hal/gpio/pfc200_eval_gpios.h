@@ -10,7 +10,7 @@
 ///
 ///  \file     pfc200_gpios.h
 ///
-///  \version  $Revision: 65689 $
+///  \version  $Revision$
 ///
 ///  \brief    <Insert description here>
 ///

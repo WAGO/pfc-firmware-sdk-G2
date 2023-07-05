@@ -1,0 +1,51 @@
+#!/bin/sh
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2023 WAGO GmbH & Co. KG
+
+#
+# This shell script takes care of starting and stopping udhcpd.
+#
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+PIDFILE=/var/run/udhcpd/udhcpd.pid
+DAEMON=/usr/sbin/udhcpd
+CONF=/var/run/udhcpd/udhcpd.conf
+NAME=udhcpd
+
+[ -x $DAEMON ] || exit 0
+
+[ -f $CONF ] || exit 0
+
+case "$1" in
+  start)
+    printf "Starting %s: " "$NAME"
+    start-stop-daemon --background --start --pidfile $PIDFILE --make-pidfile -x $DAEMON -- -f $CONF
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ]
+    ;;
+  stop)
+    printf "Stopping %s: " "$NAME"
+    start-stop-daemon --oknodo --stop --pidfile $PIDFILE -x $DAEMON
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ]
+    ;;
+  restart|force-reload|reload)
+    echo "Restarting $NAME:"
+    $0 stop
+    $0 start
+    RETVAL=$?
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart|force-reload|reload}"
+    exit 1
+    ;;
+esac
+
+exit $RETVAL

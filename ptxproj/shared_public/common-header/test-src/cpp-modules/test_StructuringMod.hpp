@@ -45,6 +45,8 @@ extern "C"
   size_t GetSizeOfMemberMacroCPP(void);
   size_t GetSizeOfElementPlainCPP(void);
   size_t GetSizeOfElementMacroCPP(void);
+  size_t GetArrayLengthPlainCPP(void);
+  size_t GetArrayLengthMacroCPP(void);
   int  * GetArrayPointerPlainCPP(int array[]);
   int  * GetArrayPointerMacroCPP(int array[]);
   void * GetContainerAddressPlainCPP(void);

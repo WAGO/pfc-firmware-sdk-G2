@@ -44,7 +44,7 @@ void update_network_interface_name_mapping(const FileAccessor& file_accessor)
         {
           ipcmn = file_accessor.read_configuration("iptables", false);
         }
-        catch (std::runtime_error e)
+        catch (std::runtime_error &e)
         {
           // Just copy params.xml to params_gen.xml
           std::ofstream dst(file_accessor.get_config_fname("params_gen"), std::ios::binary);

@@ -25,11 +25,11 @@ START_STOP_DAEMON="/sbin/start-stop-daemon"
 # According to setting "server.graceful-shutdown-timeout" in lighttpd.conf
 WAIT_FOR_STOP_TIMEOUT=60
 
-# Somehow we rarly get SIGHUP signals, which can cause
-# "start" or "stop" to be interrupted unexpectedly.
-# This can cause "reload" to not work as intended.
+# When logfile should be rotated we get SIGHUP signals,
+# which can cause "start" or "stop" to be interrupted unexpectedly.
+# This can also cause "reload" to not work as intended.
 # This trap handles SIGHUP to work around this problem.
-trap "echo \"Received signal SIGHUB\"" SIGHUP
+trap "echo \"[ INFO  ] Received signal SIGHUB\"" SIGHUP
 
 # Utility function to log and print an error message
 log_error()
@@ -97,7 +97,7 @@ lighttpd_pid_count()
 
     lighttpd_pid_candidates="$(pidof "${LIGHTTPD_PROC}")"
     for pid in $lighttpd_pid_candidates; do
-        pid_cmd="$(cat /proc/$pid/cmdline 2>/dev/null | tr -d '\0')"
+        pid_cmd="$(cat "/proc/$pid/cmdline" 2>/dev/null | tr -d '\0')"
         if [[ $pid_cmd =~ ${LIGHTTPD} ]]; then
             pid_count=$((pid_count + 1))
         fi
@@ -146,16 +146,22 @@ wait_for_start()
 
 start()
 {
-    local result
+    local result; result=1
+    local try_count; try_count=3
     create_directory_if_needed "${LIGHTTPD_LOGDIR}"
     create_directory_if_needed "${LIGHTTPD_PHP_SESSION_DIR}"
-    $START_STOP_DAEMON --quiet --start --exec "${LIGHTTPD}" -- -f "${LIGHTTPD_CONF}"
-    result=$?
-    if [[ $result -eq 0 ]]; then
+    # START_STOP_DAEMON fails to start a process when SIGHUB (for log rotation) is received,
+    # therefor we try again to start lighttpd
+    while [[ result -ne 0 && try_count -gt 0 ]]; do
+        try_count=$((try_count-1))
+        $START_STOP_DAEMON --quiet --start --exec "${LIGHTTPD}" -- -f "${LIGHTTPD_CONF}"
+        result=$?
+    done
+    if [[ $result -ne 0 ]]; then
+        log_error "$START_STOP_DAEMON failed to start ${LIGHTTPD}"
+    else
         wait_for_start
         result=$?
-    else
-        log_error "$START_STOP_DAEMON failed to start ${LIGHTTPD}"
     fi
 
     return $result
@@ -214,7 +220,7 @@ reload()
 
 # main
 exec {lock_fd}>/var/lock/lighttpd_init || exit 1
-trap "flock --unlock $lock_fd" EXIT
+trap 'flock --unlock $lock_fd' EXIT
 flock --exclusive $lock_fd
 
 case $1 in

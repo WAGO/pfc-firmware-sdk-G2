@@ -1,0 +1,11 @@
+## SECTION=wago_specific_libs
+
+config LIBWAGOAPPBR
+	bool
+	select HOST_CT_BUILD
+	select LIBCOMMONHEADER
+	select GOOGLETEST
+	select LIBZIP
+	prompt "libwagoappbr"
+	help
+	  Library for backup and restore CDS3 application directory

@@ -73,24 +73,5 @@ TEST_F(StoreFileTest, store_ipcmn_xml) {
   ASSERT_TRUE(TestUtils::is_content_equal("../../../test-res/ipcmn.xml", ipcmn_file));
 }
 
-TEST_F(StoreFileTest, store_ipcmn_xml_tmp_already_exists) {
-  const std::string ipcmn_file = tmp_dir_ + "/etc/firewall/iptables/ipcmn.xml";
-  const std::string ipcmn_file_tmp = tmp_dir_ + "/etc/firewall/iptables/ipcmn.xml.tmp";
-  TestUtils::write_to_file(ipcmn_file_tmp, "foo");
-
-  ASSERT_TRUE(TestUtils::file_exists(ipcmn_file));
-  ASSERT_TRUE(TestUtils::file_exists(ipcmn_file_tmp));
-
-  xmldoc doc = file_accessor_.read_configuration("iptables", false);
-  if (!doc.is_empty()) {
-    file_accessor_.store_configuration("iptables", false, doc);
-  }
-
-  ASSERT_FALSE(TestUtils::file_exists(ipcmn_file_tmp));
-
-  // Check expected file content.
-  ASSERT_TRUE(TestUtils::is_content_equal("../../../test-res/ipcmn.xml", ipcmn_file));
-}
-
 //---- End of source file ------------------------------------------------------
 

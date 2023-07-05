@@ -23,6 +23,10 @@ config WBM_NG_PLUGIN_INFORMATION
 
 	depends on WBM_NG
 
+  # This plugin requires the wbm-networking plugin to be installed
+	# as it provided the required wbm menu entry point
+	select WBM_NG_PLUGIN_NETWORKING
+
 	help
 	 "Plugin to the Modular WBM that contains the 'Information' page. This plugin is also required if you want to install further plugins which provide content to the 'Configuration' section."
 

@@ -143,15 +143,6 @@ createBackupFile()
     # SaveBackupValue "keyboard-layout" $keyboardLayout $backupFile
     #
     #-------------------------------------------------------------
-    # Save GPRS password, encoded with base64
-    passwd="$(/etc/config-tools/settings_backup_mdmd backup gprs-password)" 
-    paramValue=$(echo "$passwd" | base64)
-    paramValue=$(UriEncode "$paramValue")
-    if [ "$?" = 0 ]; then
-        SaveBackupValue "gprs-password" "$paramValue" "$backupFile"
-    fi
-    
-    #-------------------------------------------------------------
     # save single dns server - count can differ
     dnsServerNo=1
     dnsServer=$(/etc/config-tools/get_dns_server $dnsServerNo)
@@ -174,23 +165,6 @@ createBackupFile()
     /etc/config-tools/network_config --backup $backupFile $BACKUP_TARGET_VERSION_PARAM
     ProcessErrRestoreOperation $? "Failed to get network parameters by " "/etc/config-tools/network_config"
      
-    #-------------------------------------------------------------
-    # save dhcp server settings
-    /etc/config-tools/config_dnsmasq_c --store-config "$backupFile"
-    ProcessErrRestoreOperation $? "Failed to get config_dnsmasq by " "/etc/config-tools/config_dnsmasq_c"
-         
-    #-------------------------------------------------------------
-    # save dns service settings
-    state=$(/etc/config-tools/get_dns_service_config -g dns-state)
-    ProcessErrBackupOperation $? "Failed to get dns_service config dns-state from port:" $port
-    mode=$(/etc/config-tools/get_dns_service_config -g dns-mode)
-    ProcessErrBackupOperation $? "Failed to get dns_service config dns-mode from port:" $port
-    fixhosts=$(/etc/config-tools/get_dns_service_config -g dns-fix-host)
-    ProcessErrBackupOperation $? "Failed to get dns_service config fix-host from port:" $port
-    SaveBackupValue "dns-state" "${state}" "$backupFile"
-    SaveBackupValue "dns-mode" "${mode}" "$backupFile"
-    SaveBackupValue "dns-fixhosts" "${fixhosts}" "$backupFile"
-
     #-------------------------------------------------------------
     # save snmp user definitions
 

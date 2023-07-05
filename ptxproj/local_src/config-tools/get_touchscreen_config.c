@@ -11,7 +11,7 @@
 ///
 ///  \file     get_touchscreen_config.c
 ///
-///  \version  $Revision: 65689 $1
+///  \version  $Revision$1
 ///
 ///  \brief    
 ///

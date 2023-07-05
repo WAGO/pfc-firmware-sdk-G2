@@ -20,16 +20,12 @@ config INITMETHOD_BBINIT_ETC_INITD_NETWORKING
 	bool
 	default y
 	prompt "install /etc/init.d/networking"
-	select BUSYBOX_IFUP 			if BUSYBOX
-	select BUSYBOX_IFDOWN 			if BUSYBOX
-	select BUSYBOX_IFCONFIG			if BUSYBOX
-	select BUSYBOX_FEATURE_IFUPDOWN_IP	if BUSYBOX
+	select ETHTOOL
+	select IPROUTE2_IP
 	help
 	  When enabled, this option installs the generic /etc/init.d/networking
-	  file. This script starts your network interfaces by calling 'ifup -a'.
-	  To run this script you will need the shell commands 'grep',
-	  'ifup'/'ifdown' and 'ifconfig'
-
+	  file.
+	
 config INITMETHOD_BBINIT_ETC_INITD_NETWORKING_FINISH
 	bool
 	depends on INITMETHOD_BBINIT_ETC_INITD_NETWORKING
@@ -40,14 +36,6 @@ config INITMETHOD_BBINIT_ETC_INITD_NETWORKING_FINISH
 	  Task is to wait a few seconds for network links to become up,
           assuring subsequent send operations to succeed. E.g. to send
 	  gratuitous ARP's or DHCP requests.
-
-config INITMETHOD_BBINIT_ETC_INITD_NETWORKING_ROUTES
-    bool
-    depends on INITMETHOD_BBINIT_ETC_INITD_NETWORKING
-    default n
-    prompt "install /etc/network/if-up.d/routes"
-    help
-       Install /etc/network/if-up.d/routes file
 
 config INITMETHOD_BBINIT_ETC_INITD_RT_SET_BANDWIDTH
 	bool

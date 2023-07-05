@@ -23,6 +23,7 @@ menuconfig PHP8
 	select LIBPNG             if PHP8_EXT_GD
 	select LIBGD              if PHP8_EXT_GD
 	select LIBGD_XPM          if PHP8_EXT_GD
+	select PHP8_EXT_OPCACHE   if PHP8_EXT_OPCACHE_JIT
 	help
 	  PHP, which stands for "PHP: Hypertext Preprocessor" is a widely-used
 	  general-purpose scripting language that is especially suited for web
@@ -246,6 +247,18 @@ config PHP8_EXT_GD
 	prompt "libgd"
 	help
 	  Enable libgd support for PHP.
+
+config PHP8_EXT_OPCACHE
+	bool
+	prompt "opcache"
+	help
+	  Enable opcache support for PHP.
+
+config PHP8_EXT_OPCACHE_JIT
+	bool
+	prompt "opcache-jit"
+	help
+	  Enable opcache-jit support for PHP.
 
 endmenu
 

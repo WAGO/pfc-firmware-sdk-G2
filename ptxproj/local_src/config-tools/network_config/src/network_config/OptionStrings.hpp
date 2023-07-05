@@ -44,7 +44,7 @@ struct Options {
   const Option fix_ip
     { "fix-ip", "Set fixed ip (192.168.1.17)" };
   const Option dhcp_clientid
-    { "dhcp-clientid", "Set dhcp client ip (Machine_1)" };
+    { "dhcp-clientid", "Set dhcp client id (Machine_1)" };
   const Option dip_switch_config
     { "dip-switch-config", "Set or get DIP switch configuration. Caution: mode and last address byte cannot be changed." };
   const Option dynamic_ip_event

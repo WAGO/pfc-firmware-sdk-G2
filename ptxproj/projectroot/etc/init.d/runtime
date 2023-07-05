@@ -176,6 +176,8 @@ start_codesys3()
       if [ $(tp_is_multicore) == "no" ]; then
         PROGRAM="/usr/bin/taskset 1 /usr/bin/codesys3"
       fi
+    elif [ "${ORDER:0:6}" == "751-94" ]; then
+      PROGRAM="/usr/bin/taskset 1 /usr/bin/codesys3"
     fi
     echo -n "Starting Codesys3..."
     set_licence
@@ -286,7 +288,7 @@ stop_runtime()
   echo -n "Terminate $RUNTIME_STRING..."
   "$DAEMONIZE" -K -qx "$RUNTIME_PATH"
   local RUNTIME_PID=$(pidof ${RUNTIME_NAME})
-  wait_for_stop ${RUNTIME_PID} 5
+  wait_for_stop ${RUNTIME_PID} 10
   
   if [ $? -ne 0 ]
   then

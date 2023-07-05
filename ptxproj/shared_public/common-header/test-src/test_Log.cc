@@ -64,8 +64,8 @@ log_level_t wc_get_log_level(void)
 class Log_Fixture : public ::testing::Test
 {
 protected:
-    Log_Fixture() {};
-    virtual ~Log_Fixture() {};
+    Log_Fixture() {}
+    virtual ~Log_Fixture() {}
     void SetUp() override
     {
       used_message[0] = '\0';

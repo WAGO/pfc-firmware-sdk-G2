@@ -136,20 +136,19 @@ set_nat()
         fi
     fi
 
-    $FW_IPR -n > /dev/null 2>&1 < "$FW_IP_RULES_NAT"
-    if [[ $? -ne 0 ]]; then
+    if ! $FW_IPR --wait -n >/dev/null 2>&1 <"$FW_IP_RULES_NAT"; then
         eblog "err" "Failed do set-up network-layer firewall NAT!"
     fi
 }
 
 set_dynamic_default()
 {
-    [[ -d "$FW_DYN_DIR_DEFAULT" ]] && find "${FW_DYN_DIR_DEFAULT}" -type f | sort -u | xargs cat | "${FW_IPR}" -n
+    [[ -d "$FW_DYN_DIR_DEFAULT" ]] && find "${FW_DYN_DIR_DEFAULT}" -type f | sort -u | xargs cat | "${FW_IPR}" --wait -n
 }
 
 set_dynamic_enabled()
 {
-    [[ -d "$FW_DYN_DIR_ENABLED" ]] && find "${FW_DYN_DIR_ENABLED}" -type f | sort -u | xargs cat | "${FW_IPR}" -n
+    [[ -d "$FW_DYN_DIR_ENABLED" ]] && find "${FW_DYN_DIR_ENABLED}" -type f | sort -u | xargs cat | "${FW_IPR}" --wait -n
 }
 
 set_firewall()
@@ -158,7 +157,7 @@ set_firewall()
     FW_IP_RULES_TEMP="$(mktemp -p /tmp ipcmn.rls.XXXXXX)"
 
     if [[ "--apply" != $1 ]] ; then
-        $FW_IPR < "$FW_IP_RULES_BASE"
+        $FW_IPR --wait <"$FW_IP_RULES_BASE"
     fi
 
     if [[ "${FW_IP_TRANSFORM:-true}" != "false" ]]; then
@@ -183,8 +182,7 @@ set_firewall()
         fi
     fi
 
-    $FW_IPR -n > /dev/null 2>&1 < "$FW_IP_RULES"
-    if [[ $? -ne 0 ]]; then
+    if ! $FW_IPR --wait -n >/dev/null 2>&1 <"$FW_IP_RULES"; then
         eblog "err" "Failed do set-up network-layer firewall!"
     fi
 
@@ -215,7 +213,7 @@ clean_firewall()
         exit 1
     fi
 
-    $FW_IPR < "$FW_IP_RULES_AA"
+    $FW_IPR --wait <"$FW_IP_RULES_AA"
 
     # TODO: execute NAT transformations
     # Setup dnat, snat, masquerading

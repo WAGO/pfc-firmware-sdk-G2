@@ -134,12 +134,6 @@ config WAGO_CUSTOM_OMS_CONFIG_BBINIT_LINK
 	prompt "Install startscript for operating mode switch daemon"
 	default "S01_omsdaemon"
 
-config WAGO_CUSTOM_MDMD_BBINIT_LINK
-	string
-	depends on WAGO_CUSTOM_MDMD_STARTSCRIPT
-	prompt "mdmd"
-	default "S60_mdmd"
-	
 config WAGO_CUSTOM_WATCH_IP_CHANGE_BBINIT_LINK
   string
   depends on WAGO_CUSTOM_WATCH_IP_CHANGE_STARTSCRIPT

@@ -9,6 +9,9 @@
 #include "JsonConverter.hpp"
 #include "Status.hpp"
 
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
+
 namespace netconf {
 namespace api {
 
@@ -78,31 +81,23 @@ TEST_F(InterfaceConfigsTest, InterfaceUpDownTest_Target){
 
 }
 
-//TEST_F(InterfaceConfigsTest, ArrayIndexOperator)
-//{
-//  InterfaceConfigs c;
-//
-//  auto& ic = c["ethX42"];
-//  EXPECT_EQ(ic.interface_, "ethX42");
-//  EXPECT_EQ(ic.speed_, -1);
-//  ic.speed_ = 1337;
-//
-//  auto& ic2 = c["ethX42"];
-//  EXPECT_EQ(ic2.interface_, "ethX42");
-//  EXPECT_EQ(ic2.speed_, 1337);
-//
-//  const auto& const_c = c;
-//  EXPECT_THROW(const_c["ethX43"], std::out_of_range);
-//  EXPECT_NO_THROW(const_c["ethX42"]);
-//
-//}
-
 TEST_F(InterfaceConfigsTest, ValidateConfigs){
 
   ExpectValidateResult(StatusCode::OK, R"([{"autonegotiation":"on","device":"X1","duplex":"full","speed":100,"state":"up"},{"autonegotiation":"on","device":"X2","duplex":"full","speed":100,"state":"up"},{"autonegotiation":"on","device":"X11","duplex":"full","speed":100,"state":"up"},{"autonegotiation":"on","device":"X12","duplex":"full","speed":100,"state":"up"}])");
   ExpectValidateResult(StatusCode::INTERFACE_NOT_EXISTING, R"([{"autonegotiation":"on","device":"X1123","duplex":"full","speed":100,"state":"up"},{"autonegotiation":"on","device":"X2","duplex":"full","speed":100,"state":"up"},{"autonegotiation":"on","device":"X11","duplex":"full","speed":100,"state":"up"},{"autonegotiation":"on","device":"X12","duplex":"full","speed":100,"state":"up"}])");
   ExpectValidateResult(StatusCode::OK, R"([{"autonegotiation":"on","device":"X1","duplex":"full","speed":10000,"state":"up"},{"autonegotiation":"on","device":"X2","duplex":"full","speed":100,"state":"up"},{"autonegotiation":"on","device":"X11","duplex":"full","speed":100,"state":"up"},{"autonegotiation":"on","device":"X12","duplex":"full","speed":100,"state":"up"}])");
   ExpectValidateResult(StatusCode::LINK_MODE_NOT_SUPPORTED, R"([{"autonegotiation":"off","device":"X1","duplex":"full","speed":10000,"state":"up"},{"autonegotiation":"on","device":"X2","duplex":"full","speed":100,"state":"up"},{"autonegotiation":"on","device":"X11","duplex":"full","speed":100,"state":"up"},{"autonegotiation":"on","device":"X12","duplex":"full","speed":100,"state":"up"}])");
+}
+
+TEST_F(InterfaceConfigsTest, InterfaceConfigToStringInCaseOfFormatText){
+
+  InterfaceConfig ic{Interface::CreatePort("ethX1"), InterfaceState::UP, Autonegotiation::ON, 100, Duplex::HALF, MacLearning::ON};
+
+  auto text = ToString(ic);
+  ::std::string expected_text = "device=X1 state=up autonegotiation=on duplex=half speed=100 maclearning=on";
+
+  EXPECT_EQ(expected_text, text);
+
 }
 
 }  // namespace api

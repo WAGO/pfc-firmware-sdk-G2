@@ -27,6 +27,8 @@ class DynamicIPClientAdministrator : public IDynamicIPClientAdministrator {
 
   void RestartAllClients(const ::std::string& hostname) override;
   Status SetClientIDAndRestartAllClients(::std::string client_id) override;
+  ::std::string GetClientID() override;
+
  private:
   ::std::string vendorclass_;
   ::std::string client_id_;

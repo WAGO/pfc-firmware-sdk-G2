@@ -13,3 +13,13 @@ config DOCKER
 	prompt "docker"
 	help
 	  selects all docker dependencies and bundels them in an xz archive
+
+if DOCKER
+
+config DOCKER_INSTALL_TO_HOMEDIR
+	bool
+	depends on DOCKER
+	default y
+	prompt "install docker to home directory (instead of root fs)"
+
+endif

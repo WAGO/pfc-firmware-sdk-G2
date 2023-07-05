@@ -25,6 +25,7 @@ TYPELABEL_DIR		:= $(BUILDDIR)/$(TYPELABEL)
 
 TYPELABEL_PACKAGE_NAME := $(TYPELABEL)_$(TYPELABEL_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 TYPELABEL_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+TYPELABEL_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/packages/$(TYPELABEL_PACKAGE_NAME)
 
 # ----------------------------------------------------------------------------
 # Extract
@@ -120,10 +121,11 @@ $(STATEDIR)/typelabel.targetinstall:
 	@$(call install_fixup, typelabel,DESCRIPTION,missing)
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES 
 	# Extract precompiled binaries from archive
-	@rm -rf $(TYPELABEL_PLATFORMCONFIGPACKAGEDIR)/tmp/*  
-	@cd $(TYPELABEL_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	@rm -rf $(TYPELABEL_PACKAGE_DIR)
+	mkdir -p $(TYPELABEL_PACKAGE_DIR)  
+	@cd $(TYPELABEL_PACKAGE_DIR) && \
 	ar -xov $(TYPELABEL_PLATFORMCONFIGPACKAGEDIR)/$(TYPELABEL_PACKAGE_NAME).ipk  
-	@$(call install_archive, typelabel, 0, 0, $(TYPELABEL_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+	@$(call install_archive, typelabel, 0, 0, $(TYPELABEL_PACKAGE_DIR)/data.tar.gz, /)
 else
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE	
 	@$(call install_copy, typelabel, 0, 0, 0755, -, /usr/lib/libtypelabel.so)

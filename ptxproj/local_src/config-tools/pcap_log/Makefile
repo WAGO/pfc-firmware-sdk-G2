@@ -101,13 +101,14 @@ alltests.elf_CLANG_TIDY_CHECKS += -modernize-raw-string-literal
 #######################################################################################################################
 # Settings for build target pcap_log.elf
 
-pcap_log.elf_LIBS             += wago_pcap pcap curl
+pcap_log.elf_LIBS             += wago_pcap pcap curl ctlog
 pcap_log.elf_STATICALLYLINKED += wago_pcap
-pcap_log.elf_PKG_CONFIGS      += nlohmann_json libnetconf
+pcap_log.elf_PKG_CONFIGS      += nlohmann_json libnetconf glib-2.0
 pcap_log.elf_DISABLEDWARNINGS += 
 pcap_log.elf_PREREQUISITES    += $(call local_prerequisites,pcap_log.elf)
 pcap_log.elf_SOURCES          += $(call glob_r,$(addprefix $(PROJECT_ROOT)/src/pcap_log_main/**/*.,$(SOURCE_FILE_EXTENSIONS)))
 pcap_log.elf_CPPFLAGS         += $(addprefix -I,$(INC_DIR))
+pcap_log.elf_CPPFLAGS         += -isystem ${SYSROOT}/usr/include/glib-2.0
 pcap_log.elf_CPPFLAGS         += $(call pkg_config_cppflags,$(pcap_log.elf_PKG_CONFIGS))
 pcap_log.elf_CCXXFLAGS        += $(SHARED_CCXXFLAGS)
 pcap_log.elf_CCXXFLAGS        += $(call option_disable_warning,$(pcap_log.elf_DISABLEDWARNINGS))

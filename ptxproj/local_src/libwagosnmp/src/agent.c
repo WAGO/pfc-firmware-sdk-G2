@@ -10,7 +10,7 @@
 ///
 ///  \file     server.c
 ///
-///  \version  $Rev: 69201 $
+///  \version  $Rev$
 ///
 ///  \brief    <Insert description here>
 ///

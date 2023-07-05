@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2022 by Patrick Enns <patrick.enns@wago.com>
+# Copyright (C) 2022-2023 by Patrick Enns <patrick.enns@wago.com>
 #
 # For further information about the PTXdist project and license conditions
 # see the README file.
@@ -14,7 +14,7 @@ PACKAGES-$(PTXCONF_PHP_SELECTION) += php-selection
 #
 # Paths and names
 #
-PHP_SELECTION_VERSION       := 1.0.0
+PHP_SELECTION_VERSION       := 1.2.0
 PHP_SELECTION_MD5           := 
 PHP_SELECTION               := php-$(PHP_VERSION)
 PHP_SELECTION_SUFFIX        := 
@@ -93,6 +93,9 @@ endif
 ifdef PTXCONF_PHP7_SAPI_FPM
 	@$(call install_link, php-selection, php7-fpm, /usr/bin/php-fpm)
 endif
+ifdef PTXCONF_PHP7_EXT_OPCACHE
+	@$(call install_link, php-selection, ../php7/opcache.so, /usr/lib/php/opcache.so)
+endif
 endif
 
 ifdef PTXCONF_PHP_SELECTION_PREFER_PHP8
@@ -105,6 +108,9 @@ ifdef PTXCONF_PHP8_SAPI_CGI
 endif
 ifdef PTXCONF_PHP8_SAPI_FPM
 	@$(call install_link, php-selection, php8-fpm, /usr/bin/php-fpm)
+endif
+ifdef PTXCONF_PHP8_EXT_OPCACHE
+	@$(call install_link, php-selection, ../php8/opcache.so, /usr/lib/php/opcache.so)
 endif
 endif
 

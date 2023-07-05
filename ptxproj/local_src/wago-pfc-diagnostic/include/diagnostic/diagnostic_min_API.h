@@ -10,7 +10,7 @@
 ///
 ///  \file     diagnostic_min_API.h
 ///
-///  \version <Revision>: $Rev: 65689 $
+///  \version <Revision>: $Rev$
 ///
 ///  \brief    mini diagnostic API
 ///

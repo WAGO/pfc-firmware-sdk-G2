@@ -53,7 +53,7 @@ $(STATEDIR)/containerd.compile:
 	@$(call targetinfo)
 	@PATH=$(CROSS_PATH):$(HOST_GO_BIN_DIR) ; \
 		cd $(CONTAINERD_DIR) &&  \
-		BUILDTAGS=$(BUILDTAGS) $(CONTAINERD_GO_ENV) make VERSION=$(CONTAINERD_VERSION) REVISION=$(CONTAINERD_GITCOMMIT)
+		BUILDTAGS=$(BUILDTAGS) $(CONTAINERD_GO_ENV) $(MAKE) VERSION=$(CONTAINERD_VERSION) REVISION=$(CONTAINERD_GITCOMMIT)
 	@$(call touch)
 
 # ----------------------------------------------------------------------------

@@ -1,0 +1,74 @@
+#!/bin/bash
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2023 WAGO GmbH & Co. KG
+
+#-----------------------------------------------------------------------------#
+# Script-name: config_webvisu
+#
+# WebVisu related settings
+#
+# Author: Marius Hellmeier
+#-----------------------------------------------------------------------------#
+
+# load general definitions and functions
+if [ ! -f "/etc/config-tools/config_tool_lib" ]; then
+  echo "config_tool_lib missing" >&2
+  exit 255
+fi
+
+. /etc/config-tools/config_tool_lib
+
+restartWebserver()
+{
+    local restart=$1
+    if [ "$restart" = "YES" ]; then
+        /etc/init.d/lighttpd stop > /dev/null
+        /etc/init.d/lighttpd start > /dev/null
+    fi
+}
+
+#-------------- main-program ------------------------#
+
+status=$SUCCESS
+
+# show help-text if requested
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+  echo
+  echo "* Write WebVisu related configuration *"
+  echo
+  echo "Usage: config_webvisu use-separated-ports=<use-separated-ports-value> [restart-server=<restart-server-value>]"
+  echo
+  echo "use-separated-ports-value: \"YES\" | \"NO\""
+  echo "restart-server-value:      \"YES\" | \"NO\" Default is YES"
+  echo 
+  exit "$status"
+fi
+
+# filter input parmeter of input-string
+newUseSeparatedPorts=$(GetParameterValue use-separated-ports $*)
+restartOption=$(GetParameterValue restart-server $*)
+restartOption=${restartOption:-YES}
+
+if [ "$restartOption" != "YES" ] && [ "$restartOption" != "NO" ]; then
+    echo "Invalid value for restart-server option" >&2
+    exit "$INVALID_PARAMETER"
+fi
+
+case "$newUseSeparatedPorts" in
+
+"YES")    (cd /etc/lighttpd && ln -sf webvisu_ports_separated.conf webvisu_ports.conf)
+          restartWebserver "$restartOption"
+          ;;
+
+"NO")     (cd /etc/lighttpd && ln -sf webvisu_ports_default.conf webvisu_ports.conf)
+          restartWebserver "$restartOption"
+          ;;
+
+*)        status=$INVALID_PARAMETER
+          echo "Invalid argument" >&2
+          ;;
+esac
+exit "$status"

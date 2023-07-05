@@ -13,7 +13,7 @@
  * Last Modification:
  *  $Author: u010391 $
  *  $Modtime: 02.03.2009 $
- *  $Revision: 65684 $
+ *  $Revision$
  */
 
 

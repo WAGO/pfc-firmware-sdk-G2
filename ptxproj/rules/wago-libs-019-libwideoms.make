@@ -27,6 +27,8 @@ LIBWIDEOMS_LICENSE	:= unknown
 
 LIBWIDEOMS_PACKAGE_NAME := $(LIBWIDEOMS)_$(LIBWIDEOMS_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 LIBWIDEOMS_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+LIBWIDEOMS_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(LIBWIDEOMS_PACKAGE_NAME)
+
 # ----------------------------------------------------------------------------
 # Extract
 # ----------------------------------------------------------------------------
@@ -107,10 +109,10 @@ $(STATEDIR)/libwideoms.targetinstall:
 	@$(call install_fixup, libwideoms, DESCRIPTION, missing)
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES 
 	# Extract precompiled binaries from archive
-	rm -rf $(LIBWIDEOMS_PLATFORMCONFIGPACKAGEDIR)/tmp/*  
-	cd $(LIBWIDEOMS_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(LIBWIDEOMS_PACKAGE_DIR)
+	cd $(LIBWIDEOMS_PACKAGE_DIR) && \
 	ar -xov $(LIBWIDEOMS_PLATFORMCONFIGPACKAGEDIR)/$(LIBWIDEOMS_PACKAGE_NAME).ipk  
-	@$(call install_archive, libwideoms, 0, 0, $(LIBWIDEOMS_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+	@$(call install_archive, libwideoms, 0, 0, $(LIBWIDEOMS_PACKAGE_DIR)/data.tar.gz, /)
 else
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE	
 	@$(call install_copy, libwideoms, 0, 0, 0644, $(LIBWIDEOMS_PKGDIR)/usr/lib/wide/libwideoms.so, /usr/lib/wide/libwideoms.so)	

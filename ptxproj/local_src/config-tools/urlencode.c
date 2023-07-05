@@ -10,7 +10,7 @@
 ///
 ///  \file     $File:     $:
 ///
-///  \version  $Revision: 65689 $:
+///  \version  $Revision$:
 ///
 ///  \brief    <Part of the config-tools package: encode URL args, decode HTML>
 ///

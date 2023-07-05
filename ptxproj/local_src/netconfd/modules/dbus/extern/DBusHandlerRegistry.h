@@ -89,6 +89,10 @@ class DBusHandlerRegistry : public IDBusHandlerRegistry {
     set_tempdhcpclientid_handler_ = std::forward<Setter>(handler);
   }
 
+  void RegisterGetTempDHCPClientIDHandler(Getter&& handler) {
+    get_tempdhcpclientid_handler_ = std::forward<Getter>(handler);
+  }
+
   void RegisterGetDipSwitchConfigHandler(Getter&& handler) {
     get_dip_switch_config_handler_ = std::forward<Getter>(handler);
   }
@@ -164,6 +168,10 @@ class DBusHandlerRegistry : public IDBusHandlerRegistry {
                               GDBusMethodInvocation *invocation,
                               const gchar *arg_config, gpointer user_data);
 
+  static gboolean GetTemporaryDHCPClientID(netconfdIp_config *object,
+                              GDBusMethodInvocation *invocation,
+                              gpointer user_data);
+
   static gboolean GetDipSwitchConfig(netconfdIp_config *object,
                               GDBusMethodInvocation *invocation,
                               gpointer user_data);
@@ -224,6 +232,7 @@ class DBusHandlerRegistry : public IDBusHandlerRegistry {
   Setter set_dip_switch_config_handler_;
   Trigger tempfixip_handler_;
   Setter set_tempdhcpclientid_handler_;
+  Getter get_tempdhcpclientid_handler_;
 
   //event
   netconfdObjectSkeleton *event_object_;

@@ -1,0 +1,12 @@
+## SECTION=wago_specific_libs
+
+config LIBWSERIAL
+	bool
+	select LIBCOMMONHEADER
+	select GLIB
+	select CONFIG_TOOLS
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	prompt "libwserial"
+	help
+	  Library for controlling serial port

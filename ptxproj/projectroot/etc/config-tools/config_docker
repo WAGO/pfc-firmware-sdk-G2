@@ -112,6 +112,21 @@ activate() {
     add_or_enable_docker_ebt_rule
 
     /etc/init.d/$DOCKER_DAEMON start > /dev/null 2>&1
+
+    STATUS=$(/etc/config-tools/get_docker_config activation-status)
+    START_TIME=$(date +%s)
+
+    while [[ $"STATUS" == "inactive" ]] && [ $(( NOW_TIME - START_TIME )) -lt 30 ]; do
+      sleep 2
+      STATUS=$(/etc/config-tools/get_docker_config activation-status)
+      NOW_TIME=$(date +%s)
+    done
+
+    if [[ $"STATUS" == "inactive" ]]; then
+      SetLastError "Docker could not be activated"
+      status=-3
+      exit $status
+    fi
 }
 
 deactivate() {

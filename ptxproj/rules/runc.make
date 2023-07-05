@@ -52,7 +52,7 @@ $(STATEDIR)/runc.compile:
 	@$(call targetinfo)
 	@PATH=$(CROSS_PATH):$(HOST_GO_BIN_DIR) ; \
 		cd $(RUNC_DIR) &&  \
-		$(RUNC_GO_ENV) make target=static COMMIT=$(RUNC_GITCOMMIT)
+		$(RUNC_GO_ENV) $(MAKE) target=static COMMIT=$(RUNC_GITCOMMIT)
 	@$(call touch)
 
 # ----------------------------------------------------------------------------

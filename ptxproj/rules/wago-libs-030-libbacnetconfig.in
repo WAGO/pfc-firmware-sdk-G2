@@ -1,8 +1,9 @@
-## SECTION=wago_specific_libs
+## SECTION=wago_specific_device_bacnet
 
 config LIBBACNETCONFIG
 	bool
 	default n
+	depends on BACNET
 	select GLIB
 	select HOST_CT_BUILD
 	select GOOGLETEST

@@ -13,7 +13,7 @@
  * Last Modification:
  *  $Author: ea $
  *  $Modtime: 29.03.2010 $
- *  $Revision: 65684 $
+ *  $Revision$
  */
 
 

@@ -66,6 +66,12 @@ TEST(Structuring, ElementSizeC)
 }
 
 
+TEST(Structuring, ArrayLengthC)
+{
+  ASSERT_EQ(GetArrayLengthPlainC(), GetArrayLengthMacroC());
+}
+
+
 TEST(Structuring, ArrayToPointerC)
 {
   int test_array[8];
@@ -107,6 +113,12 @@ TEST(Structuring, MemberSizeCPP)
 TEST(Structuring, ElementSizeCPP)
 {
   ASSERT_EQ(GetSizeOfElementPlainCPP(), GetSizeOfElementMacroCPP());
+}
+
+
+TEST(Structuring, ArrayLengthCPP)
+{
+  ASSERT_EQ(GetArrayLengthPlainCPP(), GetArrayLengthMacroCPP());
 }
 
 

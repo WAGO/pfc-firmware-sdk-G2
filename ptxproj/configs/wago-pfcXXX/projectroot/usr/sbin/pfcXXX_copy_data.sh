@@ -238,24 +238,39 @@ function copy_source_to_sd
     esac
 }
 
+function copy_with_excluded_path
+{
+  /usr/bin/tar -cf - --exclude=$1 /home | /usr/bin/tar -xf - -C /tmp/sd/root
+}
+
 function copy_nand_to_sd
 {
     local DEST_ROOT="/tmp/sd/root"
     local DEST_HOME="/tmp/sd/root/home"
     local DEST_BOOT="/tmp/sd/boot/"
-
+     
     copy_rootfs "/" "$DEST_ROOT"
 
     print_dbg "    processing /boot..."
     if ls "/boot/loader/"* &>/dev/null; then
         ${BACKUP_CMD} "/boot/loader/"* "${DEST_BOOT}"
     fi
-    ${BACKUP_CMD} "/boot/"* "${DEST_ROOT}/boot"
-    rm -rf "${DEST_ROOT}/boot/loader"
-    rm -rf "${DEST_ROOT}/boot/loader-backup"
-
+    
+    # copy all from /boot, exclude /boot/loader and /boot/loader-backup
+    /usr/bin/tar -cf - --exclude="/boot/loader*" /boot | /usr/bin/tar -xf - -C "${DEST_ROOT}"
+    
     print_dbg "    processing /home..."
-    ${BACKUP_CMD} "/home/"* "${DEST_HOME}/"
+
+    local EXCLUDED_PATHS="$(df | grep overlay | awk '{print $6}')"
+ 
+    if [[ "$EXCLUDED_PATHS" == "" ]]; then
+       	print_dbg "       no overlays detected.." 
+       	${BACKUP_CMD} "/home/"* "${DEST_HOME}/"
+    else    
+    	print_dbg "     excluded path(s): $EXCLUDED_PATHS"
+    	EXCLUDED_PATHS="/home/docker/overlay2/*/merged"
+    	copy_with_excluded_path "${EXCLUDED_PATHS}"
+    fi
 
     create_static_nodes "/tmp/sd/root"
 }

@@ -194,6 +194,7 @@
                     <xsl:with-param name = "dst_mask" select="@dst_mask"/>
                     <xsl:with-param name = "dst_port" select="@dst_port"/>
                     <xsl:with-param name = "policy" select="@policy"/>
+                    <xsl:with-param name = "tag" select="@tag"/>
                 </xsl:call-template>
             </xsl:when>
             <xsl:when test="@if = 'br1'">
@@ -208,6 +209,7 @@
                     <xsl:with-param name = "dst_mask" select="@dst_mask"/>
                     <xsl:with-param name = "dst_port" select="@dst_port"/>
                     <xsl:with-param name = "policy" select="@policy"/>
+                    <xsl:with-param name = "tag" select="@tag"/>
                 </xsl:call-template>
             </xsl:when>
             <xsl:otherwise>
@@ -222,6 +224,7 @@
                     <xsl:with-param name = "dst_mask" select="@dst_mask"/>
                     <xsl:with-param name = "dst_port" select="@dst_port"/>
                     <xsl:with-param name = "policy" select="@policy"/>
+                    <xsl:with-param name = "tag" select="@tag"/>
                 </xsl:call-template>
             </xsl:otherwise>
         </xsl:choose>
@@ -277,6 +280,7 @@
         <xsl:param name = "dst_mask"/>
         <xsl:param name = "dst_port"/>
         <xsl:param name = "policy"/>
+        <xsl:param name = "tag"/>
         <xsl:text>firewall-iptables-input-filter=</xsl:text>
         <xsl:value-of select="$state"/>
         <xsl:text>|</xsl:text>
@@ -297,6 +301,8 @@
         <xsl:value-of select="$dst_port"/>
         <xsl:text>|</xsl:text>
         <xsl:value-of select="$policy"/>
+        <xsl:text>|</xsl:text>
+        <xsl:value-of select="$tag"/>
         <xsl:value-of select="$newline"/>
     </xsl:template>
 </xsl:stylesheet>

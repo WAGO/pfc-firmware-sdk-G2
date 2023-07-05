@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 /// \file led_schedule.h
 ///
-/// \version $Revision: 65689 $
+/// \version $Revision$
 ///
 /// \brief header for LED-scheduler
 ///

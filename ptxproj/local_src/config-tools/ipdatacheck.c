@@ -11,7 +11,7 @@
 ///
 ///  \file     ipdatacheck.c
 ///
-///  \version  $Revision: 70177 $
+///  \version  $Revision$
 ///
 ///  \brief    Check functions of network parameters.
 ///

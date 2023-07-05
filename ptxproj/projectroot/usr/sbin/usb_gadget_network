@@ -1,0 +1,65 @@
+#!/bin/sh
+
+set -e
+
+# Default values
+SERVERNET="192.168.42.42/30"
+START="192.168.42.41"
+STOP="192.168.42.41"
+
+if test -r "/etc/specific/usb_gadget.conf"; then
+ . "/etc/specific/usb_gadget.conf"
+fi
+
+if test -z "$INTERFACE" || test -z "$ACTION"; then
+  echo "Script must be called by udev"
+  exit 1
+fi
+IFNAME="$INTERFACE"
+SERVER=${SERVERNET%%/*}
+LEASES=/var/run/udhcpd/leases
+UDHCPD=/var/run/udhcpd/udhcpd.conf
+DOMAIN="local"
+TYPE="normal"
+
+grep -vq " production " /proc/cmdline || TYPE="production"
+mkdir -p "/var/run/udhcpd"
+touch $LEASES
+
+usb_gadget_stop()
+{
+  ip link set down dev "$IFNAME" || :
+  ip address flush dev "$IFNAME" || :
+  : > "$UDHCPD"
+  /etc/init.d/udhcpd stop
+}
+
+usb_gadget_as_server()
+{
+  usb_gadget_stop
+  cat > "$UDHCPD".tmp << EOF
+start  $START
+stop  $STOP
+interface  $IFNAME
+lease_file $LEASES
+option  domain  $DOMAIN
+option subnet 255.255.255.252
+EOF
+  mv "$UDHCPD".tmp "$UDHCPD"
+  ip address add "$SERVERNET" dev "$IFNAME"
+  ip link set up dev "$IFNAME"
+  /etc/init.d/udhcpd start
+}
+
+usb_gadget_as_client()
+{
+  usb_gadget_stop
+  ip link set up dev "$IFNAME"
+  udhcpc -Sbi "$IFNAME"
+}
+
+case "${ACTION}:${TYPE}" in
+  add:production) usb_gadget_as_client ;;
+  add:*)          usb_gadget_as_server ;;
+  remove:*)       usb_gadget_stop ;;
+esac

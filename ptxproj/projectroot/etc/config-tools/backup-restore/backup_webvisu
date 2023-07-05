@@ -1,0 +1,122 @@
+#!/usr/bin/env bash
+
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2023 WAGO GmbH & Co. KG
+
+set -u
+
+# load general definitions and functions
+if [ ! -f "/etc/config-tools/config_tool_defines" ]; then
+    echo "config_tool_defines missing" >&2
+    exit 255
+fi
+
+. "/etc/config-tools/config_tool_defines"
+
+function PrintUsage
+{
+    echo "backup_webvisu --save <backup-file>      backup WebVisu config state"
+    echo "backup_webvisu --restore <backup-file>   restore WebVisu config state"
+    echo "backup_webvisu --param-count             get number of WebVisu state parameters to save"
+}
+
+# Write logging data using syslog.
+#
+# Input: Message to log.
+#
+function Log
+{
+    [[ $# -gt 0 ]] && logger -t "backup_webvisu" "$1"
+}
+
+
+#### Backup & Restore ##########################################################
+
+# Get number of parameters that have to be saved during backup.
+#
+# output: 1.) number of parameters to save during backup.
+#         2.) returns config tool status, see /etc/config-tools/config_tool_defines.
+#
+function GetParameterCount
+{
+    echo 1
+    return "$SUCCESS"
+}
+
+
+# Save configuration parameters to backup file.
+#
+# input:  backup file path
+# output: returns config tool status, see /etc/config-tools/config_tool_defines.
+#
+function Save
+{
+    local status; status=$SUCCESS
+    local file; file="$1"
+
+    local use_separated_ports_value; use_separated_ports_value=$(/etc/config-tools/get_webvisu use-separated-ports)
+    status=$?
+
+    if [[ $status == "$SUCCESS" ]]; then
+        echo "webvisu-use-separated-ports=$use_separated_ports_value" >> "$file"
+    fi
+
+    return "$status"
+}
+
+
+# Restore configuration parameters from backup file.
+#
+# input: backup file path
+# output: returns config tool status, see /etc/config-tools/config_tool_defines.
+#
+function Restore
+{
+    local file; file="$1"
+
+    # Get relevant data from file: grep for setting name
+    local use_separated_ports_value; use_separated_ports_value=$(grep -e "^webvisu-use-separated-ports=" "$file" | cut -d'=' -f2) 
+
+    # Call configtool to save value
+    /etc/config-tools/config_webvisu use-separated-ports="$use_separated_ports_value"
+    return $?
+}
+
+
+#### MAIN ######################################################################
+
+status="$SUCCESS"
+
+if [[ $# -ge 1 ]]; then
+    operation="$1"
+
+    if [[ $# -ge 2 ]]; then
+        file="$2"
+        if [[ "$operation" == "--save" ]]; then
+            Save "$file"
+            status=$?
+        elif [[ "$operation" == "--restore" ]]; then
+            Restore "$file"
+            status=$?
+        else
+            # Unknown operation
+            status="$INTERNAL_ERROR"
+            Log "$0: Unknown operation \"$operation\""
+        fi
+    else
+        if [[ "$operation" == "--param-count" ]]; then
+            GetParameterCount
+        elif [[ "$operation" == "-h" || "$operation" == "--help" ]]; then
+            PrintUsage
+        else
+            # Unknown operation
+            status="$INTERNAL_ERROR"
+            Log "$0: Unknown or incomplete operation \"$operation\""
+        fi
+    fi
+fi
+
+exit "$status"

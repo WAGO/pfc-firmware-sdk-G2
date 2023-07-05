@@ -21,7 +21,7 @@ PACKAGES-$(PTXCONF_LIGHTTPD) += lighttpd
 # Paths and names
 #
 LIGHTTPD_BASE_VERSION  := 1.4.67
-LIGHTTPD_WAGO_VERSION  := wago7
+LIGHTTPD_WAGO_VERSION  := wago13
 LIGHTTPD_VERSION       := $(LIGHTTPD_BASE_VERSION)+$(LIGHTTPD_WAGO_VERSION)
 LIGHTTPD_ARCHIVE_NAME  := lighttpd-$(LIGHTTPD_BASE_VERSION)
 LIGHTTPD               := lighttpd-$(LIGHTTPD_VERSION)
@@ -82,7 +82,7 @@ lighttpd_compile: $(STATEDIR)/lighttpd.compile
 
 $(STATEDIR)/lighttpd.compile:
 	@$(call targetinfo)
-	$(LIGHTTPD_PATH) make -C $(LIGHTTPD_DIR)
+	$(LIGHTTPD_PATH) $(MAKE) -C $(LIGHTTPD_DIR)
 
 ifdef PTXCONF_LIGHTTPD_HTTPS_GEN_CERT
 # Generate a long-lasting self-signed certificate for testing
@@ -164,8 +164,6 @@ endif
 #	# configs
 #	#
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/auth.conf)
-	@$(call install_alternative, lighttpd, 0, 0, 0600, \
 		/etc/lighttpd/mode_http+https.conf)
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
 		/etc/lighttpd/redirect_wbm.conf)
@@ -184,13 +182,15 @@ endif
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
 		/etc/lighttpd/tls-extended-compatibility.conf)
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/mod_fastcgi.conf)
-	@$(call install_alternative, lighttpd, 0, 0, 0600, \
 		/etc/lighttpd/tls-strong.conf)
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
 		/etc/lighttpd/wbm_enabled.conf)
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
 		/etc/lighttpd/wbm_disabled.conf)
+	@$(call install_alternative, lighttpd, 0, 0, 0600, \
+		/etc/lighttpd/webvisu_ports_default.conf)
+	@$(call install_alternative, lighttpd, 0, 0, 0600, \
+		/etc/lighttpd/webvisu_ports_separated.conf)
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
 		/etc/lighttpd/webvisu.conf)
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
@@ -202,7 +202,7 @@ endif
 
 ifdef PTXCONF_LIGHTTPD_MOD_FASTCGI_PHP
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/conf.d/mod_fastcgi_php.conf)
+		/etc/lighttpd/fastcgi.confd/php.conf)
 endif
 
 ifdef PTXCONF_LIGHTTPD_HTTPS
@@ -264,11 +264,19 @@ else
 		/etc/lighttpd/websocket.conf)
 endif
 
+#	#
+#	# WBM
+#	#
 	@$(call install_link, lighttpd, redirect_wbm.conf, \
 		/etc/lighttpd/redirect_default.conf)
-
 	@$(call install_link, lighttpd, wbm_enabled.conf, \
 		/etc/lighttpd/wbm.conf)
+
+#	#
+#	# WebVisu
+#	#
+	@$(call install_link, lighttpd, webvisu_ports_default.conf, \
+		/etc/lighttpd/webvisu_ports.conf)
 
 #	#
 #	# busybox init: start script

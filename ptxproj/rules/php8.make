@@ -6,7 +6,7 @@
 #               2019 by Adam Bagsik <adam.bagsik@wago.com>
 #               2021 by Juergen Borleis <jbe@pengutronix.de>
 #               2022 by Andreas Helmcke <ahelmcke@ela-soft.com>
-#               2022 by Patrick Enns <patrick.enns@wago.com>
+#               2022-2023 by Patrick Enns <patrick.enns@wago.com>
 #
 # For further information about the PTXdist project and license conditions
 # see the README file.
@@ -21,7 +21,7 @@ PACKAGES-$(PTXCONF_PHP8) += php8
 # Paths and names
 #
 PHP8_BASE_VERSION  := 8.1.16
-PHP8_VERSION       := $(PHP8_BASE_VERSION)+wago1
+PHP8_VERSION       := $(PHP8_BASE_VERSION)+wago2
 PHP8_ARCHIVE_NAME  := php-$(PHP8_BASE_VERSION)
 PHP8_MD5           := 7befaae076f821507588bd2f03ec8c68
 PHP8               := php-$(PHP8_VERSION)
@@ -147,9 +147,7 @@ PHP8_AUTOCONF := \
 	--without-esoob \
 	--without-unixODBC \
 	--without-dbmaker \
-	--disable-opcache \
 	--disable-huge-code-pages \
-	--disable-opcache-jit \
 	--disable-pcntl \
 	--without-pdo-dblib \
 	--without-pdo-firebird \
@@ -313,6 +311,18 @@ PHP8_AUTOCONF += --with-jpeg
 PHP8_AUTOCONF += --with-xpm
 endif
 
+ifdef PTXCONF_PHP8_EXT_OPCACHE
+PHP8_AUTOCONF += --enable-opcache
+else
+PHP8_AUTOCONF += --disable-opcache
+endif
+
+ifdef PTXCONF_PHP8_EXT_OPCACHE_JIT
+PHP8_AUTOCONF += --enable-opcache-jit
+else
+PHP8_AUTOCONF += --disable-opcache-jit
+endif
+
 # ----------------------------------------------------------------------------
 # Install
 # ----------------------------------------------------------------------------
@@ -352,6 +362,10 @@ endif
 
 ifdef PTXCONF_PHP8_INI
 	@$(call install_alternative, php8, 0, 0, 0644, /etc/php8/php.ini)
+endif
+
+ifdef PTXCONF_PHP8_EXT_OPCACHE
+	@$(call install_copy, php8, 0, 0, 0755, $(PHP8_DIR)/modules/opcache.so, /usr/lib/php8/opcache.so)
 endif
 
 ifdef PTXCONF_PHP8_SAPI_FPM

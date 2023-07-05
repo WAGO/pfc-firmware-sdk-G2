@@ -186,16 +186,6 @@ configParam+=(
   
   "iocheck-port;              /etc/config-tools/get_iocheckport_config state;                   /etc/config-tools/config_iocheckport state="
   
-  "sim-pin;                   /etc/config-tools/settings_backup_mdmd backup sim-pin;            /etc/config-tools/settings_backup_mdmd restore sim-pin "
-  "port-state;                /etc/config-tools/settings_backup_mdmd backup port-state;         /etc/config-tools/settings_backup_mdmd restore port-state "
-  "log-level;                 /etc/config-tools/settings_backup_mdmd backup log-level;          /etc/config-tools/settings_backup_mdmd restore log-level "
-
-  "gprs-auth-type;            /etc/config-tools/settings_backup_mdmd backup gprs-auth-type;     /etc/config-tools/settings_backup_mdmd restore dummy "
-  "gprs-username;             /etc/config-tools/settings_backup_mdmd backup gprs-username;      /etc/config-tools/settings_backup_mdmd restore dummy " 
-  "gprs-apn;                  /etc/config-tools/settings_backup_mdmd backup gprs-apn;           /etc/config-tools/settings_backup_mdmd restore dummy "
-  "gprs-connectivity;         /etc/config-tools/settings_backup_mdmd backup gprs-connectivity;  /etc/config-tools/settings_backup_mdmd restore gprs-connectivity "
-  "net-selection-mode;        /etc/config-tools/settings_backup_mdmd backup net-selection-mode; /etc/config-tools/settings_backup_mdmd restore net-selection-mode " 
-
   "inotify-max-queued-events; /etc/config-tools/config_inotify backup max_queued_events;        /etc/config-tools/config_inotify restore max_queued_events "
   "inotify-max-user-instances;/etc/config-tools/config_inotify backup max_user_instances;       /etc/config-tools/config_inotify restore max_user_instances "
   "inotify-max-user-watches;  /etc/config-tools/config_inotify backup max_user_watches;         /etc/config-tools/config_inotify restore max_user_watches "

@@ -152,6 +152,12 @@
     </xs:restriction>
 </xs:simpleType>
 
+<xs:simpleType name="filter_tag">
+    <xs:restriction base="xs:string">
+        <xs:pattern value="[a-zA-Z0-9_\- ]{0,42}"/>
+    </xs:restriction>
+</xs:simpleType>
+
 <xs:simpleType name="eproto">
     <xs:annotation>
         <xs:documentation>

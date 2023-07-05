@@ -16,14 +16,11 @@ IPLink::IPLink(int index, Interface interface, Address address,
       address_ { ::std::move(address) },
       netmask_ { ::std::move(netmask) },
       link_state_ { state }{
-        ::std::string st = state == eth::InterfaceLinkState::Up ? "UP" : "DOWN";
-        LOG_DEBUG(interface.GetName() << " " << address << "" << netmask << "" << st);
 }
 
 
 void IPLink::SetIPConfig(const IPConfig& ip_config) {
   ip_config_ = ip_config;
-  LOG_DEBUG(ip_config.interface_ << ip_config.address_);
 }
 
 [[gnu::pure]]

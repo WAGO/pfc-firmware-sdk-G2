@@ -21,6 +21,7 @@
 #include <libxml/xpathInternals.h>
 #include <cstring>
 #include <stdexcept>
+#include <syslog.h>
 #include <unistd.h>
 
 
@@ -210,26 +211,95 @@ xmldoc parse_string(const std::string& xmldata)
 
 void store_file(const std::string& fname, const xmldoc& doc)
 {
-  const std::string& temp_file = fname + ".tmp";
+    // tmpnam is deprecated and not the prefered solution,
+    // but for now it should be something like "okay"
+    const std::string temp_file = std::string(std::tmpnam(nullptr));
 
-  if (doc.is_empty())
+    if (doc.is_empty())
         throw std::logic_error("Can't store null xml document.");
 
-    // Save to temporary file first. If write succeeded, rename file and synchronize directory
-    const int bytes = xmlSaveFormatFileEnc(temp_file.c_str(), doc.get(), "utf-8", 1);
+    // Save to temporary file first. If write succeeded, rename file
+    // and synchronize directory
+    if(0 > xmlSaveFormatFileEnc(temp_file.c_str(), doc.get(), "utf-8", 1))
+        throw std::runtime_error("Failed to store xml document: " + temp_file);
 
-    if (bytes < 0)
-    {
-        throw std::runtime_error("Failed to store xml document: "+ temp_file);
+    wago::firewall::move(temp_file, fname);
+
+    // sync should be only needed if writing final file to disc,
+    // if temporary file is only in memory, we do not care if
+    // it get lost due hard reset
+    sync();
+}
+
+void move(const std::filesystem::path from, const std::filesystem::path to)
+{
+    // copy "from" thus we can modify it
+    std::filesystem::path temp = std::filesystem::path(from);
+
+    // in case of a different filesystem, we get an exception if we
+    // try to rename it; we need to copy file before we can rename it
+    if(from.parent_path() != to.parent_path()) {
+        // create new path for temporary file at new location
+        temp = std::filesystem::path(to);
+        temp.replace_filename(from.filename());
+
+        // copy "temp" to path of "to", if it fails, we remove
+        // temp file as before (keep the API as it was)
+        wago::firewall::move_copy(from, temp);
+
+
+
     }
-    else
-    {
-        sync();
-        if (0 != rename(temp_file.c_str(), fname.c_str()))
-        {
-            remove (temp_file.c_str());
-            throw invalid_param_error("Couldn't rename file: " + temp_file);
-        }
+
+    // temp == from
+    wago::firewall::rename(temp, to);
+}
+
+void move_copy(const std::filesystem::path from, const std::filesystem::path to)
+{
+    std::exception_ptr copy_exception = nullptr;
+
+    try {
+        std::filesystem::copy_file(from, to);
+    }
+    catch(std::filesystem::filesystem_error&) {
+        copy_exception = std::current_exception();
+    }
+
+    // try-catch-ignore
+    try {
+        std::filesystem::remove(from);
+    }
+    catch(std::filesystem::filesystem_error const &) {
+        // nothing to do be done ... maybe log ?
+    }
+
+    if(copy_exception != nullptr) {
+        std::rethrow_exception(copy_exception);
+    }
+}
+
+void rename(const std::filesystem::path old_name, const std::filesystem::path new_name)
+{
+    std::exception_ptr rename_exception = nullptr;
+
+    try {
+        std::filesystem::rename(old_name, new_name);
+    }
+    catch(std::filesystem::filesystem_error&) {
+        rename_exception = std::current_exception();
+    }
+
+    // try-catch-ignore
+    try {
+        std::filesystem::remove(old_name);
+    }
+    catch(std::filesystem::filesystem_error const &) {
+        // nothing to do be done ... maybe log ?
+    }
+
+    if(rename_exception != nullptr) {
+        std::rethrow_exception(rename_exception);
     }
 }
 

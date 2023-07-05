@@ -2,6 +2,7 @@
 
 config PP_BACNET
 	bool
+	depends on BACNET
 	select HOST_CT_BUILD
 	select GOOGLETEST
 	select GLIB
@@ -16,3 +17,49 @@ config PP_BACNET
 	prompt "pp_bacnet"
 	help
 	  Parameter provider for BACnet
+if PP_BACNET
+
+choice
+        prompt "Origin of Code"
+        default PP_BACNET_SOURCE_RELEASED
+
+        config PP_BACNET_SOURCE_RELEASED
+                bool
+                prompt "released / Artifactory"
+                help
+                  Use released version of source code, taken from Artifactory.
+
+        config PP_BACNET_SOURCE_DEV
+                bool
+                prompt "development / Git"
+                help
+                  Instead of released version use source code directly checked-out from repository.
+                  Use only for development!
+
+endchoice
+
+if PP_BACNET_SOURCE_DEV
+
+config PP_BACNET_SOURCE_DEV_BRANCH
+	string
+	prompt "Branch to be checked-out."
+	default "master"
+	help
+	  Name of branch which should be checked out or empty for default.
+
+endif
+
+if PP_BACNET_SOURCE_RELEASED
+
+config PP_BACNET_URL_TEMPLATE
+	string
+    depends on PP_BACNET
+	prompt "URL template"
+	default "%ARTIFACTORY_BASE_URL%/pl_controller-generic-prod-local/wago_intern/PP_BACnet/releases/PP_BACnet-Source/PP_BACnet-Source-%VERSION%.tgz"
+	help
+	  Encodes the desired artifact version. Can be configured to a specific version or to a latest compatible version of an artifact.
+	  See Confluence for further details.
+
+endif
+
+endif

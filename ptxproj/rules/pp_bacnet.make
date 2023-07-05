@@ -16,11 +16,30 @@ PACKAGES-$(PTXCONF_PP_BACNET) += pp_bacnet
 #
 # Paths and names
 #
-PP_BACNET_VERSION        := 1.0.0
-PP_BACNET_MD5            :=
 PP_BACNET                := pp_bacnet
+PP_BACNET_VERSION        := 1.0.0
+PP_BACNET_FOLDER         := pp_bacnet_git
+
+ifdef PTXCONF_LIBBACNETCONFIG_SOURCE_DEV
+PP_BACNET_GIT_URL           := ssh://svtfs01007:22/tfs/ProductDevelopment/BACnet_Stack/_git/PP_BACnet
+endif
+
+PP_BACNET_REL_PATH          := wago_intern/$(PP_BACNET_FOLDER)
+PP_BACNET_SRC_DIR           := $(PTXDIST_WORKSPACE)/$(PP_BACNET_REL_PATH)
+
+ifdef PTXCONF_PP_BACNET_SOURCE_RELEASED
+PP_BACNET_URL               := $(call jfrog_template_to_url, PP_BACNET)
+PP_BACNET_ARCHIVE           := $(PP_BACNET)-$(PP_BACNET_VERSION)$(PP_BACNET_SUFFIX)
+else
+PP_BACNET_URL               := file://$(PP_BACNET_SRC_DIR)
+endif
+
+PP_BACNET_SUFFIX            := $(suffix $(PP_BACNET_URL))
+PP_BACNET_MD5                = $(shell [ -f $(PP_BACNET_MD5_FILE) ] && cat $(PP_BACNET_MD5_FILE))
+PP_BACNET_MD5_FILE          := wago_intern/artifactory_sources/$(PP_BACNET)$(PP_BACNET_SUFFIX).md5
+PP_BACNET_ARTIFACT           = $(call jfrog_get_filename,$(PP_BACNET_URL))
+
 PP_BACNET_BUILDCONFIG    := Release
-PP_BACNET_SRC_DIR        := $(PTXDIST_WORKSPACE)/wago_intern/$(PP_BACNET)
 PP_BACNET_BUILDROOT_DIR  := $(BUILDDIR)/$(PP_BACNET)
 PP_BACNET_DIR            := $(PP_BACNET_BUILDROOT_DIR)/src
 PP_BACNET_BUILD_DIR      := $(PP_BACNET_BUILDROOT_DIR)/bin/$(PP_BACNET_BUILDCONFIG)
@@ -34,6 +53,37 @@ SCRIPT_DIR=$(PTXDIST_SYSROOT_HOST)/lib/ct-build
 PP_BACNET_PACKAGE_NAME             := $(PP_BACNET)_$(PP_BACNET_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 PP_BACNET_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
 
+
+# ----------------------------------------------------------------------------
+# Get
+# ----------------------------------------------------------------------------
+
+ifdef PTXCONF_PP_BACNET_SOURCE_DEV
+
+$(PP_BACNET_SRC_DIR):
+	{ cd $(PTXDIST_WORKSPACE)/wago_intern && git clone $(PP_BACNET_GIT_URL) $(PP_BACNET_SRC_DIR); } \
+    || rm -fr $(PP_BACNET_SRC_DIR)
+ifdef PTXCONF_PP_BACNET_SOURCE_DEV_BRANCH
+	{ cd $(PP_BACNET_SRC_DIR) && git checkout $(PTXCONF_PP_BACNET_SOURCE_DEV_BRANCH); } \
+    || rm -fr $(PP_BACNET_SRC_DIR)
+endif
+
+$(STATEDIR)/pp_bacnet.get: | $(PP_BACNET_SRC_DIR)
+
+endif
+
+ifdef PTXCONF_PP_BACNET_SOURCE_RELEASED
+$(STATEDIR)/pp_bacnet.get:
+	@$(call targetinfo)
+
+ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	$(call ptx/in-path, PTXDIST_PATH, scripts/wago/artifactory.sh) fetch \
+    '$(PP_BACNET_URL)' wago_intern/artifactory_sources/$(PP_BACNET_ARCHIVE) '$(PP_BACNET_MD5_FILE)'
+endif
+
+	@$(call touch)
+endif
+
 # ----------------------------------------------------------------------------
 # Extract
 # ----------------------------------------------------------------------------
@@ -43,11 +93,28 @@ $(STATEDIR)/pp_bacnet.extract:
 	@$(call targetinfo)
 	@mkdir -p $(PP_BACNET_BUILDROOT_DIR)
 ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+ifdef PTXCONF_PP_BACNET_SOURCE_RELEASED
+	@mkdir -p $(PP_BACNET_DIR)
+	@tar xvf wago_intern/artifactory_sources/$(PP_BACNET_ARCHIVE) -C $(PP_BACNET_DIR) --strip-components=1
+	@$(call patchin, PP_BACNET)
+endif
+ifndef PTXCONF_PP_BACNET_SOURCE_RELEASED
 	@if [ ! -L $(PP_BACNET_DIR) ]; then \
 	  ln -s $(PP_BACNET_SRC_DIR) $(PP_BACNET_DIR); \
 	fi
 endif
+endif
 	@$(call touch)
+
+# ----------------------------------------------------------------------------
+# Extract.post
+# ----------------------------------------------------------------------------
+
+ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+$(STATEDIR)/pp_bacnet.extract.post:
+	@$(call targetinfo)
+	@$(call touch)
+endif
 
 # ----------------------------------------------------------------------------
 # Prepare
@@ -106,7 +173,7 @@ $(STATEDIR)/pp_bacnet.targetinstall:
 	@$(call install_fixup, pp_bacnet,PRIORITY,optional)
 	@$(call install_fixup, pp_bacnet,SECTION,base)
 	@$(call install_fixup, pp_bacnet,AUTHOR,"WAGO GmbH \& Co. KG")
-	@$(call install_fixup, pp_bacnet,DESCRIPTION,missing)
+	@$(call install_fixup, pp_bacnet,DESCRIPTION, "BACnet parameter provider for WAGO Device Access: WDx)
 
 	@$(call install_copy, pp_bacnet, 0, 0, 0750, -, /usr/sbin/pp_bacnet)
 	@$(call install_copy, pp_bacnet, 0, 0, 0700, -, /etc/init.d/pp_bacnet)

@@ -1,0 +1,11 @@
+## SECTION=wago_specific_device_bacnet
+
+config CDS3_IODRVBACNET
+	bool "Io Driver Bacnet"
+	default n
+	depends on BACNET
+	select CDS3_IODRVDAL
+	select CDS3_INCLUDES
+	select LIBBACNET
+	help
+	  Builds and installs the BACnet Io Driver

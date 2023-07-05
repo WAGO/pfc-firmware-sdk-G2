@@ -10,7 +10,7 @@
 ///
 ///  \file     led_blink_periodic.c
 ///
-///  \version  $Revision: 65689 $
+///  \version  $Revision$
 ///
 ///  \brief    This File serves all functions for periodical blinking
 ///

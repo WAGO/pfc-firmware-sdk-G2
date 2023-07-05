@@ -10,7 +10,7 @@
 ///
 ///  \file     LedBlinkSequential.c
 ///
-///  \version  $Revision: 65689 $
+///  \version  $Revision$
 ///
 ///  \brief    This File serves all functions for sequential blinking
 ///

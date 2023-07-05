@@ -13,7 +13,7 @@
  * Last Modification:
  *  $Author: WAGODOM\u010391 $
  *  $Modtime: 07.06.2011 $
- *  $Revision: 65684 $
+ *  $Revision$
  */
 
 

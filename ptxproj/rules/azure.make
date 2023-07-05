@@ -64,9 +64,13 @@ AZURE_CONF_OPT	:= $(CROSS_CMAKE_USR) -v --jobs=1 \
 	-D"run_e2e_tests:BOOL=OFF" \
 	-D"run_longhaul_tests:BOOL=OFF" \
 	-D"skip_unittests:BOOL=ON" \
-    	-D"use_condition:BOOL=OFF" \
+	-D"use_condition:BOOL=OFF" \
 	-D"CMAKE_CXX_FLAGS=-std=gnu++11 -fPIC -Wall "  \
-    	-D"CMAKE_C_FLAGS=-std=gnu99 -fPIC -Wall "
+	-D"CMAKE_C_FLAGS=-std=gnu99 -fPIC -Wall " \
+	-D"hsm_type_symm_key:BOOL=ON" \
+	-D"use_prov_client:BOOL=ON" \
+	-D"hsm_type_x509:BOOL=ON" \
+	-D"skip_samples:BOOL=ON"
 
 
 ifdef PTXCONF_AZURE_HTTP
@@ -149,6 +153,26 @@ $(STATEDIR)/azure.install:
 	@mkdir -p $(PKGDIR)/$(AZURE)/usr/lib/azure/c-utility
 	@install -m 0644 $(AZURE_DIR)-build/c-utility/*.a \
 		$(PKGDIR)/$(AZURE)/usr/lib/azure/c-utility
+
+	@mkdir -p $(PKGDIR)/$(AZURE)/usr/include/azure/azure_prov_client
+	@install -m 0644 $(AZURE_DIR)/provisioning_client/inc/azure_prov_client/*.h \
+		$(PKGDIR)/$(AZURE)/usr/include/azure/azure_prov_client
+
+	@mkdir -p $(PKGDIR)/$(AZURE)/usr/include/azure/azure_prov_client/internal
+	@install -m 0644 $(AZURE_DIR)/provisioning_client/inc/azure_prov_client/internal/*.h \
+		$(PKGDIR)/$(AZURE)/usr/include/azure/azure_prov_client/internal
+
+	@mkdir -p $(PKGDIR)/$(AZURE)/usr/include/azure/azure_prov_client/adapters
+	@install -m 0644 $(AZURE_DIR)/provisioning_client/adapters/*.h \
+		$(PKGDIR)/$(AZURE)/usr/include/azure/azure_prov_client/adapters
+
+	@mkdir -p $(PKGDIR)/$(AZURE)/usr/lib/azure/provisioning_client
+	@install -m 0644 $(AZURE_DIR)-build/provisioning_client/*.a \
+		$(PKGDIR)/$(AZURE)/usr/lib/azure/provisioning_client
+
+	@mkdir -p $(PKGDIR)/$(AZURE)/usr/lib/azure/provisioning_service_client
+	@install -m 0644 $(AZURE_DIR)-build/provisioning_service_client/*.a \
+		$(PKGDIR)/$(AZURE)/usr/lib/azure/provisioning_service_client
 
 	@$(call touch)
 

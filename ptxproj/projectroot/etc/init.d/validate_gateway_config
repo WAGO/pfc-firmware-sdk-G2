@@ -4,7 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2021-2022 WAGO GmbH & Co. KG
+# Copyright (c) 2021-2023 WAGO GmbH & Co. KG
 
 set -u
 
@@ -162,10 +162,15 @@ function change_routing_types_of_custom_default_gateways
 
 function main
 {
-    local port_count
     local default_gateway_count
     local changed_gateways=false
-    port_count=$(determine_port_count)
+    local port_count
+
+    if [[ "$PORT_COUNT" -eq 2 || "$PORT_COUNT" -eq 4 ]]; then
+        port_count=$PORT_COUNT
+    else
+        port_count=$(determine_port_count)
+    fi
 
     read_config_file "$ROUTING_CONFIG_FILE"
     default_gateway_count=$(determine_default_gateway_count_from_config)
@@ -187,12 +192,15 @@ function main
     fi
 }
 
+
+PORT_COUNT="${2:-}"
+
 case "$1" in
 start)
     main
     ;;
 *)
-    echo "usage: $0 {start}" >&2
+    echo "usage: $0 {start} [port count]" >&2
     exit 1
     ;;
 esac

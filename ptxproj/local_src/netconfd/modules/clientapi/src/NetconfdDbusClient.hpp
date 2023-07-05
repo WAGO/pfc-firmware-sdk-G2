@@ -45,7 +45,8 @@ namespace netconf
       DbusResult GetDeviceInterfaces();
 
       DbusResult SetTemporaryFixedIpAddress();
-      DbusResult SetTemporaryDHCPClientID(const ::std::string& clientID);
+      DbusResult SetTemporaryDHCPClientID(const ::std::string& client_id);
+      DbusResult GetDHCPClientID();
       
 
       DbusResult GetDipSwitchConfig();

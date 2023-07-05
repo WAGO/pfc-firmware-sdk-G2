@@ -180,6 +180,12 @@ NetworkConfiguratorImpl::NetworkConfiguratorImpl(InterprocessCondition &start_co
     return this->network_config_brain_.SetTemporaryDHCPClientID(data);
   });
 
+  dbus_handler_registry_.RegisterGetTempDHCPClientIDHandler([this](std::string &data) -> ::std::string {
+    auto status = this->network_config_brain_.GetDHCPClientID(data);
+    LOG_DEBUG("DBUS Req: GetDHCPClientID " + data);
+    return status;
+  });
+
   dbus_handler_registry_.RegisterGetDipSwitchConfigHandler([this](std::string &data) -> std::string {
     auto status = this->network_config_brain_.GetDipSwitchConfig(data);
     LOG_DEBUG("DBUS Req: GetDipSwitchConfig" + data);

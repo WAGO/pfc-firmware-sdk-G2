@@ -10,7 +10,7 @@
 ///
 ///  \file     ledserver_API.h
 ///
-///  \version  $Revision: 65689 $
+///  \version  $Revision$
 ///
 ///  \brief    This is the API to the LED-Server Library used to set the LEDs of PFC and PAC devices
 ///

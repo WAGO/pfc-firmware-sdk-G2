@@ -10,7 +10,7 @@
 ///
 ///  \file     ledmisc.c
 ///
-///  \version  $Rev: 65689 $
+///  \version  $Rev$
 ///
 ///  \brief    <Insert description here>
 ///

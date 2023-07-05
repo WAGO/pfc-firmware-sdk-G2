@@ -63,6 +63,14 @@
 //                                      disallowed definition for macro
 #define WC_SIZEOF_ELEMENT(array)                            (sizeof((array)[0]))
 
+/// \def WC_ARRAY_LENGTH(array)
+/// Returns the element count of an array.
+//lint -estring(961, WC_ARRAY_LENGTH) to disable Rule 19.7 it is necessary to disable all 961 messages,
+//                                    function-like macro defined
+//lint -estring(960, WC_ARRAY_LENGTH) to disable Rule 19.4 it is necessary to disable all 960 messages,
+//                                    disallowed definition for macro
+#define WC_ARRAY_LENGTH(array)        (sizeof(array) / WC_SIZEOF_ELEMENT(array))
+
 /// \def WC_TYPEOF(variable)
 /// Placeholder for the type of variable.
 //lint -estring(961, WC_TYPEOF) to disable Rule 19.7 it is necessary to disable all 961 messages,

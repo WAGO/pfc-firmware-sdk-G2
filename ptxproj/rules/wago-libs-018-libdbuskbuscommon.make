@@ -34,6 +34,8 @@ endif
 
 LIBDBUSKBUSCOMMON_PACKAGE_NAME := $(LIBDBUSKBUSCOMMON)_$(LIBDBUSKBUSCOMMON_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 LIBDBUSKBUSCOMMON_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+LIBDBUSKBUSCOMMON_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(LIBDBUSKBUSCOMMON_PACKAGE_NAME)
+
 # ----------------------------------------------------------------------------
 # Extract
 # ----------------------------------------------------------------------------
@@ -77,7 +79,7 @@ ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 		$(LIBDBUSKBUSCOMMON_PATH) \
 		$(LIBDBUSKBUSCOMMON_ENV) \
 		$(LIBDBUSKBUSCOMMON_BUILD_PARAMS) \
-		make $(PARALLELMFLAGS)
+		$(MAKE) $(PARALLELMFLAGS)
 endif
 	@$(call touch)
 
@@ -130,10 +132,10 @@ $(STATEDIR)/libdbuskbuscommon.targetinstall:
 
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 	# Extract precompiled binaries from archive
-	rm -rf $(LIBDBUSKBUSCOMMON_PLATFORMCONFIGPACKAGEDIR)/tmp/*
-	cd $(LIBDBUSKBUSCOMMON_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(LIBDBUSKBUSCOMMON_PACKAGE_DIR)
+	cd $(LIBDBUSKBUSCOMMON_PACKAGE_DIR) && \
 	ar -xov $(LIBDBUSKBUSCOMMON_PLATFORMCONFIGPACKAGEDIR)/$(LIBDBUSKBUSCOMMON_PACKAGE_NAME).ipk
-	@$(call install_archive, libdbuskbuscommon, 0, 0, $(LIBDBUSKBUSCOMMON_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+	@$(call install_archive, libdbuskbuscommon, 0, 0, $(LIBDBUSKBUSCOMMON_PACKAGE_DIR)/data.tar.gz, /)
 else
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
 	@$(call install_copy, libdbuskbuscommon, 0, 0, 0755, $(LIBDBUSKBUSCOMMON_DIR)/lib/.libs/libdbuskbuscommon.so.0.0.0, /usr/lib/libdbuskbuscommon.so.0.0.0)

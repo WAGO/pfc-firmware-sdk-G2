@@ -206,7 +206,7 @@ distclean:
 # as it assumes a legacy fw version to be present.
 # Changes to this target have to be sync-ed with Jenkins Shared Library.
 # Please contact DevTools group for details.
-$(OUT_DIR)/ptxdist.images.stage:
+$(OUT_DIR)/ptxdist.images.stage: | $(OUT_DIR)
 	echo "This file must not be empty because of Artifactory!" > $@
 
 $(OUT_DIR)/%: $(TARGETROOT)/etc/% | $(OUT_DIR)

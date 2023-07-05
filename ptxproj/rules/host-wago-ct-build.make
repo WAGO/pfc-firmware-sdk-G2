@@ -24,9 +24,9 @@ ifdef PTXCONF_HOST_CT_BUILD_DEV
 HOST_CT_BUILD_URL     := file://local_src/ct-build
 HOST_CT_BUILD_GIT_URL := git@svgithub01001.wago.local:BU-Automation/buildsystems-ct-build.git
 else
-HOST_CT_BUILD_VERSION := 1.15.0
+HOST_CT_BUILD_VERSION := 1.17.0
 HOST_CT_BUILD_SUFFIX  := tar.xz
-HOST_CT_BUILD_MD5     := 2339bc684f5a4dc3b2581ccb7bbee2ea
+HOST_CT_BUILD_MD5     := 8a1f6d766eeecd8858f210670cae3aa2
 HOST_CT_BUILD_URL     := https://svsv01003.wago.local/wago-ptxdist-src/$(HOST_CT_BUILD)-$(HOST_CT_BUILD_VERSION).$(HOST_CT_BUILD_SUFFIX)
 HOST_CT_BUILD_SOURCE  := $(SRCDIR)/$(HOST_CT_BUILD)-$(HOST_CT_BUILD_VERSION).$(HOST_CT_BUILD_SUFFIX)
 endif

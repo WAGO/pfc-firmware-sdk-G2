@@ -243,6 +243,7 @@
     <xs:attribute name="dst_mask" type="ip4mask" use="optional"/>
     <xs:attribute name="dst_port" type="port_range" use="optional"/>
     <xs:attribute name="policy" type="policy" use="required"/>
+    <xs:attribute name="tag" type="filter_tag" use="optional"/>
 </xs:complexType>
 
 </xs:schema>

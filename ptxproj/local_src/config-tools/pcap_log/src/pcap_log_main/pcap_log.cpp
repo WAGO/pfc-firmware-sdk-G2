@@ -30,6 +30,11 @@
 
 #include "netconf/BridgeConfig.hpp"
 
+extern "C"
+{
+#include <ct_liblog.h>
+}
+
 //------------------------------------------------------------------------------
 // defines; structure, enumeration and type definitions
 //------------------------------------------------------------------------------
@@ -37,11 +42,29 @@
 #define CMD_TAR_CREATE "tar cfz "
 #define CMD_TAR_FLATTEN_FLAG "--transform='s,.*/,,'"
 
+enum class opt_actions
+{
+  none = 1 << 0,
+  stop_pcap = 1 << 1,
+  restart_pcap = 1 << 2,
+  get_config = 1 << 3,
+  set_config = 1 << 4,
+  get_info = 1 << 5,
+  archive_all = 1 << 6,
+  archive = 1 << 7,
+  test_filter = 1 << 8,
+  rm_logs = 1 << 9
+};
+
 //------------------------------------------------------------------------------
 // function prototypes
 //------------------------------------------------------------------------------
-static void DoStop();
-static void DoStart();
+opt_actions operator|(opt_actions lhs, opt_actions rhs);
+opt_actions operator&(opt_actions lhs, opt_actions rhs);
+bool test(opt_actions action);
+
+static bool DoStop();
+static int DoStart();
 
 //------------------------------------------------------------------------------
 // macros
@@ -60,6 +83,7 @@ option longopts[] = {
    { "test",        optional_argument,  nullptr,   't' },
    { "archive",     required_argument,  nullptr,   'a' },
    { "allfiles",    no_argument,        nullptr,   'f' },
+   { "delete",      no_argument,        nullptr,   'r' },
    // last line
    { nullptr,       0,                  nullptr,    0  }
 };
@@ -68,6 +92,30 @@ bool RunLoop = false;
 //------------------------------------------------------------------------------
 // function implementation
 //------------------------------------------------------------------------------
+opt_actions operator|(opt_actions lhs, opt_actions rhs)
+{
+  return static_cast<opt_actions>(
+    static_cast<std::underlying_type<opt_actions>::type>(lhs) |
+    static_cast<std::underlying_type<opt_actions>::type>(rhs));
+}
+
+inline opt_actions & operator|=(opt_actions & lhs, opt_actions rhs)
+{
+  return lhs = lhs | rhs;
+}
+
+opt_actions operator&(opt_actions lhs, opt_actions rhs)
+{
+  return static_cast<opt_actions>(
+    static_cast<std::underlying_type<opt_actions>::type>(lhs) &
+    static_cast<std::underlying_type<opt_actions>::type>(rhs));
+}
+
+bool test(opt_actions action)
+{
+  return static_cast<std::underlying_type<opt_actions>::type>(action);
+}
+
 static void HandleSignal(int signal)
 {
   (void) signal;
@@ -109,6 +157,7 @@ static void ShowHelp()
   std::cout << "  -f [--allfiles] -include all files in the archive (see -a),\n";
   std::cout << "                   must come before -a\n";
   std::cout << "  -a [--archive]  -create log archive to destination directory\n";
+  std::cout << "  -r [--delete]   -remove all log files\n";
   std::cout << "\n";
 }
 
@@ -132,10 +181,9 @@ static void ShowConfig()
 }
 
 //------------------------------------------------------------------------------
-static void ChangeConfig(char *arg)
+static void ChangeConfig(const std::string & arg)
 {
-  Debug_Printf("ChangeConfig(%s) \n", arg);
-  //PcapJSON& json = PcapJSON::Instance();
+  Debug_Printf("ChangeConfig(%s) \n", arg.c_str());
   wp::Config config;
   config.load();
   auto prev_json = config.json();
@@ -143,34 +191,34 @@ static void ChangeConfig(char *arg)
   config.save();
 
   auto new_json = config.json();
-  if (new_json != prev_json)
+  if (new_json["storage"] != prev_json["storage"])
   {
-    wp::Info info;
-    info.load();
-    if (info.data.isRunning)
-    {
-      // config was changed, restart pcap
-      DoStop();
-      usleep(100 * 1000); // wait 100ms to finish killing the pcap logger
-      DoStart();
-    }
-
-    if (new_json["storage"] != prev_json["storage"])
-    {
-      config.cleanLogsFromNonActiveStorage();
-    }
+    config.cleanLogsFromNonActiveStorage();
   }
 }
 
 //------------------------------------------------------------------------------
-static void TestFilter(char *arg)
+static void RemoveLogs()
+{
+  Debug_Printf("RemoveLogs() \n");
+  wp::Config config;
+  config.load();
+  config.cleanLogs(FOLDER_FLASH);
+  if (wp::getOptMemoryCard())
+  {
+    config.cleanLogs(FOLDER_SD);
+  }
+}
+
+//------------------------------------------------------------------------------
+static void TestFilter(const std::string & arg)
 {
   Debug_Printf("TestFilter() \n");
   nlohmann::json j;
   j["filter"] = "";
 
   bool result = true; // true as default to allow empty filter / no argument
-  if (arg != nullptr)
+  if (!arg.empty())
   {
     j["filter"] = UrlStringToString(arg);
     PcapSniffer& sniffer = PcapSniffer::Instance();
@@ -182,10 +230,10 @@ static void TestFilter(char *arg)
 }
 
 //------------------------------------------------------------------------------
-static bool CreateArchive(char *arg, bool includeAllFiles)
+static bool CreateArchive(const std::string & arg, bool includeAllFiles)
 {
   Debug_Printf("CreateArchive(,%s) \n", includeAllFiles ? "true" : "false");
-  if (arg == nullptr ||
+  if (arg.empty() ||
       !std::filesystem::is_directory(arg) ||
       !std::filesystem::exists(arg))
   {
@@ -210,7 +258,7 @@ static bool CreateArchive(char *arg, bool includeAllFiles)
 
     if (std::system(cmd.c_str()) == 0)
     {
-      Debug_Printf("Created archive at %s \n", arg);
+      Debug_Printf("Created archive at %s \n", arg.c_str());
       return true;
     }
   }
@@ -219,7 +267,7 @@ static bool CreateArchive(char *arg, bool includeAllFiles)
 }
 
 //------------------------------------------------------------------------------
-static void DoStop()
+static bool DoStop()
 {
   Debug_Printf("DoStop() \n");
   wp::Info info;
@@ -231,11 +279,15 @@ static void DoStop()
   {
     info.data.isRunning = false;
     info.save();
+
+    return true;
   }
+
+  return false;
 }
 
 //------------------------------------------------------------------------------
-static void DoStart()
+static int DoStart()
 {
   Debug_Printf("DoRun() \n");
   try {
@@ -249,6 +301,27 @@ static void DoStart()
     if(info.data.lastPid != 0) {
       if(0 == kill(info.data.lastPid, 0)) {
         throw std::invalid_argument("pcap_log is already running");
+      }
+    }
+
+    // create tmp partition if saving in RAM
+    if (config.data.storage == STORAGE_INTERNAL_FLASH)
+    {
+      auto full_path = std::filesystem::canonical(wp::getLogFolder(FOLDER_FLASH));
+      std::uintmax_t max_size = config.calcMaxPartitionSize();
+      bool result = max_size > 0;
+      // only create mountpoint if it is not one yet or the mounted path is empty
+      // to prevent deleting previous logs
+      if (result && (!is_mounted_dir(full_path) || std::filesystem::is_empty(full_path)))
+      {
+        result &= create_tmpfs_mount(full_path, max_size);
+      }
+
+      if (!result)
+      {
+        // failed to prepare mount, abort
+        ct_liblog_setLastError("Failed to create capture log location: Not enough memory. Lower the maximum log size or disable log rotation!");
+        return 10;
       }
     }
 
@@ -279,8 +352,9 @@ static void DoStart()
       info.save();
       ShowStats(info.data, false);
 
-      // filesize
-      if(info.data.lastFSize >= config.data.maxFilesize)
+      // filesize exceeded or file no longer exists
+      if(info.data.lastFSize >= config.data.maxFilesize ||
+         !std::filesystem::exists(sniffer.savefile))
       {
         RunLoop = sniffer.BreakLoop();
       }
@@ -310,10 +384,14 @@ static void DoStart()
     sniffer.Close();
     ShowStats(info.data, true);
     info.save();
+
+    return 0;
   }
   catch (std::exception& e) {
     Debug_Printf("%s \n", e.what());
   }
+
+  return 1;
 }
 
 //------------------------------------------------------------------------------
@@ -323,6 +401,7 @@ static void DoStart()
 int main(int    argc,
          char** argv)
 {
+  int result = 0;
   int oc;       // option character
   int ocIndex;  //
 
@@ -330,9 +409,12 @@ int main(int    argc,
   std::signal(SIGINT, HandleSignal);
   std::signal(SIGQUIT, HandleSignal);
 
-  bool archiveIncludeAllFiles = false;
+  opt_actions option_actions = opt_actions::none;
+  std::string config_optarg = "";
+  std::string filter_optarg = "";
+  std::string archive_optarg = "";
 
-  while((oc = getopt_long(argc, argv, "dfhic::t::a:", &longopts[0], &ocIndex)) != -1)
+  while((oc = getopt_long(argc, argv, "dfrhic::t::a:", &longopts[0], &ocIndex)) != -1)
   {
     Debug_Printf("case: -%c \n", oc);
     switch(oc)
@@ -342,35 +424,44 @@ int main(int    argc,
         Debug_Printf("debugPrintOn(), argc: %i \n", argc);
         break;
       case 'f':
-        archiveIncludeAllFiles = true;
+        option_actions |= opt_actions::archive_all;
         break;
       case 'c':
-        if(nullptr ==optarg)
+        if(nullptr == optarg)
         {
-          ShowConfig();
+          option_actions |= opt_actions::get_config;
         }
         else
         {
-          ChangeConfig(optarg);
+          option_actions |= opt_actions::set_config;
+          config_optarg = optarg;
         }
         break;
       case 'i':
-        ShowInfo();
+        option_actions |= opt_actions::get_info;
         break;
       case '0':
-        DoStop();
+        option_actions |= opt_actions::stop_pcap;
         break;
       case '1':
-        DoStart();
+        option_actions |= opt_actions::restart_pcap;
         break;
       case 't':
-        TestFilter(optarg);
+        option_actions |= opt_actions::test_filter;
+        if (optarg != nullptr)
+        {
+          filter_optarg = optarg;
+        }
         break;
       case 'a':
-        if (!CreateArchive(optarg, archiveIncludeAllFiles))
+        option_actions |= opt_actions::archive;
+        if (optarg != nullptr)
         {
-          Debug_Printf("Failed to create the archive.\n");
+          archive_optarg = optarg;
         }
+        break;
+      case 'r':
+        option_actions |= opt_actions::rm_logs;
         break;
       // invalid options, missing option argument or show help
       case '?':
@@ -382,8 +473,65 @@ int main(int    argc,
     }
   }
 
-  return 0;
+  if (test(option_actions & opt_actions::get_info))
+  {
+    ShowInfo();
+  }
+
+  if (test(option_actions & opt_actions::get_config))
+  {
+    ShowConfig();
+  }
+
+  if (test(option_actions & opt_actions::test_filter))
+  {
+    TestFilter(filter_optarg);
+  }
+
+  if (test(option_actions & opt_actions::rm_logs))
+  {
+    RemoveLogs();
+  }
+
+  if (test(option_actions & opt_actions::archive))
+  {
+    if (!CreateArchive(archive_optarg, test(option_actions & opt_actions::archive_all)))
+    {
+      Debug_Printf("Failed to create the archive.\n");
+    }
+  }
+
+  bool wasRunningBefore = false;
+  if (test(option_actions & opt_actions::stop_pcap) ||
+      test(option_actions & opt_actions::set_config) ||
+      test(option_actions & opt_actions::restart_pcap))
+  {
+    wasRunningBefore = DoStop();
+  }
+
+  if (test(option_actions & opt_actions::set_config) && !config_optarg.empty())
+  {
+    ChangeConfig(config_optarg);
+
+    if (wasRunningBefore && !test(option_actions & opt_actions::stop_pcap))
+    {
+      // restart pcap if we stopped it before changing the config
+      option_actions |= opt_actions::restart_pcap;
+    }
+  }
+
+  if (test(option_actions & opt_actions::restart_pcap))
+  {
+    usleep(100 * 1000); // wait 100ms to finish killing the pcap logger in case it was stopped before
+    int start_result = DoStart();
+    if (start_result != 0)
+    {
+      Debug_Printf("Failed to start with code %d\n", start_result);
+      result = start_result;
+    }
+  }
+
+  return result;
 }
 
 //---- End of source file ------------------------------------------------------
-

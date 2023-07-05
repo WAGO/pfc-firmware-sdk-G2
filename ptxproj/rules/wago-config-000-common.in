@@ -167,7 +167,6 @@ menuconfig CONFIG_TOOLS
   select LIBNL3 if CT_LIBCTNETWORK
   select LIBMODBUSCONFIG if CT_MODBUS_CONFIG
 
-  select MDMD if CT_CONFIG_MDMD
   select NETCONFD if CT_GET_ACTUAL_ETH_CONFIG
   select SNMP_CONFIG_LIB if CT_GET_PORT_STATE
 
@@ -433,6 +432,22 @@ config CT_CHANGE_DEFAULT_WEBSERVER
   help
    Switch default web server btw. lighthttpd and CoDeSys WebVisu webserver.
 
+config CT_GET_WEBVISU
+  bool
+  default n
+  depends on CONFIG_TOOLS
+  prompt "get_webvisu"
+  help
+   Read configuration of WebVisu related websever settings.
+
+config CT_CONFIG_WEBVISU
+  bool
+  default n
+  depends on CONFIG_TOOLS
+  prompt "config_webvisu"
+  help
+   Allow configuration of WebVisu related websever settings.
+
 comment "CODESYS2 related config-tools disabled!"
 	depends on CONFIG_TOOLS && !PLCLINUXRT
 
@@ -577,6 +592,14 @@ config CT_CONFIG_RS232
   prompt "config_RS232"
   help
    Switch the application communicating over the serial interface (CoDeSys Debug/Linux console etc.).
+
+config CT_GET_RS485_SETTINGS
+  bool
+  default n
+  depends on CONFIG_TOOLS
+  prompt "get_rs485_settings"
+  help
+   get the RS485Settings
 
 config CT_SET_SERIAL_MODE
   bool
@@ -1015,24 +1038,6 @@ config CT_CONFIG_TFTP
   help
    Change TFTP settings.
 
-config CT_CONFIG_DHCPD
-  bool
-  default n
-  select CONFIG_DNSMASQ
-#  depends on CONFIG_TOOLS
-  prompt "config_dhcpd"
-  help
-   Change DHCP service settings. Only possible if dnsmasq is selected.
-
-config CT_CONFIG_DNS_SERVICE
-  bool
-  default n
-  select CONFIG_DNSMASQ
-#  depends on CONFIG_TOOLS
-  prompt "config_dns_service"
-  help
-   Change DNS service settings. Only possible if dnsmasq is selected.
-
 config CT_CONFIG_IOCHECKPORT
   bool
   default n
@@ -1057,24 +1062,6 @@ config CT_GET_TFTP_CONFIG
   prompt "get_tftp_config"
   help
    Get TFTP settings.
-
-config CT_GET_DHCPD_CONFIG
-  bool
-  default n
-  depends on CONFIG_DNSMASQ
-  depends on CONFIG_TOOLS
-  prompt "get_dhcpd_config"
-  help
-   Get DHCP service settings.
-
-config CT_GET_DNS_SERVICE_CONFIG
-  bool
-  default n
-  depends on CONFIG_DNSMASQ
-  depends on CONFIG_TOOLS
-  prompt "get_dns_service_config"
-  help
-   Get DNS name service settings.
 
 config CT_GET_IOCHECKPORT_CONFIG
   bool
@@ -1152,29 +1139,6 @@ config CT_MODBUS_CONFIG
   prompt "modbus_config"
   help
    Change Modbus settings
-
-###############################################################
-comment "MDMD related config-tools"
-depends on CONFIG_TOOLS
-
-config CT_CONFIG_MDMD
-  bool
-  default n
-  select CT_FEATURE_WAGODBUS
-  depends on CONFIG_TOOLS
-  prompt "config_mdmd"
-  help
-   WAGO Modem Management Daemon config tool.
-
-config CT_UPDATE_MODEM_FIRMWARE
-  bool
-  default n
-  select QFLASH
-  depends on CONFIG_TOOLS
-  prompt "update_modem_firmware"
-  help
-   Update 3g modem firmware.
-
 
 ###############################################################
 comment "Diagnostics related config-tools"

@@ -48,8 +48,8 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
 fi
 
 # filter input parmeter of input-string
-newWBMEnabled=$(GetParameterValue wbm-enabled "$*")
-restartOption=$(GetParameterValue restart-server "$*")
+newWBMEnabled=$(GetParameterValue wbm-enabled $*)
+restartOption=$(GetParameterValue restart-server $*)
 restartOption=${restartOption:-YES}
 
 if [ "$restartOption" != "YES" ] && [ "$restartOption" != "NO" ]; then

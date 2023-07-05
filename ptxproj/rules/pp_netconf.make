@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_PP_NETCONF) += pp_netconf
 #
 # Paths and names
 #
-PP_NETCONF_VERSION        := 0.1.0
+PP_NETCONF_VERSION        := 1.0.0
 PP_NETCONF_MD5            :=
 PP_NETCONF                := pp_netconf
 PP_NETCONF_BUILDCONFIG    := Release

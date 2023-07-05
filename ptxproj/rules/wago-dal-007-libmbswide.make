@@ -48,6 +48,7 @@ LOCAL_LIBMBSWIDE_PROJDIR	:= $(LOCAL_LIBMBSWIDE_DIR)/project
 
 LIBMBSWIDE_PACKAGE_NAME := $(LIBMBSWIDE)_$(LIBMBSWIDE_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 LIBMBSWIDE_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+LIBMBSWIDE_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(LIBMBSWIDE_PACKAGE_NAME)
 
 #---------------------------------------------------------------------------------------------------
 #   Get				Get common information
@@ -166,10 +167,10 @@ $(STATEDIR)/libmbswide.targetinstall:
 		@$(call install_fixup,  libmbswide, DESCRIPTION, missing)
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES 
 		#---  Extract precompiled binaries from archive
-		rm -rf $(LIBMBSWIDE_PLATFORMCONFIGPACKAGEDIR)/tmp/*  
-		cd $(LIBMBSWIDE_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+		mkdir -p $(LIBMBSWIDE_PACKAGE_DIR)
+		cd $(LIBMBSWIDE_PACKAGE_DIR) && \
 		ar -xov $(LIBMBSWIDE_PLATFORMCONFIGPACKAGEDIR)/$(LIBMBSWIDE_PACKAGE_NAME).ipk  
-		@$(call install_archive, libmbswide, 0, 0, $(LIBMBSWIDE_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+		@$(call install_archive, libmbswide, 0, 0, $(LIBMBSWIDE_PACKAGE_DIR)/data.tar.gz, /)
 else
 		#---  WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
 		@$(call install_copy,   libmbswide, 0, 0, 0755, $(LIBMBSWIDE_LIBDIR)/$(LIBMBSWIDE).so.$(LIBMBSWIDE_VERSION), /usr/lib/$(LIBMBSWIDE).so.$(LIBMBSWIDE_VERSION))

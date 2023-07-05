@@ -16,11 +16,12 @@ fi
 
 start()
 {
-    local action_runtime; action_runtime='down'
-    local action_webvisu; action_webvisu='down'
-    local action_opcua;   action_opcua='down'
-    local action_bacnet;  action_bacnet='down'
-    local runtime_active; runtime_active=$(/etc/config-tools/get_plc_config)
+    local action_runtime;       action_runtime='down'
+    local action_webvisu;       action_webvisu='down'
+    local action_webvisu_https; action_webvisu_https='down'
+    local action_opcua;         action_opcua='down'
+    local action_bacnet;        action_bacnet='down'
+    local runtime_active;       runtime_active=$(/etc/config-tools/get_plc_config)
 
     if [[ 1 == $runtime_active ]] ; then
 
@@ -28,6 +29,7 @@ start()
 
         if [[ 'enabled' == "$(/etc/config-tools/get_port_state codesys3-webserver)" ]]; then
             action_webvisu='up'
+            action_webvisu_https='up'
         fi
         if [[ 'true' == "$(/etc/config-tools/config_opcua -g enabled -o)" ]]; then
             action_opcua='up'
@@ -42,6 +44,7 @@ start()
 
     /etc/config-tools/firewall codesysr --apply "${action_runtime}"
     /etc/config-tools/firewall codesysw --apply "${action_webvisu}"
+    /etc/config-tools/firewall codesysw_https --apply "${action_webvisu_https}"
     /etc/config-tools/firewall opcua --apply "${action_opcua}"
 
     if [[ -x '/etc/config-tools/bacnet_config' ]]; then
@@ -53,6 +56,7 @@ stop()
 {
     /etc/config-tools/firewall codesysr --apply down
     /etc/config-tools/firewall codesysw --apply down
+    /etc/config-tools/firewall codesysw_https --apply down
     /etc/config-tools/firewall opcua --apply down
 
     if [[ -x '/etc/config-tools/bacnet_config' ]]; then

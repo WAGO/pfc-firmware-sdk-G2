@@ -326,7 +326,7 @@ void apply_rule (const std::string& rule)
         RuleFileEditor rule_file_editor;
         rule_file_editor.remove_duplicate_lines(rule);
 
-        oss << FW_IPR + " -n > /dev/null 2>&1 < " << rule;
+        oss << FW_IPR + " --wait -n >/dev/null 2>&1 < " << rule;
         const std::string cmd(oss.str());
 
         (void)exe_cmd(cmd, ret);

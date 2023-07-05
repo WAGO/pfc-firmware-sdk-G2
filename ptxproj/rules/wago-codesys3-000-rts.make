@@ -14,7 +14,7 @@
 #
 PACKAGES-$(PTXCONF_CODESYS3) += codesys3
 
-CODESYS3_VERSION    := 3.5.18.2.0
+CODESYS3_VERSION    := 3.5.18.4.0
 CODESYS3            := codesys-3
 CODESYS3_DIR        := $(BUILDDIR)/$(CODESYS3)
 CODESYS3_URL        := file://$(PTXDIST_WORKSPACE)/wago_intern/plc/codesys/$(CODESYS3)/
@@ -22,6 +22,7 @@ CODESYS3_SRC        := $(PTXDIST_WORKSPACE)/wago_intern/plc/codesys/$(CODESYS3)/
 
 CODESYS3_PACKAGE_NAME := codesys3_$(CODESYS3_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 CODESYS3_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+CODESYS3_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(CODESYS3_PACKAGE_NAME)
 CODESYS3_INCLUDE := $(PTXCONF_SYSROOT_TARGET)/usr/include/codesys3
 
 # ----------------------------------------------------------------------------
@@ -159,10 +160,10 @@ $(STATEDIR)/codesys3.targetinstall:
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 
 	# Extract precompiled binaries from archive
-	rm -rf $(CODESYS3_PLATFORMCONFIGPACKAGEDIR)/tmp/*
-	cd $(CODESYS3_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(CODESYS3_PACKAGE_DIR)
+	cd $(CODESYS3_PACKAGE_DIR) && \
 	ar -xov $(CODESYS3_PLATFORMCONFIGPACKAGEDIR)/$(CODESYS3_PACKAGE_NAME).ipk
-	@$(call install_archive, codesys3, -, -, $(CODESYS3_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, )
+	@$(call install_archive, codesys3, -, -, $(CODESYS3_PACKAGE_DIR)/data.tar.gz, )
 else
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
 	@$(call install_copy, codesys3, 0, 0, 0644, $(CODESYS3_DIR)/CoDeSysSP.cfg, $(PTXCONF_CDS3_PLCCONFIGDIR)/$(PTXCONF_CDS3_PLCCONFIGFILE), n)

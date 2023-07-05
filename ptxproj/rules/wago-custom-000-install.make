@@ -247,15 +247,6 @@ ifneq ($(PTXCONF_WAGO_CUSTOM_OMS_CONFIG_BBINIT_LINK),)
 endif
 endif
 
-ifdef PTXCONF_WAGO_CUSTOM_MDMD_STARTSCRIPT
-	@$(call install_alternative, wago-custom-install, 0, 0, 0755, \
-		/etc/init.d/mdmd, n)
-ifneq ($(PTXCONF_WAGO_CUSTOM_MDMD_BBINIT_LINK),)
-	@$(call install_link, wago-custom-install, ../init.d/mdmd, \
-	/etc/rc.d/$(PTXCONF_WAGO_CUSTOM_MDMD_BBINIT_LINK))
-endif
-endif
-
 ifdef PTXCONF_WAGO_CUSTOM_RAUC_STARTSCRIPT
 	@$(call install_alternative, wago-custom-install, 0, 0, 0755, \
 		/etc/init.d/rauc, n)

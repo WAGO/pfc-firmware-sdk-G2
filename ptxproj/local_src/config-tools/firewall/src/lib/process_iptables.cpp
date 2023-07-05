@@ -14,6 +14,10 @@
 /// \author Mariusz Podlesny : WAGO GmbH & Co. KG
 //------------------------------------------------------------------------------
 
+#include <algorithm>
+#include <getopt.h>
+#include <glib.h>
+
 #include "process_iptables.hpp"
 
 #include "error.hpp"
@@ -105,6 +109,97 @@ void rem_filter(xmldoc &doc, const std::vector<std::string> &argv) {
 
 } // anonymous namespace
 
+std::string normalize_argv(const std::string & str) {
+  std::vector<char> allowed_chars = { ' ', '-', '_' };
+  char *tmp;
+  std::string normalized;
+
+  if(str == "-")
+    return "-";
+
+  tmp = g_uri_unescape_string(str.c_str(), nullptr);
+
+  if(tmp != nullptr)
+  {
+    normalized = tmp;
+    free(tmp);
+  }
+
+  // keep in sync with "filter_tag" type in "/etc/firewall/patterns.xsd"
+  normalized.erase(std::remove_if(normalized.begin(),
+                                  normalized.end(),
+                                  [allowed_chars](unsigned char c) {
+                                    return !std::isalnum(c) && std::find(allowed_chars.begin(), allowed_chars.end(), c) == allowed_chars.end();
+                                  }),
+                   normalized.end());
+
+  return normalized;
+}
+
+char* const *c_argv(const std::vector<std::string> &packed) {
+  // + 1 for dummy
+  std::vector<char *> unpacked(packed.size() + 1);
+
+  // put dummy in front as getopt starts parsing at index 1
+  char* dummy = new char[5];
+  strcpy(dummy, "abce");
+  unpacked.front() = dummy;
+
+  std::transform(packed.begin(), packed.end(),
+                 unpacked.begin() + 1,
+                 [] (const std::string & arg) { char * clone = new char [arg.length() + 1];
+                                                strcpy(clone, arg.c_str());
+                                                return clone; }
+                );
+
+  char** clone = new char*[unpacked.size()];
+  copy(unpacked.begin(), unpacked.end(), clone);
+  return clone;
+}
+
+void transform_argv(const std::vector<std::string> &argv, const std::string short_options, const option *long_options, std::vector<std::string> &new_argv) {
+  // add + 1 for dummy which is added by "c_argv"
+  int argc = static_cast<int>(argv.size() + 1);
+
+  // getopt: do not print error messages
+  opterr = 0;
+
+  // initialise all options with "-" and overwrite them
+  // with values as specified by keyword args
+  std::fill(new_argv.begin(), new_argv.end(), "-");
+
+  // argv needs to be unpacked, i.e. vector to [] and
+  // elements from string() to c_str, to be usable in
+  // "getopt_long"
+  auto unpacked = c_argv(argv);
+
+  while (1) {
+    int optindex = 1;
+    std::vector<std::string>::size_type new_argv_index;
+
+    int optreturn = getopt_long(argc, unpacked, short_options.c_str(), long_options, &optindex);
+
+    // getopt returns -1 if all arguments parsed
+    if (optreturn == -1) {
+      break;
+    }
+
+    if(optreturn == '?') {
+      // error/unknown option
+      throw invalid_param_error("transform_argv::getopt");
+    }
+
+    // overwrite default value ("-") in "new_argv"
+    new_argv_index = static_cast<std::vector<std::string>::size_type>(optindex);
+    new_argv[new_argv_index] = std::string(optarg);
+  } // while(1)
+
+  for(auto i = 0; i < argc; ++i) {
+    delete unpacked[i];
+  }
+
+  delete unpacked;
+}
 
 void set_echo_if(xmldoc &doc, const std::vector<std::string> &argv) {
   if (4 != argv.size())
@@ -459,9 +554,53 @@ void rem_open_if(xmldoc &doc, const std::vector<std::string> &argv) {
     remove_node(std::move(interface));
 }
 
+void add_filter_kw(xmldoc &doc, const std::vector<std::string> &argv) {
+  // we want to stick to the old API, thus transform argv
+  // from keyword args to positional args which can then
+  // be fed into old API
+  auto new_argv =  std::vector<std::string>(11);
+
+  static std::string short_options = "s:i:p:o:m:r:d:a:t:l:g:";
+  static option long_options[] =
+  {
+    {"state",           required_argument, nullptr, 's'},
+    {"interface",       required_argument, nullptr, 'i'},
+    {"protocol",        required_argument, nullptr, 'p'},
+    {"sourceip",        required_argument, nullptr, 'o'},
+    {"sourcemask",      required_argument, nullptr, 'm'},
+    {"sourceport",      required_argument, nullptr, 'r'},
+    {"destinationip",   required_argument, nullptr, 'd'},
+    {"destinationmask", required_argument, nullptr, 'a'},
+    {"destinationport", required_argument, nullptr, 't'},
+    {"policy",          required_argument, nullptr, 'l'},
+    {"tag",             required_argument, nullptr, 'g'},
+    {0, 0, 0, 0}
+  };
+
+  // be aware of following behaviour of getopt:
+  //   The default is to permute the contents of argv while scanning it
+  //   so that eventually all the non-options are at the end. This
+  //   allows options to be given in any order, even with programs that
+  //   were not written to expect this.
+
+  transform_argv(argv, short_options, long_options, new_argv);
+
+  add_filter2(doc, new_argv);
+}
+
 void add_filter(xmldoc &doc, const std::vector<std::string> &argv) {
   if (10 != argv.size())
-    throw invalid_param_error();
+    throw invalid_param_error("add_filter");
+
+  auto new_argv = argv;
+  new_argv.push_back("-");
+
+  add_filter2(doc, new_argv);
+}
+
+void add_filter2(xmldoc &doc, const std::vector<std::string> &argv) {
+  if(11 != argv.size())
+    throw invalid_param_error("add_filter");
 
   const std::string &state(argv[0]);
   const std::string &ifname(argv[1]);
@@ -473,6 +612,7 @@ void add_filter(xmldoc &doc, const std::vector<std::string> &argv) {
   const std::string &dst_mask(argv[7]);
   const std::string &dst_port(argv[8]);
   const std::string &policy(argv[9]);
+  const std::string tag(normalize_argv(argv[10]));
 
   InterfaceMappingProvider mapping;
   auto corresponding_interface = mapping.get_interface(ifname);
@@ -484,6 +624,13 @@ void add_filter(xmldoc &doc, const std::vector<std::string> &argv) {
       || !is_match_opt(regex::rex_port_range, dst_port) || !is_match_std(regex::rex_policy, policy)
       || ("-" == proto && ("-" != src_port || "-" != dst_port)) || ("-" == src_ip && "-" != src_mask)
       || ("-" == dst_ip && "-" != dst_mask))
+    throw invalid_param_error();
+
+  // "normalize_argv" eliminates all unwanted characters,
+  // thus we only need to constrain it to length
+  //
+  // note: keep in sync with "filter_tag" type in "/etc/firewall/patterns.xsd"
+  if(tag.length() < 1 || tag.length() > 42)
     throw invalid_param_error();
 
   if ("-" == corresponding_interface && "-" == src_ip && "-" == src_port && "-" == dst_ip && "-" == dst_port)
@@ -512,12 +659,57 @@ void add_filter(xmldoc &doc, const std::vector<std::string> &argv) {
   if ("-" != dst_port)
     append_attribute(rule, "dst_port", dst_port);
   append_attribute(rule, "policy", policy);
+  if ("-" != tag)
+    append_attribute(rule, "tag", tag);
+}
+
+void upd_filter_kw(xmldoc &doc, const std::vector<std::string> &argv) {
+  // we want to stick to the old API, thus transform argv
+  // from keyword args to positional args which can then
+  // be fed into old API
+  auto new_argv =  std::vector<std::string>(11);
+
+  static std::string short_options = "n:s:i:p:o:m:r:d:a:t:g:";
+  static option long_options[] =
+  {
+    {"index",           required_argument, nullptr, 'n'},
+    {"state",           required_argument, nullptr, 's'},
+    {"interface",       required_argument, nullptr, 'i'},
+    {"protocol",        required_argument, nullptr, 'p'},
+    {"sourceip",        required_argument, nullptr, 'o'},
+    {"sourcemask",      required_argument, nullptr, 'm'},
+    {"sourceport",      required_argument, nullptr, 'r'},
+    {"destinationip",   required_argument, nullptr, 'd'},
+    {"destinationmask", required_argument, nullptr, 'a'},
+    {"destinationport", required_argument, nullptr, 't'},
+    {"tag",             required_argument, nullptr, 'g'},
+    {0, 0, 0, 0}
+  };
+
+  // be aware of following behaviour of getopt:
+  //   The default is to permute the contents of argv while scanning it
+  //   so that eventually all the non-options are at the end. This
+  //   allows options to be given in any order, even with programs that
+  //   were not written to expect this.
+
+  transform_argv(argv, short_options, long_options, new_argv);
+
+  upd_filter2(doc, new_argv);
 }
 
 void upd_filter(xmldoc &doc, const std::vector<std::string> &argv) {
-
   if (10 != argv.size())
     throw invalid_param_error();
+
+  auto new_argv = argv;
+  new_argv.push_back("-");
+
+  upd_filter2(doc, new_argv);
+}
+
+void upd_filter2(xmldoc &doc, const std::vector<std::string> &argv) {
+  if (11 != argv.size())
+    throw invalid_param_error("upd_filter");
 
   const std::string &index(argv[0]);
   const std::string &state(argv[1]);
@@ -529,6 +721,7 @@ void upd_filter(xmldoc &doc, const std::vector<std::string> &argv) {
   const std::string &dst_ip(argv[7]);
   const std::string &dst_mask(argv[8]);
   const std::string &dst_port(argv[9]);
+  const std::string tag(normalize_argv(argv[10]));
 
   InterfaceMappingProvider mapping;
   auto corresponding_interface = mapping.get_interface(ifname);
@@ -540,6 +733,13 @@ void upd_filter(xmldoc &doc, const std::vector<std::string> &argv) {
       || !is_match_opt(regex::rex_ip4mask, dst_mask) || !is_match_opt(regex::rex_port_range, dst_port)
       || ("-" == proto && ("-" != src_port || "-" != dst_port)) || ("-" == src_ip && "-" != src_mask)
       || ("-" == dst_ip && "-" != dst_mask))
+    throw invalid_param_error();
+
+  // "normalize_argv" eliminates all non alpha characters,
+  // thus we only need to constrain it to length
+  //
+  // note: keep in sync with "/etc/firewall/patterns.xsd" - "filter_tag" type
+  if(tag.length() < 1 || tag.length() > 42)
     throw invalid_param_error();
 
   if ("-" == corresponding_interface && "-" == src_ip && "-" == src_port && "-" == dst_ip && "-" == dst_port)
@@ -561,6 +761,7 @@ void upd_filter(xmldoc &doc, const std::vector<std::string> &argv) {
   updrem_attribute(rule, "dst_ip", dst_ip);
   updrem_attribute(rule, "dst_mask", dst_mask);
   updrem_attribute(rule, "dst_port", dst_port);
+  updrem_attribute(rule, "tag", tag);
 }
 
 } // namespace impl
@@ -594,14 +795,25 @@ void process(xmldoc &doc, const std::string &cmd, const std::vector<std::string>
     impl::set_open_if(doc, argv);
   else if ("--rem-open-if" == cmd)
     impl::rem_open_if(doc, argv);
+  else if ("--add-filter2" == cmd)
+    impl::add_filter_kw(doc, argv);
   else if ("--add-filter" == cmd)
     impl::add_filter(doc, argv);
+  else if ("--upd-filter2" == cmd)
+    impl::upd_filter_kw(doc, argv);
   else if ("--upd-filter" == cmd)
     impl::upd_filter(doc, argv);
   else if ("--rem-filter" == cmd)
     impl::rem_filter(doc, argv);
   else
     throw invalid_param_error();
+}
+
+void process_internal(xmldoc &doc, const std::string &cmd, const std::vector<std::string> &argv) {
+  if ("--internal-add-filter2" == cmd)
+    impl::add_filter2(doc, argv);
+  else
+    process(doc, cmd, argv);
 }
 
 }  // namespace iptables

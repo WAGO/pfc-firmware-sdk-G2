@@ -343,6 +343,10 @@ Status IPManager::SetDhcpClientID(const ::std::string &client_id) {
   return dyn_ip_client_admin_.SetClientIDAndRestartAllClients(client_id);
 }
 
+::std::string IPManager::GetDhcpClientID(){
+  return dyn_ip_client_admin_.GetClientID();
+}
+
 bool IPManager::HasToBePersisted(const IPConfig &ip_config) const {
   auto netdev = netdev_manager_.GetByName(ip_config.interface_);
   if (netdev && IsIncluded(netdev->GetDeviceType(), PersistedDeviceTypes())) {

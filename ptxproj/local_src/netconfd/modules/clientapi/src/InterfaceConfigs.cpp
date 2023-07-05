@@ -85,7 +85,7 @@ static ::std::string InterfaceConfigToString(const netconf::InterfaceConfig &con
   }
   if (config.mac_learning_ != MacLearning::UNKNOWN) {
     auto learning = ::std::string(config.mac_learning_ == MacLearning::ON ? "on" : "off");
-    values.push_back("state=" + learning);
+    values.push_back("maclearning=" + learning);
   }
   return boost::algorithm::join(values, sep);
 }

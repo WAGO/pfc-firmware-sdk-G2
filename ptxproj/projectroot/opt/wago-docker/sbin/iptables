@@ -22,18 +22,39 @@
 # Author:   Fabian Schwamborn, WAGO GmbH & Co. KG
 #-----------------------------------------------------------------------------#
 
-IPTABLES_BIN="/sbin/iptables"           #correct path, otherwise this script calls itself recursively!
+in_array()
+{
+  local needle="$1"
+  local haystack="$2"
+
+  for blade_of_grass in $haystack; do
+    [[ "$blade_of_grass" == "$needle" ]] && return 0
+  done
+
+  return 1
+}
+
+add_wait=''
+if ! in_array "--wait" "${*}"; then
+  add_wait='--wait'
+fi
+
+# correct path, otherwise this script calls itself recursively!
+IPTABLES_BIN="/sbin/iptables"
 
 NETNS_PATH="/var/run/netns"
 DOCKER_IPT_NAMESPACE="WAGO_DOCKER_IPT"
 NAMESPACE_ROOT="/proc/1/ns/net"
 NAMESPACE_SELF="/proc/self/ns/net"
 
-$IPTABLES_BIN ${@} #execute command on iptables
+# execute command on iptables
+"$IPTABLES_BIN" "${@}"
 RET=$?
 
-if test -e $NETNS_PATH"/"$DOCKER_IPT_NAMESPACE && test $(readlink $NAMESPACE_ROOT) = $(readlink $NAMESPACE_SELF);then           #check if namespace is available and if this script is not running in a namespace
-    ip netns exec "$DOCKER_IPT_NAMESPACE" $IPTABLES_BIN ${@}  >> /dev/null 2>&1                                          #create shadow copy of iptables entry
+# check if namespace is available and if this script is not running in a namespace
+if test -e $NETNS_PATH"/"$DOCKER_IPT_NAMESPACE && test $(readlink $NAMESPACE_ROOT) = $(readlink $NAMESPACE_SELF); then
+    # create shadow copy of iptables entry
+    ip netns exec "$DOCKER_IPT_NAMESPACE" "$IPTABLES_BIN" "${@}"  >/dev/null 2>&1
 fi
 
 exit $RET

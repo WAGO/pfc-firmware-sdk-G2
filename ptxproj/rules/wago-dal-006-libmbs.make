@@ -43,6 +43,7 @@ LIBMBS_SRC  			:= $(PTXDIST_WORKSPACE)/wago_intern/device/modbus/slave
 
 LIBMBS_PACKAGE_NAME := $(LIBMBS)_$(LIBMBS_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 LIBMBS_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+LIBMBS_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(LIBMBS_PACKAGE_NAME)
 
 #---  local paths within the package  ------------------------------------------
 LOCAL_LIBMBS_DIR		:= $(LIBMBS_DIR)/$(LIBMBS)
@@ -187,10 +188,10 @@ $(STATEDIR)/libmbs.targetinstall:
 		@$(call install_fixup,  libmbs, DESCRIPTION, missing)
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES 
         ##  Extract precompiled binaries from archive
-		rm -rf $(LIBMBS_PLATFORMCONFIGPACKAGEDIR)/tmp/*  
-		cd $(LIBMBS_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+		mkdir -p $(LIBMBS_PACKAGE_DIR)
+		cd $(LIBMBS_PACKAGE_DIR) && \
 		ar -xov $(LIBMBS_PLATFORMCONFIGPACKAGEDIR)/$(LIBMBS_PACKAGE_NAME).ipk  
-		@$(call install_archive, libmbs, 0, 0, $(LIBMBS_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+		@$(call install_archive, libmbs, 0, 0, $(LIBMBS_PACKAGE_DIR)/data.tar.gz, /)
 else
         ##  WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
 		@$(call install_copy,   libmbs, 0, 0, 0755, $(LIBMBS_LIBDIR)/$(LIBMBS).so.$(LIBMBS_VERSION), /usr/lib/$(LIBMBS).so.$(LIBMBS_VERSION))

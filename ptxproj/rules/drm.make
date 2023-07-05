@@ -35,6 +35,7 @@ DRM_MAKE_ENV        := $(CROSS_ENV) \
 
 DRM_PACKAGE_NAME                := $(DRM)_$(DRM_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 DRM_PLATFORMCONFIGPACKAGEDIR    := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+DRM_PACKAGE_DIR                 := $(PTXDIST_TEMPDIR)/package/$(DRM_PACKAGE_NAME)
 
 # ----------------------------------------------------------------------------
 # Extract
@@ -121,10 +122,10 @@ $(STATEDIR)/drm.targetinstall:
 
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 # Extract precompiled binaries from archive
-	rm -rf $(DRM_PLATFORMCONFIGPACKAGEDIR)/tmp/*
-	cd $(DRM_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(DRM_PACKAGE_DIR)
+	cd $(DRM_PACKAGE_DIR) && \
 	ar -xov $(DRM_PLATFORMCONFIGPACKAGEDIR)/$(DRM_PACKAGE_NAME).ipk
-	@$(call install_archive, drm, 0, 0, $(DRM_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+	@$(call install_archive, drm, 0, 0, $(DRM_PACKAGE_DIR)/data.tar.gz, /)
 else
 # WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE 
 #

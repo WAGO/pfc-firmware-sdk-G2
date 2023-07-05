@@ -13,7 +13,7 @@
  * Last Modification:
  *  $Author: u010391 $
  *  $Modtime: 20.04.2011 $
- *  $Revision: 65684 $
+ *  $Revision$
  */
 #ifndef OS_SPECIFIC_H_
 #define OS_SPECIFIC_H_

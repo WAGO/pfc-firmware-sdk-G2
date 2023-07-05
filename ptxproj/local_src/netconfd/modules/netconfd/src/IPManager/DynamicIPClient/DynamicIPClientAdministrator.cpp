@@ -89,4 +89,8 @@ Status DynamicIPClientAdministrator::SetClientIDAndRestartAllClients(::std::stri
   return s;
 }
 
+::std::string DynamicIPClientAdministrator::GetClientID(){
+  return client_id_;
+}
+
 } /* namespace netconf */

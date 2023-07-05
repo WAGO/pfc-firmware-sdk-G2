@@ -18,6 +18,7 @@ SVNREVISION_VERSION	:= 1.0
 # for binary artifacts
 SVNREVISION_PACKAGE_NAME := svnrevision_$(SVNREVISION_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 SVNREVISION_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+SVNREVISION_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(SVNREVISION_PACKAGE_NAME)
 
 # ----------------------------------------------------------------------------
 # Target-Install
@@ -52,10 +53,10 @@ $(STATEDIR)/svnrevision.targetinstall: $(PTXDIST_PTXCONFIG) $(PTXDIST_PLATFORMCO
 
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES 
 	# Extract precompiled binaries from archive
-	rm -rf $(SVNREVISION_PLATFORMCONFIGPACKAGEDIR)/tmp/*  
-	cd $(SVNREVISION_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(SVNREVISION_PACKAGE_DIR)
+	cd $(SVNREVISION_PACKAGE_DIR) && \
 	ar -xov $(SVNREVISION_PLATFORMCONFIGPACKAGEDIR)/$(SVNREVISION_PACKAGE_NAME).ipk  
-	@$(call install_archive, svnrevision, 0, 0, $(SVNREVISION_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+	@$(call install_archive, svnrevision, 0, 0, $(SVNREVISION_PACKAGE_DIR)/data.tar.gz, /)
 else
 
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE	

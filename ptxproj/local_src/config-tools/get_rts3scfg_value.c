@@ -11,7 +11,7 @@
 ///
 ///  \file     get_rts3scfg_value.c
 ///
-///  \version  $Revision: 65689 $1
+///  \version  $Revision$1
 ///
 ///  \brief    
 ///

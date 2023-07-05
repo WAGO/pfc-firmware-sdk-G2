@@ -66,7 +66,7 @@ MOSQUITTO_CONF_OPT	:= $(CROSS_CMAKE_USR) -v --jobs=1 \
 # ----------------------------------------------------------------------------
 #$(STATEDIR)/MOSQUITTO.install:
 #	@$(call targetinfo)
-#	make -C $(MOSQUITTO_DIR)-build  DESTDIR=$(PTXCONF_SYSROOT_TARGET) install
+#	$(MAKE) -C $(MOSQUITTO_DIR)-build  DESTDIR=$(PTXCONF_SYSROOT_TARGET) install
 #	@$(call touch)
 
 # ----------------------------------------------------------------------------

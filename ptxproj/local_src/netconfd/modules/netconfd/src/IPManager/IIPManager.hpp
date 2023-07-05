@@ -30,6 +30,7 @@ class IIPManager {
   virtual void OnDynamicIPEvent(const Interface& interface, DynamicIPEventAction action) = 0;
   virtual void OnHostnameChanged() = 0;
   virtual Status SetDhcpClientID(const ::std::string& client_id) = 0;
+  virtual ::std::string GetDhcpClientID() = 0;
 
 
 };

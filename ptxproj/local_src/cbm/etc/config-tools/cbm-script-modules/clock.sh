@@ -115,42 +115,16 @@ function MainClock
       5)  # timezone was selected -> show selection-menu with the possible timezones
           ShowEvaluateDataWindow "Change Timezone"
 
-          # create string for menu with the several different timezone-strings and show menu
-          # use tabs as IFS, so that the single lines can be splitted at the right place by wdialog
-          local menuString=""
-          local timezoneNr=1
-          local timezoneString=`./get_clock_data timezone-string-by-nr $timezoneNr`
           ifsBackup=$IFS
           IFS=$'\t'
-          while [ -n "$timezoneString" ]; do
-            menuString=`printf "%s$timezoneNr. $timezoneString$IFS" "$menuString"`
-            timezoneNr=$(($timezoneNr + 1))
-            timezoneString=`./get_clock_data timezone-string-by-nr $timezoneNr`
-          done
 
           # show menu
           WdialogWrapper "--menu" selection \
                     "$TITLE" \
-                    "Change Timezone ($timezone)" \
+                    "To change Timezone please use Web-Based-Management (WBM)" \
                     "0. Back to Clock Configuration Menu" \
                     $menuString 
           IFS=$ifsBackup
-
-          # if the user selected a timezone
-          if (( $selection > 0 )) && (( $selection < $timezoneNr )); then
-
-            ShowProcessingDataWindow "Clock Configuration"
-
-            # get the timezone-describtion-string which belongs to the selection 
-            newTimezone=`./get_clock_data timezone-string-by-nr $selection`
-        
-            # selected timezone is not the actual one - change it and show possible error
-            if [ "$timezone" != "$newTimezone" ]; then
-              newTimezone=`ReplaceSpaces $newTimezone`
-              ./config_timezone timezone=$newTimezone
-              ShowLastError
-            fi
-          fi
           ;;
 
       # TZ-string should be changed

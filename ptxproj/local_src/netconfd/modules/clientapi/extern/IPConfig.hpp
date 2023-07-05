@@ -171,7 +171,14 @@ Status SetTempFixIp();
  * This option is not persisted and taken into account in backup&restore.
  * With a hardware ore netconfd reset, this setting is discarded.
  */
-Status SetTempDHCPClientID(const ::std::string& clientID);
+Status SetTempDHCPClientID(const ::std::string& client_id);
+
+/**
+ * @brief This function gets the temorarly clientid (option 61) for the DHCP request.
+ * This option is not persisted and taken into account in backup&restore.
+ * With a hardware ore netconfd reset, this setting is discarded.
+ */
+Status GetTempDHCPClientID(::std::string& client_id);
 
 /**
  * Validate a candidate of new IP configuration.

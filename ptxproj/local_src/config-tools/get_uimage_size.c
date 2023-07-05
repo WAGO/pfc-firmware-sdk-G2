@@ -10,7 +10,7 @@
 ///
 ///  \file     get_uimage_size.c
 ///
-///  \version  $Revision: 65689 $
+///  \version  $Revision$
 ///
 ///  \brief    This config tool extracts the file size info from u-boot-style
 ///           uImage header. The size info is needed to copy the kernel file

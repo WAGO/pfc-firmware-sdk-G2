@@ -32,6 +32,10 @@
 //------------------------------------------------------------------------------
 std::string UrlStringToString(std::string const& urlStr);
 
+bool create_tmpfs_mount(const std::filesystem::path & mount_path, std::uintmax_t size_bytes);
+bool is_mounted_dir(const std::filesystem::path & dir);
+std::uintmax_t get_avail_mem();
+
 #ifdef __cplusplus
 extern "C"
 {

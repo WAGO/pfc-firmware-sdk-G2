@@ -10,7 +10,7 @@
 ///
 ///  \file     ledmisc.h
 ///
-///  \version  $Revision: 65689 $
+///  \version  $Revision$
 ///
 ///  \brief    <Insert description here>
 ///

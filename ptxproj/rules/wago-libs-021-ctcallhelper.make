@@ -24,6 +24,7 @@ LIBCTCALLHELPER_LICENSE	:= unknown
 
 LIBCTCALLHELPER_PACKAGE_NAME := $(LIBCTCALLHELPER)_$(LIBCTCALLHELPER_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 LIBCTCALLHELPER_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
+LIBCTCALLHELPER_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(LIBCTCALLHELPER_PACKAGE_NAME)
 
 # parameters passed from ptxdist
 # override the configured optimization when building the release version.
@@ -128,10 +129,10 @@ $(STATEDIR)/libctcallhelper.targetinstall:
 
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 	# Extract precompiled binaries from archive
-	rm -rf $(LIBCTCALLHELPER_PLATFORMCONFIGPACKAGEDIR)/tmp/*
-	cd $(LIBCTCALLHELPER_PLATFORMCONFIGPACKAGEDIR)/tmp && \
+	mkdir -p $(LIBCTCALLHELPER_PACKAGE_DIR)
+	cd $(LIBCTCALLHELPER_PACKAGE_DIR) && \
 	ar -xov $(LIBCTCALLHELPER_PLATFORMCONFIGPACKAGEDIR)/$(LIBCTCALLHELPER_PACKAGE_NAME).ipk
-	@$(call install_archive, libctcallhelper, 0, 0, $(LIBCTCALLHELPER_PLATFORMCONFIGPACKAGEDIR)/tmp/data.tar.gz, /)
+	@$(call install_archive, libctcallhelper, 0, 0, $(LIBCTCALLHELPER_PACKAGE_DIR)/data.tar.gz, /)
 else
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
 	@$(call install_copy, libctcallhelper, 0, 0, 0755, $(LIBCTCALLHELPER_DIR)/lib/.libs/libctcallhelper.so.0.0.0, /usr/lib/libctcallhelper.so.0.0.0)

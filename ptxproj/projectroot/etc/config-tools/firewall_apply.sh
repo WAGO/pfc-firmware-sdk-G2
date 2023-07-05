@@ -53,9 +53,8 @@ firewall_get_service_state()
         fi
         ;;
 
-    dhcpd)
-        running=$(/etc/config-tools/get_dhcpd_config --json | tr -d " '\"\t\n\r\v" | grep -e 'dhcpdState:enabled')
-        if [[ "x" != "x${running}" ]] ; then
+    codesysw_https)
+        if [[ "enabled" == "$(/etc/config-tools/get_port_state codesys3-webserver)" ]]; then
             active=1
         fi
         ;;
@@ -81,14 +80,7 @@ firewall_get_service_state()
         fi
         ;;
 
-    dns)
-        running=$(/etc/config-tools/get_dns_service_config -g dns-state)
-        if [[ "enabled" == "$running" ]] ; then
-            active=1
-        fi
-        ;;
-
-    ftp)
+     ftp)
         running=$(/etc/config-tools/config_ssl ftp-status)
         if [[ "enabled" == "$running" ]] ; then
             active=1
