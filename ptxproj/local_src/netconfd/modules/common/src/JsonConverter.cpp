@@ -141,7 +141,7 @@ Status JsonConverter::FromJsonString(const ::std::string &str, InterfaceStatuses
 }
 
 ::std::string JsonConverter::ToJsonString(const IPConfig &obj, JsonFormat format) const {
-  return json{{Interface::LabelFromName(obj.interface_), {{"ipaddr", obj.address_}, {"netmask", obj.netmask_}, {"source", obj.source_}}}}.dump(
+    return json{{Interface::LabelFromName(obj.interface_), {{"ipaddr", obj.address_}, {"netmask", obj.netmask_}, {"source", obj.source_}, {"dhcp-client-id", obj.dhcp_client_id_}}}}.dump(
       format == JsonFormat::COMPACT ? JSON_DUMP : JSON_PRETTY_DUMP);
 }
 

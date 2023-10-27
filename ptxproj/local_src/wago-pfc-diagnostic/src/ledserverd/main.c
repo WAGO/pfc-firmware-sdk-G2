@@ -774,6 +774,8 @@ void SigTerm(int sigNum, siginfo_t * info, void * ucontext)
   /* Get the address at the time the signal was raised */
 #if defined(__arm__)
   caller_address = (void *) uc->uc_mcontext.arm_pc; // RIP: arm specific
+#elif defined(__aarch64__) // gcc specific
+  caller_address = (void *) uc->uc_mcontext.pc; // RIP: aarch64 specific
 #elif defined(__x86_64__) // gcc specific
   caller_address = (void *) uc->uc_mcontext.rip; // RIP: x86_64 specific
 #elif defined(__i386__) // gcc specific

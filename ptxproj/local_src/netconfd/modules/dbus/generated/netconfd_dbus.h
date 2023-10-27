@@ -356,10 +356,6 @@ struct _netconfdIp_configIface
     netconfdIp_config *object,
     GDBusMethodInvocation *invocation);
 
-  gboolean (*handle_gettempdhcpclientid) (
-    netconfdIp_config *object,
-    GDBusMethodInvocation *invocation);
-
   gboolean (*handle_set) (
     netconfdIp_config *object,
     GDBusMethodInvocation *invocation,
@@ -371,11 +367,6 @@ struct _netconfdIp_configIface
     const gchar *arg_config);
 
   gboolean (*handle_setdipswitchconfig) (
-    netconfdIp_config *object,
-    GDBusMethodInvocation *invocation,
-    const gchar *arg_config);
-
-  gboolean (*handle_settempdhcpclientid) (
     netconfdIp_config *object,
     GDBusMethodInvocation *invocation,
     const gchar *arg_config);
@@ -418,17 +409,6 @@ void netconfd_ip_config_complete_getallcurrent (
 void netconfd_ip_config_complete_tempfixip (
     netconfdIp_config *object,
     GDBusMethodInvocation *invocation,
-    const gchar *result);
-
-void netconfd_ip_config_complete_settempdhcpclientid (
-    netconfdIp_config *object,
-    GDBusMethodInvocation *invocation,
-    const gchar *result);
-
-void netconfd_ip_config_complete_gettempdhcpclientid (
-    netconfdIp_config *object,
-    GDBusMethodInvocation *invocation,
-    const gchar *config,
     const gchar *result);
 
 void netconfd_ip_config_complete_getdipswitchconfig (
@@ -539,46 +519,6 @@ gboolean netconfd_ip_config_call_tempfixip_finish (
 
 gboolean netconfd_ip_config_call_tempfixip_sync (
     netconfdIp_config *proxy,
-    gchar **out_result,
-    GCancellable *cancellable,
-    GError **error);
-
-void netconfd_ip_config_call_settempdhcpclientid (
-    netconfdIp_config *proxy,
-    const gchar *arg_config,
-    GCancellable *cancellable,
-    GAsyncReadyCallback callback,
-    gpointer user_data);
-
-gboolean netconfd_ip_config_call_settempdhcpclientid_finish (
-    netconfdIp_config *proxy,
-    gchar **out_result,
-    GAsyncResult *res,
-    GError **error);
-
-gboolean netconfd_ip_config_call_settempdhcpclientid_sync (
-    netconfdIp_config *proxy,
-    const gchar *arg_config,
-    gchar **out_result,
-    GCancellable *cancellable,
-    GError **error);
-
-void netconfd_ip_config_call_gettempdhcpclientid (
-    netconfdIp_config *proxy,
-    GCancellable *cancellable,
-    GAsyncReadyCallback callback,
-    gpointer user_data);
-
-gboolean netconfd_ip_config_call_gettempdhcpclientid_finish (
-    netconfdIp_config *proxy,
-    gchar **out_config,
-    gchar **out_result,
-    GAsyncResult *res,
-    GError **error);
-
-gboolean netconfd_ip_config_call_gettempdhcpclientid_sync (
-    netconfdIp_config *proxy,
-    gchar **out_config,
     gchar **out_result,
     GCancellable *cancellable,
     GError **error);

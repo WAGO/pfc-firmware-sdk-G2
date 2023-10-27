@@ -21,6 +21,8 @@
 
 #include "wagosnmp_internal.h"
 
+INTERNAL_SYM unsigned int agent_init_alarm_register = 0;
+
 INTERNAL_SYM pthread_once_t snmp_is_initialized       = PTHREAD_ONCE_INIT;
 INTERNAL_SYM pthread_once_t snmp_agent_is_initialized = PTHREAD_ONCE_INIT;
 //------------------------------------------------------------------------------

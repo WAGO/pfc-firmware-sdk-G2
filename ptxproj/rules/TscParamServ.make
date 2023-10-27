@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_TSCPARAMSERV) += tscparamserv
 #
 # Paths and names
 #
-TSCPARAMSERV_VERSION        := 0.1.0
+TSCPARAMSERV_VERSION        := 0.2.0
 TSCPARAMSERV_MD5            :=
 TSCPARAMSERV                := TscParamServ
 TSCPARAMSERV_BUILDCONFIG    := Release

@@ -1,0 +1,13 @@
+## SECTION=wago_specific
+
+config DHCP_GET_VENDOR_INFO
+	bool
+	default n
+	select HOST_CT_BUILD
+	select CONFIG_TOOLS
+	select GOOGLETEST
+	select NLOHMANN_JSON
+	select BOOST
+	prompt "dhcp_get_vendor_info"
+	help
+		A config tool to read values previously set by DHCP option 43

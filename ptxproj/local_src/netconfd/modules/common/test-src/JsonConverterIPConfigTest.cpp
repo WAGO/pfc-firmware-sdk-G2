@@ -72,6 +72,7 @@ class JsonConverterIPConfigTest : public testing::Test {
     }
   }
    )";
+
 };
 
 static std::string& RemoveWhitespaces(std::string& str) {
@@ -129,6 +130,31 @@ TEST_F(JsonConverterIPConfigTest, ParsesToJsonStringInCaseOfMissingInterface) {
   auto json = parser_->ToJsonString(one_ip_config_empty_elements_);
 
   ExpectStringEqIgnoreNewlineAndBlank(json_one_ip_config_empty_elements_, json);
+}
+
+TEST_F(JsonConverterIPConfigTest, ParseWithDHCPClientID){
+  IPConfigs ip_config{{"br0", IPSource::DHCP, "test-client-id"}};
+  
+  ::std::string const expected_json =
+      R"(
+  {
+    "br0": {
+      "bcast": "0.0.0.0",
+      "dhcp-client-id": "test-client-id",
+      "ipaddr": "0.0.0.0",
+      "netmask": "0.0.0.0",
+      "source": "dhcp"
+    }
+  }
+   )";
+  auto json = parser_->ToJsonString(ip_config);
+  
+  ExpectStringEqIgnoreNewlineAndBlank(expected_json, json);
+  
+}
+
+TEST_F(JsonConverterIPConfigTest, FormatWithDHCPClientID){
+  
 }
 
 }  // namespace netconf

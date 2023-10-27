@@ -58,6 +58,13 @@ eth::InterfaceLinkState IPLink::GetLinkState() const {
   return link_state_;
 }
 
+::std::string IPLink::GetClientID() const {
+  if(ip_config_.has_value()){
+    return ip_config_.value().dhcp_client_id_;
+  }
+  return "";
+}
+
 void IPLink::SetAddress(const Address &address, const Netmask &netmask) {
   address_ = address;
   netmask_ = netmask;

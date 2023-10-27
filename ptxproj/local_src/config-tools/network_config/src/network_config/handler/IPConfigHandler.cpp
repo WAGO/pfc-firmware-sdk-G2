@@ -140,34 +140,13 @@ void IPConfigHandler::SetConfig() {
 ::netconf::api::IPConfigs IPConfigHandler::CreateIPConfigs() {
 
   auto value = GetValueOfSet(vm_);
+  napi::IPConfigs ip_configs;
   if (!value.empty()) {
-    napi::IPConfigs ip_configs;
     auto error = napi::MakeIPConfigs(value, ip_configs);
     return error.IsOk() ? ip_configs : throw NetconfStatus { error };
   }
-
-  auto ip_config = ::netconf::IPConfig();
-
-  if (vm_.count("device") > 0) {
-    ip_config.interface_ = vm_["device"].as<::std::string>();
-  }
-
-  if (vm_.count("ipaddr") > 0) {
-    ip_config.address_ = netconf::Address{ vm_["ipaddr"].as<::std::string>()};
-  }
-
-  if (vm_.count("netmask") > 0) {
-    ip_config.netmask_ = netconf::Netmask{ vm_["netmask"].as<::std::string>()};
-  }
-
-  if (vm_.count("prefix") > 0) {
-    throw ::std::logic_error("Option prefix is not implemented yet");
-  }
-
-  auto ip_configs = napi::IPConfigs { };
-  ip_configs.AddIPConfig(ip_config);
-
   return ip_configs;
+
 }
 
 IPConfigHandler::IPConfigHandler(IPConfigHandler &&other) noexcept
@@ -185,6 +164,9 @@ IPConfigHandler::IPConfigHandler(IPConfigHandler &&other) noexcept
     output << " ipaddr=" << ip_config.address_;
     output << " netmask=" << ip_config.netmask_;
     output << " bcast=" << netconf::api::CalculateBroadcast(ip_config);
+    if(!ip_config.dhcp_client_id_.empty()){
+      output << " dhcp-client-id=" << ip_config.dhcp_client_id_;
+    }
     output << " ";
   } else if (format == "json") {
     output << napi::ToJson(ip_config);

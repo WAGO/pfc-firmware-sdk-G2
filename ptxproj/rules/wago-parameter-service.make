@@ -24,7 +24,7 @@ PACKAGES-$(PTXCONF_WAGO_PARAMETER_SERVICE) += wago-parameter-service
 #
 # Paths and names
 #
-WAGO_PARAMETER_SERVICE_VERSION        := 1.0.1
+WAGO_PARAMETER_SERVICE_VERSION        := 1.0.2
 WAGO_PARAMETER_SERVICE_MD5            :=
 WAGO_PARAMETER_SERVICE_BASE           := parameter-service
 WAGO_PARAMETER_SERVICE                := wago-$(WAGO_PARAMETER_SERVICE_BASE)-$(WAGO_PARAMETER_SERVICE_VERSION)
@@ -86,8 +86,6 @@ endif
 # ----------------------------------------------------------------------------
 # Install
 # ----------------------------------------------------------------------------
-$(STATEDIR)/wago-parameter-service.install: export WAGO_PARAMETER_SERVICE_PYTHON3=$(HOSTPYTHON3)
-
 $(STATEDIR)/wago-parameter-service.install:
 	@$(call targetinfo)
 
@@ -168,7 +166,7 @@ endif # PTXCONF_WAGO_PARAMETER_SERVICE_DAEMON
 $(STATEDIR)/wago-parameter-service.clean:
 	@$(call targetinfo)
 
-	rm -rf $(PTXCONF_SYSROOT_TARGET)/usr/include/paramserv/
+	rm -rf $(PTXCONF_SYSROOT_TARGET)/usr/include/wago/paramserv/
 	@if [ -d $(WAGO_PARAMETER_SERVICE_DIR) ]; then \
 	  $(WAGO_PARAMETER_SERVICE_MAKE_ENV) $(WAGO_PARAMETER_SERVICE_PATH) $(MAKE) $(MFLAGS) -C $(WAGO_PARAMETER_SERVICE_DIR) clean; \
 	fi

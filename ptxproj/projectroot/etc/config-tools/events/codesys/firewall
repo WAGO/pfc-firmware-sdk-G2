@@ -4,7 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2018-2022 WAGO GmbH & Co. KG
+# Copyright (c) 2018-2023 WAGO GmbH & Co. KG
 
 #
 # Firewall: codesys and codesys3 demons events handler
@@ -27,9 +27,9 @@ start()
 
         action_runtime='up'
 
-        if [[ 'enabled' == "$(/etc/config-tools/get_port_state codesys3-webserver)" ]]; then
-            action_webvisu='up'
+        if [[ 'enabled' == "$(/etc/config-tools/get_port_state codesys3-webserver)" ]] && [[ "YES" == "$(/etc/config-tools/get_webvisu use-separated-ports)" ]]; then
             action_webvisu_https='up'
+            action_webvisu='up'
         fi
         if [[ 'true' == "$(/etc/config-tools/config_opcua -g enabled -o)" ]]; then
             action_opcua='up'

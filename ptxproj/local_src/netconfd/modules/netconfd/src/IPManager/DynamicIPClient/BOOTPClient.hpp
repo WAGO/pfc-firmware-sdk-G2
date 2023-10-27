@@ -33,6 +33,9 @@ class BOOTPClient : public IDynamicIPClient {
   Netmask GetNetmaskFromLease() override;
   ::std::string GetHostnameFromLease() override;
   ::std::string GetDomainFromLease() override;
+  ::std::string GetClientID() override {
+    return "";
+  }
 
  private:
   LeaseFile lease_file_;

@@ -47,6 +47,9 @@ create_lease_file () {
   [[ -n "$hostname" ]] && echo "DHCPHOSTNAME=$hostname" >> "$LEASE_FILE"
   [[ -n "$domain" ]] && echo "DHCPDOMAIN=$domain" >> "$LEASE_FILE"
 
+  # Write vendor information
+  [[ -n "$opt43" ]] && echo "VENDORINFO=$opt43" >> "$LEASE_FILE"
+
   # Write dns server to tmp file
   if [[ -n "$dns" ]] ; then
       index=1

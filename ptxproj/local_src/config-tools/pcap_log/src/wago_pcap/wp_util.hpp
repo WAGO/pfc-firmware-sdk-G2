@@ -31,6 +31,7 @@
 // function prototypes
 //------------------------------------------------------------------------------
 std::string UrlStringToString(std::string const& urlStr);
+bool check_allowed_and_canonicalise_extra_file_path(std::string & path);
 
 bool create_tmpfs_mount(const std::filesystem::path & mount_path, std::uintmax_t size_bytes);
 bool is_mounted_dir(const std::filesystem::path & dir);

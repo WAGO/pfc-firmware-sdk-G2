@@ -16,12 +16,12 @@ PACKAGES-$(PTXCONF_RAUC) += rauc
 #
 # Paths and names
 #
-RAUC_VERSION	:= 1.2
-RAUC_MD5	:= e2a1772825c6ea900e4824b670846a00
+RAUC_VERSION	:= 1.9
+RAUC_MD5	:= 5b6ca0032185828f8f22d9a416319c3a
 RAUC		:= rauc-$(RAUC_VERSION)
 RAUC_SUFFIX	:= tar.xz
-RAUC_URL	:= https://github.com/rauc/rauc/releases/download/v$(RAUC_VERSION)/$(RAUC).$(RAUC_SUFFIX)
-RAUC_SOURCE	:= $(SRCDIR)/$(RAUC).$(RAUC_SUFFIX)
+RAUC_URL	:= https://github.com/rauc/rauc/releases/download/v$(RAUC_VERSION)/$(RAUC)-autotools.$(RAUC_SUFFIX)
+RAUC_SOURCE	:= $(SRCDIR)/$(RAUC)-autotools.$(RAUC_SUFFIX)
 RAUC_DIR	:= $(BUILDDIR)/$(RAUC)
 ifeq ($(BUILDTYPE),release)
 	RAUC_CERTIFICATE ?= $(PTXCONF_RAUC_RELEASE_CERT)
@@ -85,6 +85,15 @@ ifeq ($(PTXCONF_PLATFORM), $(filter $(PTXCONF_PLATFORM),wago-pfcXXX wago-pfcXXX-
 	@$(call install_link, rauc, system.conf.pfcv1, /etc/rauc/system.conf.pfc200)
 	@$(call install_link, rauc, system.conf.pfcv2, /etc/rauc/system.conf.pfc200v2)
 	@$(call install_link, rauc, system.conf.pfcv3, /etc/rauc/system.conf.pfc200v3)
+	@$(call install_link, rauc, system.conf.pfcv3, /etc/rauc/system.conf.pfc100g2)
+endif
+
+ifeq ($(PTXCONF_PLATFORM), wago-pfc300)
+	@$(call install_alternative, rauc, 0, 0, 0644, /etc/rauc/system.conf.pfcv3)
+	@$(call install_replace, rauc, /etc/rauc/system.conf.pfcv3, \
+		@RAUC_BUNDLE_COMPATIBLE@, \
+		$(PTXCONF_RAUC_COMPATIBLE))
+	@$(call install_link, rauc, system.conf.pfcv3, /etc/rauc/system.conf.pfc300)
 endif
 
 ifeq ($(PTXCONF_PLATFORM), wago-pfc-adv)

@@ -14,7 +14,7 @@
 #
 PACKAGES-$(PTXCONF_CDS3_TSCTIME) += cds3-tsctime
 
-CDS3_TSCTIME_VERSION	 := 0.0.4
+CDS3_TSCTIME_VERSION	 := 0.0.5
 CDS3_TSCTIME              := TscTime
 CDS3_TSCTIME_DIR          := $(BUILDDIR)/$(CDS3_TSCTIME)
 CDS3_TSCTIME_URL          := file://$(PTXDIST_WORKSPACE)/wago_intern/codesys3-Component/$(CDS3_TSCTIME)

@@ -16,6 +16,16 @@ menuconfig KERNEL
 
 if KERNEL
 
+config KERNEL_ARTIFACTORY
+	prompt "artifactory release"
+	bool
+	default y
+	help
+	  Select this symbol if a kernel relases should be used from artifactory.
+	  Otherwise the good old patch based kernel build is used.
+
+if KERNEL_ARTIFACTORY
+
 config KERNEL_URL_TEMPLATE
 	string
 	depends on KERNEL
@@ -24,6 +34,17 @@ config KERNEL_URL_TEMPLATE
 	help
 	  Encodes the desired artifact version. Can be configured to a specific version or to a latest compatible version of an artifact.
 	  See Confluence for further details.
+
+config KERNEL_RT_PATCH
+	prompt "RT patch number"
+	string
+
+config KERNEL_LOCALVERSION
+	prompt "Internal linux version (i.e. w04.01.01)"
+	string
+
+endif
+
 
 config KERNEL_XPKG
 	bool
@@ -54,14 +75,6 @@ config KERNEL_VERSION
 
 config KERNEL_MD5
 	prompt "kernel source md5sum"
-	string
-
-config KERNEL_RT_PATCH
-	prompt "RT patch number"
-	string
-
-config KERNEL_LOCALVERSION
-	prompt "Internal linux version (i.e. w04.01.01)"
 	string
 
 choice
@@ -168,16 +181,41 @@ endif
 
 config KERNEL_IMAGE
 	string
-	default "bzImage" if KERNEL_IMAGE_BZ
-	default "Image.gz"  if KERNEL_IMAGE_Z && ARCH_ARM64
-	default "zImage"  if KERNEL_IMAGE_Z
+	default "bzImage"  if KERNEL_IMAGE_BZ
+	default "Image.gz" if KERNEL_IMAGE_Z && ARCH_ARM64
+	default "zImage"   if KERNEL_IMAGE_Z
 	default "xipImage" if KERNEL_IMAGE_XIP
-	default "${PTXCONF_KERNEL_IMAGE_U_TARGET}"  if KERNEL_IMAGE_U
-	default "vmImage" if KERNEL_IMAGE_VM
-	default "vmlinux" if KERNEL_IMAGE_VMLINUX
-	default "vmlinuz" if KERNEL_IMAGE_VMLINUZ
-	default "Image"   if KERNEL_IMAGE_RAW
+	default "uImage"   if KERNEL_IMAGE_U
+	default "vmImage"  if KERNEL_IMAGE_VM
+	default "vmlinux"  if KERNEL_IMAGE_VMLINUX
+	default "vmlinuz"  if KERNEL_IMAGE_VMLINUZ
+	default "Image"    if KERNEL_IMAGE_RAW
 	default "simpleImage.${PTXCONF_KERNEL_IMAGE_SIMPLE_TARGET}.elf" if KERNEL_IMAGE_SIMPLE
+
+menuconfig KERNEL_DTB
+	bool
+	prompt "Build device trees            "
+
+if KERNEL_DTB
+
+config KERNEL_DTS_PATH
+	string "path to source dts file"
+	default "${PTXDIST_PLATFORMCONFIG_SUBDIR}/dts:${KERNEL_DIR}/arch/${GENERIC_KERNEL_ARCH}/boot/dts"
+	help
+	  Define path to the dts source file. Multiple directories can be
+	  specified separated by ':'. A relative path will be expanded relative
+	  to the workspace and all other layers. Only one of the specified paths
+	  can be a relative path.
+
+config KERNEL_DTS
+	string "source dts file"
+	default "<yourboard>.dts"
+	help
+	  Select the dts file to use for the device tree binary
+	  blob generation. For relative file names KERNEL_DTS_PATH
+	  is used as a search path for the device tree files specified
+	  here. Multiple dts files can be specified, separated by spaces.
+endif
 
 config KERNEL_XZ
 	prompt "build xz-utils hosttool"

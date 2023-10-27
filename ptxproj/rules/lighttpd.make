@@ -20,15 +20,15 @@ PACKAGES-$(PTXCONF_LIGHTTPD) += lighttpd
 #
 # Paths and names
 #
-LIGHTTPD_BASE_VERSION  := 1.4.67
-LIGHTTPD_WAGO_VERSION  := wago13
+LIGHTTPD_BASE_VERSION  := 1.4.70
+LIGHTTPD_WAGO_VERSION  := wago3
 LIGHTTPD_VERSION       := $(LIGHTTPD_BASE_VERSION)+$(LIGHTTPD_WAGO_VERSION)
 LIGHTTPD_ARCHIVE_NAME  := lighttpd-$(LIGHTTPD_BASE_VERSION)
 LIGHTTPD               := lighttpd-$(LIGHTTPD_VERSION)
 LIGHTTPD_SUFFIX        := tar.xz
 LIGHTTPD_URL           := https://download.lighttpd.net/lighttpd/releases-1.4.x/$(LIGHTTPD_ARCHIVE_NAME).$(LIGHTTPD_SUFFIX)
 LIGHTTPD_SOURCE        := $(SRCDIR)/$(LIGHTTPD_ARCHIVE_NAME).$(LIGHTTPD_SUFFIX)
-LIGHTTPD_MD5           := 64822c5061001673162cf9775d91a80b
+LIGHTTPD_MD5           := 2d06846ec1ac6d1ea96f132a6ebf3296
 LIGHTTPD_DIR           := $(BUILDDIR)/$(LIGHTTPD)
 LIGHTTPD_LICENSE       := BSD-3-Clause AND BSD-2-Clause AND OML AND RSA-MD AND Apache-2.0
 LIGHTTPD_LICENSE_FILES := \
@@ -195,6 +195,8 @@ endif
 		/etc/lighttpd/webvisu.conf)
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
 		/etc/lighttpd/openapi.conf)
+	@$(call install_alternative, lighttpd, 0, 0, 0600, \
+		/etc/lighttpd/auth_service.conf)
 
 # Config directory for FCGI plugins
 	@$(call install_copy, lighttpd, 0, 0, 0755, \
@@ -319,6 +321,11 @@ else
 		/var/www/index.html)
 endif
 endif
+
+# license
+	@$(call install_copy, lighttpd, 0, 0, 0644, \
+		$(PTXDIST_WORKSPACE)/projectroot/usr/share/licenses/oss/license.lighttpd_$(LIGHTTPD_BASE_VERSION).txt, \
+		/usr/share/licenses/oss/license.lighttpd_$(LIGHTTPD_VERSION).txt)
 
 	@$(call install_finish, lighttpd)
 	@$(call touch)

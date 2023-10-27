@@ -910,6 +910,8 @@ fwupdate_checkpoint_unconfirmed()
 {
     local PANIC_ON_ERROR=$1
     fwupdate_checkpoint_main_state "$WAGO_FW_UPDATE_UNCONFIRMED_STATE" 930 "$WAGO_FW_UPDATE_UNCONFIRMED_STATE_TIMEOUT" $PANIC_ON_ERROR
+    
+    fwupdate_execute_listener_scripts "$WAGO_FW_UPDATE_LISTENER_SCRIPT_UNCONFIRMED"
 }
 
 # Function to mark reached checkpoint "confirmed".
@@ -954,6 +956,8 @@ fwupdate_checkpoint_error()
     local PANIC_ON_ERROR=$1
     # No timeout allowed in error state
     fwupdate_checkpoint_main_state "$WAGO_FW_UPDATE_ERROR_STATE" 0 "" $PANIC_ON_ERROR
+
+    fwupdate_execute_listener_scripts "$WAGO_FW_UPDATE_LISTENER_SCRIPT_ERROR"
 }
 
 # Function to mark reached inactive state.
@@ -1591,6 +1595,55 @@ fwupdate_create_tmp_folder()
 fwupdate_check_tmp_folder()
 {
     find "$WAGO_FW_UPDATE_DEFAULT_TMP_DIR" -type d -user "root" -group "$WAGO_FW_UPDATE_GROUP" -perm 0770 | grep -q '.*'
+}
+
+# Function to create the file in which processes can list commands that are executed
+# on finish or error.
+#
+# Return: 0 if script file was created and the permissions were set correctly
+#-----------------------------------------------------------------------------#
+fwupdate_create_listener_script_files()
+{
+    if [ -d "$WAGO_FW_UPDATE_LISTENER_SCRIPT_DIR" ] && [ ! "$(find $WAGO_FW_UPDATE_LISTENER_SCRIPT_DIR -maxdepth 0 -perm -u=rw,o=,g= -printf "%m")" == "600" ]; then
+        rm -rf $WAGO_FW_UPDATE_LISTENER_SCRIPT_DIR
+    fi
+    if [ ! -e "$WAGO_FW_UPDATE_LISTENER_SCRIPT_DIR" ]; then
+        mkdir -m 600 -p $WAGO_FW_UPDATE_LISTENER_SCRIPT_DIR
+    fi
+    
+    if [ ! -e "$WAGO_FW_UPDATE_LISTENER_SCRIPT_UNCONFIRMED" ]; then
+        touch $WAGO_FW_UPDATE_LISTENER_SCRIPT_UNCONFIRMED
+        chmod 600 "$WAGO_FW_UPDATE_LISTENER_SCRIPT_UNCONFIRMED"
+    fi
+    if [ ! -e "$WAGO_FW_UPDATE_LISTENER_SCRIPT_ERROR" ]; then
+        touch $WAGO_FW_UPDATE_LISTENER_SCRIPT_ERROR
+        chmod 600 "$WAGO_FW_UPDATE_LISTENER_SCRIPT_ERROR"
+    fi
+}
+
+# Function remove post scripts file
+#
+# Return: 0 if scripts were deleted successfully
+#-----------------------------------------------------------------------------#
+fwupdate_remove_listener_script_files()
+{
+    if [ -e "$WAGO_FW_UPDATE_LISTENER_SCRIPT_DIR" ]; then
+        rm -rf $WAGO_FW_UPDATE_LISTENER_SCRIPT_DIR
+    fi
+}
+
+# Function remove post scripts file
+#
+# Return: 0 if all commands were executed successfully
+#-----------------------------------------------------------------------------#
+fwupdate_execute_listener_scripts()
+{
+    if [ -e "$1" ]; then
+        while IFS= read -r line
+        do
+            $line
+        done < "$1"
+    fi
 }
 
 fi #if [[ ${FWUPDATE_COMMON_:-} != "fwupdate_common" ]]; then

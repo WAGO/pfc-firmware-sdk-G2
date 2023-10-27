@@ -31,6 +31,8 @@
 //------------------------------------------------------------------------------
 // defines; structure, enumeration and type definitions
 //------------------------------------------------------------------------------
+#define ALLOWED_FILE_PARENT_DIR "/var/tmp/"
+#define ALLOWED_FILE_EXTENSION ".log"
 
 //------------------------------------------------------------------------------
 // function prototypes
@@ -66,6 +68,31 @@ std::string UrlStringToString(std::string const& urlStr)
   return result;
 }
 
+bool check_allowed_and_canonicalise_extra_file_path(std::string & path)
+{
+  try
+  {
+    std::filesystem::path file_path = std::filesystem::canonical(path);
+    path = file_path.string();
+
+    if (path.compare(0, std::string(ALLOWED_FILE_PARENT_DIR).length(), ALLOWED_FILE_PARENT_DIR) == 0)
+    {
+      // starts with parent dir: ok
+      if (file_path.extension() == ALLOWED_FILE_EXTENSION)
+      {
+        // ends with extension: ok
+        return true;
+      }
+    }
+  }
+  catch (std::filesystem::filesystem_error &)
+  {
+    // path does not exist
+  }
+
+  return false;
+}
+
 bool create_tmpfs_mount(const std::filesystem::path & mount_path, std::uintmax_t size_bytes)
 {
   if (!std::filesystem::exists(mount_path) && !std::filesystem::create_directories(mount_path))
@@ -90,7 +117,7 @@ bool create_tmpfs_mount(const std::filesystem::path & mount_path, std::uintmax_t
   int result = mount("tmpfs", mount_path.c_str(), "tmpfs", 0, mount_opts.str().c_str());
   Debug_Printf("Mount result: %d, errno: %d\n", result, errno);
 
-  return result == 0;  
+  return result == 0;
 }
 
 bool is_mounted_dir(const std::filesystem::path & dir)
@@ -99,9 +126,9 @@ bool is_mounted_dir(const std::filesystem::path & dir)
   {
     return false;
   }
-  
+
   const auto stripped_dir = std::filesystem::canonical(dir);
-  if (!std::filesystem::exists(stripped_dir) || 
+  if (!std::filesystem::exists(stripped_dir) ||
       !std::filesystem::is_directory(stripped_dir) ||
       !stripped_dir.has_parent_path())
   {

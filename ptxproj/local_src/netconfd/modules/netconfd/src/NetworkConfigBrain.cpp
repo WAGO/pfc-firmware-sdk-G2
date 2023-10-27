@@ -548,16 +548,6 @@ Status NetworkConfigBrain::ContainOnlyInterfacesOfTypePort(const InterfaceConfig
   return jc.ToJsonString(status);
 }
 
-std::string NetworkConfigBrain::SetTemporaryDHCPClientID(const ::std::string &client_id) {
-  Status status = ip_manager_.SetDhcpClientID(client_id);
-  return jc.ToJsonString(status);
-}
-
-::std::string NetworkConfigBrain::GetDHCPClientID(::std::string &client_id){
-  client_id = ip_manager_.GetDhcpClientID();
-  return jc.ToJsonString(Status{});
-}
-
 ::std::string NetworkConfigBrain::GetDipSwitchConfig(::std::string &config) const {
   DipSwitchIpConfig dip_switch_ip_config;
   Status status = persistence_provider_.Read(dip_switch_ip_config);

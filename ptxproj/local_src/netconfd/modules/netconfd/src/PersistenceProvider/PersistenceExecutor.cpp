@@ -176,7 +176,7 @@ Status PersistenceExecutor::Write(const Interfaces &config) {
 
 Status PersistenceExecutor::Write(const DipSwitchIpConfig &config) {
   if (current_dip_switch_config_ == config) {
-    return Status();
+    return {};
   }
 
   current_dip_switch_config_ = config;
@@ -207,7 +207,7 @@ Status PersistenceExecutor::Write(const IPConfigs &configs) {
 Status PersistenceExecutor::Write(const InterfaceConfigs &configs) {
 
   if (current_interface_configs_ == configs) {
-    return Status();
+    return {};
   }
 
   current_interface_configs_ = configs;
@@ -294,7 +294,7 @@ static void AddLegacySwitchFastAgingParameter(InterfaceConfigs &itf_configs, ::s
 
   ::std::string fast_aging = "0";
 
-  int number_of_mac_learning_off_itfs = ::std::count_if(
+  auto number_of_mac_learning_off_itfs = ::std::count_if(
       itf_configs.cbegin(),
       itf_configs.cend(),
       [](const InterfaceConfig &ic) {

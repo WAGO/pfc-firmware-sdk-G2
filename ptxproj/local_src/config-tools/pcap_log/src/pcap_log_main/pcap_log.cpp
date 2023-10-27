@@ -82,7 +82,7 @@ option longopts[] = {
    { "stop",        no_argument,        nullptr,   '0' },
    { "test",        optional_argument,  nullptr,   't' },
    { "archive",     required_argument,  nullptr,   'a' },
-   { "allfiles",    no_argument,        nullptr,   'f' },
+   { "incfiles",    no_argument,        nullptr,   'f' },
    { "delete",      no_argument,        nullptr,   'r' },
    // last line
    { nullptr,       0,                  nullptr,    0  }
@@ -154,8 +154,9 @@ static void ShowHelp()
   std::cout << "     [--start]    -start service to capture packets \n";
   std::cout << "     [--stop]     -stop service to capture packets \n";
   std::cout << "  -t [--test]     -test if a filter expression compiles\n";
-  std::cout << "  -f [--allfiles] -include all files in the archive (see -a),\n";
-  std::cout << "                   must come before -a\n";
+  std::cout << "  -f [--incfiles] -include these files in the archive (see -a),\n";
+  std::cout << "                   can be used multiple times,\n";
+  std::cout << "                   only allows .log files below /var/tmp\n";
   std::cout << "  -a [--archive]  -create log archive to destination directory\n";
   std::cout << "  -r [--delete]   -remove all log files\n";
   std::cout << "\n";
@@ -222,7 +223,7 @@ static void TestFilter(const std::string & arg)
   {
     j["filter"] = UrlStringToString(arg);
     PcapSniffer& sniffer = PcapSniffer::Instance();
-    result = sniffer.CompileFilter(UrlStringToString(arg));
+    result = sniffer.CompileFilter(UrlStringToString(arg), DFLT_MAX_PACKET_LEN);
   }
 
   j["isOk"] = result;
@@ -230,7 +231,7 @@ static void TestFilter(const std::string & arg)
 }
 
 //------------------------------------------------------------------------------
-static bool CreateArchive(const std::string & arg, bool includeAllFiles)
+static bool CreateArchive(const std::string & arg, bool includeAllFiles, const std::vector<std::string> & extraFiles)
 {
   Debug_Printf("CreateArchive(,%s) \n", includeAllFiles ? "true" : "false");
   if (arg.empty() ||
@@ -251,6 +252,11 @@ static bool CreateArchive(const std::string & arg, bool includeAllFiles)
     cmd.append(" ");
     cmd.append(CMD_TAR_FLATTEN_FLAG);
     for (const auto & file : info.data.optDlPaths)
+    {
+      cmd.append(" ");
+      cmd.append(file);
+    }
+    for (const auto & file : extraFiles)
     {
       cmd.append(" ");
       cmd.append(file);
@@ -335,7 +341,7 @@ static int DoStart()
 
     // open sniffer
     PcapSniffer& sniffer = PcapSniffer::Instance();
-    sniffer.OpenLive(config.data.device);
+    sniffer.OpenLive(config.data.device, config.data.maxPacketLen);
     sniffer.SetFilter(config.data.filter);
     sniffer.OpenDump(config.getNewSavefile());
 
@@ -370,7 +376,7 @@ static int DoStart()
         Debug_Printf("Reached maximum filesize, continue with next file\n");
         info.data.isRunning = false;
         sniffer.Close();
-        sniffer.OpenLive(config.data.device);
+        sniffer.OpenLive(config.data.device, config.data.maxPacketLen);
         sniffer.SetFilter(config.data.filter);
         sniffer.OpenDump(config.getNewSavefile());
         RunLoop = true;
@@ -413,8 +419,9 @@ int main(int    argc,
   std::string config_optarg = "";
   std::string filter_optarg = "";
   std::string archive_optarg = "";
+  std::vector<std::string> archive_extra_files;
 
-  while((oc = getopt_long(argc, argv, "dfrhic::t::a:", &longopts[0], &ocIndex)) != -1)
+  while((oc = getopt_long(argc, argv, "drhic::t::f:a:", &longopts[0], &ocIndex)) != -1)
   {
     Debug_Printf("case: -%c \n", oc);
     switch(oc)
@@ -424,8 +431,14 @@ int main(int    argc,
         Debug_Printf("debugPrintOn(), argc: %i \n", argc);
         break;
       case 'f':
-        option_actions |= opt_actions::archive_all;
-        break;
+        {
+          std::string extra_path = optarg;
+          if (optarg != nullptr && check_allowed_and_canonicalise_extra_file_path(extra_path))
+          {
+            archive_extra_files.emplace_back(extra_path);
+          }
+          break;
+        }
       case 'c':
         if(nullptr == optarg)
         {
@@ -495,7 +508,7 @@ int main(int    argc,
 
   if (test(option_actions & opt_actions::archive))
   {
-    if (!CreateArchive(archive_optarg, test(option_actions & opt_actions::archive_all)))
+    if (!CreateArchive(archive_optarg, test(option_actions & opt_actions::archive_all), archive_extra_files))
     {
       Debug_Printf("Failed to create the archive.\n");
     }

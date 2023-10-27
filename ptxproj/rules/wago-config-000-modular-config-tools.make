@@ -21,9 +21,9 @@ PACKAGES-$(PTXCONF_MODULAR_CONFIG_TOOLS) += modular-config-tools
 MODULAR_CONFIG_TOOLS_VERSION        := 0.3.1
 MODULAR_CONFIG_TOOLS_MD5            :=
 MODULAR_CONFIG_TOOLS                := modular-config-tools
-MODULAR_CONFIG_TOOLS_URL            := file://shared_public/$(MODULAR_CONFIG_TOOLS)
+MODULAR_CONFIG_TOOLS_URL            := file://local_src/$(MODULAR_CONFIG_TOOLS)
 MODULAR_CONFIG_TOOLS_BUILDCONFIG    := Release
-MODULAR_CONFIG_TOOLS_SRC_DIR        := $(PTXDIST_WORKSPACE)/shared_public/$(MODULAR_CONFIG_TOOLS)
+MODULAR_CONFIG_TOOLS_SRC_DIR        := $(PTXDIST_WORKSPACE)/local_src/$(MODULAR_CONFIG_TOOLS)
 MODULAR_CONFIG_TOOLS_BUILDROOT_DIR  := $(BUILDDIR)/$(MODULAR_CONFIG_TOOLS)
 MODULAR_CONFIG_TOOLS_DIR            := $(MODULAR_CONFIG_TOOLS_BUILDROOT_DIR)/src
 MODULAR_CONFIG_TOOLS_BUILD_DIR      := $(MODULAR_CONFIG_TOOLS_BUILDROOT_DIR)/bin/$(MODULAR_CONFIG_TOOLS_BUILDCONFIG)
@@ -39,7 +39,15 @@ SCRIPT_DIR=$(PTXDIST_SYSROOT_HOST)/lib/ct-build
 # Extract
 # ----------------------------------------------------------------------------
 
-$(STATEDIR)/modular-config-tools.extract:
+# During BSP creation local_src is deleted and the source code directories are
+# copied on demand. To handle this condition an order-only dependency on
+# the source code directory is created. When it is missing, the target below
+# is executed and an error message is generated.
+$(MODULAR_CONFIG_TOOLS_SRC_DIR):
+	@echo "Error: $@: directory not found!" >&2; exit 2
+
+
+$(STATEDIR)/modular-config-tools.extract: | $(MODULAR_CONFIG_TOOLS_SRC_DIR)
 	@$(call targetinfo)
 	@mkdir -p $(MODULAR_CONFIG_TOOLS_BUILDROOT_DIR)
 	@if [ ! -L $(MODULAR_CONFIG_TOOLS_DIR) ]; then \

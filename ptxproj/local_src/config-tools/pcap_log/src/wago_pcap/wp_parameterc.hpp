@@ -56,6 +56,7 @@ namespace wp {
   #define DFLT_STORAGE STORAGE_INTERNAL_FLASH
   #define DFLT_ROTATE_FILES true
   #define DFLT_MAX_PART_SIZE_PERC 60
+  #define DFLT_MAX_PACKET_LEN 2048
 
   // percentage of the available memory that should be used as the partition max size
   // (upper limit)
@@ -69,6 +70,7 @@ namespace wp {
       std::uintmax_t maxFilesize {DFLT_MAX_FILE_SIZE};
       bool rotateFiles {DFLT_ROTATE_FILES};
       std::uint8_t maxPartitionSizePct {DFLT_MAX_PART_SIZE_PERC};
+      std::uint16_t maxPacketLen {DFLT_MAX_PACKET_LEN};
   };
 
   NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(config_t, // NOLINT
@@ -77,7 +79,8 @@ namespace wp {
                                                   storage,
                                                   maxFilesize,
                                                   rotateFiles,
-                                                  maxPartitionSizePct)
+                                                  maxPartitionSizePct,
+                                                  maxPacketLen)
 
   //----------------------------------------------------------------------------
   struct info_t{

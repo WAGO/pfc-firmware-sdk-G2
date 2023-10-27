@@ -122,6 +122,14 @@ struct IPConfig {
         netmask_ { ZeroNetmask } {
   }
 
+  IPConfig(::std::string interface, const IPSource source, ::std::string dhcp_client_id)
+      : interface_ { ::std::move(interface) },
+        source_ { source },
+        address_ { ZeroIP },
+        netmask_ { ZeroNetmask },
+        dhcp_client_id_{dhcp_client_id} {
+  }
+
   IPConfig(::std::string interface, const IPSource source, Address address, Netmask netmask)
       : interface_ { ::std::move(interface) },
         source_ { source },
@@ -130,7 +138,7 @@ struct IPConfig {
   }
 
   static IPConfig CreateDefault(::std::string interface) {
-    return IPConfig(::std::move(interface), IPSource::STATIC, ZeroIP, ZeroNetmask);
+    return {::std::move(interface), IPSource::STATIC, ZeroIP, ZeroNetmask};
   }
 
   void Clear() {
@@ -138,11 +146,12 @@ struct IPConfig {
     interface_.clear();
     address_ = ZeroIP;
     netmask_ = ZeroNetmask;
+    dhcp_client_id_.clear();
   }
 
   bool operator==(const IPConfig &config) const {
     return ((this->interface_ == config.interface_) && (this->source_ == config.source_)
-        && (this->address_ == config.address_) && (this->netmask_ == config.netmask_));
+        && (this->address_ == config.address_) && (this->netmask_ == config.netmask_) && (this->dhcp_client_id_ == config.dhcp_client_id_));
   }
 
   bool operator <(const IPConfig &config) const {
@@ -173,6 +182,7 @@ struct IPConfig {
   IPSource source_;
   Address address_;
   Netmask netmask_;
+  ::std::string dhcp_client_id_;
 
 };
 
@@ -197,8 +207,8 @@ struct DipSwitchIpConfig {
   }
 
   void Clear() {
-    address_.clear();
     netmask_.clear();
+    address_.clear();
   }
 
   bool operator==(const DipSwitchIpConfig &config) const {

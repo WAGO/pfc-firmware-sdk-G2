@@ -3,6 +3,7 @@
 #pragma once
 
 #include <nlohmann/json.hpp>
+#include <string>
 
 #include "Status.hpp"
 #include "Types.hpp"
@@ -71,6 +72,11 @@ IPConfig ParseIpConfig(const T &json_iter) {
   GetToIfExists("source", inner, c.source_);
   GetToIfExists("ipaddr", inner, c.address_);
   GetToIfExists("netmask", inner, c.netmask_);
+  ::std::string dhcp_client_id;
+  GetToIfExists("dhcp-client-id", inner, dhcp_client_id);
+  if (!dhcp_client_id.empty()) {
+    c.dhcp_client_id_ = dhcp_client_id;
+  }
   return c;
 }
 

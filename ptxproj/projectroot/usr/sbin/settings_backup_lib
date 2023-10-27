@@ -154,9 +154,6 @@ configParam+=(
   "https-state;               /etc/config-tools/config_ssl https-status;                        /bin/true "
   "https-cipher-list;         /etc/config-tools/get_https_tls_config cipher-list;               /etc/config-tools/config_https_tls cipher-list="
 
-  "tftp-state;                /etc/config-tools/get_tftp_config state;                          /etc/config-tools/config_tftp state="
-  "tftp-dl-dir;               /etc/config-tools/get_tftp_config download-dir;                   /etc/config-tools/config_tftp download-dir="
-
   "codesys-port-auth;         /etc/config-tools/get_rts3scfg_value PASSWORD USEPWD;             /etc/config-tools/config_runtime cfg-version=2 authentication="
   "codesys3-port-auth;        /etc/config-tools/get_runtime_config cfg-version=3 authentication; /etc/config-tools/config_runtime cfg-version=3 authentication="
 

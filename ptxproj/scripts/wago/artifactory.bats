@@ -8,20 +8,35 @@ function teardown {
     rm -rf "${TESTCASE_TMPDIR}"
 }
 
-@test "environment: JFROG_APIKEY is set" {
-    [[ -n "${JFROG_APIKEY}" ]]
-}
-
 @test "environment: curl is installed" {
     run command -v curl
 
     [[ "${status}" == "0" ]]
 }
 
+@test "environment: JFROG_APIKEY is set" {
+    [[ -n "${JFROG_APIKEY}" ]]
+}
+
+@test "environment: JFROG_APIKEY is valid" {
+    "$(command -v curl)" -H "X-JFrog-Art-API:$JFROG_APIKEY" -X GET https://artifactory-test/artifactory/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz -f -L -sSI
+}
+
 @test "environment: gzip is installed" {
     run command -v gzip
 
     [[ "${status}" == "0" ]]
+}
+
+@test "environment: wget is installed" {
+    run command -v wget
+
+    [[ "${status}" == "0" ]]
+}
+
+@test "environment: native bats is used instead of the docker version" {
+    run grep "repository.*bats" /image_info.xml
+    [[ "$status" != "0" ]]
 }
 
 @test "artifactory.sh: illegal command line parameter => return error" {
@@ -36,7 +51,7 @@ function teardown {
 #
 #    run ./artifactory.sh \
 #        fetch_md5sum \
-#        "https://artifactory-test/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz"
+#        "https://artifactory-test/artifactory/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz"
 #
 #    echo "${output}"
 #
@@ -52,7 +67,7 @@ function teardown {
 
     run ./artifactory.sh \
         fetch_md5sum \
-        "https://artifactory-test/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz" \
+        "https://artifactory-test/artifactory/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz" \
         "${file}"
 
     echo "${output}"
@@ -106,7 +121,7 @@ function teardown {
 
     run ./artifactory.sh \
         fetch_source \
-        "https://artifactory-test/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz" \
+        "https://artifactory-test/artifactory/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz" \
         "${file}"
 
     echo "${output}"
@@ -150,7 +165,7 @@ function teardown {
 
     run ./artifactory.sh \
         fetch \
-        "https://artifactory-test/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz"
+        "https://artifactory-test/artifactory/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz"
 
     [[ "$status" != "0" ]]
 }
@@ -159,7 +174,7 @@ function teardown {
 
     run ./artifactory.sh \
         fetch \
-        "https://artifactory-test/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz" \
+        "https://artifactory-test/artifactory/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz" \
 
     [[ "$status" != "0" ]]
 }
@@ -176,7 +191,7 @@ function teardown {
 
     run ./artifactory.sh \
         fetch \
-        "https://artifactory-test/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz" \
+        "https://artifactory-test/artifactory/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz" \
         "${file}" \
         "${md5sum}"
 
@@ -194,7 +209,7 @@ function teardown {
 
     run ./artifactory.sh \
         fetch \
-        "https://artifactory-test/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz" \
+        "https://artifactory-test/artifactory/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz" \
         "${file}" \
         "${md5sum}"
 
@@ -214,7 +229,7 @@ function teardown {
 
     run ./artifactory.sh \
         fetch \
-        "https://artifactory-test/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz" \
+        "https://artifactory-test/artifactory/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz" \
         "${file}" \
         "${md5sum}"
 
@@ -241,7 +256,7 @@ function teardown {
 
     run ./artifactory.sh \
         fetch \
-        "https://artifactory-test/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz" \
+        "https://artifactory-test/artifactory/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz" \
         "${file}" \
         "${md5sum}"
 
@@ -267,7 +282,7 @@ function teardown {
 
     run ./artifactory.sh \
         fetch \
-        "https://artifactory-test/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz" \
+        "https://artifactory-test/artifactory/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1-93177_64.tgz" \
         "${outputfile}" \
         "${md5file}"
 
@@ -299,7 +314,7 @@ function teardown {
 
     run ./artifactory.sh \
         fetch \
-            "https://artifactory-test/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1\[INTEGRATION\].tgz" \
+            "https://artifactory-test/artifactory/testressources-generic-prod-local/wago/rlb-stack/rlb-stack-Source/rlb-stack-Source-1\[INTEGRATION\].tgz" \
         "${outputfile}" \
         "${md5file}"
 

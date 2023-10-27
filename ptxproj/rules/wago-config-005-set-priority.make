@@ -18,9 +18,13 @@ PACKAGES-$(PTXCONF_CT_SET_THREAD_PRIORITY) += ct_set_thread_priority
 #
 CT_SET_THREAD_PRIORITY_VERSION  := 1.0.0
 CT_SET_THREAD_PRIORITY          := ct_set_thread_priority
-CT_SET_THREAD_PRIORITY_SRC      := $(SRCDIR)/$(CT_SET_THREAD_PRIORITY)
-CT_SET_THREAD_PRIORITY_URL      :=
+CT_SET_THREAD_PRIORITY_URL		:= file://local_src/$(CT_SET_THREAD_PRIORITY)
+CT_SET_THREAD_PRIORITY_SRC      := $(call ptx/in-path, PTXDIST_PATH, local_src/$(CT_SET_THREAD_PRIORITY))
 CT_SET_THREAD_PRIORITY_DIR      := $(BUILDDIR)/$(CT_SET_THREAD_PRIORITY)
+ifeq ($(CT_SET_THREAD_PRIORITY_SRC),)
+CT_SET_THREAD_PRIORITY_SRC	:= $(PTXDIST_WORKSPACE)/local_src/$(CT_SET_THREAD_PRIORITY)
+endif
+
 
 # ----------------------------------------------------------------------------
 # Get

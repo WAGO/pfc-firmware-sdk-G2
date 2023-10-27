@@ -1,0 +1,21 @@
+Index: libmodbus-3.0.5/src/modbus-rtu.c
+===================================================================
+--- libmodbus-3.0.5.orig/src/modbus-rtu.c
++++ libmodbus-3.0.5/src/modbus-rtu.c
+@@ -21,6 +21,7 @@
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <string.h>
++#include <inttypes.h>
+ #ifndef _MSC_VER
+ #include <unistd.h>
+ #endif
+@@ -311,7 +311,7 @@ ssize_t _modbus_rtu_recv(modbus_t *ctx,
+ #else
+     int const rc = read(ctx->s, rsp, rsp_length);
+     if ((rc == -1) && (ctx->debug)) {
+-      fprintf(stderr, "ERROR RTU read (fd %d, buf @0x%08x, len %d): %s\n",
++      fprintf(stderr, "ERROR RTU read (fd %d, buf @0x%08" PRIxPTR ", len %d): %s\n",
+               ctx->s, (uintptr_t)rsp, rsp_length, modbus_strerror(errno));
+     }
+     return rc;

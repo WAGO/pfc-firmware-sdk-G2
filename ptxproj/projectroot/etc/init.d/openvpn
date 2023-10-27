@@ -24,6 +24,7 @@
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 DAEMON=/usr/sbin/openvpn
+DAEMON_NAME=openvpn
 DESC="virtual private network daemon"
 CONFIG_DIR=/etc/openvpn
 test -x $DAEMON || exit 0
@@ -95,15 +96,51 @@ start_vpn ()
     fi
 }
 
+wait_for_stop()
+{
+  local OPENVPN_PID=$1
+  local TIMEOUT=$2
+  local RET_VAL=0
+  
+  local  TIMEOUT_COUNTER=0
+  if [ -n "${RUNTIME_PID}" ]
+  then      
+    while [ -d "/proc/${RUNTIME_PID}" ] 
+    do
+      if (( TIMEOUT_COUNTER > TIMEOUT ))
+      then
+        RET_VAL=1
+        break
+      else
+       TIMEOUT_COUNTER=$((TIMEOUT_COUNTER + 1)) 
+       sleep 1
+      fi
+    done
+  fi
+ 
+  return $RET_VAL
+}
 stop_vpn ()
 {
   start-stop-daemon --stop --quiet --oknodo \
       --pidfile $PIDFILE --exec $DAEMON --retry 5
-  if [ "$?" -eq 0 ]; then
-    rm -f $PIDFILE
-    [ "$OMIT_SENDSIGS" -ne 1 ] || rm -f /run/sendsigs.omit.d/openvpn.$NAME.pid
-    rm -f /run/openvpn/$NAME.status 2> /dev/null
+      
+  local OPENVPN_PID=$(pidof ${DAEMON_NAME})
+  wait_for_stop ${OPENVPN_PID} 10
+  
+  
+  if [ $? -ne 0 ]
+  then
+    echo "failed"
+    #logger -t openvpn "Regular stopping of $RUNTIME_STRING(${RUNTIME_NAME}) failed send SIGKILL"
+    echo -n "Send SIGKILL to openvpn process ..."
+    killall -9 $DAEMON_NAME &> /dev/null
   fi
+  
+  
+  rm -f $PIDFILE
+  [ "$OMIT_SENDSIGS" -ne 1 ] || rm -f /run/sendsigs.omit.d/openvpn.$NAME.pid
+  rm -f /run/openvpn/$NAME.status 2> /dev/null
 }
 
 case "$1" in

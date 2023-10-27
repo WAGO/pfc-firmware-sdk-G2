@@ -24,7 +24,7 @@ PACKAGES-$(PTXCONF_WAGO_PARAMETER_SERVICE_COM) += wago-parameter-service-com
 #
 # Paths and names
 #
-WAGO_PARAMETER_SERVICE_COM_VERSION        := 1.0.1
+WAGO_PARAMETER_SERVICE_COM_VERSION        := 1.0.2
 WAGO_PARAMETER_SERVICE_COM_MD5            :=
 WAGO_PARAMETER_SERVICE_COM_BASE           := parameter-service-com
 WAGO_PARAMETER_SERVICE_COM                := wago-$(WAGO_PARAMETER_SERVICE_COM_BASE)-$(WAGO_PARAMETER_SERVICE_COM_VERSION)
@@ -140,7 +140,6 @@ $(STATEDIR)/wago-parameter-service-com.clean:
 	rm -rf $(PTXCONF_SYSROOT_TARGET)/usr/include/paramtest/
 	rm -rf $(PTXCONF_SYSROOT_TARGET)/usr/include/paramcom/
 	rm -rf $(PTXCONF_SYSROOT_TARGET)/usr/include/paramclient/
-	rm -rf $(PTXCONF_SYSROOT_TARGET)/usr/include/paramlog/
 	rm -rf $(PTXCONF_SYSROOT_TARGET)/usr/include/parampriv/
 	@if [ -d $(WAGO_PARAMETER_SERVICE_COM_DIR) ]; then \
 	  $(WAGO_PARAMETER_SERVICE_COM_MAKE_ENV) $(WAGO_PARAMETER_SERVICE_COM_PATH) $(MAKE) $(MFLAGS) -C $(WAGO_PARAMETER_SERVICE_COM_DIR) clean; \

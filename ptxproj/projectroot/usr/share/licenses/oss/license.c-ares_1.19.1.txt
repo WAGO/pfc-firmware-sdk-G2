@@ -1,0 +1,102 @@
+c-ares is based on ares, and these are the people that have worked on it since
+the fork was made:
+
+Albert Chin
+Alex Loukissas
+Alexander Klauer
+Alexander Lazic
+Alexey Simak
+Andreas Rieke
+Andrew Andkjar
+Andrew Ayer
+Andrew C. Morrow
+Ashish Sharma
+Ben Greear
+Ben Noordhuis
+BogDan Vatra
+Brad House
+Brad Spencer
+Bram Matthys
+Chris Araman
+Dan Fandrich
+Daniel Johnson
+Daniel Stenberg
+David Drysdale
+David Stuart
+Denis Bilenko
+Dima Tisnek
+Dirk Manske
+Dominick Meglio
+Doug Goldstein
+Doug Kwan
+Duncan Wilcox
+Eino Tuominen
+Erik Kline
+Fedor Indutny
+Frederic Germain
+Geert Uytterhoeven
+George Neill
+Gisle Vanem
+Google LLC
+Gregor Jasny
+Guenter Knauf
+Guilherme Balena Versiani
+Gunter Knauf
+Henrik Stoerner
+Jakub Hrozek
+James Bursa
+Jérémy Lal
+John Schember
+Keith Shaw
+Lei Shi
+Marko Kreen
+Michael Wallner
+Mike Crowe
+Nick Alcock
+Nick Mathewson
+Nicolas "Pixel" Noble
+Ning Dong
+Oleg Pudeyev
+Patrick Valsecchi
+Patrik Thunstrom
+Paul Saab
+Peter Pentchev
+Phil Blundell
+Poul Thomas Lomholt
+Ravi Pratap
+Robin Cornelius
+Saúl Ibarra Corretgé
+Sebastian at basti79.de
+Shmulik Regev
+Stefan Bühler
+Steinar H. Gunderson
+Svante Karlsson
+Tofu Linden
+Tom Hughes
+Tor Arntsen
+Viktor Szakats
+Vlad Dinulescu
+William Ahern
+Yang Tse
+hpopescu at ixiacom.com
+liren at vivisimo.com
+nordsturm
+saghul
+
+=======
+
+# c-ares license
+
+Copyright (c) 2007 - 2018, Daniel Stenberg with many contributors, see AUTHORS
+file.
+
+Copyright 1998 by the Massachusetts Institute of Technology.
+
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted, provided that
+the above copyright notice appear in all copies and that both that copyright
+notice and this permission notice appear in supporting documentation, and that
+the name of M.I.T. not be used in advertising or publicity pertaining to
+distribution of the software without specific, written prior permission.
+M.I.T. makes no representations about the suitability of this software for any
+purpose.  It is provided "as is" without express or implied warranty.

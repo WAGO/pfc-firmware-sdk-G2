@@ -166,21 +166,6 @@ void DeleteIPConfig(const ::std::string& interface);
 Status SetTempFixIp();
 
 /**
- * @brief This function temporarily sets the clientid (option 61) for the DHCP request.
- * By default, the MAC is used.
- * This option is not persisted and taken into account in backup&restore.
- * With a hardware ore netconfd reset, this setting is discarded.
- */
-Status SetTempDHCPClientID(const ::std::string& client_id);
-
-/**
- * @brief This function gets the temorarly clientid (option 61) for the DHCP request.
- * This option is not persisted and taken into account in backup&restore.
- * With a hardware ore netconfd reset, this setting is discarded.
- */
-Status GetTempDHCPClientID(::std::string& client_id);
-
-/**
  * Validate a candidate of new IP configuration.
  * The candidate is checked for consistency in itself and against the current configuration.
  * If the current IP configuration is empty the candidate in only check for consistency in itself.

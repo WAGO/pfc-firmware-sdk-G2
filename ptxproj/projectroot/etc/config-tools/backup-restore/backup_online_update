@@ -1,0 +1,72 @@
+#!/bin/bash
+
+#-----------------------------------------------------------------------------#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# This file is part of PTXdist package wago-custom-install.
+#
+# Copyright (c) 2021-2022 WAGO GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
+# Script:   settings_backup_online_update
+#
+# Brief:    Save online_update configuration settings to stdout or restore 
+#           them from stdin.
+#
+# Author:   MWW: WAGO GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+
+# load common backup/restore functions
+if [[ ! -f "/usr/sbin/settings_backup_lib" ]]; then
+    echo "settings_backup_lib missing"
+    exit 64
+fi
+
+# online_update config file
+ONLINE_UPDATE_CONFIG="/etc/online_update.conf"
+
+source /usr/sbin/settings_backup_lib
+
+RESULT=0
+OPERATION=${1:-}
+BACKUP_FILE=${2:-}
+readonly TMP=".tmp"
+#-------------------------------------------------------------
+# restore of settings
+#-------------------------------------------------------------
+if [[ "$OPERATION" = "--restore" ]]; then
+    
+    # read backup file from stdin
+    while IFS= read -r line; do
+        # get parameter key
+        key=${line%%=*}
+        # get parameter value
+        value=${line#*=}
+        if [[ "$key" = online-update-conf ]]; then
+            base64 -d <<< "$value" >> "$ONLINE_UPDATE_CONFIG$TMP"
+        fi
+    done <"$BACKUP_FILE"
+    
+    mv "$ONLINE_UPDATE_CONFIG$TMP" "$ONLINE_UPDATE_CONFIG"
+#-------------------------------------------------------------
+# backup settings
+#-------------------------------------------------------------
+elif [[ "$OPERATION" = "--save" ]]; then
+    BackupKnownFile online-update-conf "$ONLINE_UPDATE_CONFIG" >> "$BACKUP_FILE"
+    RESULT=$?
+elif [[ "$OPERATION" = "--param-count" ]]; then
+		echo 1
+		RESULT=$?
+else
+    echo
+    echo "* Save online_update configuration settings to backup-file or restore them from backup-file *"
+    echo
+    echo "backup_online_update --save <backup-file>      backup online_update state"
+    echo "backup_online_update --restore <backup-file>   restore online_update state"
+    echo "backup_online_update --param-count             get number of online_update parameters to save"
+    echo
+fi
+
+exit $RESULT

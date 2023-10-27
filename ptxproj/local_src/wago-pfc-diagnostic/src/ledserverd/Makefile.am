@@ -5,7 +5,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_builddir)/include \
 	$(WAGO_DBUS_CFLAGS) $(LIBXML_CFLAGS)  \
-	-D _GNU_SOURCE -rdynamic -funwind-tables -mapcs-frame
+	-D _GNU_SOURCE -rdynamic -funwind-tables
 
 AM_CXXFLAGS = -std=c++14
 #

@@ -18,9 +18,9 @@ PACKAGES-$(PTXCONF_LIBOSLINUX) += liboslinux
 #
 LIBOSLINUX_VERSION	:= 1.0.2.0
 LIBOSLINUX		:= liboslinux-$(LIBOSLINUX_VERSION)
-LIBOSLINUX_SRC		:= $(call ptx/in-path, PTXDIST_PATH, src/liboslinux)
+LIBOSLINUX_SRC		:= $(call ptx/in-path, PTXDIST_PATH, local_src/liboslinux)
 ifeq ($(LIBOSLINUX_SRC),)
-LIBOSLINUX_SRC	:= $(PTXDIST_WORKSPACE)/src/liboslinux
+LIBOSLINUX_SRC	:= $(PTXDIST_WORKSPACE)/local_src/liboslinux
 endif
 
 LIBOSLINUX_DIR		:= $(BUILDDIR)/$(LIBOSLINUX)

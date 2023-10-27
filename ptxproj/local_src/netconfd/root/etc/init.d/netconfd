@@ -65,9 +65,9 @@ function stop_netconfd() {
     return 0
 }
 
-function start_netconfd() {
-
-  killall -9 udhcpc > /dev/null 2>&1 || true
+function start_netconfd() {  
+  local pid="$(cat $PATHPIDFILE 2>/dev/null)"
+  is_pid_alive $pid || killall -9 udhcpc > /dev/null 2>&1 || true
   
   # First action is to modify the start command based on the current environment
   modify_start_cmd

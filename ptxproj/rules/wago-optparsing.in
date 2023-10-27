@@ -1,0 +1,10 @@
+## SECTION=wago_specific
+
+config WAGO_OPTPARSING
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select LIBCOMMONHEADER
+	prompt "wago-optparsing"
+	help
+	  Utility library for parsing command line arguments.

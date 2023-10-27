@@ -8,7 +8,6 @@ menuconfig IMAGE_BOOT_VFAT
 	select HOST_U_BOOT_TOOLS
 	select BAREBOX
 	select BAREBOX_MLO
-	select BAREBOX_MLO_LEGACY
 	prompt "Generate images/boot.vfat     "
 	help
 	  Create a vfat boot partition. Many SoCs can boot from a special

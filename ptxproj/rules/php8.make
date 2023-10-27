@@ -20,16 +20,16 @@ PACKAGES-$(PTXCONF_PHP8) += php8
 #
 # Paths and names
 #
-PHP8_BASE_VERSION  := 8.1.16
-PHP8_VERSION       := $(PHP8_BASE_VERSION)+wago2
+PHP8_BASE_VERSION  := 8.2.6
+PHP8_VERSION       := $(PHP8_BASE_VERSION)+wago1
 PHP8_ARCHIVE_NAME  := php-$(PHP8_BASE_VERSION)
-PHP8_MD5           := 7befaae076f821507588bd2f03ec8c68
+PHP8_MD5           := 700aaa5ae7bfb4ac0186be6b4712e748
 PHP8               := php-$(PHP8_VERSION)
 PHP8_SUFFIX        := tar.xz
 PHP8_SOURCE        := $(SRCDIR)/$(PHP8_ARCHIVE_NAME).$(PHP8_SUFFIX)
 PHP8_DIR           := $(BUILDDIR)/$(PHP8)
 PHP8_LICENSE       := PHP-3.01
-PHP8_LICENSE_FILES := file://LICENSE;md5=99532e0f6620bc9bca34f12fadaee33c
+PHP8_LICENSE_FILES := file://LICENSE;md5=5ebd5be8e2a89f634486445bd164bef0
 
 #
 # Note: older releases are moved to the 'museum', but the 'de.php.net'
@@ -56,14 +56,15 @@ PHP8_AUTOCONF := \
 	--disable-re2c-cgoto \
 	--disable-gcc-global-regs \
 	--$(call ptx/endis, PTXCONF_PHP8_SAPI_CLI)-cli \
+	--without-pear \
 	--disable-embed \
 	--without-fpm-user \
 	--without-fpm-group \
 	--without-fpm-systemd \
 	--without-fpm-acl \
 	--without-fpm-apparmor \
+	--without-fpm-selinux \
 	--disable-fuzzer \
-	--disable-fuzzer-msan \
 	--disable-litespeed \
 	--disable-phpdbg \
 	--disable-phpdbg-debug \
@@ -112,6 +113,7 @@ PHP8_AUTOCONF := \
 	--without-cdb \
 	--disable-inifile \
 	--disable-flatfile \
+	--disable-dl-test \
 	--without-enchant \
 	--disable-exif \
 	--$(call ptx/endis, PTXCONF_PHP8_FILTER)-filter \
@@ -385,6 +387,11 @@ endif
 endif
 endif
 endif
+
+# license
+	@$(call install_copy, php8, 0, 0, 0644, \
+		$(PTXDIST_WORKSPACE)/projectroot/usr/share/licenses/oss/license.php8_$(PHP8_BASE_VERSION).txt, \
+		/usr/share/licenses/oss/license.php8_$(PHP8_VERSION).txt)
 
 	@$(call install_finish, php8)
 	@$(call touch)

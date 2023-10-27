@@ -127,6 +127,9 @@ json IpConfigToNJson(const IPConfig &ip_config) {
                              {"netmask", ip_config.netmask_},
                              {"bcast", GetBroadcast(ip_config.address_, ip_config.netmask_)}};
   to_json(json_ip_config["source"], ip_config.source_);
+  if(!ip_config.dhcp_client_id_.empty()){
+    json_ip_config["dhcp-client-id"] = ip_config.dhcp_client_id_;
+  }
   return json_ip_config;
 }
 

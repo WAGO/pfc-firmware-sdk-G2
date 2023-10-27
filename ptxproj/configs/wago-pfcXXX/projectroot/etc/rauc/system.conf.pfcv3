@@ -4,6 +4,7 @@ bootloader=barebox
 mountprefix=/mnt/rauc
 variant-name=PFCv3
 barebox-statename=bootstate
+bundle-formats=plain verity
 
 [keyring]
 path=/etc/rauc/ca.cert.pem

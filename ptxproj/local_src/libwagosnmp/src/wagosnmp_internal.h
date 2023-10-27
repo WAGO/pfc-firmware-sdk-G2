@@ -33,6 +33,8 @@
 #define PUBLIC_SYM __attribute__((visibility("default")))
 #define INTERNAL_SYM __attribute__((visibility("internal")))
 
+INTERNAL_SYM extern unsigned int agent_init_alarm_register;
+
 INTERNAL_SYM extern pthread_once_t snmp_is_initialized;
 INTERNAL_SYM extern pthread_once_t snmp_agent_is_initialized;
 #define INIT_SNMP_ONCE (void)pthread_once(&snmp_is_initialized, INTERNAL_InitSnmp);

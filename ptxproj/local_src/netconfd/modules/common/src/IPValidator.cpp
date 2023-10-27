@@ -148,6 +148,16 @@ void CheckOverlappingNetwork(const IPConfigs &ip_configs, Status &status) {
   }
 }
 
+void CheckDHCPClientIDLength(const IPConfigs &ip_configs, Status &status) {
+  for(auto &ip_config : ip_configs){
+    //the udhcpc supports a maximum clientID length of 249 bytes.
+    if(ip_config.dhcp_client_id_.length() > 249){
+      status.Set(StatusCode::GENERIC_ERROR, "The maximum clientID length of 249 bytes was exceeded");
+      break;
+    }
+  }
+}
+
 void CheckIPAddressFormat(const IPConfigs &ip_configs, Status &status) {
 
   for (auto &ip_config : ip_configs) {
@@ -201,6 +211,9 @@ Status IPValidator::ValidateIPConfigs(const IPConfigs &ip_configs) {
   }
   if (status.IsOk()) {
     CheckOverlappingNetwork(configs, status);
+  }
+  if (status.IsOk()) {
+    CheckDHCPClientIDLength(ip_configs, status);
   }
 
   return status;

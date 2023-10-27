@@ -77,7 +77,7 @@ function fetch {
     # in case of a snapshot artifactory url (i.e. https://artifactory/project/artifact-1.0.0\[INTEGRATION\].bin):
     # get real snapshot file name and create an according url
     local real_url
-    real_url="$(dirname "${url}")/$("${CURL}" -H "X-JFrog-Art-API:$JFROG_APIKEY" -X GET "${url}" -f -L -sSI | sed -ne 's/^X-Artifactory-Filename:\s*\([0-9a-f]*\)/\1/p' | sed -e 's/\r$//')" && \
+    real_url="$(dirname "${url}")/$("${CURL}" -H "X-JFrog-Art-API:$JFROG_APIKEY" -X GET "${url}" -f -L -sSI | sed -ne 's/^X-Artifactory-Filename:\s*\([0-9a-f]*\)/\1/Ip' | sed -e 's/\r$//')" && \
     _fetch_source "${real_url}" "${output_file}" && \
     _get_md5sum "${real_url}" "${md5sum_file}"
 }
@@ -108,7 +108,7 @@ function _get_md5sum {
 
    downloads+=("${file}")
 
-   "${CURL}" -H "X-JFrog-Art-API:$JFROG_APIKEY" -X GET "${url}" -f -L -sI | sed -ne 's/^X-Checksum-Md5:\s*\([0-9a-f]*\)/\1/p' | sed -e 's/\r$//' > "${file}"
+   "${CURL}" -H "X-JFrog-Art-API:$JFROG_APIKEY" -X GET "${url}" -f -L -sI | sed -ne 's/^X-Checksum-Md5:\s*\([0-9a-f]*\)/\1/Ip' | sed -e 's/\r$//' > "${file}"
 }
 
 function _get_latest_artifact_url {
@@ -120,6 +120,9 @@ function _get_latest_artifact_url {
    local repo
    repo="$(echo "${search_path_url}" |sed -e 's+^.*[&,?]repos=\([^&]*\).*$+\1+')"
 
+   local name
+   name="$(echo "${search_path_url}" |sed -e 's+^.*&a=\([^&]*\).*$+\1+')"
+
    local latest_version
    local download_url_request
    local metadata_url
@@ -128,7 +131,7 @@ function _get_latest_artifact_url {
    local ret=0
 
    if latest_version="$("${CURL}" -H "X-JFrog-Art-API:$JFROG_APIKEY" "${search_path_url}" --fail --location --silent)"; then
-      download_url_request="$(printf '%s/artifactory/api/search/artifact?name=%s&repos=%s' "${artifactory_base_url}" "${latest_version}" "${repo}")"
+      download_url_request="$(printf '%s/artifactory/api/search/artifact?name=%s-%s&repos=%s' "${artifactory_base_url}" "${name}" "${latest_version}" "${repo}")"
    else
       ret=1
    fi

@@ -15,8 +15,8 @@ PACKAGES-$(PTXCONF_STRONGSWAN) += strongswan
 #
 # Paths and names
 #
-STRONGSWAN_VERSION	:= 5.9.8
-STRONGSWAN_MD5		:= f46b0d3e7aed88824650d0721c887443
+STRONGSWAN_VERSION	:= 5.9.11
+STRONGSWAN_MD5		:= 673e194cd256af77b46928179f2c81ad
 STRONGSWAN		:= strongswan-$(STRONGSWAN_VERSION)
 STRONGSWAN_SUFFIX	:= tar.bz2
 STRONGSWAN_URL		:= https://download.strongswan.org/$(STRONGSWAN).$(STRONGSWAN_SUFFIX)
@@ -37,6 +37,7 @@ STRONGSWAN_CONF_OPT	:= \
 	--disable-static \
 	--enable-aes \
 	--$(call ptx/endis, PTXCONF_STRONGSWAN_AFALG)-af-alg \
+	--disable-asan \
 	--disable-bliss \
 	--disable-blowfish \
 	--disable-botan \
@@ -44,10 +45,11 @@ STRONGSWAN_CONF_OPT	:= \
 	--disable-chapoly \
 	--enable-cmac \
 	--disable-ctr \
-	--disable-des \
-	--disable-drbg \
+	--enable-des \
+	--enable-drbg \
 	--enable-fips-prf \
 	--enable-gcm \
+	--disable-git-version \
 	--disable-gcrypt \
 	--enable-gmp \
 	--disable-curve25519 \
@@ -182,6 +184,7 @@ STRONGSWAN_CONF_OPT	:= \
 	--disable-systime-fix \
 	--disable-test-vectors \
 	--enable-updown \
+	--disable-warnings \
 	--disable-aikgen \
 	--$(call ptx/disen, PTXCONF_STRONGSWAN_SYSTEMD_UNIT)-charon \
 	--disable-cmd \
@@ -240,6 +243,8 @@ STRONGSWAN_PLUGINS := \
 	libstrongswan-cmac.so \
 	libstrongswan-constraints.so \
 	libstrongswan-dnskey.so \
+	libstrongswan-des.so \
+	libstrongswan-drbg.so \
 	libstrongswan-fips-prf.so \
 	libstrongswan-gcm.so \
 	libstrongswan-gmp.so \

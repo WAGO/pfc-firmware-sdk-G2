@@ -1,0 +1,18 @@
+## SECTION=wago_specific
+
+config ONLINE_UPDATE
+	bool
+	default n
+	select HOST_CT_BUILD
+    select CONFIG_TOOLS
+	select NLOHMANN_JSON
+	select FWUPDATE
+	select GOOGLETEST
+	select BOOST
+	select WAGO_SYSTEM
+	select WRETAIN
+	select LIBCURL
+	select LIBCURL_TFTP
+	prompt "online_update"
+	help
+	  	A config tool that serves as a wrapper of the existing firmware update mechanism implementing a "one-shot" update

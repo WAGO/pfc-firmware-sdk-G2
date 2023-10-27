@@ -22,9 +22,10 @@ PLCHANDLER_URL            := $(call jfrog_template_to_url, PLCHANDLER)
 PLCHANDLER_SUFFIX         := $(suffix $(PLCHANDLER_URL))
 PLCHANDLER_MD5             = $(shell [ -f $(PLCHANDLER_MD5_FILE) ] && cat $(PLCHANDLER_MD5_FILE))
 PLCHANDLER_ARTIFACT        = $(call jfrog_get_filename,$(PLCHANDLER_URL))
+PLCHANDLER_SRC            := wago_intern/artifactory_sources
 PLCHANDLER_BUILDROOT_DIR  := $(BUILDDIR)/$(PLCHANDLER)
-PLCHANDLER_MD5_FILE       := $(PLCHANDLER_BUILDROOT_DIR)/$(PLCHANDLER)$(PLCHANDLER_SUFFIX).md5
-PLCHANDLER_LIB_NAME				:= libCmpPLCHandler-arm
+PLCHANDLER_MD5_FILE       := $(PLCHANDLER_SRC)/$(PLCHANDLER)$(PLCHANDLER_SUFFIX).md5
+PLCHANDLER_LIB_NAME       := libCmpPLCHandler-arm
 # ----------------------------------------------------------------------------
 # Get
 # ----------------------------------------------------------------------------
@@ -34,7 +35,7 @@ $(STATEDIR)/plchandler.get:
 	@mkdir -p $(PLCHANDLER_BUILDROOT_DIR)
 ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES   
 	$(call ptx/in-path, PTXDIST_PATH, scripts/wago/artifactory.sh) fetch \
-	'$(PLCHANDLER_URL)' $(PLCHANDLER_BUILDROOT_DIR)/$(PLCHANDLER)$(PLCHANDLER_SUFFIX) '$(PLCHANDLER_MD5_FILE)'
+	'$(PLCHANDLER_URL)' $(PLCHANDLER_SRC)/$(PLCHANDLER)$(PLCHANDLER_SUFFIX) '$(PLCHANDLER_MD5_FILE)'
 endif
 	@$(call touch)
 
@@ -47,7 +48,7 @@ $(STATEDIR)/plchandler.extract:
 	@$(call targetinfo)
 	@mkdir -p $(PLCHANDLER_BUILDROOT_DIR)
 ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
-	@unzip -o $(PLCHANDLER_BUILDROOT_DIR)/$(PLCHANDLER)$(PLCHANDLER_SUFFIX) -d $(PLCHANDLER_BUILDROOT_DIR)
+	@unzip -o $(PLCHANDLER_SRC)/$(PLCHANDLER)$(PLCHANDLER_SUFFIX) -d $(PLCHANDLER_BUILDROOT_DIR)
 endif
 	@$(call touch)
 

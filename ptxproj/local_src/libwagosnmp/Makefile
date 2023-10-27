@@ -71,7 +71,7 @@ SHARED_INCLUDES += -isystem $(SYSROOT)/usr/include
 
 libwagosnmp.so_VERSION = $(LIBWAGOSNMP_VERSION)
 libwagosnmp.so_STATICALLYLINKED +=
-libwagosnmp.so_LIBS += netsnmp rt
+libwagosnmp.so_LIBS += netsnmp rt pthread
 libwagosnmp.so_PKG_CONFIGS +=
 libwagosnmp.so_PKG_CONFIG_LIBS +=
 libwagosnmp.so_DISABLEDWARNINGS +=

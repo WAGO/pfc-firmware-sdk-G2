@@ -1,0 +1,11 @@
+## SECTION=wago_specific
+
+config WAGO_PRIVILEGES
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select LIBCOMMONHEADER
+	prompt "WAGO Privileges C++ Library"
+	help
+	  Helper library to drop privileges
+	  and switch over to a given user.

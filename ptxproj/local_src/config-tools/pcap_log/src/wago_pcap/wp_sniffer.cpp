@@ -69,11 +69,11 @@ void PcapSniffer::OpenDump(const std::filesystem::path & path) {
 }
 
 //------------------------------------------------------------------------------
-bool PcapSniffer::CompileFilter(const std::string & filter)
+bool PcapSniffer::CompileFilter(const std::string & filter, std::uint16_t snapLength)
 {
   bool result = false;
   bpf_program prog = {0, nullptr};
-  pcap_t * tmp_handle = pcap_open_dead(DLT_EN10MB, snapLenght);
+  pcap_t * tmp_handle = pcap_open_dead(DLT_EN10MB, snapLength);
 
   if (tmp_handle != nullptr)
   {
@@ -106,9 +106,9 @@ void PcapSniffer::SetFilter(const std::string & filter) {
 }
 
 //------------------------------------------------------------------------------
-void PcapSniffer::OpenLive(const std::string &devName) {
+void PcapSniffer::OpenLive(const std::string &devName, std::uint16_t snapLength) {
   pHandle = pcap_open_live(devName.c_str(),
-                           snapLenght,
+                           snapLength,
                            PCAP_OPENFLAG_PROMISCUOUS,
                            bufferTimeout,
                            &errbuf[0]);
@@ -138,7 +138,7 @@ void PcapSniffer::OpenLive(const std::string &devName) {
               sizeof(subnetMask));
 
     Debug_Printf("interface=%s \n", devName.c_str());
-    Debug_Printf("snaplen=%i \n", snapLenght);
+    Debug_Printf("snaplen=%i \n", snapLength);
     Debug_Printf("interval=%i \n", bufferTimeout);
     Debug_Printf("networkAddr=%s \n", &networkAddr[0]);
     Debug_Printf("subnetMask=%s \n", &subnetMask[0]);

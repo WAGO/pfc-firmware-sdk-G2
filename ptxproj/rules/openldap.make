@@ -14,8 +14,8 @@ PACKAGES-$(PTXCONF_OPENLDAP) += openldap
 #
 # Paths and names
 #
-OPENLDAP_VERSION	:= 2.6.2
-OPENLDAP_MD5		:= 464b520cd88eddf10fe63ecd2902146c
+OPENLDAP_VERSION	:= 2.6.5
+OPENLDAP_MD5		:= c9c3609b43aac59cc2fca03e8ff41df9
 OPENLDAP		:= openldap-$(OPENLDAP_VERSION)
 OPENLDAP_SUFFIX		:= tgz
 OPENLDAP_URL		:= https://www.openldap.org/software/download/OpenLDAP/openldap-release/$(OPENLDAP).$(OPENLDAP_SUFFIX)

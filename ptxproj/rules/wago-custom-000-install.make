@@ -670,10 +670,21 @@ endif
 		$(PTXDIST_WORKSPACE)/projectroot/usr/sbin/random_seed, \
 		/usr/sbin/random_seed, n)
 
-#build IPK's 
+#build IPK's
 ifdef PTXCONF_CDS3_TSCIOBACNET
 	#--- bacnet ipk ---
-	$(PTXDIST_WORKSPACE)/scripts/bacnet-helpers/make-metaipk_bacnet.sh $(BACNET_VERSION) $(BACNETSTACK_REVISION) $(PTXCONF_OPKG_OPKG_CONF_URL)
+	$(PTXDIST_WORKSPACE)/scripts/bacnet-helpers/make-metaipk_bacnet.sh \
+		-v $(BACNET_VERSION) \
+		-r $(BACNETSTACK_REVISION) \
+		-u $(PTXCONF_OPKG_OPKG_CONF_URL) \
+		--libbacnetstack $(or $(PTXCONF_LIBBACNETSTACK), n) \
+		--libbacnet $(or $(PTXCONF_LIBBACNET), n) \
+		--libbacnetconfig $(or $(PTXCONF_LIBBACNETCONFIG), n) \
+		--cds3tsciobacnet $(or $(PTXCONF_CDS3_TSCIOBACNET), n) \
+		--cds3iodrvbacnet $(or $(PTXCONF_CDS3_IODRVBACNET), n) \
+		--wbmbacnet $(or $(PTXCONF_WBM_NG_PLUGIN_BACNET), n) \
+		--bacnetnative $(or $(PTXCONF_BACNETNATIVE), n) \
+		--ppbacnet $(or $(PTXCONF_PP_BACNET), n)
 endif
 
 	@$(call install_finish, wago-custom-install)

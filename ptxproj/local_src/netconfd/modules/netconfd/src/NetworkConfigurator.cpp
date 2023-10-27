@@ -79,7 +79,7 @@ NetworkConfiguratorImpl::NetworkConfiguratorImpl(InterprocessCondition &start_co
       netdev_manager_ { interface_monitor_, event_manager_, netlink_link_},
       mac_distributor_ { device_type_label_.GetMac(), device_type_label_.GetMacCount(), netdev_manager_ },
       ip_dip_switch_ { DEV_DIP_SWITCH_VALUE },
-      persistence_provider_ { persistence_file_path, ip_dip_switch_, netdev_manager_.GetNetDevs({DeviceType::Port}).size() },
+      persistence_provider_ { persistence_file_path, ip_dip_switch_, static_cast<uint32_t>(netdev_manager_.GetNetDevs({DeviceType::Port}).size()) },
       bridge_manager_ { netdev_manager_, mac_distributor_ },
       interface_manager_ { netdev_manager_, persistence_provider_, ethernet_interface_factory_ },
       dyn_ip_client_admin_ {device_type_label_.GetOrderNumber() },
@@ -173,17 +173,6 @@ NetworkConfiguratorImpl::NetworkConfiguratorImpl(InterprocessCondition &start_co
   dbus_handler_registry_.RegisterTempFixIpHandler([this]() -> ::std::string {
     LOG_DEBUG("DBUS Req: SetTemporaryFixIp");
     return this->network_config_brain_.SetTemporaryFixIp();
-  });
-
-  dbus_handler_registry_.RegisterSetTempDHCPClientIDHandler([this](std::string data) {
-    LOG_DEBUG("DBUS Req: SetTemporaryDHCPClientID");
-    return this->network_config_brain_.SetTemporaryDHCPClientID(data);
-  });
-
-  dbus_handler_registry_.RegisterGetTempDHCPClientIDHandler([this](std::string &data) -> ::std::string {
-    auto status = this->network_config_brain_.GetDHCPClientID(data);
-    LOG_DEBUG("DBUS Req: GetDHCPClientID " + data);
-    return status;
   });
 
   dbus_handler_registry_.RegisterGetDipSwitchConfigHandler([this](std::string &data) -> std::string {

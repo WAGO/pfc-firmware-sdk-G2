@@ -4,7 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2018-2022 WAGO GmbH & Co. KG
+# Copyright (c) 2018-2023 WAGO GmbH & Co. KG
 
 #-----------------------------------------------------------------------------
 # Script-name: update_routing
@@ -88,52 +88,16 @@ function IsValidStatic
     fi
 }
 
-# Check all arrays have same length.
-function IsValidStaticRemove
-{
-    local count_dest=${#static_dest_remove[@]}
-    local count_dest_mask=${#static_dest_mask_remove[@]}
-    local count_gw=${#static_gw_remove[@]}
-    local count_interface=${#static_interface_remove[@]}
-    local count_metric=${#static_metric_remove[@]}
-    
-    if [[   $count_dest_mask == "$count_dest"
-         && $count_gw == "$count_dest"
-         && $count_interface == "$count_dest"
-         && $count_metric == "$count_dest"
-        ]]; then
-        echo "true"
-    else
-        echo "false"
-    fi
-}
-
-function HasForwardingEntry
-{
-    itf=$1
-    prot=$2
-    dport=$3
-    destip=$4
-    destport=$5
-
-    local ret=$($AWK -v pattern="fw_port -i $itf -p $prot -m $prot --dport $dport -j DNAT --to-destination $destip:$destport" '$0 ~ pattern {print "HasEntry"}' /etc/firewall/iptables/ipcmn.xml)
-    if [[ "HasEntry" == "$ret" ]]; then
-        echo "true"
-    else
-        echo "false"
-    fi
-}
-
 function SetGeneralForwarding
 {
     local ret=$SUCCESS
     
     if [[ "enabled" == "$state" ]]; then
         echo 1 > "$IP_FORWARD"
-        $FIREWALL iptables --set-forward on &> /dev/null
+        $FIREWALL iptables --set-forward on --apply &> /dev/null
     elif [[ "disabled" == "$state" ]]; then
         echo 0 > "$IP_FORWARD"
-        $FIREWALL iptables --set-forward off &> /dev/null
+        $FIREWALL iptables --set-forward off --apply &> /dev/null
     else
         Log "Invalid general status value \"$state\"."
         ret=$INVALID_PARAMETER
@@ -147,7 +111,7 @@ function SetMulticastRoutes
     local ret=$SUCCESS
     local status=$SUCCESS
 
-    local bridges=$($BRCTL show | $GREP -E '^[[:alpha:]]' | $AWK '(NR>1)  {print $1}')
+    local bridges=$($IP -br link show type bridge | $AWK '/(^br[0-3])\s/ {print $1}')
     for bridge in $bridges; do
         ret=$($ROUTE add -net 224.0.0.0 netmask 224.0.0.0 dev $bridge 2>&1)
             # Ignore duplicates
@@ -155,8 +119,6 @@ function SetMulticastRoutes
             if [[ $ret_code -ne 0 && $ret != "route: SIOCADDRT: File exists" ]]; then
                 status=$INVALID_PARAMETER
                 Log "Failed to add multicast route for bridge: $bridge"
-            else
-                Log "Set 224.0.0.0 on $bridge"
             fi
     done
 
@@ -211,15 +173,19 @@ function Route
 
     IFS=$ifs_tmp
     
-    if [[ $ret -eq 2 && "$return_text" == "RTNETLINK answers: File exists" ]] ; then
-      Log "Info: Route already exists: ${dest_option}${gw_option}${interface_option}${metric_option}${protocol_option}"
-      ret=$SUCCESS
+    if [[ $ret -eq 2 ]] ; then
+        if [[ "$return_text" == "RTNETLINK answers: File exists" ]] ; then
+            Log "Info: Route already exists: ${dest_option}${gw_option}${interface_option}${metric_option}${protocol_option}"
+            ret=$SUCCESS
+        elif [[ "$return_text" == "RTNETLINK answers: Network is unreachable" ]] ; then
+            ret=$SUCCESS
+            Log "Warning: Cannot add route (unreachable network): ${dest_option}${gw_option}${interface_option}${metric_option}${protocol_option}"
+        elif [[ "$return_text" == "Error: Nexthop has invalid gateway." ]] ; then
+            ret=$SUCCESS
+            Log "Warning: Cannot add route (unreachable network): ${dest_option}${gw_option}${interface_option}${metric_option}${protocol_option}"
+        fi
     fi
-    if [[ $ret -eq 2 && "$return_text" == "RTNETLINK answers: Network is unreachable" ]] ; then
-      ret=$SUCCESS
-      Log "Warning: Cannot add route (unreachable network): ${dest_option}${gw_option}${interface_option}${metric_option}${protocol_option}"
-    fi
-    
+
     [[ $ret -eq $SUCCESS ]] && return $SUCCESS || return $INTERNAL_ERROR
 }
 
@@ -329,12 +295,21 @@ function SetMasquerading
     while [[ $index -lt $count ]]; do
         if [[ "true" == $(IsValidInterfaceName "${masquerading_interface[$index]}") ]]; then
             if [[ "${masquerading_state[$index]}" == "enabled" ]]; then
-                $FIREWALL iptables --set-masq "${masquerading_interface[$index]}" # &> /dev/null
+                local status=$SUCCESS
+                $FIREWALL iptables --set-masq "${masquerading_interface[$index]}" &> /dev/null
+                status=$?
+                if [[ $status -ne $SUCCESS ]]; then
+                    ret=$status
+                    Log "Failed to set masquerading on interface ${masquerading_interface[$index]}"
+                fi
             fi
         fi
         ((index++))
     done
-    
+
+    sync
+    $FIREWALL iptables --apply &> /dev/null
+
     echo $ret
 }
 
@@ -354,11 +329,20 @@ function SetPortForwarding
     while [[ $index -lt $count ]]; do
         if [[ "true" == $(IsValidInterfaceName "${port_forwarding_interface[$index]}") ]]; then
             if [[ "${port_forwarding_state[$index]}" == "enabled" ]]; then
-                $FIREWALL iptables --add-pfw on "${port_forwarding_interface[$index]}" "${port_forwarding_protocol[$index]}" - "${port_forwarding_port[$index]}" "${port_forwarding_forward_ip[$index]}" "${port_forwarding_forward_port[$index]}" # &> /dev/null
+                local status=$SUCCESS
+                $FIREWALL iptables --add-pfw on "${port_forwarding_interface[$index]}" "${port_forwarding_protocol[$index]}" - "${port_forwarding_port[$index]}" "${port_forwarding_forward_ip[$index]}" "${port_forwarding_forward_port[$index]}" &> /dev/null
+                status=$?
+                if [[ $status -ne $SUCCESS ]]; then
+                    ret=$status
+                    Log "Failed to set port-forwarding on interface ${port_forwarding_interface[$index]} : ${port_forwarding_protocol[$index]} ${port_forwarding_port[$index]} ${port_forwarding_forward_ip[$index]} ${port_forwarding_forward_port[$index]}"
+                fi
             fi
         fi
         ((index++))
     done
+
+    sync
+    $FIREWALL iptables --apply &> /dev/null
 
     echo $ret
 }
@@ -390,14 +374,10 @@ function DoUpdate
     ret=$(SetMulticastRoutes)
     [[ $ret -ne $SUCCESS ]] && status=$INTERNAL_ERROR
 
-    sync
-
     # Apply previously set changes if no errors occurred.
-    if [[ $status == "$SUCCESS" ]]; then 
-        $FIREWALL iptables --apply &> /dev/null
-    else
+    if [[ $status -ne $SUCCESS ]]; then 
         # Do not log last error when called by netconfd.
-        [[ -z ${NETCONF_IP_CONFIG+x} ]] && SetLastError "One or more errors occur during routing setup. See /var/log/messages for details."    
+        [[ -z ${NETCONF_IP_CONFIG+x} ]] && SetLastError "One or more errors occured during routing setup. See /var/log/messages for details."
     fi
 
     echo "$status"
@@ -406,7 +386,6 @@ function DoUpdate
 #-------------- globals -----------------------------#
 
 ROUTING_CONFIG_FILE="/etc/specific/routing.conf"
-ROUTING_CONFIG_REMOVE_FILE="/tmp/routing_remove.conf"
 DHCP_DATA_FILE_PREFIX="dhcp-bootp-data-"
 DHCP_DATA_FILE_TEMPLATE="/tmp/$DHCP_DATA_FILE_PREFIX"
 IP_FORWARD="/proc/sys/net/ipv4/ip_forward"
@@ -470,18 +449,6 @@ if [[ $# -gt 0 ]]; then
                     SetLastError "Config file does not exist: $_file"
                 else
                     ROUTING_CONFIG_FILE="$_file"
-                fi
-                ;;
-            remove-file=*)
-                _remove_file="${1#remove-file=}"
-                if [[ -z "$_remove_file" ]]; then
-                    status=$MISSING_PARAMETER
-                    SetLastError "Missing parameter value for config file"
-                elif [[ ! -e "$_remove_file" ]]; then
-                    status=$INVALID_PARAMETER
-                    SetLastError "Config file does not exist: $_remove_file"
-                else
-                    ROUTING_CONFIG_REMOVE_FILE="$_remove_file"
                 fi
                 ;;
             *)

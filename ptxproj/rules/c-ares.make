@@ -1,9 +1,6 @@
 # -*-makefile-*-
 #
 # Copyright (C) 2014 Dr. Neuhaus Telekommunikation GmbH, Hamburg Germany, Oliver Graute <oliver.graute@neuhaus.de>
-# Copyright (C) 2017 Marvin Schmidt <Marvin.Schmidt@who-ing.de>
-#
-# See CREDITS for details about who has contributed to this project.
 #
 # For further information about the PTXdist project and license conditions
 # see the README file.
@@ -17,17 +14,15 @@ PACKAGES-$(PTXCONF_C_ARES) += c-ares
 #
 # Paths and names
 #
-C_ARES_VERSION  := 1.18.1
-C_ARES_MD5  := bf770c0d3131ec0dd0575a0d2dcab226
+C_ARES_VERSION	:= 1.19.1
+C_ARES_MD5	:= dafc5825a92dc907e144570e4e75a908
 C_ARES		:= c-ares-$(C_ARES_VERSION)
 C_ARES_SUFFIX	:= tar.gz
-# NOTE: The haxx.se tarball is missing the cmake files that we need
-C_ARES_URL	:= https://github.com/c-ares/c-ares/releases/tag/$(C_ARES).$(C_ARES_SUFFIX)
-#C_ARES_URL	:= http://c-ares.haxx.se/download/$(C_ARES).$(C_ARES_SUFFIX)
+C_ARES_URL	:= http://c-ares.haxx.se/download/$(C_ARES).$(C_ARES_SUFFIX)
 C_ARES_SOURCE	:= $(SRCDIR)/$(C_ARES).$(C_ARES_SUFFIX)
 C_ARES_DIR	:= $(BUILDDIR)/$(C_ARES)
 C_ARES_LICENSE	:= MIT
-C_ARES_LICENSE_FILE := LICENSE.md
+C_ARES_LICENSE_FILES	:= file://LICENSE.md;md5=fb997454c8d62aa6a47f07a8cd48b006
 
 
 # ----------------------------------------------------------------------------
@@ -35,13 +30,23 @@ C_ARES_LICENSE_FILE := LICENSE.md
 # ----------------------------------------------------------------------------
 
 #
-# cmake
+# autoconf
 #
-C_ARES_CONF_TOOL      := cmake
-
-C_ARES_CONF_OPT       := $(CROSS_CMAKE_USR)
-C_ARES_CONF_OPT       += -DCARES_STATIC:BOOL=ON
-C_ARES_CONF_OPT       += -DCARES_INSTALL:BOOL=ON
+C_ARES_CONF_TOOL      := autoconf
+C_ARES_CONF_OPT              := \
+	$(CROSS_AUTOCONF_USR) \
+	--disable-debug \
+	--enable-optimize \
+	--enable-warnings \
+	--disable-werror \
+	--enable-symbol-hiding \
+	--disable-expose-statics \
+	--disable-code-coverage \
+	$(GLOBAL_LARGE_FILE_OPTION) \
+	--disable-libgcc \
+	--enable-nonblocking \
+	--disable-tests \
+	--with-random=/dev/urandom
 
 # ----------------------------------------------------------------------------
 # Target-Install
@@ -57,10 +62,9 @@ $(STATEDIR)/c-ares.targetinstall:
 	@$(call install_fixup, c-ares,DESCRIPTION,missing)
 
 	@$(call install_lib, c-ares, 0, 0, 0644, libcares)
-	
-	@$(call install_copy, c-ares, 0, 0, 0644, $(C_ARES_DIR)/$(C_ARES_LICENSE_FILE), /usr/share/licenses/oss/license.c-ares_$(C_ARES_VERSION).txt)
 
 	@$(call install_finish, c-ares)
+
 
 	@$(call touch)
 

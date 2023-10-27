@@ -1,0 +1,54 @@
+#!/bin/bash
+
+debug=0
+
+log () {
+	if [[ $debug == 1 ]]; then
+		echo "$(date): $1" >> /log/docker_log
+	else
+		logger "$0: $1"
+	fi
+}
+
+activate_docker () {
+	if [[ $(/etc/config-tools/fwupdate status -q) =~ "status=update started" ]]; then
+		log "Update active, install docker later"
+		exit 1
+	fi
+	log "Activating docker."
+	if ! /etc/config-tools/config_docker activate; then
+		log "Activation docker failed with error $?"
+		exit 1
+	fi
+	log "Docker activated."
+	
+	log "Moving /etc/rc.d/S99_docker_activate to /etc/rc.d/disabled/S99_docker_activate."
+	if ! mv /etc/rc.d/S99_docker_activate /etc/rc.d/disabled/S99_docker_activate; then
+		log "Moving /etc/rc.d/S99_docker_activate to /etc/rc.d/disabled/S99_docker_activate failed with error $?"
+		exit 1
+	fi
+	log "Moved /etc/rc.d/S99_docker_activate to /etc/rc.d/disabled/S99_docker_activate."
+}
+
+case "$1" in
+
+	start)
+		activate_docker
+		;;
+		
+	stop)
+		exit 0
+		;;
+		
+	restart)
+		exit 0
+		;;
+		
+	*)
+		echo "usage: $0 {start|stop|restart}"
+		exit 1
+		;;
+		
+esac
+	
+

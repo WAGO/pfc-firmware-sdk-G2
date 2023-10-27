@@ -18,10 +18,14 @@ PACKAGES-$(PTXCONF_EEPROM_XSECTION) += eeprom-xsection
 #
 EEPROM_XSECTION_VERSION	:= 0.0.5
 EEPROM_XSECTION		:= eeprom-xsection-$(EEPROM_XSECTION_VERSION)
-EEPROM_XSECTION_SRC	:= $(SRCDIR)/eeprom-xsection
+EEPROM_XSECTION_URL	:= file://local_src/eeprom-xsection
+EEPROM_XSECTION_SRC	:= $(call ptx/in-path, PTXDIST_PATH, local_src/eeprom-xsection)
 EEPROM_XSECTION_DIR	:= $(BUILDDIR)/$(EEPROM_XSECTION)
 EEPROM_XSECTION_LICENSE	:= unknown
 EEPROM_XSECTION_MAKE_OPT:= CROSS=$(COMPILER_PREFIX) VPATH=$(EEPROM_XSECTION_SRC)
+ifeq ($(EEPROM_XSECTION_SRC),)
+EEPROM_XSECTION_SRC	:= $(PTXDIST_WORKSPACE)/local_src/eeprom-xsection
+endif
 
 # ----------------------------------------------------------------------------
 # Get

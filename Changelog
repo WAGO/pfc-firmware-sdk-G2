@@ -1,3 +1,64 @@
+Firmware Release 04.04.03 (26) – CODESYS 3
+
+Engineering by CODESYS IDE V. 3.5 is supported
+Engineering by e!COCKPIT IDE is not supported
+CODESYS 2.3 is not supported
+
+Migration Guide – from e!COCKPIT to CODEYS V3.5:
+• https://techdocs.wago.com/Software/eCOCKPIT_Migration/en-US/index.html#index_content
+
+System:
+[FIXED] Sporadic failure of data communication to the cloud
+[FIXED] NTP client timeout too short. Increased to 8 sec.
+[FIXED] If the device is in separate mode and no web server is running, the fire wall 
+        blocks the webserver after armed, regardless of how the firewall is set
+[FIXED] APN configuration leads to modem reset
+[FIXED] FTP didn’t support NOOP command
+[FIXED] Ensure UTF-8 encoding for log files
+[DEPRECATED] The network feature rate limiting is deprecated and will be removed in fu-ture versions
+[Note]  ADVIDE Code generation from WDA OpenAPI is possible via Postman
+
+
+Operating System: 
+[FIXED] SECURITY CVE-2023-27533, CVE-2023-27534, CVE-2023-27535, CVE-2023-27536, CVE-2023-27537, CVE-2023-27538
+[CHANGED] Update rauc to v1.9
+
+Runtime System:
+[NEW]   CODESYS3 Runtime-System 3.5.19.20
+[NEW]   CODESYS Redundancy. Needs DRM license 2759-249/210-1000 or 2759-249/211-1000
+[FIXED] Data Sources Manager didn’t support Application V3
+[CHANGED] Access blocking for 1h after 5 login failures
+[CHANGED] Runtime file access is limited to /home/codesys, /media/sd, /tmp
+[CHANGED] The restriction to WAGO Ethernet Sub Devices has been removed for compatibility reasons
+[FIXED] SECURITY CVE-2022-4224, CVE-2022-47378, CVE-2022-47379, CVE-2022-47380, CVE-2022-47381, CVE-2022-47382,
+                 CVE-2022-47383, CVE-2022-47384, CVE-2022-47385, CVE-2022-47386, CVE-2022-47387, CVE-2022-47388,
+                 CVE-2022-47389, CVE-2022-47390, CVE-2022-47392, CVE-2022-47393, CVE-2022-47391, CVE-2023-37545,
+                 CVE-2023-37546, CVE-2023-37547, CVE-2023-37548, CVE-2023-37549, CVE-2023-37550, CVE-2023-37551,
+                 CVE-2023-37552, CVE-2023-37553, CVE-2023-37554, CVE-2023-37555, CVE-2023-37556, CVE-2023-37557,
+                 CVE-2023-37558, CVE-2023-37559, CODESYS IDE: CVE-2023-3662, CVE-2023-3663, CVE-2023-3669
+
+Fieldbus Interface & Protocols:
+[NEW]   Modbus RTU: CODESYS configurator for the onboard serial interface
+[NEW]   PROFINET: Limited support of CODESYS PROFINET controller and device
+[NOTE]  IMPORTANT PROFINET: no MRP ring redundancy, no LLDP support, no Daisy Chain wiring, limited to one Ethernet port
+[NOTE]  ADVICE  PROFINET: do not use the controller with more than 5 devices
+[FIXED] BACnet: Max/Min Pres Value Property in Analog Input Objects
+[FIXED] BACnet: Sporadic missing synchronicity between runtime and BACnet objects
+[FIXED] BACnet: Synchronization if an override configuration file exists with ob-jects that have more properties defined in the configuration file than in CODESYS
+[FIXED] BACnet: Non alphanumeric characters in Trendlog object name
+[FIXED] OPC UA Client: CmpOPCUAClient stops the runtime if the connected server is shut down.
+
+Libraries:
+[NEW]   WagoSysModem 2.0.1.0: Send SMS in text mode
+[NEW]   WagoSyCurl: Support for WSTRING
+[NEW]   WagoAppCloud: Support for data types SINT, LINT, ULINT and LWORD
+
+Web Based Management:
+[FIXED] Automatically redirect to application didn’t work if separate ports are enabled for WBM and WebVisu.
+[FIXED] SECURITY CVE-2023-3379, CVE-2023-3378
+
+################################################################################
+
 Firmware Release 04.03.03 (25) – CODESYS 3
 
 Engineering by CODESYS IDE V. 3.5 is supported

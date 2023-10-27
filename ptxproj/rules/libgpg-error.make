@@ -32,7 +32,8 @@ LIBGPG_ERROR_LICENSE_FILES := \
 
 # workaround for linaro toolchain that uses a target triple instead of a quadruple
 # Use '=' to delay $(shell ...) calls until this is needed
-LIBGPG_ERROR_TARGET	= $(subst arm-linux-,arm-unknown-linux-,$(patsubst %-gnueabihf,%-gnueabi,$(patsubst i%86-pc-linux-gnu,i686-pc-linux-gnu,$(shell target=$(PTXCONF_GNU_TARGET); echo $${target/-*-linux/-$(if $(PTXCONF_ARCH_X86),pc,unknown)-linux}))))
+LIBGPG_ERROR_TARGET	= $(subst aarch64-linux-,aarch64-unknown-linux-,$(subst arm-linux-,arm-unknown-linux-,$(patsubst %-gnueabihf,%-gnueabi,$(patsubst i%86-pc-linux-gnu,i686-pc-linux-gnu,$(shell target=$(PTXCONF_GNU_TARGET); echo $${target/-*-linux/-$(if $(PTXCONF_ARCH_X86),pc,unknown)-linux})))))
+LIBGPG_ERROR_TARGET_PTX	:= $(call remove_quotes, $(PTXCONF_GNU_TARGET))
 
 # ----------------------------------------------------------------------------
 # Prepare
@@ -57,8 +58,10 @@ LIBGPG_ERROR_CONF_OPT	:= \
 
 $(STATEDIR)/libgpg-error.prepare:
 	@$(call targetinfo)
-	@cp -v $(LIBGPG_ERROR_DIR)/src/syscfg/lock-obj-pub.$(LIBGPG_ERROR_TARGET).h \
-		$(LIBGPG_ERROR_DIR)/src/syscfg/lock-obj-pub.$(call remove_quotes, $(PTXCONF_GNU_TARGET)).h
+	@if [ ! -e $(LIBGPG_ERROR_DIR)/src/syscfg/lock-obj-pub.$(LIBGPG_ERROR_TARGET_PTX).h ]; then \
+		cp -v $(LIBGPG_ERROR_DIR)/src/syscfg/lock-obj-pub.$(LIBGPG_ERROR_TARGET).h \
+			$(LIBGPG_ERROR_DIR)/src/syscfg/lock-obj-pub.$(LIBGPG_ERROR_TARGET_PTX).h; \
+	fi
 	@$(call world/prepare, LIBGPG_ERROR)
 	@$(call touch)
 

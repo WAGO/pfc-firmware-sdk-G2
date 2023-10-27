@@ -1,0 +1,48 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# This file is part of project auth-service (PTXdist package wago-auth-service).
+#
+# Copyright (c) 2023 WAGO GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
+# Script:   wago-auth-service.postinst
+#
+# Brief:    WAGO Auth Service post install script.
+#
+# Author:   PEn: WAGO GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+
+
+# Function to restart service daemon.
+#
+# Return: 0 on success, unequal to 0 otherwise
+#-----------------------------------------------------------------------------#
+restart_service()
+{
+  local service_script="/etc/init.d/authd"
+  if [ -e "$service_script" ]; then
+    local status=$("$service_script" status)
+    echo $status | grep -q "running";
+    local running=$?
+    if [ $running -ne 0 ]; then
+      echo "Service currently not running: Skip service restart"
+    else
+      "$service_script" stop
+      "$service_script" start
+    fi
+  fi
+}
+
+# Main: Prepare newly installed package to run.
+#
+# Exit: 0 on success, unequal to 0 otherwise
+#-----------------------------------------------------------------------------#
+if [ ! "$PTXDIST" ]; then
+  restart_service
+fi
+
+exit 0

@@ -57,10 +57,10 @@ backupData()
   # exec 2>/dev/null
   case "${modeLabel}" in
     codesys)
-      TAR_OPTIONS="-C /home ./"
+      TAR_OPTIONS="-C /home --exclude=./user/bacnet/cert/* ./"
       if [[ "enabled" == "$(/etc/config-tools/get_runtime_config homedir-on-sdcard)" ]]; then
         # application is on sd card
-        TAR_OPTIONS="--exclude=./codesys_root -C /home ./ -C /media ./sd/. --transform=s,./sd,./codesys_root,"
+        TAR_OPTIONS="--exclude=./codesys_root -C /home --exclude=./user/bacnet/cert/* ./ -C /media ./sd/. --transform=s,./sd,./codesys_root,"
       fi
       tar -cpf - ${TAR_OPTIONS}
       ;;

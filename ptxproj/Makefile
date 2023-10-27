@@ -5,7 +5,7 @@
 #
 # This file is part of WAGO PFC BSP.
 #
-# Copyright (c) 2018-2022 WAGO GmbH & Co. KG
+# Copyright (c) 2018-2023 WAGO GmbH & Co. KG
 #
 # Contributors:
 #   PEn: WAGO GmbH & Co. KG
@@ -32,8 +32,9 @@ KERNEL_VERSION ?= $(shell echo $(PTXCONF_KERNEL_VERSION))
 PLATFORMDIR ?= platform-$(PLATFORM)
 TARGETROOT ?= $(shell ptxdist print ROOTDIR)
 PLATFORM_PROJECTROOT ?= projectroot.$(PLATFORM)
-BUILDSUPPORTDIR ?= shared_public/build
+BUILDSUPPORTDIR ?= scripts/wago
 XMLSTARLET ?= xmlstarlet
+PTXDIST_SYSROOT_HOST_PATH ?= $(shell ptxdist print HOST_PATH)
 
 #Firmware information
 FIRMWARE_REVISION_STRING := $(shell cat $(TARGETROOT)/etc/REVISIONS)
@@ -47,19 +48,13 @@ FIRMWARE_SVNREVISION := $(shell cat $(TARGETROOT)/etc/SVNREVISION | head -n1 | c
 
 # Map platform/project names to more user friendly target names
 ifeq ($(PLATFORM),wago-pfcXXX)
-ifdef PTXCONF_PFC_200_G2
 FIRMWARE_PLATFORM ?= PFC-G2-Linux
-else
-FIRMWARE_PLATFORM ?= PFC-Linux
-endif
 else ifeq ($(PLATFORM),wago-pfcXXX-hardened)
-ifdef PTXCONF_PFC_200_G2
 FIRMWARE_PLATFORM ?= PFC-G2-Linux-hardened
-else
-FIRMWARE_PLATFORM ?= PFC-Linux-hardened
-endif
 else ifeq ($(PLATFORM),vtp-ctp)
 FIRMWARE_PLATFORM ?= TP-Linux
+else ifeq ($(PLATFORM),wago-pfc300)
+FIRMWARE_PLATFORM ?= PFC-300-Linux
 else ifeq ($(PLATFORM),cc100)
 FIRMWARE_PLATFORM ?= CC100-Linux
 fsbl := stm32mp1-tf-a-stm32mp151-cc100.stm32
@@ -86,7 +81,7 @@ SD_IMAGE_ORIGINAL ?= $(PLATFORMDIR)/images/sd.hdimg
 WUP ?= $(OUT_DIR)/$(FIRMWARE_PLATFORM)_update_$(IMAGE_ID).wup
 WUP_CONTROLFILE ?= $(OUT_DIR)/package-info.xml
 WUP_CONTROLFILE_SCHEMA ?= $(BUILDSUPPORTDIR)/FWUPFC-Linux_1_0.xsd
-WUP_CONTROLFILE_GENERATOR ?= shared_public/build/create_wup_controlfile.sh
+WUP_CONTROLFILE_GENERATOR ?= $(BUILDSUPPORTDIR)/create_wup_controlfile.sh
 WUP_ATTACHMENTS +=
 WUP_FILES = $(WUP_CONTROLFILE)
 WUP_FILES += $(RAUC_UPDATEFILE)
@@ -120,6 +115,9 @@ GENIMAGE_CONFIGS := $(addprefix $(OUT_DIR)/,$(notdir $(wildcard $(IMAGE_DIR)/*.c
 ifeq ($(PLATFORM),$(filter $(PLATFORM),wago-pfcXXX wago-pfcXXX-hardened))
 PRODUCTION_IMAGES += $(OUT_DIR)/emmc-wago-production-pfc200v3_$(IMAGE_ID).img
 PRODUCTION_IMAGES += $(OUT_DIR)/emmc-commission-pfc200v3_$(IMAGE_ID).img
+
+PRODUCTION_IMAGES += $(OUT_DIR)/emmc-wago-production-pfc100g2_$(IMAGE_ID).img
+PRODUCTION_IMAGES += $(OUT_DIR)/emmc-commission-pfc100g2_$(IMAGE_ID).img
 endif
 
 PRODUCTION_IMAGES += $(OUT_DIR)/firmware_$(IMAGE_ID).hex
@@ -134,7 +132,7 @@ IMAGES_ARCHIVE += $(OUT_DIR)/images_$(IMAGE_ID).tar.gz
 ROOT_DEBUG_ARCHIVE += $(OUT_DIR)/root-debug_$(IMAGE_ID).tar.gz
 
 INDEX ?= $(OUT_DIR)/index.json
-INDEX_GENERATOR ?= shared_public/build/create_index.sh
+INDEX_GENERATOR ?= $(BUILDSUPPORTDIR)/create_index.sh
 
 # Select default dist targets
 DIST_TARGETS += $(OUT_DIR)/root.tgz
@@ -266,7 +264,7 @@ ifeq ($(BUILDTYPE),release)
 $(RAUC_UPDATEFILE): $(RAUC_UPDATEFILE_ORIGINAL) $(RAUC_CERTIFICATE) $(RAUC_KEY) $(RAUC_KEYRING) Makefile | $(OUT_DIR)
 	@echo "Create RAUC update file \"$@\" for build type $(BUILDTYPE) by resign with key \"$(RAUC_KEY)\""
 	   rm -f $@ \
-	&& $(RAUC_CMD) resign --cert=$(RAUC_CERTIFICATE) --key=$(RAUC_KEY) --keyring=$(RAUC_KEYRING) --signing-keyring=$(RAUC_DISTINCT_KEYRING) $< $@
+	&& PATH="$$PATH:$(PTXDIST_SYSROOT_HOST_PATH)" $(RAUC_CMD) resign --debug --no-verify --cert=$(RAUC_CERTIFICATE) --key=$(RAUC_KEY) --keyring=$(RAUC_KEYRING) --signing-keyring=$(RAUC_DISTINCT_KEYRING)  $< $@
 else
 $(RAUC_UPDATEFILE): $(RAUC_UPDATEFILE_ORIGINAL) Makefile | $(OUT_DIR)
 	@echo "Create RAUC update file \"$@\" for build type $(BUILDTYPE) by copy"

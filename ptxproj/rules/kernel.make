@@ -29,20 +29,39 @@ endif
 #
 # Paths and names
 #
-KERNEL_RT_PATCH     := $(call remove_quotes, $(PTXCONF_KERNEL_RT_PATCH))
-KERNEL				:= linux-$(KERNEL_VERSION)
-KERNEL_VERSION      := $(call remove_quotes, $(KERNEL_VERSION)-$(KERNEL_RT_PATCH)-$(PTXCONF_KERNEL_LOCALVERSION))
-KERNEL_MD5			:= $(call remove_quotes,$(PTXCONF_KERNEL_MD5))
-KERNEL_MD5_FILE     := src/linux-$(KERNEL_VERSION).$(KERNEL_SUFFIX).md5
+KERNEL			:= linux-$(KERNEL_VERSION)
+KERNEL_MD5		:= $(call remove_quotes,$(PTXCONF_KERNEL_MD5))
+ifdef PTXCONF_KERNEL_ARTIFACTORY
+KERNEL_RT_PATCH		:= $(call remove_quotes, $(PTXCONF_KERNEL_RT_PATCH))
+KERNEL_VERSION		:= $(call remove_quotes, $(KERNEL_VERSION)-$(KERNEL_RT_PATCH)-$(PTXCONF_KERNEL_LOCALVERSION))
+KERNEL_MD5_FILE		:= src/linux-$(KERNEL_VERSION).$(KERNEL_SUFFIX).md5
 KERNEL_SUFFIX		:= tgz
-KERNEL_DIR			:= $(KERNEL_BDIR)/$(KERNEL)
+KERNEL_URL		:= $(call jfrog_template_to_url, KERNEL)
+else
+KERNEL_VERSION		:= $(call remove_quotes, $(KERNEL_VERSION))
+KERNEL_SUFFIX		:= tar.xz
+KERNEL_URL		:= $(call kernel-url, KERNEL)
+endif
+KERNEL_DIR		:= $(KERNEL_BDIR)/$(KERNEL)
 KERNEL_CONFIG		:= $(call remove_quotes, $(PTXDIST_PLATFORMCONFIGDIR)/$(PTXCONF_KERNEL_CONFIG))
+KERNEL_DTS_PATH		:= $(call remove_quotes,$(PTXCONF_KERNEL_DTS_PATH))
+KERNEL_DTS		:= $(call remove_quotes,$(PTXCONF_KERNEL_DTS))
+KERNEL_DTB_FILES	:= $(addsuffix .dtb,$(basename $(KERNEL_DTS)))
 KERNEL_LICENSE		:= GPL-2.0
-KERNEL_URL			:= $(call jfrog_template_to_url, KERNEL)
 KERNEL_SOURCE		:= $(SRCDIR)/linux-$(KERNEL_VERSION).$(KERNEL_SUFFIX)
 KERNEL_DEVPKG		:= NO
-DEFCONFIG			:= $(findstring _defconfig,$(PTXCONF_KERNEL_CONFIG))
+DEFCONFIG		:= $(findstring _defconfig,$(PTXCONF_KERNEL_CONFIG))
 
+# track changes to devices-trees in the BSP
+# TODO: build fails here!!
+# $(call world/dts-cfghash-file, KERNEL)
+
+# in case we migrate some old syntax
+ifneq ($(KERNEL_DTS),$(notdir $(KERNEL_DTS)))
+$(call ptx/error, the device trees in PTXCONF_KERNEL_DTS must be specified without)
+$(call ptx/error, directory. Use PTXCONF_KERNEL_DTS_PATH to provide a list of direcories)
+$(call ptx/error, that will be searched.)
+endif
 
 # ----------------------------------------------------------------------------
 # Include
@@ -104,10 +123,9 @@ endif
 #
 KERNEL_IMAGE := $(call remove_quotes, $(PTXCONF_KERNEL_IMAGE))
 KERNEL_IMAGE_SUFFIX := $(call remove_quotes, $(PTXCONF_BOOT_ADD_LINUX_SUFFIX))
-KERNEL_BUILD_IMAGE = "uImage"
 
 # these are sane default
-KERNEL_IMAGE_PATH_y := $(KERNEL_DIR)/arch/$(GENERIC_KERNEL_ARCH)/boot/$(KERNEL_BUILD_IMAGE)
+KERNEL_IMAGE_PATH_y := $(KERNEL_DIR)/arch/$(GENERIC_KERNEL_ARCH)/boot/$(KERNEL_IMAGE)
 
 # vmlinux is special
 KERNEL_IMAGE_PATH_$(PTXCONF_KERNEL_IMAGE_VMLINUX) := $(KERNEL_DIR)/vmlinux
@@ -237,7 +255,7 @@ $(STATEDIR)/kernel.compile:
 		$(KERNEL_DIR)/usr/initramfs_data.cpio.* \
 		$(KERNEL_DIR)/usr/.initramfs_data.cpio.*
 	@cd $(KERNEL_DIR) && $(KERNEL_PATH) $(KERNEL_ENV) $(MAKE) \
-		$(KERNEL_MAKEVARS) $(KERNEL_BUILD_IMAGE) $(call ptx/ifdef, PTXCONF_KERNEL_MODULES,modules)
+		$(KERNEL_MAKEVARS) $(KERNEL_IMAGE) $(call ptx/ifdef, PTXCONF_KERNEL_MODULES,modules)
 ifdef PTXCONF_KERNEL_TOOL_PERF
 	@+cd $(KERNEL_DIR) && $(KERNEL_PATH) $(KERNEL_ENV) $(MAKE) \
 		$(KERNEL_MAKEVARS) $(KERNEL_TOOL_PERF_OPTS) -C tools/perf
@@ -267,6 +285,7 @@ ifdef PTXCONF_KERNEL_DTC
 endif
 	# Install platform-specific headers
 
+	@$(call world/dtb, KERNEL)
 	@$(call touch)
 
 # ----------------------------------------------------------------------------
@@ -275,6 +294,11 @@ endif
 
 $(STATEDIR)/kernel.targetinstall:
 	@$(call targetinfo)
+
+	@$(foreach dtb, $(KERNEL_DTB_FILES), \
+		echo -e "Installing $(dtb) ...\n"$(ptx/nl) \
+		install -D -m0644 $(KERNEL_PKGDIR)/boot/$(dtb) \
+			$(IMAGEDIR)/$(dtb)$(ptx/nl))
 
 # delete the kernel image, it might be out-of-date
 ##	@rm -f $(IMAGEDIR)/linuximage
@@ -288,7 +312,14 @@ ifneq ($(PTXCONF_KERNEL_INSTALL)$(PTXCONF_KERNEL_VMLINUX),)
 
 	@$(call install_copy, kernel, 0, 0, 0755, /boot);
 ifdef PTXCONF_KERNEL_INSTALL
+ifdef PTXCONF_KERNEL_IMAGE_U
+	@$(call install_copy, kernel, 0, 0, 0644, $(KERNEL_IMAGE_PATH_y), /boot/$(PTXCONF_KERNEL_IMAGE_U_TARGET), n)
+else
 	@$(call install_copy, kernel, 0, 0, 0644, $(KERNEL_IMAGE_PATH_y), /boot/$(KERNEL_IMAGE)$(KERNEL_IMAGE_SUFFIX), n)
+endif
+	@$(foreach dtb, $(KERNEL_DTB_FILES), \
+		$(call install_copy, kernel, 0, 0, 0644, -, \
+			/boot/$(dtb), n)$(ptx/nl))
 endif
 
 # install the ELF kernel image for debugging purpose
@@ -359,6 +390,9 @@ ifndef PTXCONF_PROJECT_USE_PRODUCTION
 $(STATEDIR)/kernel.clean:
 	@$(call targetinfo)
 	@$(call clean_pkg, KERNEL)
+	@$(foreach dtb,$(KERNEL_DTB_FILES), \
+		rm -vf $(IMAGEDIR)/$(dtb)$(ptx/nl))
+
 	@if [ -L $(KERNEL_DIR) ]; then \
 		pushd $(KERNEL_DIR); \
 		quilt pop -af; \

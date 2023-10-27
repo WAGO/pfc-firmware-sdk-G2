@@ -1,0 +1,48 @@
+## SECTION=wago_specific
+
+config WAGO_AUTH_SERVICE
+	bool
+	default n
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select LIBCOMMONHEADER      if WAGO_AUTH_SERVICE_LIB
+	select NLOHMANN_JSON        if WAGO_AUTH_SERVICE_LIB
+	select PAM                  if WAGO_AUTH_SERVICE_LIB
+	select PAM_PAM_SUCCEED_IF   if PAM
+	select FCGI                 if WAGO_AUTH_SERVICE_LIB
+	select CJOSE                if WAGO_AUTH_SERVICE_LIB
+	select LIGHTTPD             if WAGO_AUTH_SERVICE_LIGHTTPD_INTEGRATION
+	select WAGO_LOGGING         if WAGO_AUTH_SERVICE_DAEMON
+	select WAGO_PRIVILEGES      if WAGO_AUTH_SERVICE_DAEMON
+	select WAGO_OPTPARSING      if WAGO_AUTH_SERVICE_DAEMON
+
+config WAGO_AUTH_SERVICE_LIB
+	bool
+	default n
+	prompt "WAGO Auth Service Target Library"
+	select WAGO_AUTH_SERVICE
+	help
+	  Library for Linux controller devices to build auth services.
+
+config WAGO_AUTH_SERVICE_DAEMON
+	bool
+	default n
+	prompt "WAGO Auth Service Daemon"
+	select WAGO_AUTH_SERVICE_LIB
+	help
+	  WAGO Auth Service daemon for Linux controller devices.
+
+config WAGO_AUTH_SERVICE_DAEMON_STARTSCRIPT
+	bool
+	default y
+	prompt "install daemon init script into /etc/init.d/"
+	depends on INITMETHOD_BBINIT
+	depends on WAGO_AUTH_SERVICE_DAEMON
+
+config WAGO_AUTH_SERVICE_LIGHTTPD_INTEGRATION
+	bool
+	default n
+	prompt "WAGO Auth Service lighttpd integration"
+	select WAGO_AUTH_SERVICE_LIB
+	help
+	  WAGO Auth Service integration for lighttpd webserver.

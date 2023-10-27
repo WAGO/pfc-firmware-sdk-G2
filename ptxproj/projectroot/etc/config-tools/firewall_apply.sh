@@ -4,7 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2018-2022 WAGO GmbH & Co. KG
+# Copyright (c) 2018-2023 WAGO GmbH & Co. KG
 #-----------------------------------------------------------------------------#
 #-----------------------------------------------------------------------------#
 # Script:   firewall_apply.sh
@@ -48,13 +48,13 @@ firewall_get_service_state()
         ;;
 
     codesysw)
-        if [[ "enabled" == "$(/etc/config-tools/get_port_state codesys3-webserver)" ]]; then
+        if [[ "enabled" == "$(/etc/config-tools/get_port_state codesys3-webserver)" ]] && [[ "YES" == "$(/etc/config-tools/get_webvisu use-separated-ports)" ]]; then
             active=1
         fi
         ;;
 
     codesysw_https)
-        if [[ "enabled" == "$(/etc/config-tools/get_port_state codesys3-webserver)" ]]; then
+        if [[ "enabled" == "$(/etc/config-tools/get_port_state codesys3-webserver)" ]] && [[ "YES" == "$(/etc/config-tools/get_webvisu use-separated-ports)" ]]; then
             active=1
         fi
         ;;

@@ -28,6 +28,8 @@ LICENSES_PLATFORMCONFIGPACKAGEDIR	:= $(PTXDIST_PLATFORMCONFIGDIR)/packages
 LICENSES_LICENSE        := unknown
 LICENSES_MAKE_ENV       :=
 
+LICENSES_PKGS = $(filter-out php7 php8 lighttpd,$(IMAGE_ROOT_TGZ_PKGS))
+
 # ----------------------------------------------------------------------------
 # Get
 # ----------------------------------------------------------------------------
@@ -62,7 +64,7 @@ $(STATEDIR)/licenses.compile:
 
 $(STATEDIR)/licenses.install:
 	@$(call targetinfo)
-	
+
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 #	# BSP mode: install by extracting tgz file
 	@mkdir -p $(LICENSES_DIR) && \
@@ -72,7 +74,7 @@ else
 	@$(shell mkdir -p $(LICENSES_DIR))
 #	# copy only needed licences, i.e. for selected packages, to working directory
 #	# and then work with the copies. do NOT modify them directly in */projectroot*/...
-	@$(foreach pkg, $(IMAGE_ROOT_TGZ_PKGS), \
+	@$(foreach pkg, $(LICENSES_PKGS), \
 	  $(shell test $$(ls -1q $(LICENSES_PATH)/license.$(subst _,-,$(pkg))_*.txt 2>/dev/null | wc -l) -ge 2 && \
 	  	ptxd_bailout "too many license files for $(pkg)") \
 	  $(shell test -f $(LICENSES_PATH)/license.$(subst _,-,$(pkg))_*.txt && \

@@ -191,7 +191,7 @@ function backup_bootloader
     local ubi=false
     
     case "${dev_type}" in
-        pfc200v3|pac100)
+        pfc200v3|pfc100g2)
             case $system_index in
                 "1")
                     backup_root="$G_EMMC_ROOT1_DEV"
@@ -300,7 +300,7 @@ function current_bootloader_version_too_old
 #Reports unknown device and exits with $SHELL_ERROR
 function report_unknown_device
 {
-    ReportError "Error: unknown device (pfc100, pfc200{,v2,v3} or pac100 expected)."
+    ReportError "Error: unknown device (pfc100, pfc200{,v2,v3} or pfc100g2 expected)."
     exit $SHELL_ERROR
 }
 
@@ -367,7 +367,7 @@ function __main
     fi
     
     case "${dev_type}" in
-        pfc200v3|pac100)
+        pfc200v3|pfc100g2)
             update_emmc "${mlo_path}" "${bb_path}" "${dev_type}"
             ;;
 

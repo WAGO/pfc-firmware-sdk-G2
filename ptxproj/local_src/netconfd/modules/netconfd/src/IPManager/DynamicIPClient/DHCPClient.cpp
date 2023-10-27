@@ -131,7 +131,10 @@ void DHCPClient::Start() {
                                       pid_file_path_.c_str(),
                                       "-R",
                                       "-x",
-                                      hostname_option.c_str()};
+                                      hostname_option.c_str(),
+                                      "-O",
+                                      "43"};
+
   if (not clientID_.empty()) {
     options.emplace_back("-x");
     options.emplace_back(clientid_option.c_str());
@@ -178,6 +181,10 @@ void DHCPClient::Stop() {
   RemoveFile(pid_file_path_);
 
   pid_ = 0;
+}
+
+::std::string DHCPClient::GetClientID() {
+  return clientID_;
 }
 
 } /* namespace netconf */

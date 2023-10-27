@@ -48,7 +48,8 @@ LDB_CONF_OPT	:=  \
 	--pedantic \
 	--cross-compile \
 	--cross-execute=/does/not/exist/and/triggers/exceptions \
-	--cross-answers=$(LDB_DIR)/cross-answers
+	--cross-answers=$(LDB_DIR)/cross-answers \
+	--without-ldb-lmdb
 
 
 $(STATEDIR)/ldb.prepare:

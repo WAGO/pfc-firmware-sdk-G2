@@ -63,9 +63,9 @@ function get_min_sd_card_size
     local current_rootfs_offset
     current_rootfs_offset=$(get_rootfs_offset)
 
-    # add additional buffer with size 10% from rootfs+home 
+    # add additional buffer with size 15% from rootfs+home 
     # (due to low precision of calculate home and rootfs summary data size) 
-    local current_additional_buffer_coeff=10
+    local current_additional_buffer_coeff=15
     local root_and_home_size=$(( current_rootfs_size + current_additional_size ))
     local current_additional_buffer=$(($((root_and_home_size/100))*current_additional_buffer_coeff))
     echo $(( current_rootfs_offset + root_and_home_size + current_additional_buffer ))

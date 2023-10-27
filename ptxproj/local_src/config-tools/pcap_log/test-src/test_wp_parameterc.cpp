@@ -23,7 +23,7 @@
 //------------------------------------------------------------------------------
 // defines; structure, enumeration and type definitions
 //------------------------------------------------------------------------------
-#define TEST_JSON_CONFIG_STR R"({"device":"br0","filter":"","maxFilesize":52428800,"maxPartitionSizePct":60,"rotateFiles":true,"storage":"RAM Disk"})"
+#define TEST_JSON_CONFIG_STR R"({"device":"br0","filter":"","maxFilesize":52428800,"maxPacketLen":2048,"maxPartitionSizePct":60,"rotateFiles":true,"storage":"RAM Disk"})"
 #define TEST_JSON_INFO_STR R"({"isRunning":false,"lastFSize":0,"lastPid":0,"lastRecv":0,"lastRfshTime":"","optDevices":["br0"],"optDlPaths":[],"optMemCard":false})"
 
 using namespace testing;

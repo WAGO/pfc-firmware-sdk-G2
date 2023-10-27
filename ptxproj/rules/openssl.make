@@ -17,14 +17,14 @@ PACKAGES-$(PTXCONF_OPENSSL) += openssl
 # Paths and names
 #
 OPENSSL_BASE	:= 1.1.1
-OPENSSL_BUGFIX	:= t
+OPENSSL_BUGFIX	:= u
 OPENSSL_VERSION	:= $(OPENSSL_BASE)$(OPENSSL_BUGFIX)
-OPENSSL_MD5	:= 1cfee919e0eac6be62c88c5ae8bcd91e
+OPENSSL_MD5	:= 72f7ba7395f0f0652783ba1089aa0dcc
 OPENSSL		:= openssl-$(OPENSSL_VERSION)
 OPENSSL_SUFFIX	:= tar.gz
 OPENSSL_URL	:= \
-	http://www.openssl.org/source/$(OPENSSL).$(OPENSSL_SUFFIX) \
-	http://www.openssl.org/source/old/$(OPENSSL_BASE)/$(OPENSSL).$(OPENSSL_SUFFIX)
+	https://www.openssl.org/source/$(OPENSSL).$(OPENSSL_SUFFIX) \
+	https://www.openssl.org/source/old/$(OPENSSL_BASE)/$(OPENSSL).$(OPENSSL_SUFFIX)
 OPENSSL_SOURCE	:= $(SRCDIR)/$(OPENSSL).$(OPENSSL_SUFFIX)
 OPENSSL_DIR	:= $(BUILDDIR)/$(OPENSSL)
 OPENSSL_LICENSE	:= OpenSSL
@@ -55,7 +55,7 @@ endif
 
 ifdef PTXCONF_OPENSSL
 ifndef OPENSSL_ARCH-y
-$(error *** Sorry unsupported ARCH in openssl.make)
+$(call ptx/error, Sorry unsupported ARCH in openssl.make)
 endif
 endif
 

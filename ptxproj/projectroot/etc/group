@@ -1,6 +1,6 @@
 root:x:0:
 daemon:x:1:
-shadow:x:42:paramd,www
+shadow:x:42:authd,paramd,www
 users:x:100:
 ftp:x:101:
 www:x:102:
@@ -24,6 +24,7 @@ wda:x:120:admin
 paramd:x:121:
 wdxprov:x:122:
 wdaadm:x:123:
+authd:x:124:
 docker:x:1001:
 iot:x:118:iot
 wagoupload:x:234:wagoupload,admin

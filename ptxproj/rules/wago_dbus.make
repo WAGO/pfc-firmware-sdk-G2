@@ -19,13 +19,13 @@ PACKAGES-$(PTXCONF_WAGO_DBUS) += wago_dbus
 ifdef PTXCONF_WAGO_DBUS_TRUNK
 WAGO_DBUS_VERSION	:= trunk
 else
-WAGO_DBUS_VERSION	:= 1.0
+WAGO_DBUS_VERSION	:= 1.1
 endif
 WAGO_DBUS		:= wago_dbus
-WAGO_DBUS_URL		:= file://$(SRCDIR)/$(WAGO_DBUS)
-WAGO_DBUS_SRC		:= $(call ptx/in-path, PTXDIST_PATH, src/$(WAGO_DBUS))
+WAGO_DBUS_URL		:= file:///local_src/$(WAGO_DBUS)
+WAGO_DBUS_SRC		:= $(call ptx/in-path, PTXDIST_PATH, local_src/$(WAGO_DBUS))
 ifeq ($(WAGO_DBUS_SRC),)
-WAGO_DBUS_SRC	:= $(PTXDIST_WORKSPACE)/src/$(WAGO_DBUS)
+WAGO_DBUS_SRC	:= $(PTXDIST_WORKSPACE)/local_src/$(WAGO_DBUS)
 endif
 
 WAGO_DBUS_DIR		:= $(BUILDDIR)/$(WAGO_DBUS)

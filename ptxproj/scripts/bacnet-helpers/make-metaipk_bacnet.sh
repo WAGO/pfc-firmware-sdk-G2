@@ -5,9 +5,61 @@
 # WAGO GmbH & Co. KG
 
 # Arguments:
-BACNET_VERSION=$1
-BACNET_REV=$2
-PTXCONF_OPKG_OPKG_CONF_URL=$3
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -v|--version)
+      BACNET_VERSION="$2"
+      ;;
+    -r|--revision)
+      BACNET_REV="$2"
+      ;;
+    -u|--url)
+      PTXCONF_OPKG_OPKG_CONF_URL="$2"
+      ;;
+    --libbacnetstack)
+      WITH_BACNETSTACK="$2"
+      ;;
+    --libbacnet)
+      WITH_LIBBACNET="$2"
+      ;;
+    --libbacnetconfig)
+      WITH_BACNETCONFIG="$2"
+      ;;
+    --cds3tsciobacnet)
+      WITH_TSCIOBACNET="$2"
+      ;;
+    --cds3iodrvbacnet)
+      WITH_IODRVBACNET="$2"
+      ;;
+    --wbmbacnet)
+      WITH_WBMBACNET="$2"
+      ;;
+    --bacnetnative)
+      WITH_BACNETNATIVE="$2"
+      ;;
+    --ppbacnet)
+      WITH_PPBACNET="$2"
+      ;;
+    -*|--*)
+      echo "!!! Unknown option $1"
+      exit 1
+      ;;
+  esac
+  shift # past argument
+  shift # past value
+done
+
+if [ -z "$WITH_BACNETSTACK" ] || \
+   [ -z "$WITH_LIBBACNET" ] || \
+   [ -z "$WITH_BACNETCONFIG" ] || \
+   [ -z "$WITH_TSCIOBACNET" ] || \
+   [ -z "$WITH_IODRVBACNET" ] || \
+   [ -z "$WITH_WBMBACNET" ] || \
+   [ -z "$WITH_BACNETNATIVE" ] || \
+   [ -z "$WITH_PPBACNET" ]; then
+  echo "!!! Missing value for one or more packages"
+  exit 1
+fi
 
 # Prepare URL for sed ()
 PTXCONF_OPKG_OPKG_CONF_URL_SED=${PTXCONF_OPKG_OPKG_CONF_URL//$'/'/$'\/'}
@@ -21,43 +73,71 @@ PTX_PLATFORMDIR="$PTXDIST_PLATFORMDIR"
 BUILD_DIR=$PTXDIST_PLATFORMDIR/packages/
 FW_VERSION=$(cat  $PTXDIST_WORKSPACE/projectroot/etc/REVISIONS | grep "FIRMWARE=" | cut -d= -f2 | sed -e 's/(/_/g;s/)//g')
 
-LIB_BACNET_STACK_IPK=$(ls $PTXDIST_PLATFORMDIR/packages | grep libbacnetstack_ | cut -f2)
-if [ "$LIB_BACNET_STACK_IPK" = "" ]; then
-  echo !!! LIB_BACNET_STACK_IPK not found
-  exit 1
+if [ "$WITH_BACNETSTACK" = "y" ]; then
+  LIB_BACNET_STACK_IPK=$(ls $PTXDIST_PLATFORMDIR/packages | grep libbacnetstack_ | cut -f2)
+  if [ "$LIB_BACNET_STACK_IPK" = "" ]; then
+    echo !!! LIB_BACNET_STACK_IPK not found
+    exit 1
+  fi
 fi
 
-LIB_BACNET_IPK=$(ls $PTXDIST_PLATFORMDIR/packages | grep libbacnet_ | cut -f2)
-if [ "$LIB_BACNET_IPK" = "" ]; then
-  echo !!! LIB_BACNET_IPK not found
-  exit 1
+if [ "$WITH_LIBBACNET" = "y" ]; then
+  LIB_BACNET_IPK=$(ls $PTXDIST_PLATFORMDIR/packages | grep libbacnet_ | cut -f2)
+  if [ "$LIB_BACNET_IPK" = "" ]; then
+    echo !!! LIB_BACNET_IPK not found
+    exit 1
+  fi
 fi
 
-LIB_BACNET_CONFIG_IPK=$(ls $PTXDIST_PLATFORMDIR/packages | grep libbacnetconfig_ | cut -f2 )
-if [ "$LIB_BACNET_CONFIG_IPK" = "" ]; then
-  echo !!! LIB_BACNET_CONFIG_IPK not found
-  exit 1
+if [ "$WITH_BACNETCONFIG" = "y" ]; then
+  LIB_BACNET_CONFIG_IPK=$(ls $PTXDIST_PLATFORMDIR/packages | grep libbacnetconfig_ | cut -f2 )
+  if [ "$LIB_BACNET_CONFIG_IPK" = "" ]; then
+    echo !!! LIB_BACNET_CONFIG_IPK not found
+    exit 1
+  fi
 fi
 
-CDS3_TSCIO_BACNET_IPK=$(ls $PTXDIST_PLATFORMDIR/packages | grep cds3-tsciobacnet_ | cut -f2 )
-if [ "$CDS3_TSCIO_BACNET_IPK" = "" ]; then
-  echo !!! CDS3_TSCIO_BACNET_IPK not found
-  exit 1
+if [ "$WITH_TSCIOBACNET" = "y" ]; then
+  CDS3_TSCIO_BACNET_IPK=$(ls $PTXDIST_PLATFORMDIR/packages | grep cds3-tsciobacnet_ | cut -f2 )
+  if [ "$CDS3_TSCIO_BACNET_IPK" = "" ]; then
+    echo !!! CDS3_TSCIO_BACNET_IPK not found
+    exit 1
+  fi
 fi
 
-CDS3_IODRV_BACNET_IPK=$(ls $PTXDIST_PLATFORMDIR/packages | grep cds3-iodrvbacnet_ | cut -f2 )
-if [ "$CDS3_IODRV_BACNET_IPK" = "" ]; then
-  echo !!! CDS3_IODRV_BACNET_IPK not found
-  exit 1
+if [ "$WITH_IODRVBACNET" = "y" ]; then
+  CDS3_IODRV_BACNET_IPK=$(ls $PTXDIST_PLATFORMDIR/packages | grep cds3-iodrvbacnet_ | cut -f2 )
+  if [ "$CDS3_IODRV_BACNET_IPK" = "" ]; then
+    echo !!! CDS3_IODRV_BACNET_IPK not found
+    exit 1
+  fi
 fi
 
-WAGO_NG_PLUGIN_BACNET_IPK=$(ls $PTXDIST_PLATFORMDIR/packages | grep wbm-ng-plugin-bacnet_ | cut -f2 )
-if [ "$WAGO_NG_PLUGIN_BACNET_IPK" = "" ]; then
-  echo !!! WAGO_NG_PLUGIN_BACNET_IPK not found
-  exit 1
+if [ "$WITH_WBMBACNET" = "y" ]; then
+  WAGO_NG_PLUGIN_BACNET_IPK=$(ls $PTXDIST_PLATFORMDIR/packages | grep wbm-ng-plugin-bacnet_ | cut -f2 )
+  if [ "$WAGO_NG_PLUGIN_BACNET_IPK" = "" ]; then
+    echo !!! WAGO_NG_PLUGIN_BACNET_IPK not found
+    exit 1
+  fi
 fi
 
-PACKAGES="$LIB_BACNET_IPK $LIB_BACNET_CONFIG_IPK $CDS3_TSCIO_BACNET_IPK $CDS3_IODRV_BACNET_IPK $WAGO_NG_PLUGIN_BACNET_IPK $LIB_BACNET_STACK_IPK"
+if [ "$WITH_BACNETNATIVE" = "y" ]; then
+  BACNET_NATIVE_IPK=$(ls $PTXDIST_PLATFORMDIR/packages | grep bacnetnative_ | cut -f2 )
+  if [ "$BACNET_NATIVE_IPK" = "" ]; then
+    echo !!! BACNET_NATIVE_IPK not found
+    exit 1
+  fi
+fi
+
+if [ "$WITH_PPBACNET" = "y" ]; then
+  PP_BACNET_IPK=$(ls $PTXDIST_PLATFORMDIR/packages | grep pp-bacnet_ | cut -f2 )
+  if [ "$PP_BACNET_IPK" = "" ]; then
+    echo !!! PP_BACNET_IPK not found
+    exit 1
+  fi
+fi
+
+PACKAGES="$LIB_BACNET_IPK $LIB_BACNET_CONFIG_IPK $CDS3_TSCIO_BACNET_IPK $CDS3_IODRV_BACNET_IPK $WAGO_NG_PLUGIN_BACNET_IPK $LIB_BACNET_STACK_IPK $BACNET_NATIVE_IPK $PP_BACNET_IPK"
 VERSION="${BACNET_VERSION}"
 REPO_NAME="bacnet_rev${BACNET_REV}_${VERSION}_FW${FW_VERSION}.repo"
 
@@ -170,13 +250,13 @@ echo "Architecture: armhf"                                      >> ${BUILD_DIR}b
 echo "Maintainer: \"WAGO GmbH & Co. KG (SEp)\" " >> ${BUILD_DIR}bacnet-repo-src/control/control
 echo "Depends: "                                                >> ${BUILD_DIR}bacnet-repo-src/control/control
 echo "Source: "                                                 >> ${BUILD_DIR}bacnet-repo-src/control/control
-echo "Description:  Installation for WAGO BACnet. This packet is a meta packet including all parts need for BACnet." >> ${BUILD_DIR}bacnet-repo-src/control/control
-echo "              This packet is build for Firmware Version $FW_VERSION" >> ${BUILD_DIR}bacnet-repo-src/control/control
+echo "Description:  Installation for WAGO BACnet. This packet is a meta packet including all parts needed for BACnet." >> ${BUILD_DIR}bacnet-repo-src/control/control
+echo "              This packet is built for Firmware Version $FW_VERSION" >> ${BUILD_DIR}bacnet-repo-src/control/control
 echo "              The following packets are included."        >> ${BUILD_DIR}bacnet-repo-src/control/control
 for PACKAGE in $PACKAGES; do
 echo "              $PACKAGE"                                   >> ${BUILD_DIR}bacnet-repo-src/control/control
 done
-echo "              The packet install a local repo only. Use opkg update and opkg install to install BACnet." >> ${BUILD_DIR}bacnet-repo-src/control/control
+echo "              The packet installs a local repo only. Use opkg update and opkg install to install BACnet." >> ${BUILD_DIR}bacnet-repo-src/control/control
 
 #---------------------------------------------------------
 #create postinst file

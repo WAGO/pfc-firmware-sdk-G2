@@ -120,7 +120,6 @@ po::options_description OptionParser::CreateDescriptions() const {
     (options_.get_backup_parameter_count.name, options_.get_backup_parameter_count.description)
     (options_.dsa_mode.name, options_.dsa_mode.description)
     (options_.fix_ip.name, options_.fix_ip.description)
-    (options_.dhcp_clientid.name, options_.dhcp_clientid.description)
     (options_.dynamic_ip_event.name, options_.dynamic_ip_event.description)
     (options_.reload_host_conf.name, options_.reload_host_conf.description);
 
@@ -143,7 +142,7 @@ po::options_description OptionParser::CreateDescriptions() const {
     (
         options_.set.name,
         po::value<::std::string>()
-          ->value_name("<value>")
+          ->value_name("<value>")          
           ->implicit_value(""),
         options_.set.description
     )
@@ -177,31 +176,7 @@ po::options_description OptionParser::CreateDescriptions() const {
       fields_.field.description)
     ( fields_.device.name,
       po::value<::std::string>()->value_name(fields_.device.parameter),
-      fields_.device.description)
-    ( fields_.source.name,
-      po::value<::std::string>()->value_name(fields_.source.parameter)->implicit_value(""),
-      fields_.source.description)
-    ( fields_.address.name,
-      po::value<::std::string>()->value_name(fields_.address.parameter)->implicit_value(""),
-      fields_.address.description)
-    ( fields_.netmask.name,
-      po::value<::std::string>()->value_name(fields_.netmask.parameter)->implicit_value(""),
-      fields_.netmask.description)
-    ( fields_.prefix.name,
-      po::value<::std::string>()->value_name(fields_.prefix.parameter)->implicit_value(""),
-      fields_.prefix.description)
-    ( fields_.state.name,
-      po::value<StateOption>()->value_name(fields_.state.parameter)->implicit_value(StateOption{""}),
-      fields_.state.description)
-    ( fields_.autoneg.name,
-      po::value<AutonegOption>()->value_name(fields_.autoneg.parameter)->implicit_value(AutonegOption{""}),
-      fields_.autoneg.description)
-    ( fields_.speed.name,
-      po::value<SpeedOption>()->value_name(fields_.speed.parameter)->implicit_value(SpeedOption{""}),
-      fields_.speed.description)
-    ( fields_.duplex.name,
-      po::value<DuplexOption>()->value_name(fields_.duplex.parameter)->implicit_value(DuplexOption{""}),
-      fields_.duplex.description)
+      fields_.device.description)    
     ( fields_.backup_version.name,
       po::value<::std::string>()->value_name(fields_.backup_version.parameter),
       fields_.backup_version.description)
@@ -244,7 +219,7 @@ void OptionParser::Parse(int argc, const char **argv) {
   MutuallyExclusiveAndOnlyOnce(map_, options_.bridge_config, options_.interface_config, options_.ip_config,
                                options_.interface, options_.dip_switch_config, options_.mac_address, options_.device_info,
                                options_.interface_status, options_.backup, options_.restore,
-                               options_.get_backup_parameter_count, options_.dsa_mode, options_.fix_ip, options_.dhcp_clientid,
+                               options_.get_backup_parameter_count, options_.dsa_mode, options_.fix_ip,
                                options_.dynamic_ip_event, options_.reload_host_conf, options_.help);
 
   OptionalAndMutuallyExclusive(map_, options_.error_msg_dst, options_.quiet);
@@ -257,14 +232,7 @@ void OptionParser::Parse(int argc, const char **argv) {
   ExpectOptionPair(map_, options_.dip_switch_config, options_.get, options_.set);
   ExpectOptionPair(map_, options_.mac_address, options_.get);
 
-  if (IsSet(fields_.netmask.name) and IsSet(fields_.prefix.name)) {
-    throw po::error(::std::string("Both options netmask and prefix are set although they are mutually exclusive"));
-  }
-
-  //To reset clientID it is allowed to set an empty value.
-  if(map_.count("dhcp-clientid") == 0){
-    ExpectValueOrField(map_, options_.set.name, fields_.device.name);
-  }
+  ExpectValueOrField(map_, options_.set.name, fields_.device.name);
   ExpectValueOrField(map_, options_.mac_address.name, fields_.device.name);
   ExpectValue(map_, options_.add.name);
   ExpectValue(map_, options_.del.name);

@@ -10,9 +10,10 @@ config WAGO_PARAMETER_SERVICE_COM
 	select WAGO_PARAMETER_SERVICE_CORE
 	select BOOST                                if WAGO_PARAMETER_SERVICE_COM_LIB
 	select BOOST_SYSTEM                         if WAGO_PARAMETER_SERVICE_COM_LIB
-	select WAGO_PARAMETER_SERVICE_COM_LOGGING   if WAGO_PARAMETER_SERVICE_COM_LIB
 	select WAGO_PARAMETER_SERVICE_COM_LIB       if WAGO_PARAMETER_SERVICE_CLIENT_LIB
-	select WAGO_PARAMETER_SERVICE_COM_LOGGING   if WAGO_PARAMETER_SERVICE_CLIENT_LIB
+	select WAGO_PRIVILEGES                      if WAGO_PARAMETER_SERVICE_CLIENT_LIB
+	select WAGO_LOGGING                         if WAGO_PARAMETER_SERVICE_CLIENT_LIB
+	select WAGO_OPTPARSING                      if WAGO_PARAMETER_SERVICE_CLIENT_LIB
 	select NLOHMANN_JSON                        if WAGO_PARAMETER_SERVICE_TEST_LIB
 
 config WAGO_PARAMETER_SERVICE_COM_LIB
@@ -21,13 +22,6 @@ config WAGO_PARAMETER_SERVICE_COM_LIB
 	prompt "WAGO Parameter Service Communication Library"
 	help
 	  WAGO Parameter Service communication library to connect processes to parameter service daemon.
-
-config WAGO_PARAMETER_SERVICE_COM_LOGGING
-	bool
-	default n
-#	prompt "WAGO Parameter Service Logging Library"
-	help
-	  Static library to provide tracing functionality.
 
 config WAGO_PARAMETER_SERVICE_CLIENT_LIB
 	bool

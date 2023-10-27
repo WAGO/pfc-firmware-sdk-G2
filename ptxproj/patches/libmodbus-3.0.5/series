@@ -38,3 +38,4 @@
 0038-fix-modbus-rtu-invalid-msg-length.patch
 0039-fix-modbus-rtu-rsp-length-calculation.patch
 0040-fix-modbus-tcp-missing-close-getaddrinfo.patch
+0041-fix-for-arm64-compiler.patch

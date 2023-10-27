@@ -20,31 +20,36 @@ PACKAGES-$(PTXCONF_KERNEL_HEADER) += kernel-header
 # we use the precompiled kernel from /opt
 #
 ifdef PTXCONF_PROJECT_USE_PRODUCTION
-KERNEL_HEADER_BDIR     := $(PTXDIST_BASE_PLATFORMDIR)/build-target
+KERNEL_HEADER_BDIR := $(PTXDIST_BASE_PLATFORMDIR)/build-target
 else
-KERNEL_HEADER_BDIR		:= $(BUILDDIR)
+KERNEL_HEADER_BDIR := $(BUILDDIR)
 endif
 
 #
 # Paths and names
 #
 
-KERNEL_HEADER				:= linux-$(KERNEL_HEADER_VERSION)
-KERNEL_HEADER_VERSION		:= $(call remove_quotes, $(PTXCONF_KERNEL_VERSION)-$(PTXCONF_KERNEL_RT_PATCH)-$(PTXCONF_KERNEL_LOCALVERSION))
-KERNEL_HEADER_MD5			:= $(call remove_quotes,$(PTXCONF_KERNEL_HEADER_MD5))
-KERNEL_HEADER_MD5_FILE		:= src/linux-$(KERNEL_HEADER_VERSION).tgz.md5
-KERNEL_HEADER_SUFFIX		:= tgz
-KERNEL_HEADER_DIR			:= $(BUILDDIR)/kernel-header-$(KERNEL_HEADER_VERSION)
-KERNEL_HEADER_BUILD_DIR     := $(KERNEL_HEADER_DIR)-build
-KERNEL_HEADER_PKGDIR        := $(PKGDIR)/kernel-header-$(KERNEL_HEADER_VERSION)
-KERNEL_HEADER_CONFIG		:= $(call remove_quotes, $(PTXDIST_PLATFORMCONFIGDIR)/$(PTXCONF_KERNEL_HEADER_CONFIG))
-KERNEL_HEADER_LICENSE		:= GPL-2.0
-KERNEL_HEADER_URL			:= $(call jfrog_template_to_url, KERNEL)
-KERNEL_HEADER_ARCHIVE		:= linux-$(KERNEL_HEADER_VERSION).$(KERNEL_HEADER_SUFFIX)
-KERNEL_HEADER_SOURCE		:= $(SRCDIR)/linux-$(KERNEL_HEADER_VERSION).$(KERNEL_HEADER_SUFFIX)
-KERNEL_HEADER_ARTIFACT		:= $(call jfrog_get_filename,$(KERNEL_HEADER_URL))
-KERNEL_HEADER_DEVPKG		:= NO
-KERNEL_HEADER_BUILD_OOT		:= KEEP
+KERNEL_HEADER		:= linux-$(KERNEL_HEADER_VERSION)
+ifdef PTXCONF_KERNEL_ARTIFACTORY
+KERNEL_HEADER_VERSION	:= $(call remove_quotes, $(PTXCONF_KERNEL_VERSION)-$(PTXCONF_KERNEL_RT_PATCH)-$(PTXCONF_KERNEL_LOCALVERSION))
+KERNEL_HEADER_MD5_FILE	:= src/linux-$(KERNEL_HEADER_VERSION).tgz.md5
+KERNEL_HEADER_SUFFIX	:= tgz
+KERNEL_HEADER_URL	:= $(call jfrog_template_to_url, KERNEL)
+KERNEL_HEADER_ARTIFACT	:= $(call jfrog_get_filename,$(KERNEL_HEADER_URL))
+else
+KERNEL_HEADER_SUFFIX	:= tar.xz
+KERNEL_HEADER_URL	:= $(call kernel-url, KERNEL)
+endif
+KERNEL_HEADER_MD5	:= $(call remove_quotes,$(PTXCONF_KERNEL_HEADER_MD5))
+KERNEL_HEADER_DIR	:= $(BUILDDIR)/kernel-header-$(KERNEL_HEADER_VERSION)
+KERNEL_HEADER_BUILD_DIR	:= $(KERNEL_HEADER_DIR)-build
+KERNEL_HEADER_PKGDIR	:= $(PKGDIR)/kernel-header-$(KERNEL_HEADER_VERSION)
+KERNEL_HEADER_CONFIG	:= $(call remove_quotes, $(PTXDIST_PLATFORMCONFIGDIR)/$(PTXCONF_KERNEL_HEADER_CONFIG))
+KERNEL_HEADER_LICENSE	:= GPL-2.0
+KERNEL_HEADER_ARCHIVE	:= linux-$(KERNEL_HEADER_VERSION).$(KERNEL_HEADER_SUFFIX)
+KERNEL_HEADER_SOURCE	:= $(SRCDIR)/linux-$(KERNEL_HEADER_VERSION).$(KERNEL_HEADER_SUFFIX)
+KERNEL_HEADER_DEVPKG	:= NO
+KERNEL_HEADER_BUILD_OOT	:= KEEP
 
 
 # ----------------------------------------------------------------------------
@@ -56,11 +61,13 @@ include $(call ptx/in-path, PTXDIST_PATH, rules/other/definitions.make)
 # Get
 # ----------------------------------------------------------------------------
 #
+ifdef PTXCONF_KERNEL_ARTIFACTORY
 $(KERNEL_HEADER_SOURCE):
 	@$(call targetinfo)
 	$(call ptx/in-path, PTXDIST_PATH, scripts/wago/artifactory.sh) fetch \
 		'$(KERNEL_URL)' src/linux-$(KERNEL_HEADER_VERSION).$(KERNEL_HEADER_SUFFIX) '$(KERNEL_HEADER_MD5_FILE)'
 	@$(call touch)
+endif
 #
 # ----------------------------------------------------------------------------
 # Prepare

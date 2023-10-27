@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2018-2022 WAGO GmbH & Co. KG
+# Copyright (c) 2018-2023 WAGO GmbH & Co. KG
 
 #-----------------------------------------------------------------------------#
 # Script-name: config_runtime
@@ -482,5 +482,9 @@ elif [ "$NEW_RUNTIME_VERSION" ] && [ "$NEW_RUNTIME_VERSION" != "$CURRENT_RUNTIME
     status=$SUCCESS
 fi
 sync
+
+# Trigger firewall config check
+[[ -d /etc/config-tools/events/codesys/ ]] && run-parts -a config /etc/config-tools/events/codesys/
+
 exit $status
 

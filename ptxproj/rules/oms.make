@@ -20,10 +20,8 @@ OMS_VERSION        := 0.2.0
 OMS_MD5            :=
 OMS                := oms
 OMS_BUILDCONFIG    := Release
-OMS_SRC_DIR        := $(call ptx/in-path, PTXDIST_PATH, src/$(OMS))
-ifeq ($(OMS_SRC_DIR),)
-OMS_SRC_DIR	:= $(PTXDIST_WORKSPACE)/src/$(OMS)
-endif
+OMS_SRC_DIR        := $(call ptx/in-path, PTXDIST_PATH, wago_intern/$(OMS))
+
 
 OMS_BUILDROOT_DIR  := $(BUILDDIR)/$(OMS)
 OMS_DIR            := $(OMS_BUILDROOT_DIR)/src

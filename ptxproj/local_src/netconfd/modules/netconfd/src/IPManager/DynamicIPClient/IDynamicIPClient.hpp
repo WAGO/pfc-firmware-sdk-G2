@@ -31,12 +31,12 @@ class IDynamicIPClient {
   virtual void RestartWithClientID(::std::string clientID) = 0;
 
   virtual DynamicIPType GetType() = 0;
-
   virtual void UpdateContentFromLease() = 0;
   virtual Address GetAddressFromLease() = 0;
   virtual Netmask GetNetmaskFromLease() = 0;
   virtual ::std::string GetHostnameFromLease() = 0;
   virtual ::std::string GetDomainFromLease() = 0;
+  virtual ::std::string GetClientID() = 0;
 };
 
 } /* namespace netconf */

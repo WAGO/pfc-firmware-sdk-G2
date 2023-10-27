@@ -46,9 +46,9 @@ if [ "${ORDER:0:3}" == "762" ] || [ "${ORDER:0:5}" == "752-8" ]
 then
   if [ "$FRONTLED" != "active" ]
   then
-    echo "ln -snf ${LED_SRC_PATH}/\sys-green-back ${LED_DEST_PATH}/sys-green" >> $TEMP_SETUP_FILE
-    echo "ln -snf ${LED_SRC_PATH}/\sys-red-back ${LED_DEST_PATH}/sys-red" >> $TEMP_SETUP_FILE
-    echo "ln -snf ${LED_SRC_PATH}/\sys-blue-back ${LED_DEST_PATH}/sys-blue" >> $TEMP_SETUP_FILE
+    echo "ln -snf ${LED_SRC_PATH}/\pca955x:sys-green-back ${LED_DEST_PATH}/sys-green" >> $TEMP_SETUP_FILE
+    echo "ln -snf ${LED_SRC_PATH}/\pca955x:sys-red-back ${LED_DEST_PATH}/sys-red" >> $TEMP_SETUP_FILE
+    echo "ln -snf ${LED_SRC_PATH}/\pca955x:sys-blue-back ${LED_DEST_PATH}/sys-blue" >> $TEMP_SETUP_FILE
   else
     echo "ln -snf ${LED_SRC_PATH}/\sys-green ${LED_DEST_PATH}/sys-green" >> $TEMP_SETUP_FILE
     echo "ln -snf ${LED_SRC_PATH}/\sys-red ${LED_DEST_PATH}/sys-red" >> $TEMP_SETUP_FILE

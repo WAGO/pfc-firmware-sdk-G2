@@ -95,12 +95,12 @@ IPLinkPtr IPManager::CreateOrGet(const Interface &interface) {
 void IPManager::ConfigureDynamicIPClient(IPLinkPtr &link) {
   auto client = dyn_ip_client_admin_.GetClient(link->GetInterface());
   if (client) {
-    // 1) if the desired client exists we do nothing and return.
-    if (client->GetType() == IPSourceToDynamicIPClient(link->GetSource())) {
-      return;
+    // 1) if the desired client exists with same client-id we do nothing and return.
+    if (client->GetType() == IPSourceToDynamicIPClient(link->GetSource()) && client->GetClientID() == link->GetClientID()) {
+        return;
     }
-    // 2) if another client exists or IpSource is static e.g. we terminate it.
-    if (client->GetType() != IPSourceToDynamicIPClient(link->GetSource())) {
+    // 2) terminate client if of different IpSource or client-id mismatch.
+    if (client->GetType() != IPSourceToDynamicIPClient(link->GetSource()) || client->GetClientID() != link->GetClientID()) {
       hostname_manager_.OnLeaseFileRemove(link->GetInterface());
       dyn_ip_client_admin_.DeleteClient(link->GetInterface());
       ip_controller_.Flush(link->GetInterface().GetName());
@@ -110,11 +110,11 @@ void IPManager::ConfigureDynamicIPClient(IPLinkPtr &link) {
   auto source = link->GetSource();
   if (source == IPSource::DHCP) {
     ip_controller_.Flush(link->GetInterface().GetName());
-    dyn_ip_client_admin_.AddClient(DynamicIPType::DHCP, link->GetInterface(), hostname_manager_.GetHostname());
+    dyn_ip_client_admin_.AddClient(DynamicIPType::DHCP, link->GetInterface(), hostname_manager_.GetHostname(), link->GetClientID());
   }
   if (source == IPSource::BOOTP) {
     ip_controller_.Flush(link->GetInterface().GetName());
-    dyn_ip_client_admin_.AddClient(DynamicIPType::BOOTP, link->GetInterface(), hostname_manager_.GetHostname());
+    dyn_ip_client_admin_.AddClient(DynamicIPType::BOOTP, link->GetInterface(), hostname_manager_.GetHostname(), "");
   }
 }
 
@@ -337,14 +337,6 @@ void IPManager::OnDynamicIPEvent(const Interface &interface, DynamicIPEventActio
 
 void IPManager::OnHostnameChanged() {
   dyn_ip_client_admin_.RestartAllClients(hostname_manager_.GetHostname());
-}
-
-Status IPManager::SetDhcpClientID(const ::std::string &client_id) {
-  return dyn_ip_client_admin_.SetClientIDAndRestartAllClients(client_id);
-}
-
-::std::string IPManager::GetDhcpClientID(){
-  return dyn_ip_client_admin_.GetClientID();
 }
 
 bool IPManager::HasToBePersisted(const IPConfig &ip_config) const {

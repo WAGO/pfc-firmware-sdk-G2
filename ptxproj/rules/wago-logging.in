@@ -1,0 +1,11 @@
+## SECTION=wago_specific
+
+config WAGO_LOGGING
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select LIBCOMMONHEADER
+	prompt "WAGO Logging C++ Library"
+	help
+	  Utility library to setup logging for wc_log using either std-out or syslog
+		as the sink.

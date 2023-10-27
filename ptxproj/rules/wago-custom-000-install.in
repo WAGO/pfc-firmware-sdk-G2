@@ -24,18 +24,6 @@ config WAGO_CUSTOM_INITRAMFS_INIT
 	help
 	  This installs an init script to initramfs.
 
-config WAGO_CUSTOM_ROOTFS_SCREEN_INIT_STARTSCRIPT
-       bool
-       select SCREEN
-       depends on USE_SCREEN_WINDOWS
-       default n
-       prompt "install /etc/init.d/screen_init"
-       help
-         This startscript starts a new screen session
-	 with the name 'wago' and creates a shell-window with the title 'bash'
-	 and the window-ID '2'. Other screen-windows can be startet later separately.
-	 This is the basis for the Wago screensaver operation.
-
 config WAGO_CUSTOM_LOG_SYSTEMSTART_INIT_STARTSCRIPT
 	bool
 	default n

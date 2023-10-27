@@ -47,7 +47,7 @@ libnetconfd.a_DISABLEDWARNINGS += packed inline
 libnetconfd.a_CXXDISABLEDWARNINGS += $(libnetconfd.a_DISABLEDWARNINGS) useless-cast abi-tag
 libnetconfd.a_CDISABLEDWARNINGS += $(libnetconfd.a_DISABLEDWARNINGS)
 libnetconfd.a_DEFINES += -DBOOST_LOG_DYN_LINK
-libnetconfd.a_STATICALLYLINKED += bridge
+libnetconfd.a_STATICALLYLINKED +=
 libnetconfd.a_LIBS += boost_log boost_thread boost_system boost_serialization boost_interprocess rt
 libnetconfd.a_PKG_CONFIGS += glib-2.0
 libnetconfd.a_PREREQUISITES += $(call lib_buildtarget_raw,$(netconfd.a_LIBS) $(netconfd.a_PKG_CONFIG_LIBS),$(netconfd.a_STATICALLYLINKED))
@@ -127,7 +127,7 @@ $(libnetconfd.a_INCLUDES) \
 
 
 netconfd_tests.elf_STATICALLYLINKED += netconfd common utility gmock_main gmock gtest 
-netconfd_tests.elf_LIBS += netconfd common bridge utility gmock_main gmock gtest boost_log boost_thread boost_system boost_filesystem boost_serialization
+netconfd_tests.elf_LIBS += netconfd common utility gmock_main gmock gtest boost_log boost_thread boost_system boost_filesystem boost_serialization
 netconfd_tests.elf_PKG_CONFIGS += $(libnetconfd.a_PKG_CONFIGS)
 netconfd_tests.elf_PKG_CONFIG_LIBS += $(libnetconfd.a_PKG_CONFIG_LIBS)
 netconfd_tests.elf_DISABLEDWARNINGS += packed inline

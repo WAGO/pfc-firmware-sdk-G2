@@ -16,9 +16,10 @@
 
 PUBLIC_SYM void init_libwagosnmp_AgentEntry(void);
 
-/* init_function for snmpd-plugin */
+/* init_function for snmpd-plugin. For deinit function see agent.c */
 void init_libwagosnmp_AgentEntry(void) {
-  snmp_alarm_register(3, 0, AGENT_InitServerCommunication, NULL);
+  DEBUGMSGTL(("plcsnmp_trap_agent", "init_libwagosnmp_AgentEntry: snmp_alarm_register\n"));
+  agent_init_alarm_register = snmp_alarm_register(3, 0, AGENT_InitServerCommunication, NULL);
 }
 
 void libwagosnmp_Shutdown(void) {

@@ -9,6 +9,7 @@ config LIBBACNETCONFIG
 	select GOOGLETEST
 	select TYPELABEL
 	select CONFIG_TOOL_BASE
+	select CONFIG_TOOLS
 	select OPENSSL
 	select BOOST
 	select BOOST_FILESYSTEM

@@ -74,12 +74,6 @@ config WAGO_CUSTOM_LOG_SYSTEMSTART_LINK
 	prompt "log system boot via LOG id"
 	default "S99_logsystemstart"
 
-config SCREENSAVER_SCREEND_BBINIT_LINK
-	string
-	depends on SCREENSAVER_SCREEND_STARTSCRIPT
-	prompt "screensaver"
-	default "S96_screensaver"
-
 #config PLCLINUXRT_CODESYS_LINK
 #	string
 #	depends on PLCLINUXRT_CODESYS_STARTSCRIPT

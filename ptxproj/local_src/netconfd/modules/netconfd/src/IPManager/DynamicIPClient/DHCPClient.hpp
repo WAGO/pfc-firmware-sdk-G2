@@ -39,6 +39,7 @@ class DHCPClient : public IDynamicIPClient {
   Netmask GetNetmaskFromLease() override;
   ::std::string GetHostnameFromLease() override;
   ::std::string GetDomainFromLease() override;
+  ::std::string GetClientID() override;
 
  private:
   const ::std::string DHCP_CLIENT_PATH = "/sbin/udhcpc";

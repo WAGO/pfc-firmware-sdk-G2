@@ -6,6 +6,7 @@ config WAGO_PARAMETER_SERVICE
 	select HOST_CT_BUILD
 	select GOOGLETEST
 	select WAGO_TRACE
+	select WAGO_LOGGING                                         if WAGO_PARAMETER_SERVICE_DAEMON
 	select TYPELABEL                                            if WAGO_PARAMETER_SERVICE_LIB
 	select LIBCOMMONHEADER                                      if WAGO_PARAMETER_SERVICE_LIB
 	select WAGO_PARAMETER_SERVICE_CORE                          if WAGO_PARAMETER_SERVICE_LIB
@@ -17,9 +18,10 @@ config WAGO_PARAMETER_SERVICE
 	select LIGHTTPD                                             if WAGO_PARAMETER_SERVICE_LIGHTTPD_INTEGRATION
 	select WAGO_PARAMETER_SERVICE_COM                           if WAGO_PARAMETER_SERVICE_LIB
 	select WAGO_PARAMETER_SERVICE_COM_LIB                       if WAGO_PARAMETER_SERVICE_DAEMON
-	select WAGO_PARAMETER_SERVICE_COM_LOGGING                   if WAGO_PARAMETER_SERVICE_LIB
 	select WAGO_PARAMETER_SERVICE_MODEL_FILES                   if WAGO_PARAMETER_SERVICE_LIB
 	select WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_CPP_HEADERS   if WAGO_PARAMETER_SERVICE_LIB
+	select WAGO_PRIVILEGES                                      if WAGO_PARAMETER_SERVICE_DAEMON
+	select WAGO_OPTPARSING                                      if WAGO_PARAMETER_SERVICE_DAEMON
 
 config WAGO_PARAMETER_SERVICE_LIB
 	bool

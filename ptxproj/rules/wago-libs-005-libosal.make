@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_LIBOSAL) += libosal
 
 LIBOSAL_VERSION             := 1.3.0
 LIBOSAL_NAME                := libosal
-LIBOSAL_URL                 := file://$(SRCDIR)/$(LIBOSAL_NAME)
+LIBOSAL_URL                 := file://local_src/$(LIBOSAL_NAME)
 LIBOSAL_DIR                 := $(BUILDDIR)/$(LIBOSAL_NAME)-$(LIBOSAL_VERSION)
 LIBOSAL_LICENSE             :=
 LIBOSAL_TARGET_PLATFORM     := ptx-dist
@@ -28,9 +28,9 @@ LIBOSAL_MAKE_PARAMETER      := CROSS_COMPILE=$(COMPILER_PREFIX) \
 															DEBUG=n \
 															SYSROOT_TARGET=$(PTXCONF_SYSROOT_TARGET)
 
-LIBOSAL_XSOURCE 				:= $(call ptx/in-path, PTXDIST_PATH, src/$(LIBOSAL_NAME))
+LIBOSAL_XSOURCE 				:= $(call ptx/in-path, PTXDIST_PATH, local_src/$(LIBOSAL_NAME))
 ifeq ($(LIBOSAL_XSOURCE),)
-LIBOSAL_XSOURCE	:= $(PTXDIST_WORKSPACE)/src/$(LIBOSAL_NAME)
+LIBOSAL_XSOURCE	:= $(PTXDIST_WORKSPACE)/local_src/$(LIBOSAL_NAME)
 endif
 
 # ----------------------------------------------------------------------------

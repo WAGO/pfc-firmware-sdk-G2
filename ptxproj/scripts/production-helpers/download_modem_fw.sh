@@ -20,7 +20,6 @@ function download_modem_fw_files {
 		$PTXDIST_WORKSPACE/scripts/production-helpers/check_md5sum.sh \
 			"$DEST/$FILE_NAME_MD5" \
 			"$DEST/$FILE_NAME"
-		rm "$DEST/$FILE_NAME_MD5"
 	done
 }
 

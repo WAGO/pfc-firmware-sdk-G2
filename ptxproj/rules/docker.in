@@ -23,3 +23,13 @@ config DOCKER_INSTALL_TO_HOMEDIR
 	prompt "install docker to home directory (instead of root fs)"
 
 endif
+
+if DOCKER
+
+config DOCKER_ACTIVATE_ON_FIRST_BOOT
+	bool
+	depends on DOCKER
+	default n
+	prompt "activate docker on first boot"
+
+endif

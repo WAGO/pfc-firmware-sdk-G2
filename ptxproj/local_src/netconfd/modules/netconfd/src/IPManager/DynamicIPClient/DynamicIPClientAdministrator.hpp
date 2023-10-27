@@ -6,6 +6,7 @@
 #include "IDynamicIPClientAdministrator.hpp"
 
 
+#include <optional>
 #include <string>
 
 
@@ -21,17 +22,14 @@ class DynamicIPClientAdministrator : public IDynamicIPClientAdministrator {
   DynamicIPClientAdministrator& operator=(const DynamicIPClientAdministrator &other) = delete;
   DynamicIPClientAdministrator& operator=(DynamicIPClientAdministrator &&other) = delete;
 
-  IDynamicIPClientPtr AddClient(DynamicIPType type, const Interface &interface, const ::std::string &hostname) override;
+  IDynamicIPClientPtr AddClient(DynamicIPType type, const Interface &interface, const ::std::string &hostname, const ::std::string& client_id) override;
   void DeleteClient(const Interface &interface) override;
   IDynamicIPClientPtr GetClient(const Interface &interface) const override;
 
   void RestartAllClients(const ::std::string& hostname) override;
-  Status SetClientIDAndRestartAllClients(::std::string client_id) override;
-  ::std::string GetClientID() override;
 
  private:
   ::std::string vendorclass_;
-  ::std::string client_id_;
 
   DynamicIPClientFactory factory_;
   IDynamicIPClients clients_;

@@ -380,3 +380,7 @@ and consistency and do some unit testing in an automated way.**
 | 750-8217/025-000 | PFC200 G2 2ETH RS 4G EU T |
 | 750-8217/600-000 | PFC200 G2 2ETH RS 4G Global |
 | 750-8217/625-000 | PFC200 G2 2ETH RS 4G Global T |
+| 750-8110 | PFC100 G2 2ETH ECO |
+| 750-8111 | PFC100 G2 2ETH |
+| 750-8112 | PFC100 G2 2ETH RS |
+| 750-8112/025-000 | PFC100 G2 2ETH RS T |

@@ -92,6 +92,8 @@ fwupdate_service_start()
         fi
     fi
 
+    fwupdate_create_listener_script_files
+
     # Check current state
     local STATE="$WAGO_FW_UPDATE_INVALID_STATE"
     local SUB_STATE="$WAGO_FW_UPDATE_INVALID_SUB_STATE"
@@ -208,6 +210,7 @@ fwupdate_service_stop()
         if [ "$FWUPDATE_STATE" == "$WAGO_FW_UPDATE_INACTIVE_STATE" ]; then
             fwupdate_data_destroy
             RESULT=$?
+            fwupdate_remove_listener_script_files
         fi
     fi
 
@@ -366,7 +369,7 @@ fwupdate_service_second_boot()
 		if [[ "$DOCKER_WAS_ACTIVE" == "active" ]]; then
 				/etc/config-tools/config_docker activate
 		fi
-
+    
     # Update sub state
     fwupdate_checkpoint_sub_state "$WAGO_FW_UPDATE_STARTED_SELFCHECK_SUB_STATE" 920 true
     RESULT=$?

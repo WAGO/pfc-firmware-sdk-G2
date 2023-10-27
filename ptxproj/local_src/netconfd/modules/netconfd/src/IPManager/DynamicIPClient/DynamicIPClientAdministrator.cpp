@@ -5,6 +5,7 @@
 #include <exception>
 #include <filesystem>
 #include <iostream>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -15,17 +16,6 @@
 namespace netconf {
 
 namespace {
-
-Status ValidateDHCPClientID(const ::std::string& client_id){
-
-  //the udhcpc supports a maximum clientID length of 249 bytes.
-  Status s;
-  if(client_id.length() > 249){
-    s.Set(StatusCode::GENERIC_ERROR, "The maximum clientID length of 249 bytes was exceeded");
-  }
-  return s;
-
-}
 
 void DeleteAllLeaseFiles() {
   try {
@@ -53,8 +43,8 @@ DynamicIPClientAdministrator::DynamicIPClientAdministrator(::std::string vendorc
 }
 
 IDynamicIPClientPtr DynamicIPClientAdministrator::AddClient(DynamicIPType type, const Interface &interface,
-                                                            const ::std::string &hostname) {
-  auto client = factory_.Create(type, interface, hostname, vendorclass_, client_id_);
+                                                            const ::std::string &hostname, const ::std::string& client_id) {
+  auto client = factory_.Create(type, interface, hostname, vendorclass_, client_id);
   clients_.emplace(interface, client);
   return client;
 }
@@ -75,22 +65,6 @@ void DynamicIPClientAdministrator::RestartAllClients(const ::std::string &hostna
   for (auto &client : clients_) {
     client.second->RestartWithHostname(hostname);
   }
-}
-
-Status DynamicIPClientAdministrator::SetClientIDAndRestartAllClients(::std::string client_id) {
-
-  Status s = ValidateDHCPClientID(client_id);
-  if (s.IsOk()) {
-    client_id_ = client_id;
-    for (auto &client : clients_) {
-      client.second->RestartWithClientID(client_id_);
-    }
-  }
-  return s;
-}
-
-::std::string DynamicIPClientAdministrator::GetClientID(){
-  return client_id_;
 }
 
 } /* namespace netconf */

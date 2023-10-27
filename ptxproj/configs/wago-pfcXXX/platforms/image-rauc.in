@@ -15,7 +15,7 @@ menuconfig IMAGE_RAUC
 	  slot with the content from PTXdist's root file system .tgz image.
 
 	  To customize the bundle, copy and adapt the genimage configuration
-	  file rauc.config.
+	  in configs/images/rauc.config.
 
 if IMAGE_RAUC
 
@@ -32,6 +32,30 @@ config IMAGE_RAUC_DESCRIPTION
 	default ""
 	help
 	  Optional description that will be placed in the Bundles metadata.
+
+choice
+	prompt "Bundle format"
+	default IMAGE_RAUC_BUNDLE_FORMAT_PLAIN
+
+config IMAGE_RAUC_BUNDLE_FORMAT_PLAIN
+	bool "plain"
+	help
+	  The old bundle format, which since rauc 1.5 is now known as 'plain'.
+
+config IMAGE_RAUC_BUNDLE_FORMAT_VERITY
+	bool "verity"
+	help
+	  The improved 'verity' bundle format
+
+config IMAGE_RAUC_BUNDLE_FORMAT_CRYPT
+	bool "crypt"
+	help
+	  The 'crypt' bundle format for fully encryptable bundles
+
+	  Note that you must run 'rauc encrypt' on a crypt bundle to generate a
+	  fully encrypted bundle.
+
+endchoice	  
 
 config RAUC_BUNDLE_CONF
 	bool

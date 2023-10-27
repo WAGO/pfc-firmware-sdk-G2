@@ -26,12 +26,14 @@ class IPLink {
   void SetAddress(const Address &address, const Netmask &netmask);
 
   ::std::optional<IPConfig> GetIPConfig() const;
+  ::std::string GetClientID() const;
   IPConfig GetCurrentIPConfig() const;
   int GetIfIndex() const;
   IPSource GetSource() const;
   eth::InterfaceLinkState GetLinkState() const;
   Interface GetInterface() const;
   Address GetAddress() const;
+
 
  private:
   int index_;

@@ -7,7 +7,6 @@
 
 #include "BackupRestoreHandler.hpp"
 #include "BridgeConfigHandler.hpp"
-#include "DHCPClientIDHandler.hpp"
 #include "DSAModeHandler.hpp"
 #include "DeviceInfoHandler.hpp"
 #include "DipSwitchHandler.hpp"
@@ -56,9 +55,6 @@ namespace network_config {
   }
   if (parser.IsSet(opts.fix_ip.name)) {
     return ::std::make_unique<FixIpHandler>();
-  }
-  if (parser.IsSet(opts.dhcp_clientid.name)) {
-    return ::std::make_unique<DCHPClientIDHandler>(map);
   }
   if (parser.IsSet(opts.dip_switch_config.name)) {
     return ::std::make_unique<DipSwitchHandler>(map);

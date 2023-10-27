@@ -46,7 +46,7 @@ ifdef PTXCONF_DOCKER_INSTALL_TO_HOMEDIR
 	# create archive with docker binaries
 	# fetch all dependencies
 	mkdir -p $(DOCKER_DIR) && \
-		cp $(PTXDIST_SYSROOT_TARGET)/bin/docker/* $(DOCKER_DIR)/ ; \
+		cp -a $(PTXDIST_SYSROOT_TARGET)/bin/docker/* $(DOCKER_DIR)/ ; \
 	cd $(DOCKER_DIR) \
     && tar -cvf docker-binaries_$(DOCKER_VERSION).tar.xz --exclude=docker-binaries_$(DOCKER_VERSION).tar.xz --use-compress-program='xz -9' * \
     && find . -type f -not -name "*.tar.xz" -delete
@@ -120,6 +120,11 @@ endif
 
 	@$(call install_link, docker, /etc/init.d/dockerd, /etc/rc.d/disabled/S99_docker)
 	
+ifdef PTXCONF_DOCKER_ACTIVATE_ON_FIRST_BOOT
+	@$(call install_alternative, docker, 0, 0, 0755, /etc/init.d/docker_activate)
+	@$(call install_link, docker, /etc/init.d/docker_activate, /etc/rc.d/S99_docker_activate)
+endif
+
 	@$(call install_finish, docker)
 	
 	@$(call touch)

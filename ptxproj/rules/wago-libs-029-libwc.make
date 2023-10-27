@@ -19,9 +19,9 @@ PACKAGES-$(PTXCONF_LIBCOMMONHEADER) += libcommonheader
 LIBCOMMONHEADER_VERSION        := 0.1.0
 LIBCOMMONHEADER_MD5            :=
 LIBCOMMONHEADER                := common-header
-LIBCOMMONHEADER_URL            := file://shared_public/$(LIBCOMMONHEADER)
+LIBCOMMONHEADER_URL            := file://local_src/$(LIBCOMMONHEADER)
 LIBCOMMONHEADER_BUILDCONFIG    := Release
-LIBCOMMONHEADER_SRC_DIR        := $(call ptx/in-path, PTXDIST_PATH, shared_public/$(LIBCOMMONHEADER))
+LIBCOMMONHEADER_SRC_DIR        := $(call ptx/in-path, PTXDIST_PATH, local_src/$(LIBCOMMONHEADER))
 LIBCOMMONHEADER_BUILDROOT_DIR  := $(BUILDDIR)/$(LIBCOMMONHEADER)
 #LIBCOMMONHEADER_DIR            := $(LIBCOMMONHEADER_BUILDROOT_DIR)/src
 LIBCOMMONHEADER_BUILD_DIR      := $(LIBCOMMONHEADER_BUILDROOT_DIR)/bin/$(LIBCOMMONHEADER_BUILDCONFIG)
@@ -31,13 +31,21 @@ LIBCOMMONHEADER_MAKE_ENV       := $(CROSS_ENV) \
 BUILDCONFIG=$(LIBCOMMONHEADER_BUILDCONFIG) \
 BIN_DIR=$(LIBCOMMONHEADER_BUILD_DIR) \
 SCRIPT_DIR=$(PTXDIST_SYSROOT_HOST)/lib/ct-build
+
+LIBCOMMONHEADER_XSRC_DIR:=$(call ptx/in-path, PTXDIST_PATH, local_src/$(LIBCOMMONHEADER))
+ifeq ($(LIBCOMMONHEADER_XSRC_DIR),)
+LIBCOMMONHEADER_XSRC_DIR:=$(PTXDIST_WORKSPACE)/local_src/$(LIBCOMMONHEADER)
+endif
+
 # ----------------------------------------------------------------------------
 # Extract
 # ----------------------------------------------------------------------------
 
 $(STATEDIR)/libcommonheader.extract:
 	@$(call targetinfo)
-
+	@if [ ! -d "$(LIBCOMMONHEADER_XSRC_DIR)" ]; then \
+		echo "Error: $(LIBCOMMONHEADER_XSRC_DIR): directory not found!" >&2 && false ; \
+	fi
 	@$(call touch)
 
 # ----------------------------------------------------------------------------

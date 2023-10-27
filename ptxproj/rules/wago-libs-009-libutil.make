@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_LIBUTIL) += libutil
 
 LIBUTIL_VERSION             := 1.3.0
 LIBUTIL_NAME                := libutil
-LIBUTIL_URL                 := file://$(SRCDIR)/$(LIBUTIL_NAME)
+LIBUTIL_URL                 := file://local_src/$(LIBUTIL_NAME)
 LIBUTIL_DIR                 := $(BUILDDIR)/$(LIBUTIL_NAME)-$(LIBUTIL_VERSION)
 LIBUTIL_PROJ_DIR            := LIBUTIL_DIR
 LIBUTIL_LICENSE             :=
@@ -28,9 +28,9 @@ LIBUTIL_MAKE_PARAMETER		:= CROSS_COMPILE=$(COMPILER_PREFIX) \
 															TARGET_OS=LINUX \
 															DEBUG=n \
 															SYSROOT_TARGET=$(PTXCONF_SYSROOT_TARGET)
-LIBUTIL_XSOURCE				:= $(call ptx/in-path, PTXDIST_PATH, src/$(LIBUTIL_NAME))
+LIBUTIL_XSOURCE				:= $(call ptx/in-path, PTXDIST_PATH, local_src/$(LIBUTIL_NAME))
 ifeq ($(LIBUTIL_XSOURCE),)
-LIBUTIL_XSOURCE	:= $(PTXDIST_WORKSPACE)/src/$(LIBUTIL_NAME)
+LIBUTIL_XSOURCE	:= $(PTXDIST_WORKSPACE)/local_src/$(LIBUTIL_NAME)
 endif
 
 # ----------------------------------------------------------------------------

@@ -59,7 +59,7 @@ function ntpclientcall
     local errfile=/tmp/ntpclient.err
     local ntppid
     local timeoutticks=0
-    local maxticks=8
+    local maxticks=16
 
     ntpclient $setoption -h $server -t -c1 -i 15 > $NTP_STATE_FILE 2> $errfile &
     ntppid=$!

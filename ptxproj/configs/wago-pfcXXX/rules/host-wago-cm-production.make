@@ -52,15 +52,18 @@ $(STATEDIR)/host-wago-cm-production.compile:
 $(STATEDIR)/host-wago-cm-production.install:
 	@$(call targetinfo)
 
-ifdef PTXCONF_PFC_200_G2
-	# this file is for the commissioning guy (e.g. ihlemann)
-	@cp $(HOST_WAGO_CM_PRODUCTION_DIR)/emmc-no-setupfw.hdimg $(IMAGEDIR)/emmc-commission-pfc200v3.hdimg
-	@cp $(HOST_WAGO_CM_PRODUCTION_DIR)/emmc-wago-production-pfc200v3.hdimg $(IMAGEDIR)/
-else
-	@cp $(HOST_WAGO_CM_PRODUCTION_DIR)/pfc100-setupfw.ubi $(IMAGEDIR)/nand-wago-production-pfc100.ubi
-	@cp $(HOST_WAGO_CM_PRODUCTION_DIR)/pfc200v2-setupfw.ubi $(IMAGEDIR)/nand-wago-production-pfc200v2.ubi
-	@cp $(HOST_WAGO_CM_PRODUCTION_DIR)/barebox-am35xx-pfc200-*-cm-wago.img $(IMAGEDIR)/nand-wago-production-pfc200.img
-endif
+#	# this files are for the commissioning company (e.g. ihlemann)
+	@for image in $$(find $(HOST_WAGO_CM_PRODUCTION_DIR) -type f -regex '.*emmc-no-setupfw-[A-Za-z0-9]+.hdimg'); do \
+		target_filename=$$(basename $$image | sed 's/no-setupfw/commission/'); \
+		cp $$image $(IMAGEDIR)/$$target_filename; \
+	done
+
+#	# this files are for wago production
+	@for image in $$(find $(HOST_WAGO_CM_PRODUCTION_DIR) -type f -regex '.*emmc-[A-Za-z0-9]+.hdimg'); do \
+		target_filename=$$(basename $$image | sed 's/\(emmc\)-\(.*.hdimg\)/\1-wago-production-\2/'); \
+		cp $$image $(IMAGEDIR)/$$target_filename; \
+	done
+
 # ATTENTION: temporary workaround for new src image. Needs to be removed after
 # PFC switched to new production image.
 ifdef PTXCONF_IMAGE_FIRMWARE_IMAGE_TAR_SRC
@@ -84,6 +87,7 @@ $(STATEDIR)/host-wago-cm-production.clean:
 
 	@rm -rf $(IMAGEDIR)/oftree-*-setupfw.dtb
 	@rm -rf $(IMAGEDIR)/setupfw
+	@rm -rf $(IMAGEDIR)/emmc-*.hdimg
 
 	@$(call clean_pkg, HOST_WAGO_CM_PRODUCTION)
 

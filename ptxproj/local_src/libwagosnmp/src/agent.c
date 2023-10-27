@@ -17,11 +17,12 @@
 ///  \author   <author> : WAGO GmbH & Co. KG
 //------------------------------------------------------------------------------
 
+#define _GNU_SOURCE
+#include <pthread.h>
+#include <unistd.h>
 #include <net-snmp/net-snmp-config.h>
 #include <net-snmp/net-snmp-includes.h>
 #include <net-snmp/agent/net-snmp-agent-includes.h>
-#include <unistd.h>
-
 #include "wagosnmp_API.h"
 #include "wagosnmp_internal.h"
 
@@ -33,12 +34,35 @@ struct stHandlerList {
 };
 
 static tHandlerList *pHandlerListRoot = NULL;
-static pthread_t stThreadID           = 0;
-static mqd_t trap_queue               = -1;
-static sem_t *oidMutex                = NULL;
-static int oidShmFd                   = -1;
-static tOidShm *pOidShm               = NULL;
-static int localShmSize               = sizeof(tOidShm);
+static pthread_t stThreadID = 0;
+static mqd_t trap_queue = -1;
+static sem_t *oidMutex = NULL;
+static int oidShmFd = -1;
+static tOidShm *pOidShm = NULL;
+static int localShmSize = sizeof(tOidShm);
+
+PUBLIC_SYM void deinit_libwagosnmp_AgentEntry(void);
+
+static void _Reset(void);
+
+/* deinit function for snmpd-plugin. For init function see libwagosnmp.c */
+void deinit_libwagosnmp_AgentEntry(void)
+{
+    snmp_log(LOG_INFO, "Deinit\n");
+
+    if(agent_init_alarm_register != 0) {
+      snmp_alarm_unregister(agent_init_alarm_register);
+      agent_init_alarm_register = 0;
+    }
+
+    if(stThreadID != 0) {
+      pthread_cancel(stThreadID);
+      pthread_join(stThreadID, NULL);
+    }
+    _Reset();
+    mq_unlink(TRAP_AGENT_MQ);
+}
+
 
 int __attribute__((weak)) netsnmp_unregister_handler(netsnmp_handler_registration *reginfo) {
   (void)reginfo;
@@ -274,14 +298,20 @@ INTERNAL_SYM void AGENT_InitServerCommunication(unsigned int clientreg, void *cl
   (void)clientarg;
   snmp_log(LOG_INFO, "Init WAGO snmp plugin\n");
 
-  _InitExistingShm();
+  if(stThreadID == 0) {
+    _InitExistingShm();
 
-  trap_queue = _OpenServerQueue(TRAP_AGENT_MQ, sizeof(tWagoSnmpMsg), 1);
+    trap_queue = _OpenServerQueue(TRAP_AGENT_MQ, sizeof(tWagoSnmpMsg), 1);
 
-  if ((pthread_create(&stThreadID, NULL, _ServerMain, NULL)) == -1)
-    DEBUGMSGTL(("plcsnmp_trap_agent", "error while starting thread\n"));
-  else
-    DEBUGMSGTL(("plcsnmp_trap_agent", "starting thread ok\n"));
+    if((pthread_create(&stThreadID, NULL, _ServerMain, NULL)) == -1)
+      DEBUGMSGTL(("plcsnmp_trap_agent", "error while starting thread\n"));
+    else {
+      DEBUGMSGTL(("plcsnmp_trap_agent", "starting thread ok; id: %lu\n", stThreadID));
+      pthread_setname_np(stThreadID, "wago-snmp-agent");
+    }
+  } else {
+    DEBUGMSGTL(("plcsnmp_trap_agent", "The WAGO snmp plugin seems to be initialized already!\n"));
+  }
 }
 
 INTERNAL_SYM int AGENT_CreateMutex() {

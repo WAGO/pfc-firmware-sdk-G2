@@ -11,7 +11,11 @@
 #include <netlink/route/addr.h>
 #include <netlink/route/route.h>
 
-#include <linux/switch.h>
+#ifdef __ENABLE_DSA
+  #include <linux/switch.h>
+#else
+  #include <linux/if.h>
+#endif
 
 #include <glib.h>
 

@@ -297,6 +297,15 @@ TEST_F(AnIPValidator, shouldValidateMultipleIPConfigs) {
   EXPECT_EQ(StatusCode::OK, status.GetStatusCode());
 }
 
+TEST_F(AnIPValidator, shouldValidateDHCPClientID) {
+  auto to_long = std::string(250, 'a');
+  IPConfig ip_config_1 = {"ethX1", IPSource::DHCP, to_long};
+  IPConfigs ip_configs{ip_config_1};
+
+  auto status = validator_.ValidateIPConfigs(ip_configs);
+  EXPECT_EQ(StatusCode::GENERIC_ERROR, status.GetStatusCode()) << status.ToString();
+}
+
 using ValidateParams = std::tuple<IPConfigs, IPConfigs, InterfaceInformations, StatusCode>;
 struct AnIPValidatorDigests : public AnIPValidator, public testing::WithParamInterface<ValidateParams> {};
 

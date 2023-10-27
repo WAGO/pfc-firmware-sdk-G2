@@ -43,8 +43,6 @@ struct Options {
     { "dsa-mode", "Set or Get dsa-mode configuration." };
   const Option fix_ip
     { "fix-ip", "Set fixed ip (192.168.1.17)" };
-  const Option dhcp_clientid
-    { "dhcp-clientid", "Set dhcp client id (Machine_1)" };
   const Option dip_switch_config
     { "dip-switch-config", "Set or get DIP switch configuration. Caution: mode and last address byte cannot be changed." };
   const Option dynamic_ip_event
@@ -95,25 +93,7 @@ struct Fields {
   const Option field
       { "field","Selects a specific field of the data set, e.g. ipaddr", "<name>" };
   const Option device
-    { "device", "Device name <br0|wwan0|..>", "<value>" };
-  const Option source
-      { "source", "IP address source <static|dhcp|bootp>" ,"<value>"};
-  const Option address
-    { "ipaddr", "IP address, e.g. 192.168.1.1" ,"<value>"};
-  const Option netmask
-    { "netmask", "IP netmask, e.g. 255.255.255.0" ,"<value>"};
-  const Option bcast
-    { "bcast", "Broadcast address, e.g. 192.168.1.255" ,"<value>"};
-  const Option prefix
-    { "prefix", "IP netmask prefix, e.g. 24" ,"<value>"};
-  const Option state
-    { "state", "Ethernet-Interface Port-State <up|down>" ,"<value>"};
-  const Option autoneg
-    { "autoneg", "Autonegotiation activated <on|off>" ,"<value>"};
-  const Option speed
-    { "speed", "Physical speed <10|100>" ,"<value>"};
-  const Option duplex
-    { "duplex", "Duplexity <half|full>" ,"<value>"};
+    { "device", "Device name <br0|wwan0|..>", "<value>" };  
   const Option backup_version
     { "backup-targetversion", "Target version, e.g. V03.03.02" ,"<value>"};
   const Option action

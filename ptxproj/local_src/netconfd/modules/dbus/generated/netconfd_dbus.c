@@ -2260,95 +2260,6 @@ static const _ExtendedGDBusMethodInfo _netconfd_ip_config_method_info_tempfixip 
   FALSE
 };
 
-static const _ExtendedGDBusArgInfo _netconfd_ip_config_method_info_settempdhcpclientid_IN_ARG_config =
-{
-  {
-    -1,
-    (gchar *) "config",
-    (gchar *) "s",
-    NULL
-  },
-  FALSE
-};
-
-static const GDBusArgInfo * const _netconfd_ip_config_method_info_settempdhcpclientid_IN_ARG_pointers[] =
-{
-  &_netconfd_ip_config_method_info_settempdhcpclientid_IN_ARG_config.parent_struct,
-  NULL
-};
-
-static const _ExtendedGDBusArgInfo _netconfd_ip_config_method_info_settempdhcpclientid_OUT_ARG_result =
-{
-  {
-    -1,
-    (gchar *) "result",
-    (gchar *) "s",
-    NULL
-  },
-  FALSE
-};
-
-static const GDBusArgInfo * const _netconfd_ip_config_method_info_settempdhcpclientid_OUT_ARG_pointers[] =
-{
-  &_netconfd_ip_config_method_info_settempdhcpclientid_OUT_ARG_result.parent_struct,
-  NULL
-};
-
-static const _ExtendedGDBusMethodInfo _netconfd_ip_config_method_info_settempdhcpclientid =
-{
-  {
-    -1,
-    (gchar *) "settempdhcpclientid",
-    (GDBusArgInfo **) &_netconfd_ip_config_method_info_settempdhcpclientid_IN_ARG_pointers,
-    (GDBusArgInfo **) &_netconfd_ip_config_method_info_settempdhcpclientid_OUT_ARG_pointers,
-    NULL
-  },
-  "handle-settempdhcpclientid",
-  FALSE
-};
-
-static const _ExtendedGDBusArgInfo _netconfd_ip_config_method_info_gettempdhcpclientid_OUT_ARG_config =
-{
-  {
-    -1,
-    (gchar *) "config",
-    (gchar *) "s",
-    NULL
-  },
-  FALSE
-};
-
-static const _ExtendedGDBusArgInfo _netconfd_ip_config_method_info_gettempdhcpclientid_OUT_ARG_result =
-{
-  {
-    -1,
-    (gchar *) "result",
-    (gchar *) "s",
-    NULL
-  },
-  FALSE
-};
-
-static const GDBusArgInfo * const _netconfd_ip_config_method_info_gettempdhcpclientid_OUT_ARG_pointers[] =
-{
-  &_netconfd_ip_config_method_info_gettempdhcpclientid_OUT_ARG_config.parent_struct,
-  &_netconfd_ip_config_method_info_gettempdhcpclientid_OUT_ARG_result.parent_struct,
-  NULL
-};
-
-static const _ExtendedGDBusMethodInfo _netconfd_ip_config_method_info_gettempdhcpclientid =
-{
-  {
-    -1,
-    (gchar *) "gettempdhcpclientid",
-    NULL,
-    (GDBusArgInfo **) &_netconfd_ip_config_method_info_gettempdhcpclientid_OUT_ARG_pointers,
-    NULL
-  },
-  "handle-gettempdhcpclientid",
-  FALSE
-};
-
 static const _ExtendedGDBusArgInfo _netconfd_ip_config_method_info_getdipswitchconfig_OUT_ARG_config =
 {
   {
@@ -2445,8 +2356,6 @@ static const GDBusMethodInfo * const _netconfd_ip_config_method_info_pointers[] 
   &_netconfd_ip_config_method_info_getall.parent_struct,
   &_netconfd_ip_config_method_info_getallcurrent.parent_struct,
   &_netconfd_ip_config_method_info_tempfixip.parent_struct,
-  &_netconfd_ip_config_method_info_settempdhcpclientid.parent_struct,
-  &_netconfd_ip_config_method_info_gettempdhcpclientid.parent_struct,
   &_netconfd_ip_config_method_info_getdipswitchconfig.parent_struct,
   &_netconfd_ip_config_method_info_setdipswitchconfig.parent_struct,
   NULL
@@ -2509,11 +2418,9 @@ netconfd_ip_config_override_properties (GObjectClass *klass, guint property_id_b
  * @handle_getall: Handler for the #netconfdIp_config::handle-getall signal.
  * @handle_getallcurrent: Handler for the #netconfdIp_config::handle-getallcurrent signal.
  * @handle_getdipswitchconfig: Handler for the #netconfdIp_config::handle-getdipswitchconfig signal.
- * @handle_gettempdhcpclientid: Handler for the #netconfdIp_config::handle-gettempdhcpclientid signal.
  * @handle_set: Handler for the #netconfdIp_config::handle-set signal.
  * @handle_setall: Handler for the #netconfdIp_config::handle-setall signal.
  * @handle_setdipswitchconfig: Handler for the #netconfdIp_config::handle-setdipswitchconfig signal.
- * @handle_settempdhcpclientid: Handler for the #netconfdIp_config::handle-settempdhcpclientid signal.
  * @handle_tempfixip: Handler for the #netconfdIp_config::handle-tempfixip signal.
  *
  * Virtual table for the D-Bus interface <link linkend="gdbus-interface-de-wago-netconfd1-ip_config.top_of_page">de.wago.netconfd1.ip_config</link>.
@@ -2631,51 +2538,6 @@ netconfd_ip_config_default_init (netconfdIp_configIface *iface)
     G_TYPE_FROM_INTERFACE (iface),
     G_SIGNAL_RUN_LAST,
     G_STRUCT_OFFSET (netconfdIp_configIface, handle_tempfixip),
-    g_signal_accumulator_true_handled,
-    NULL,
-    g_cclosure_marshal_generic,
-    G_TYPE_BOOLEAN,
-    1,
-    G_TYPE_DBUS_METHOD_INVOCATION);
-
-  /**
-   * netconfdIp_config::handle-settempdhcpclientid:
-   * @object: A #netconfdIp_config.
-   * @invocation: A #GDBusMethodInvocation.
-   * @arg_config: Argument passed by remote caller.
-   *
-   * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-de-wago-netconfd1-ip_config.settempdhcpclientid">settempdhcpclientid()</link> D-Bus method.
-   *
-   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call netconfd_ip_config_complete_settempdhcpclientid() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
-   *
-   * Returns: %TRUE if the invocation was handled, %FALSE to let other signal handlers run.
-   */
-  g_signal_new ("handle-settempdhcpclientid",
-    G_TYPE_FROM_INTERFACE (iface),
-    G_SIGNAL_RUN_LAST,
-    G_STRUCT_OFFSET (netconfdIp_configIface, handle_settempdhcpclientid),
-    g_signal_accumulator_true_handled,
-    NULL,
-    g_cclosure_marshal_generic,
-    G_TYPE_BOOLEAN,
-    2,
-    G_TYPE_DBUS_METHOD_INVOCATION, G_TYPE_STRING);
-
-  /**
-   * netconfdIp_config::handle-gettempdhcpclientid:
-   * @object: A #netconfdIp_config.
-   * @invocation: A #GDBusMethodInvocation.
-   *
-   * Signal emitted when a remote caller is invoking the <link linkend="gdbus-method-de-wago-netconfd1-ip_config.gettempdhcpclientid">gettempdhcpclientid()</link> D-Bus method.
-   *
-   * If a signal handler returns %TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call netconfd_ip_config_complete_gettempdhcpclientid() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %G_DBUS_ERROR_UNKNOWN_METHOD error is returned.
-   *
-   * Returns: %TRUE if the invocation was handled, %FALSE to let other signal handlers run.
-   */
-  g_signal_new ("handle-gettempdhcpclientid",
-    G_TYPE_FROM_INTERFACE (iface),
-    G_SIGNAL_RUN_LAST,
-    G_STRUCT_OFFSET (netconfdIp_configIface, handle_gettempdhcpclientid),
     g_signal_accumulator_true_handled,
     NULL,
     g_cclosure_marshal_generic,
@@ -3245,214 +3107,6 @@ _out:
 }
 
 /**
- * netconfd_ip_config_call_settempdhcpclientid:
- * @proxy: A #netconfdIp_configProxy.
- * @arg_config: Argument to pass with the method invocation.
- * @cancellable: (nullable): A #GCancellable or %NULL.
- * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL.
- * @user_data: User data to pass to @callback.
- *
- * Asynchronously invokes the <link linkend="gdbus-method-de-wago-netconfd1-ip_config.settempdhcpclientid">settempdhcpclientid()</link> D-Bus method on @proxy.
- * When the operation is finished, @callback will be invoked in the thread-default main loop of the thread you are calling this method from (see g_main_context_push_thread_default()).
- * You can then call netconfd_ip_config_call_settempdhcpclientid_finish() to get the result of the operation.
- *
- * See netconfd_ip_config_call_settempdhcpclientid_sync() for the synchronous, blocking version of this method.
- */
-void
-netconfd_ip_config_call_settempdhcpclientid (
-    netconfdIp_config *proxy,
-    const gchar *arg_config,
-    GCancellable *cancellable,
-    GAsyncReadyCallback callback,
-    gpointer user_data)
-{
-  g_dbus_proxy_call (G_DBUS_PROXY (proxy),
-    "settempdhcpclientid",
-    g_variant_new ("(s)",
-                   arg_config),
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    cancellable,
-    callback,
-    user_data);
-}
-
-/**
- * netconfd_ip_config_call_settempdhcpclientid_finish:
- * @proxy: A #netconfdIp_configProxy.
- * @out_result: (out) (optional): Return location for return parameter or %NULL to ignore.
- * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to netconfd_ip_config_call_settempdhcpclientid().
- * @error: Return location for error or %NULL.
- *
- * Finishes an operation started with netconfd_ip_config_call_settempdhcpclientid().
- *
- * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
- */
-gboolean
-netconfd_ip_config_call_settempdhcpclientid_finish (
-    netconfdIp_config *proxy,
-    gchar **out_result,
-    GAsyncResult *res,
-    GError **error)
-{
-  GVariant *_ret;
-  _ret = g_dbus_proxy_call_finish (G_DBUS_PROXY (proxy), res, error);
-  if (_ret == NULL)
-    goto _out;
-  g_variant_get (_ret,
-                 "(s)",
-                 out_result);
-  g_variant_unref (_ret);
-_out:
-  return _ret != NULL;
-}
-
-/**
- * netconfd_ip_config_call_settempdhcpclientid_sync:
- * @proxy: A #netconfdIp_configProxy.
- * @arg_config: Argument to pass with the method invocation.
- * @out_result: (out) (optional): Return location for return parameter or %NULL to ignore.
- * @cancellable: (nullable): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
- *
- * Synchronously invokes the <link linkend="gdbus-method-de-wago-netconfd1-ip_config.settempdhcpclientid">settempdhcpclientid()</link> D-Bus method on @proxy. The calling thread is blocked until a reply is received.
- *
- * See netconfd_ip_config_call_settempdhcpclientid() for the asynchronous version of this method.
- *
- * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
- */
-gboolean
-netconfd_ip_config_call_settempdhcpclientid_sync (
-    netconfdIp_config *proxy,
-    const gchar *arg_config,
-    gchar **out_result,
-    GCancellable *cancellable,
-    GError **error)
-{
-  GVariant *_ret;
-  _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),
-    "settempdhcpclientid",
-    g_variant_new ("(s)",
-                   arg_config),
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    cancellable,
-    error);
-  if (_ret == NULL)
-    goto _out;
-  g_variant_get (_ret,
-                 "(s)",
-                 out_result);
-  g_variant_unref (_ret);
-_out:
-  return _ret != NULL;
-}
-
-/**
- * netconfd_ip_config_call_gettempdhcpclientid:
- * @proxy: A #netconfdIp_configProxy.
- * @cancellable: (nullable): A #GCancellable or %NULL.
- * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL.
- * @user_data: User data to pass to @callback.
- *
- * Asynchronously invokes the <link linkend="gdbus-method-de-wago-netconfd1-ip_config.gettempdhcpclientid">gettempdhcpclientid()</link> D-Bus method on @proxy.
- * When the operation is finished, @callback will be invoked in the thread-default main loop of the thread you are calling this method from (see g_main_context_push_thread_default()).
- * You can then call netconfd_ip_config_call_gettempdhcpclientid_finish() to get the result of the operation.
- *
- * See netconfd_ip_config_call_gettempdhcpclientid_sync() for the synchronous, blocking version of this method.
- */
-void
-netconfd_ip_config_call_gettempdhcpclientid (
-    netconfdIp_config *proxy,
-    GCancellable *cancellable,
-    GAsyncReadyCallback callback,
-    gpointer user_data)
-{
-  g_dbus_proxy_call (G_DBUS_PROXY (proxy),
-    "gettempdhcpclientid",
-    g_variant_new ("()"),
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    cancellable,
-    callback,
-    user_data);
-}
-
-/**
- * netconfd_ip_config_call_gettempdhcpclientid_finish:
- * @proxy: A #netconfdIp_configProxy.
- * @out_config: (out) (optional): Return location for return parameter or %NULL to ignore.
- * @out_result: (out) (optional): Return location for return parameter or %NULL to ignore.
- * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to netconfd_ip_config_call_gettempdhcpclientid().
- * @error: Return location for error or %NULL.
- *
- * Finishes an operation started with netconfd_ip_config_call_gettempdhcpclientid().
- *
- * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
- */
-gboolean
-netconfd_ip_config_call_gettempdhcpclientid_finish (
-    netconfdIp_config *proxy,
-    gchar **out_config,
-    gchar **out_result,
-    GAsyncResult *res,
-    GError **error)
-{
-  GVariant *_ret;
-  _ret = g_dbus_proxy_call_finish (G_DBUS_PROXY (proxy), res, error);
-  if (_ret == NULL)
-    goto _out;
-  g_variant_get (_ret,
-                 "(ss)",
-                 out_config,
-                 out_result);
-  g_variant_unref (_ret);
-_out:
-  return _ret != NULL;
-}
-
-/**
- * netconfd_ip_config_call_gettempdhcpclientid_sync:
- * @proxy: A #netconfdIp_configProxy.
- * @out_config: (out) (optional): Return location for return parameter or %NULL to ignore.
- * @out_result: (out) (optional): Return location for return parameter or %NULL to ignore.
- * @cancellable: (nullable): A #GCancellable or %NULL.
- * @error: Return location for error or %NULL.
- *
- * Synchronously invokes the <link linkend="gdbus-method-de-wago-netconfd1-ip_config.gettempdhcpclientid">gettempdhcpclientid()</link> D-Bus method on @proxy. The calling thread is blocked until a reply is received.
- *
- * See netconfd_ip_config_call_gettempdhcpclientid() for the asynchronous version of this method.
- *
- * Returns: (skip): %TRUE if the call succeded, %FALSE if @error is set.
- */
-gboolean
-netconfd_ip_config_call_gettempdhcpclientid_sync (
-    netconfdIp_config *proxy,
-    gchar **out_config,
-    gchar **out_result,
-    GCancellable *cancellable,
-    GError **error)
-{
-  GVariant *_ret;
-  _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),
-    "gettempdhcpclientid",
-    g_variant_new ("()"),
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    cancellable,
-    error);
-  if (_ret == NULL)
-    goto _out;
-  g_variant_get (_ret,
-                 "(ss)",
-                 out_config,
-                 out_result);
-  g_variant_unref (_ret);
-_out:
-  return _ret != NULL;
-}
-
-/**
  * netconfd_ip_config_call_getdipswitchconfig:
  * @proxy: A #netconfdIp_configProxy.
  * @cancellable: (nullable): A #GCancellable or %NULL.
@@ -3768,51 +3422,6 @@ netconfd_ip_config_complete_tempfixip (
 {
   g_dbus_method_invocation_return_value (invocation,
     g_variant_new ("(s)",
-                   result));
-}
-
-/**
- * netconfd_ip_config_complete_settempdhcpclientid:
- * @object: A #netconfdIp_config.
- * @invocation: (transfer full): A #GDBusMethodInvocation.
- * @result: Parameter to return.
- *
- * Helper function used in service implementations to finish handling invocations of the <link linkend="gdbus-method-de-wago-netconfd1-ip_config.settempdhcpclientid">settempdhcpclientid()</link> D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.
- *
- * This method will free @invocation, you cannot use it afterwards.
- */
-void
-netconfd_ip_config_complete_settempdhcpclientid (
-    netconfdIp_config *object,
-    GDBusMethodInvocation *invocation,
-    const gchar *result)
-{
-  g_dbus_method_invocation_return_value (invocation,
-    g_variant_new ("(s)",
-                   result));
-}
-
-/**
- * netconfd_ip_config_complete_gettempdhcpclientid:
- * @object: A #netconfdIp_config.
- * @invocation: (transfer full): A #GDBusMethodInvocation.
- * @config: Parameter to return.
- * @result: Parameter to return.
- *
- * Helper function used in service implementations to finish handling invocations of the <link linkend="gdbus-method-de-wago-netconfd1-ip_config.gettempdhcpclientid">gettempdhcpclientid()</link> D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.
- *
- * This method will free @invocation, you cannot use it afterwards.
- */
-void
-netconfd_ip_config_complete_gettempdhcpclientid (
-    netconfdIp_config *object,
-    GDBusMethodInvocation *invocation,
-    const gchar *config,
-    const gchar *result)
-{
-  g_dbus_method_invocation_return_value (invocation,
-    g_variant_new ("(ss)",
-                   config,
                    result));
 }
 

@@ -48,7 +48,6 @@ class PcapSniffer
   public:
     int dumpCount = 200; // processes packets until packets will be dumped
     int bufferTimeout = 10000; // packet buffer timeout, as a non-negative value, in milliseconds
-    int snapLenght = 2048; // snapshot length (tcpdump default: 68 bytes for IPv4 packets and 96 bytes for IPv6 packets)
     std::filesystem::path savefile;
     // ----------------------------
     //--- methods/functions -------
@@ -70,9 +69,9 @@ class PcapSniffer
     PcapSniffer(const PcapSniffer &&) = delete;
     PcapSniffer & operator = (const PcapSniffer &&) = delete;
 
-    bool CompileFilter(const std::string & filter);
+    bool CompileFilter(const std::string & filter, std::uint16_t snapLength);
 
-    void OpenLive(const std::string & devName);
+    void OpenLive(const std::string & devName, std::uint16_t snapLength);
     void OpenDump(const std::filesystem::path & path);
     void SetFilter(const std::string & filter);
     bool Dispatch(int * pResult);
