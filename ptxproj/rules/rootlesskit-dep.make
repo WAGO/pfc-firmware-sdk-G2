@@ -14,8 +14,8 @@ PACKAGES-$(PTXCONF_ROOTLESSKIT_DEP) += rootlesskit-dep
 #
 # Paths and names
 #
-ROOTLESSKIT_DEP_VERSION		:= 0.14.4
-ROOTLESSKIT_DEP_MD5				:= 5900de416ecc5d1fea877d9f5f5627be
+ROOTLESSKIT_DEP_VERSION		:= 2.0.2
+ROOTLESSKIT_DEP_MD5				:= 2a4a44c2ab0dca2adaa9b93e1e99a742
 ROOTLESSKIT_DEP						:= rootlesskit-dep-$(ROOTLESSKIT_DEP_VERSION)
 ROOTLESSKIT_DEP_SUFFIX		:= tar.gz
 ROOTLESSKIT_DEP_URL				:= https://github.com/rootless-containers/rootlesskit-dep/archive/refs/tags/v$(ROOTLESSKIT_DEP_VERSION).$(ROOTLESSKIT_DEP_SUFFIX)

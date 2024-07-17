@@ -4,7 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2018-2022 WAGO GmbH & Co. KG
+# Copyright (c) 2018-2024 WAGO GmbH & Co. KG
 
 #-----------------------------------------------------------------------------#
 # Script-name: update_config
@@ -18,6 +18,7 @@
 
 set -u # error exit on undefined shell variables
 
+dnsmasq_config_changed=false
 
 function DomainToResolvConf() {
     local validdomain=$1
@@ -37,10 +38,74 @@ function DomainToResolvConf() {
     fi
 }
 
+#Writing the domain to dnsmasq_default configuration file.
+#The file /etc/dnsmasq.conf can't be used because it is
+#rewritten on every dnsmasq configuration change from WBM/CBM.
+function DomainToDNSMASQ() {
+    local domain=$1
+    local dnsmasq_conf=/etc/dnsmasq.d/dnsmasq_default.conf
+
+    #get actual domain
+    local act_domain=""
+    IFS="=" read -r dummy act_domain <<<"$(grep -E '^domain=' $dnsmasq_conf)"
+
+    if [ "$act_domain" != "$domain" ]; then
+        if [ "$domain" ]; then
+            #check if act_domain differs from new_domain
+            local domain_search="/^\(#\)\?domain=.*"
+
+            #search for the first '#domain=' or 'domain=' at the beginning of the line
+            #replace it with 'domain=$domain'
+            sed -i -e "1,$domain_search/{$domain_search/s//domain=$domain/}" $dnsmasq_conf
+        else
+            #no domain -> we have to comment the domain-parameter (#domain=)
+            #otherwise dmasq will fail during startup
+            sed -i -e "/^domain=/c#domain=" $dnsmasq_conf
+        fi
+        # We have to restart dnsmasq to re-read the configuration.
+        dnsmasq_config_changed=true
+    fi
+}
+
+function UpdateDnsmasqConfig() {
+    local DNSMASQ_CONFIG="/etc/dnsmasq.conf"
+    local DNSMASQ_CONFIG_TMP="/tmp/dnsmasq.conf"
+    local NET_PARAMS=""
+
+    if [[ -n ${NETCONF_BRIDGE_CONFIG+x} && -n ${NETCONF_IP_CONFIG+x} && -n ${NETCONF_INTERFACE_CONFIG+x} && -n ${NETCONF_INTERFACE_STATUSES+x} ]]; then
+        NET_PARAMS="--bridge-config $NETCONF_BRIDGE_CONFIG --ip-config $NETCONF_IP_CONFIG --interface-config $NETCONF_INTERFACE_CONFIG --interface-statuses $NETCONF_INTERFACE_STATUSES"
+    fi
+
+    /etc/config-tools/config_dnsmasq_c --gen-config --no-dnsmasq-restart --dnsmasq-config $DNSMASQ_CONFIG_TMP $NET_PARAMS
+
+    if ! diff -q $DNSMASQ_CONFIG $DNSMASQ_CONFIG_TMP; then
+        mv $DNSMASQ_CONFIG_TMP $DNSMASQ_CONFIG
+        sync
+        dnsmasq_config_changed=true
+    fi
+
+    if [[ -e $DNSMASQ_CONFIG_TMP ]]; then
+        rm -f $DNSMASQ_CONFIG_TMP &>/dev/null
+    fi
+}
+
 # main: set global variables
 PATH="/bin:/sbin:/usr/bin:/usr/sbin"
 
 validdomain="$(dnsdomainname)"
 
 DomainToResolvConf "$validdomain"
+DomainToDNSMASQ "$validdomain"
 
+# dnsmasq update relies on /etc/hosts too. Therefore, run dnsmasq update after UpdateHostConf part.
+UpdateDnsmasqConfig
+
+if [[ "$dnsmasq_config_changed" == true ]]; then
+    # We have to restart dnsmasq to re-read the configuration.
+    # Use the "update" option to avoid regenerating the file /etc/dnsmasq.conf .
+    # The generation was already done during UpdateDnsmasqConfig execution.
+    /etc/init.d/dnsmasq update
+else
+    # just sighup to reload hosts
+    /etc/init.d/dnsmasq reload
+fi

@@ -23,7 +23,7 @@ function modify_start_cmd() {
   # Check if FW update is running its first boot,
   # in this case we must keep the ethernet ports down
   # in order to prevent default bridge configuration (all ports switched)
-  source "/usr/sbin/fwupdate_basic_defines"
+  test -f "/usr/sbin/fwupdate_basic_defines" && source "/usr/sbin/fwupdate_basic_defines"
   if [ -f "${WAGO_FW_UPDATE_FIRST_BOOT_MARKER}" ]; then
     Log "FW update detected: netconfd is starting with all ports down!"
     STARTCMD="$STARTCMD --startup-ports-down"
@@ -65,15 +65,15 @@ function stop_netconfd() {
     return 0
 }
 
-function start_netconfd() {  
+function start_netconfd() {
   local pid="$(cat $PATHPIDFILE 2>/dev/null)"
   is_pid_alive $pid || killall -9 udhcpc > /dev/null 2>&1 || true
-  
+
   # First action is to modify the start command based on the current environment
   modify_start_cmd
-  
+
   $STARTCMD
-  
+
   echo "done"
 }
 

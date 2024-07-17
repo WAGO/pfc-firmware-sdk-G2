@@ -7,7 +7,6 @@ config PP_NETWORKING
 	select PP_NETCONF
 	select PP_ROUTING
 	select PP_HOSTDOMAINNAME
-	select PP_SWITCHCONFIG
 	select WAGO_PARAMETER_SERVICE_COM
 	prompt "pp_networking"
 	help

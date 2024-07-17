@@ -24,7 +24,7 @@
 
 # load general definitions and functions
 if [ ! -f "/etc/config-tools/config_tool_lib" ]; then
-  echo "config_tool_lib missing"
+  echo "config_tool_lib missing" 
   exit 64
 fi
 
@@ -61,7 +61,8 @@ function convert_bridge_to_port {
 
 status=$SUCCESS
 
-if [[ $# -lt 1 ]]; then
+if [[ $# -lt 2 ]]; then
+    SetLastError "config_interfaces: error - number of parameters" 
     exit 1
 fi
 
@@ -101,6 +102,7 @@ while [[ $# -ne 0 ]]; do
             broadcast="${1#broadcast=}"
             ;;
         *)
+            SetLastError "config_interfaces: error - invalid parameter"
             exit $INVALID_PARAMETER
             ;;
     esac
@@ -108,21 +110,28 @@ while [[ $# -ne 0 ]]; do
 done
 
 if [[ -z "$port" ]]; then
+    SetLastError "config_interfaces: error - empty port name"
     exit 1
 fi
 
 if [[ -z "$state" && -z "$source" && -z "$ipaddr" && -z "$netmask" && -z "$broadcast" ]]; then
-    exit 1
+   SetLastError "config_interfaces: error - missing one of parameter (state, config-type, ip-address, subnet-mask, broadcast)" 
+   exit 1
 fi
 
 bridge=$(convert_port_to_bridge "$port")
 if [[ -z $bridge ]]; then
+    SetLastError "config_interfaces: error - determine bridge value"
     exit $INVALID_PARAMETER
 fi
 
 if [[ -n "$state" ]]; then
-	$IFCONFIG "$bridge" "${state_map[$state]}"
+	msg=$($IFCONFIG "$bridge" "${state_map[$state]}" 2>&1 ) 
 	status=$?
+        if [[ "$status" != $SUCCESS ]]; then
+           SetLastError "config_interfaces: error - ifconfig: " $msg
+           exit $status
+        fi
 fi
 
 if [[ "$status" == $SUCCESS && ( -n "$source" || -n "$ipaddr" || -n "$netmask" ) ]]; then
@@ -137,8 +146,9 @@ if [[ "$status" == $SUCCESS && ( -n "$source" || -n "$ipaddr" || -n "$netmask" )
     fi
 
     json_string="{\"$bridge\":{\"source\":\"$source\",\"ipaddr\":\"$ipaddr\",\"netmask\":\"$netmask\"}}"
-    result=$($NETWORK_CONFIG --ip-config --set $json_string --format=json)
+    result=$($NETWORK_CONFIG --ip-config --set $json_string --format=json 2>&1 )
     status=$?
+    SetLastError "config_interfaces: error - " $result
 fi
 
 exit $status

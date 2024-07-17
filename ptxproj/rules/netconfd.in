@@ -15,7 +15,8 @@ config NETCONFD
   select LIBNL3
   select NLOHMANN_JSON
   select GSL
+  select LIBCONFIGSTP
   prompt "netconfd"
   help
     Network Configuration Daemon
-    Takes care of ethernet ports, bridges and IP settings. 
+    Takes care of ethernet ports, bridges and IP settings.

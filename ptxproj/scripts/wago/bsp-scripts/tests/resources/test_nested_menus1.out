@@ -1,0 +1,18 @@
+contents
+contents
+contents
+
+menu "non_empty_menu_nested_0"
+contents
+contents
+next line contains spaces 
+
+menu   "non_empty_menu_nested_1"
+contents
+endmenu
+
+endmenu
+
+contents  	  
+contents  	  
+

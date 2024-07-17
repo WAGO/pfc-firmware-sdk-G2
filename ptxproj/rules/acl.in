@@ -1,0 +1,18 @@
+## SECTION=disk_and_file
+
+menuconfig ACL
+	tristate
+	prompt "acl                           "
+	help
+	  Access control list utilities
+
+	  This package contains the getfacl and setfacl utilities
+	  needed for manipulating access control lists.
+
+if ACL
+
+config ACL_TOOLS
+	bool
+	prompt "install tools"
+
+endif

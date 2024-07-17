@@ -6,7 +6,7 @@
 #
 # This file is part of PTXdist package config-tools.
 #
-# Copyright (c) 2012-2022 WAGO GmbH & Co. KG
+# Copyright (c) 2012-2023 WAGO GmbH & Co. KG
 #-----------------------------------------------------------------------------#
 #-----------------------------------------------------------------------------#
 # Script:   firmware_restore
@@ -535,6 +535,16 @@ fi
 
 # restart codesys if necessairy
 if [[ $restartCodesys -eq 1 ]] && [[ $rebootFlag -eq 0 ]]; then
+
+    # delete retain data
+    print_dbg "delete retain data before restart PLC runtime"
+    /usr/sbin/retain_data -d  &>/dev/null
+    if [[ $? -ne $SUCCESS ]]; then
+        report_error "error while deleting retain data"
+        status=$SHELL_ERROR
+        ReportError $status "(/usr/sbin/retain_data)"
+    fi
+ 
     print_dbg "restart PLC runtime"
     /etc/init.d/runtime start &>/dev/null
     if [[ $? -ne $SUCCESS ]]; then

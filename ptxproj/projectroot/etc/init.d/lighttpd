@@ -150,6 +150,14 @@ start()
     local try_count; try_count=3
     create_directory_if_needed "${LIGHTTPD_LOGDIR}"
     create_directory_if_needed "${LIGHTTPD_PHP_SESSION_DIR}"
+
+    # generate new certificate if default one was found, this is
+    # done to ensure every device has a unique certificate (cf. TOFU)
+    #
+    # optional feature, only supported if "setup_https_key" is
+    # installed!
+    [ -x /usr/sbin/setup_https_key ] && /usr/sbin/setup_https_key
+
     # START_STOP_DAEMON fails to start a process when SIGHUB (for log rotation) is received,
     # therefor we try again to start lighttpd
     while [[ result -ne 0 && try_count -gt 0 ]]; do

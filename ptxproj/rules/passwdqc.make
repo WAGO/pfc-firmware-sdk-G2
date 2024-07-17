@@ -103,7 +103,7 @@ $(STATEDIR)/passwdqc.targetinstall:
 	# install configuration file
 	#
 ifdef PTXCONF_PASSWDQC_PWDQC_CONF
-	@$(call install_alternative, passwdqc, 0, 0, 0755, /etc/passwdqc.conf)
+	@$(call install_alternative, passwdqc, 0, 0, 0644, /etc/passwdqc.conf)
 endif
 
 	#

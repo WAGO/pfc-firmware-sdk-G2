@@ -1,0 +1,19 @@
+contents
+contents
+contents
+
+
+
+contents  	 
+contents menu "abc"
+next line contains spaces
+    
+next line contains tabs
+		
+menu "def"
+contents
+endmenu
+
+
+
+

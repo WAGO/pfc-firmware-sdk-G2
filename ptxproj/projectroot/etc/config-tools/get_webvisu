@@ -38,7 +38,7 @@ fi
 
 case "$1" in
 
-"use-separated-ports")    (cd /etc/lighttpd && [[ $(readlink webvisu_ports.conf) == "webvisu_ports_separated.conf" ]] && echo -n "YES" || echo -n "NO")
+"use-separated-ports")    (cd /etc/lighttpd/apps.confd/webvisu && [[ $(readlink webvisu_ports.conf) == "webvisu_ports_separated.conf" ]] && echo -n "YES" || echo -n "NO")
           ;;
 
 *)        status="$INVALID_PARAMETER"

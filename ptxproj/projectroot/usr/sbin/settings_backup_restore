@@ -231,8 +231,35 @@ if [ -n "${backupFile}" ]; then
     
     #-------------------------------------------------------------
     # restore netconfd settings
-    /etc/config-tools/network_config --restore $backupFile
+    /etc/config-tools/network_config --restore "$backupFile"
     ProcessErrRestoreOperation $? "Failed to set network parameters by " "/etc/config-tools/network_config"
+    
+    #-------------------------------------------------------------
+    # restore stp settings
+    stp_config_json=$(awk '/^stp.data=/ { sub(/^stp.data=/, ""); printf "%s", $0 }' "$backupFile")
+    /etc/config-tools/config_stp set="$stp_config_json"
+    ProcessErrRestoreOperation $? "Failed to set stp parameters by " "/etc/config-tools/config_stp"
+
+    #-------------------------------------------------------------
+    if IsSwitchConfigV2; then 
+      # restore switch settings
+      switch_config_json=$(awk '/^switch.data=/ { sub(/^switch.data=/, ""); printf "%s", $0 }' "$backupFile")
+      /etc/config-tools/config_switch set="$switch_config_json"
+      ProcessErrRestoreOperation $? "Failed to set switch parameters by " "/etc/config-tools/config_switch"
+    fi
+
+    #-------------------------------------------------------------
+    # restore DHCP-Service settings.
+    /etc/config-tools/config_dnsmasq_c --restore-config "$backupFile"
+    ProcessErrRestoreOperation $? "Failed to set config_dnsmasq by " "/etc/config-tools/config_dnsmasq_c"
+    
+    #-------------------------------------------------------------
+    # restore DNS-Service settings.
+    state=$(GetBackupValue "dns-state" "$backupFile")
+    mode=$(GetBackupValue "dns-mode" "$backupFile")
+    fixhosts=$(GetBackupValue "dns-fixhosts" "$backupFile")
+    /etc/config-tools/config_dns_service --no-dnsmasq-restart dns-state=$state dns-mode=$mode dns-fix-host=$fixhosts
+    ProcessErrRestoreOperation $? "Failed to set dns_mode by " "/etc/config-tools/config_dns_service"
 
     #-------------------------------------------------------------
     # restore snmp user definitions.
@@ -336,11 +363,15 @@ if [ -n "${backupFile}" ]; then
     # Read all v3 user with read-only access from backup and install them one after the other
     RestoreSnmpV3Entries "v3-ro-user"
 
-
     adminShadowInfo=$(GetBackupValue "linux-admin-pwd-info" "$backupFile")
     ProcessErrRestoreOperation $? "Failed to get linux-admin-pwd-info."
     /etc/config-tools/config_linux_user user=admin hash=$adminShadowInfo
     ProcessErrRestoreOperation $? "Failed to set linux-admin-pwd-info."
+    
+    userShadowInfo=$(GetBackupValue "linux-user-pwd-info" "$backupFile")
+    ProcessErrRestoreOperation $? "Failed to get linux-user-pwd-info."
+    /etc/config-tools/config_linux_user user=user hash=$userShadowInfo
+    ProcessErrRestoreOperation $? "Failed to set linux-user-pwd-info."
 
     # restore firewall settings
     if [[ -x /etc/config-tools/firewall ]]; then
@@ -362,8 +393,10 @@ if [ -n "${backupFile}" ]; then
     
     # restore VPN settings
     if [[ -x /etc/config-tools/settings_backup_vpn ]]; then
-        cat "$backupFile" | /etc/config-tools/settings_backup_vpn restore
-        ProcessErrRestoreOperation $? "Restore backup_vpn failed"
+        if grep -q '^vpn-' "${backupFile}"; then
+            /etc/config-tools/settings_backup_vpn restore <"${backupFile}"
+            ProcessErrRestoreOperation $? "Restore backup_vpn failed"
+        fi
     else
         ProcessErrRestoreOperation $? "Invalid backup VPN config tool file: " "/etc/config-tools/settings_backup_vpn"   
     fi

@@ -149,5 +149,13 @@ Status ValidateInterfaceConfigs(const InterfaceConfigs &configs, const Interface
   return netconf::InterfaceConfigurationValidator::Validate(configs.GetConfig(), interface_infos);
 }
 
+Status MakeInterfaceStatuses(const ::std::string &json_str, InterfaceStatuses &statuses) {
+  JsonConverter jc;
+  netconf::InterfaceStatuses is;
+  Status status = jc.FromJsonString(json_str, is);
+  statuses = InterfaceStatuses {is};
+  return status;
+}
+
 }  //namespace api
 }  //namespace netconf

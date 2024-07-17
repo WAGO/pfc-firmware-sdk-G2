@@ -67,6 +67,10 @@ endif
 
 $(STATEDIR)/cds3-tscdrm.prepare:
 	@$(call targetinfo)
+ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	$(MAKE) -C $(CDS3_TSCDRM_DIR) SYSROOT=$(PTXCONF_SYSROOT_TARGET) itf
+	$(MAKE) -C $(CDS3_TSCDRM_DIR) SYSROOT=$(PTXCONF_SYSROOT_TARGET) dep
+endif
 	@$(call touch)
 
 
@@ -99,6 +103,9 @@ endif
 
 $(STATEDIR)/cds3-tscdrm.install:
 	@$(call targetinfo)
+ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	@cp $(CDS3_TSCDRM_DIR)/*Itf.h $(PTXCONF_SYSROOT_TARGET)/usr/include/codesys3/
+endif
 	@$(call touch)
 
 # ----------------------------------------------------------------------------

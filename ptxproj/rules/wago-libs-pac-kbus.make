@@ -79,6 +79,11 @@ ifdef PTXCONF_LIBPACKBUS_UART_INTERFACE
 LIBPACKBUS_AUTOCONF += --with-uart=$(PTXCONF_LIBPACKBUS_UART_INTERFACE)
 endif
 
+ifdef PTXCONF_LIBPACKBUS_NO_FIRMWARE_LOAD
+LIBPACKBUS_AUTOCONF += --enable-no_firmware_load
+endif
+
+
 $(STATEDIR)/libpackbus.prepare:
 	@$(call targetinfo)
 	@$(call clean, $(LIBPACKBUS_DIR)/config.cache)
@@ -145,10 +150,14 @@ else
 #--------------------- Copy and link library file
 	@$(call install_lib, libpackbus, 0, 0, 0644, libpackbus)
 	@$(call install_link, libpackbus, ../libpackbus.so, /usr/lib/dal/libpackbus.so)	
+	
+ifndef PTXCONF_LIBPACKBUS_NO_FIRMWARE_LOAD	
 #--------------------- Copy slave firmware		
 	@$(call install_copy, libpackbus, 0,0,  0644, $(LIBPACKBUS_DIR)/src/loader/XE164L1.bin, /etc/specific/XE164L1.bin)
 	@$(call install_copy, libpackbus, 0,0,  0644, $(LIBPACKBUS_DIR)/src/loader/XE164L2.bin, /etc/specific/XE164L2.bin)
 	@$(call install_copy, libpackbus, 0,0,  0644, $(LIBPACKBUS_DIR)/src/loader/XE164L3.bin, /etc/specific/XE164L3.bin)
+endif
+
 #--------------------- Copy configuration file
 	@$(call install_copy, libpackbus, 0,0,  0644, $(LIBPACKBUS_DIR)/src/Conf/kbusconf.xml, /etc/specific/kbusconf.xml)
 #--------------------- Copy test application

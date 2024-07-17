@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-#include "CommonTestDependencies.hpp"
+#include "BaseTypes.hpp"
 
 #include "BridgeConfigurator.hpp"
+#include "MockIBridgeChangeEvent.hpp"
 #include "MockINetDevManager.hpp"
+#include "Types.hpp"
 
 
 namespace netconf {
@@ -10,10 +12,11 @@ namespace netconf {
 class BridgeConfiguratorTest : public testing::Test {
  public:
   testing::StrictMock<MockINetDevManager> mock_netdev_manager_;
+  testing::StrictMock<MockIBridgeChangeEvent> mock_bridge_change_event_;
   ::std::shared_ptr<BridgeConfigurator> bridge_configurator_;
 
   BridgeConfiguratorTest() {
-    bridge_configurator_ = ::std::make_shared<BridgeConfigurator>(mock_netdev_manager_);
+    bridge_configurator_ = ::std::make_shared<BridgeConfigurator>(mock_netdev_manager_, mock_bridge_change_event_);
   }
 
   void SetUp() override {
@@ -53,6 +56,7 @@ TEST_F(BridgeConfiguratorTest, ConfigureBridgeConfiguration_RemoveBridges) {
   EXPECT_CALL(mock_netdev_manager_, GetBridgesWithAssignetPort()).WillRepeatedly(::testing::Return(bridge_itfs));
   EXPECT_CALL(mock_netdev_manager_, SetDown(Interface::CreateBridge("br0"))).Times(1);
   EXPECT_CALL(mock_netdev_manager_, Delete(Interface::CreateBridge("br0"))).Times(1);
+  EXPECT_CALL(mock_bridge_change_event_, OnBridgeRemove(Interface::CreateBridge("br0"))).Times(1);
 
   BridgeConfig expected = { };
   EXPECT_TRUE(bridge_configurator_->Configure(expected).IsOk());
@@ -69,6 +73,8 @@ TEST_F(BridgeConfiguratorTest, ConfigureBridgeConfiguration_BridgePortLeave) {
   EXPECT_CALL(mock_netdev_manager_, SetUp(Interface::CreateBridge("br0"))).Times(1);
 
   BridgeConfig expected = { {Interface::CreateBridge("br0"), { Interface::CreatePort("ethX1") }}};
+  EXPECT_CALL(mock_bridge_change_event_, OnBridgeAddOrPortChange(expected.begin()->first,expected.begin()->second)).Times(1);
+
   EXPECT_TRUE(bridge_configurator_->Configure(expected).IsOk());
 }
 
@@ -83,6 +89,7 @@ TEST_F(BridgeConfiguratorTest, ConfigureBridgeConfiguration_BridgePortJoin) {
   EXPECT_CALL(mock_netdev_manager_, SetUp(Interface::CreateBridge("br0"))).Times(1);
 
   BridgeConfig expected = { {Interface::CreateBridge("br0"), { Interface::CreatePort("ethX1"), Interface::CreatePort("ethX2") }}};
+
   EXPECT_TRUE(bridge_configurator_->Configure(expected).IsOk());
 }
 
@@ -97,6 +104,8 @@ TEST_F(BridgeConfiguratorTest, ConfigureBridgeConfiguration_AddBridge) {
   EXPECT_CALL(mock_netdev_manager_, SetUp(Interface::CreateBridge("br0"))).Times(1);
 
   BridgeConfig expected = { {Interface::CreateBridge("br0"), { Interface::CreatePort("ethX1"), Interface::CreatePort("ethX2") }}};
+  EXPECT_CALL(mock_bridge_change_event_, OnBridgeAddOrPortChange(expected.begin()->first,expected.begin()->second)).Times(1);
+
   EXPECT_TRUE(bridge_configurator_->Configure(expected).IsOk());
 }
 

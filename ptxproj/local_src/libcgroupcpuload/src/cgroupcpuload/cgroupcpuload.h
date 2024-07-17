@@ -25,8 +25,15 @@
 // defines; structure, enumeration and type definitions
 //------------------------------------------------------------------------------
 
-struct cgroupcpuload;
-
+struct cgroupcpuload
+{
+  uint64_t   timestamp;
+  uint64_t * runtime_core;
+  uint64_t * runtime_core_old;
+  uint32_t * load_core;
+  uint16_t   cpu_cores;
+  int        cpuacct_usage_fd;
+};
 
 //------------------------------------------------------------------------------
 // function prototypes
@@ -41,10 +48,24 @@ extern "C"
 
   void cgroupcpuload_destroy(struct cgroupcpuload * cgroupcpuload);
 
+  //
+  //  uint32_t cgroupcpuload_get_load(struct cgroupcpuload * cgroupcpuload);
+  //
+  //  The result value is in percent. On Multicore systems the return value is modified
+  //  to represent a significant system load.
+  //  To represent this the highest load of all cores is evaluated
+  //
+  //  Three levels of system load are distinguished:
+  //
+  //  1: all core loads are below 50%    > the average load is resulted
+  //  2: highest core load is above 50 % > then medium value between the highest and the average value is the result
+  //  3: highest core load is above 75%  > the highest core load is resulted
+  //
+
   uint32_t cgroupcpuload_get_load(struct cgroupcpuload * cgroupcpuload);
 
 
-#ifdef __cplusplus
+  #ifdef __cplusplus
 } // extern "C"
 #endif // __cplusplus
 

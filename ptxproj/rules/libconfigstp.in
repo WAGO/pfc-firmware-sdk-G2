@@ -1,0 +1,12 @@
+## SECTION=wago_specific
+
+config LIBCONFIGSTP
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select GLIB
+	select NLOHMANN_JSON
+	select MSTPD
+	prompt "libconfigstp"
+	help
+	  stp config lib configures stp configuration files

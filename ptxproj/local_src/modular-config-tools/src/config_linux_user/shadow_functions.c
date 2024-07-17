@@ -63,7 +63,8 @@ static bool IsValidUser(const char* userName)
 {
   // TODO: Switch to a configurable white list solution
   return    (strcmp(userName, "admin") == 0)
-         || (strcmp(userName, "visualisation") == 0);
+         || (strcmp(userName, "visualisation") == 0)
+         || (strcmp(userName, "user") == 0);
 }
 
 void GetRandomBytes(ctutil_Resources_t const * const pstResources,

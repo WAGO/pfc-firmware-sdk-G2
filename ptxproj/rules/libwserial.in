@@ -1,12 +1,24 @@
 ## SECTION=wago_specific_libs
 
-config LIBWSERIAL
+menuconfig LIBWSERIAL
 	bool
+	select WAGO_PFC_DIAGNOSTIC
+	select TYPELABEL
 	select LIBCOMMONHEADER
 	select GLIB
 	select CONFIG_TOOLS
 	select HOST_CT_BUILD
 	select GOOGLETEST
+	select NLOHMANN_JSON
 	prompt "libwserial"
 	help
 	  Library for controlling serial port
+
+if LIBWSERIAL
+
+config LIBWSERIAL_PFC300
+	bool
+	default n
+	prompt "Build for PFC300"
+
+endif

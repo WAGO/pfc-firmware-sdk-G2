@@ -16,9 +16,13 @@
 
 #include "test_utils.hpp"
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
+#include <cstring>
+#include <fstream>
+#include <unistd.h>
+#include <algorithm>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 namespace wago {
 namespace firewall {
@@ -56,7 +60,7 @@ bool TestUtils::file_exists(std::string const &name){
 void TestUtils::copy_file(std::string const &source, std::string const &target){
   fs::path from = source;
   fs::path to = target;
-  fs::copy_file(from, to, fs::copy_option::overwrite_if_exists);
+  fs::copy_file(from, to, fs::copy_options::overwrite_existing);
 }
 
 void TestUtils::read_from_file(const ::std::string &file_path, ::std::string &data){

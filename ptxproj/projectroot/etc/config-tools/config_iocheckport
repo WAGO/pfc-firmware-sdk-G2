@@ -20,6 +20,7 @@
 # Author: HJH, WAGO GmbH
 #-----------------------------------------------------------------------------#
 
+SERVICE_CONFIG="/etc/specific/network-services.xml"
 EVENT_DIR="/etc/config-tools/events/iocheckport"
 INETD_CONF="/etc/inetd.conf"
 

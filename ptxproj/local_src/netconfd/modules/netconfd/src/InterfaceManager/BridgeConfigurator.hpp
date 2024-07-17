@@ -7,6 +7,7 @@
 #include "Types.hpp"
 #include <memory>
 
+#include "IBridgeChangeEvent.hpp"
 
 //------------------------------------------------------------------------------
 // function implementation
@@ -14,11 +15,11 @@
 
 namespace netconf {
 
-class BridgeConfigurator : public IBridgeConfigurator {
+class BridgeConfigurator : public IBridgeConfigurator{
 
  public:
-  explicit BridgeConfigurator(INetDevManager& netdev_manager);
-  ~BridgeConfigurator() override = default;
+  explicit BridgeConfigurator(INetDevManager& netdev_manager, IBridgeChangeEvent& bridge_change_event);
+  ~BridgeConfigurator() = default;
 
   BridgeConfigurator(const BridgeConfigurator&) = delete;
   BridgeConfigurator& operator=(const BridgeConfigurator&) = delete;
@@ -26,7 +27,7 @@ class BridgeConfigurator : public IBridgeConfigurator {
   BridgeConfigurator& operator=(const BridgeConfigurator&&) = delete;
 
   Status Configure(const BridgeConfig& config) const override;
-  Interfaces GetBridgeAssignedInterfaces() const;
+  Interfaces GetBridgeAssignedInterfaces() const override;
 
  private:
 
@@ -41,6 +42,7 @@ class BridgeConfigurator : public IBridgeConfigurator {
   Status SetAllBridgesUp(Interfaces const &bridges) const;
 
   INetDevManager& netdev_manager_;
+  IBridgeChangeEvent& bridge_change_event_;
 
 };
 

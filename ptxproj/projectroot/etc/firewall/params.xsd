@@ -36,7 +36,7 @@
 
 <xs:complexType name="interfaces">
     <xs:sequence>
-        <xs:element name="interface" type="interface" minOccurs="0" maxOccurs="10"/>
+        <xs:element name="interface" type="interface" minOccurs="0" maxOccurs="23"/>
     </xs:sequence>
 </xs:complexType>
 

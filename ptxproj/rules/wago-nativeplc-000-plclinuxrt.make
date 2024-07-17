@@ -100,6 +100,7 @@ else
 	@$(call install_copy, dalshell, 0, 0, 0644, $(DALSHELL_DIR)/project/data/pfc_batch_process.conf.0x000E, /etc/specific/pfc_batch_process.conf.0x000E);
 	@$(call install_copy, dalshell, 0, 0, 0644, $(DALSHELL_DIR)/project/data/pfc_batch_process.conf.0x000F, /etc/specific/pfc_batch_process.conf.0x000F);
 	@$(call install_copy, dalshell, 0, 0, 0644, $(DALSHELL_DIR)/project/data/pfc_batch_process.conf.0x004E, /etc/specific/pfc_batch_process.conf.0x004E);
+	@$(call install_copy, dalshell, 0, 0, 0644, $(DALSHELL_DIR)/project/data/pfc_batch_process.conf.0x100C, /etc/specific/pfc_batch_process.conf.0x100C);
 	#@$(call install_link, dalshell, ../../etc/specific/pfc_batch_process.conf.default, /usr/share/pfc_batch_process.conf)	
 endif
 	@$(call install_finish,dalshell)

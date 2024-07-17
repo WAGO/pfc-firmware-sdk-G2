@@ -14,7 +14,7 @@
 #
 PACKAGES-$(PTXCONF_CDS3_TSCTIME) += cds3-tsctime
 
-CDS3_TSCTIME_VERSION	 := 0.0.5
+CDS3_TSCTIME_VERSION      := 0.0.6
 CDS3_TSCTIME              := TscTime
 CDS3_TSCTIME_DIR          := $(BUILDDIR)/$(CDS3_TSCTIME)
 CDS3_TSCTIME_URL          := file://$(PTXDIST_WORKSPACE)/wago_intern/codesys3-Component/$(CDS3_TSCTIME)
@@ -67,6 +67,10 @@ endif
 
 $(STATEDIR)/cds3-tsctime.prepare:
 	@$(call targetinfo)
+ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	$(MAKE) -C $(CDS3_TSCTIME_DIR) SYSROOT=$(PTXCONF_SYSROOT_TARGET) itf
+	$(MAKE) -C $(CDS3_TSCTIME_DIR) SYSROOT=$(PTXCONF_SYSROOT_TARGET) dep
+endif
 	@$(call touch)
 
 
@@ -117,6 +121,8 @@ ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 	for header in *.h include/*.h; do \
 		install -D $$header $(CDS3_TSCTIME_PKGDIR)/usr/include/TscTime/$$(basename $$header); \
 	done; 
+
+	@cp $(CDS3_TSCTIME_DIR)/*Itf.h $(PTXCONF_SYSROOT_TARGET)/usr/include/codesys3/
 
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_RELEASE
 	@cd $(CDS3_TSCTIME_PKGDIR) && tar cvzf $(CDS3_TSCTIME_PLATFORMCONFIGPACKAGEDIR)/$(CDS3_TSCTIME_PACKAGE_NAME).tgz *

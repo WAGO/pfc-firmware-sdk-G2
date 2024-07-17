@@ -17,9 +17,9 @@ PACKAGES-$(PTXCONF_AZURE) += azure
 # Paths and names
 #
 
-AZURE_VERSION       := 1.6.0
+AZURE_VERSION       := 1.10.1
 AZURE_SUFFIX        := tar.gz
-AZURE_MD5           := 7f1d2c011e11d9979826d0997d00b7d2
+AZURE_MD5           := add98ac2fd3b93d7261f2f21313cf41b
 
 AZURE_URL           := https://github.com/Azure/azure-iot-sdk-c/archive/$(AZURE_VERSION).$(AZURE_SUFFIX) 
                     # Placeholder: Url is not working!!! 
@@ -67,10 +67,11 @@ AZURE_CONF_OPT	:= $(CROSS_CMAKE_USR) -v --jobs=1 \
 	-D"use_condition:BOOL=OFF" \
 	-D"CMAKE_CXX_FLAGS=-std=gnu++11 -fPIC -Wall "  \
 	-D"CMAKE_C_FLAGS=-std=gnu99 -fPIC -Wall " \
-	-D"hsm_type_symm_key:BOOL=ON" \
 	-D"use_prov_client:BOOL=ON" \
+	-D"hsm_type_symm_key:BOOL=ON" \
 	-D"hsm_type_x509:BOOL=ON" \
-	-D"skip_samples:BOOL=ON"
+	-D"skip_samples:BOOL=OFF" \
+	-D"warnings_as_errors:BOOL=OFF" \
 
 
 ifdef PTXCONF_AZURE_HTTP
@@ -139,7 +140,7 @@ $(STATEDIR)/azure.install:
 		$(PKGDIR)/$(AZURE)/usr/include/azure/c-utility/inc/azure_c_shared_utility
 
 	@mkdir -p $(PKGDIR)/$(AZURE)/usr/lib/azure
-	@install -m 0644 $(AZURE_DIR)-build/*.a \
+	@install -m 0644 $(AZURE_DIR)-build/deps/parson/*.a \
 		$(PKGDIR)/$(AZURE)/usr/lib/azure
 
 	@mkdir -p $(PKGDIR)/$(AZURE)/usr/lib/azure/umqtt
@@ -169,6 +170,10 @@ $(STATEDIR)/azure.install:
 	@mkdir -p $(PKGDIR)/$(AZURE)/usr/lib/azure/provisioning_client
 	@install -m 0644 $(AZURE_DIR)-build/provisioning_client/*.a \
 		$(PKGDIR)/$(AZURE)/usr/lib/azure/provisioning_client
+
+	@mkdir -p $(PKGDIR)/$(AZURE)/usr/lib/azure/provisioning_client/deps/utpm/
+	@install -m 0644 $(AZURE_DIR)-build/provisioning_client/deps/utpm/*.a \
+		$(PKGDIR)/$(AZURE)/usr/lib/azure/provisioning_client/deps/utpm/
 
 	@mkdir -p $(PKGDIR)/$(AZURE)/usr/lib/azure/provisioning_service_client
 	@install -m 0644 $(AZURE_DIR)-build/provisioning_service_client/*.a \

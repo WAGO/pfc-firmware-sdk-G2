@@ -12,6 +12,7 @@ namespace network_config {
 
 using testing::Return;
 using testing::_;
+using testing::DoAll;
 
 template<typename ... Args>
 auto CreateProgramArgs(Args ... args) -> ::std::array<const char*, sizeof...(args)>

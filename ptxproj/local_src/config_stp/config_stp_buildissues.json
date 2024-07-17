@@ -1,0 +1,42 @@
+{
+  "_class": "io.jenkins.plugins.analysis.core.restapi.ReportApi",
+  "issues": [
+    {
+      "fileName": "pfc/ptxproj/local_src/config_stp/src/stp-config/stp_config_handler.cpp",
+      "lineStart": "69",
+      "columnStart": "70",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "in call to ‘std::string std::__cxx11::to_string(int)’ [-Wsign-promo]",
+      "moduleName": "config_stp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config_stp/src/stp-config/stp_config_handler.cpp",
+      "lineStart": "69",
+      "columnStart": "70",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint8_t’ {aka ‘unsigned char’} chooses ‘int’ over ‘long int’ [-Wsign-promo]",
+      "moduleName": "config_stp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config_stp/src/stp-config/stp_config_handler.cpp",
+      "lineStart": "69",
+      "columnStart": "70",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint8_t’ {aka ‘unsigned char’} chooses ‘int’ over ‘long unsigned int’ [-Wsign-promo]",
+      "moduleName": "config_stp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config_stp/src/stp-config/stp_config_handler.cpp",
+      "lineStart": "69",
+      "columnStart": "70",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint8_t’ {aka ‘unsigned char’} chooses ‘int’ over ‘unsigned int’ [-Wsign-promo]",
+      "moduleName": "config_stp-tests"
+    }
+  ],
+  "size": 4
+}

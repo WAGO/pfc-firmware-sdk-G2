@@ -141,11 +141,29 @@ case $1 in
         ;;
     webserver-state)
         arg_assert ${CONFIG_VERSION:-0} "1 2 3" "Missing or wrong argument cfg-version"
-        result=$(getrtval $CONFIG_VERSION "WEBSERVER_STATE")
+        if [[ "$CONFIG_VERSION" == "1" || "$CONFIG_VERSION" == "3" ]]; then
+           val=$(chplcconfig -g -s CmpWebServer -k WebServerPortNr -o)
+           if [ "$val" != "0" ]; then
+              result="enabled"
+           else
+              result="disabled"
+           fi
+        else
+           result=$(getrtval $CONFIG_VERSION "WEBSERVER_STATE")
+        fi
         ;;
     authentication)
         arg_assert ${CONFIG_VERSION:-0} "1 2 3" "Missing or wrong argument cfg-version"
-        result=$(getrtval $CONFIG_VERSION "PORT_AUTH")
+        if [[ "$CONFIG_VERSION" == "1" || "$CONFIG_VERSION" == "3" ]]; then
+           val=$(chplcconfig -g -s CmpUserMgr -k SecureLogin -o)
+           if [ "$val" != "0" ]; then
+              result="enabled"
+           else
+              result="disabled"
+           fi
+        else
+           result=$(getrtval $CONFIG_VERSION "PORT_AUTH")
+        fi
         ;;
     serial-programming)
         arg_assert ${CONFIG_VERSION:-0} "1 2 3" "Missing or wrong argument cfg-version"

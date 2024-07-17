@@ -2,10 +2,14 @@
 
 #include "EthTool.hpp"
 
+#include <cerrno>
+#include <climits>
+#include <cstdint>
 #include <tuple>
 #include <cstdlib>
 #include <cstring>
 
+#include <linux/ethtool.h>
 #include <linux/sockios.h>
 #include <sys/ioctl.h>
 
@@ -199,17 +203,24 @@ eth::MediaType EthToolSettings::GetMediaType() const {
 EthTool::EthTool(Socket s, const std::string &ifname)
     : socket_ { std::move(s) },
       ifreq_ { } {
+  ::std::memset(&ifreq_, 0, sizeof(ifreq_));
   strncpy(ifreq_.ifr_name, ifname.c_str(), IFNAMSIZ);  //NOLINT
 
   DetermineSettingsCommand();
 }
 
 void EthTool::DetermineSettingsCommand() {
-  ethtool_link_settings ls { };
-  ls.cmd = ETHTOOL_GLINKSETTINGS;
-  auto res = ioctl(socket_.fd(), SIOCETHTOOL, &ls, sizeof(ls));
+  struct {
+    ethtool_link_settings s;
+    uint32_t link_mode_masks[SCHAR_MAX * 3];
+  }ls;
+
+  ifreq_.ifr_data = &ls;  //NOLINT(cppcoreguidelines-pro-type-union-access) must access union
+  ::std::memset(&ls, 0, sizeof(ls));
+  ls.s.cmd = ETHTOOL_GLINKSETTINGS;
+  auto res = ioctl(socket_.fd(), SIOCETHTOOL, &ifreq_);
   if (res == 0) {
-    link_mode_masks_nwords_ = abs(ls.link_mode_masks_nwords);
+    link_mode_masks_nwords_ = static_cast<size_t>(abs(ls.s.link_mode_masks_nwords));
     supports_link_settings_ = true;
   } else if (res < 0) {
     supports_link_settings_ = false;
@@ -248,6 +259,7 @@ void EthTool::Update(EthToolSettings &s) {
     ifreq_.ifr_data = &etsl.s_;  //NOLINT(cppcoreguidelines-pro-type-union-access) must access union
   },
   [&](ethtool_cmd &cmd) noexcept {
+    ::std::memset(&cmd, 0, sizeof(cmd));
     cmd.cmd = ETHTOOL_GSET;
     ifreq_.ifr_data = &cmd;  //NOLINT(cppcoreguidelines-pro-type-union-access) must access union
   } },
@@ -285,16 +297,24 @@ void EthTool::Commit(EthToolSettings &s) {
   if (s.if_state_ == eth::DeviceState::Up) {
     auto current = ReadCurrent();
 
-    std::visit(overloaded { [&](EthToolLinkSettings &etsl) noexcept {
-      etsl.s_.link_mode_masks_nwords = static_cast<__s8 >(link_mode_masks_nwords_);
-      etsl.s_.cmd = ETHTOOL_SLINKSETTINGS;
-      ifreq_.ifr_data = &etsl.s_;  //NOLINT(cppcoreguidelines-pro-type-union-access) must access union
+    std::visit(overloaded {
+      [&](EthToolLinkSettings &etsl) noexcept {
+        etsl.s_.link_mode_masks_nwords = static_cast<__s8 >(link_mode_masks_nwords_);
+        ::std::memcpy(etsl.link_mode_masks_, current.GetLinkSettings().link_mode_masks_, link_mode_masks_nwords_ * 3 * sizeof(uint32_t));
+        etsl.s_.phy_address = current.GetLinkSettings().s_.phy_address;
+        etsl.s_.cmd = ETHTOOL_SLINKSETTINGS;
+        ifreq_.ifr_data = &etsl.s_;  //NOLINT(cppcoreguidelines-pro-type-union-access) must access union
     },
-    [&](ethtool_cmd &cmd) noexcept {
-      cmd.cmd = ETHTOOL_SSET;
-      ifreq_.ifr_data = &cmd;  //NOLINT(cppcoreguidelines-pro-type-union-access) must access union
-    } },
-               s.e_);
+      [&](ethtool_cmd &cmd) noexcept {
+        cmd.advertising = current.GetEthToolCmd().advertising;
+        cmd.supported = current.GetEthToolCmd().supported;
+        cmd.lp_advertising = current.GetEthToolCmd().lp_advertising;
+        cmd.phy_address = current.GetEthToolCmd().phy_address;
+        cmd.cmd = ETHTOOL_SSET;
+        ifreq_.ifr_data = &cmd;  //NOLINT(cppcoreguidelines-pro-type-union-access) must access union
+      }
+    },
+    s.e_);
 
     if (SetRequestHasChanges(current, s)) {
       EthToolIoctl();

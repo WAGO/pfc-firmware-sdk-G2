@@ -41,6 +41,15 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
   exit $status
 fi
 
+SENTINEL='fork'
+if [ "${1:-}" != "${SENTINEL}" ]; then
+  start-stop-daemon -S -b -x "$0" "${SENTINEL}" "${1:-0}"
+  exit 0
+fi
+
+# get rid of the fork sentinel
+shift
+
 if [ -h $LIGHTTPD_START_LINK ]; then
   timeoutInSec=$1
 

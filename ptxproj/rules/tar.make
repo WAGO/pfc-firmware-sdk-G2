@@ -16,11 +16,12 @@ PACKAGES-$(PTXCONF_TAR) += tar
 #
 # Paths and names
 #
-TAR_VERSION	:= 1.32
-TAR_MD5		:= 83e38700a80a26e30b2df054e69956e5
+TAR_VERSION	:= 1.35
+TAR_MD5		:= a2d8042658cfd8ea939e6d911eaf4152
 TAR		:= tar-$(TAR_VERSION)
 TAR_SUFFIX	:= tar.xz
-TAR_URL		:= $(call ptx/mirror, GNU, tar/$(TAR).$(TAR_SUFFIX))
+TAR_URL		:= $(call ptx/mirror, GNU, tar/$(TAR).$(TAR_SUFFIX)) \
+			   https://ftp.gnu.org/gnu/tar/$(TAR).$(TAR_SUFFIX)
 TAR_SOURCE	:= $(SRCDIR)/$(TAR).$(TAR_SUFFIX)
 TAR_DIR		:= $(BUILDDIR)/$(TAR)
 TAR_LICENSE	:= unknown

@@ -1,0 +1,168 @@
+{
+  "_class": "io.jenkins.plugins.analysis.core.restapi.ReportApi",
+  "issues": [
+    {
+      "fileName": "local_src/config-tools/print_log/src/util_log.cpp",
+      "lineStart": "226",
+      "columnStart": "8",
+      "category": "Warning:cert-env33-c",
+      "severity": "NORMAL",
+      "message": "calling 'system' uses a command processor [cert-env33-c]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/print_log/test-src/test_main.cpp",
+      "lineStart": "31",
+      "columnStart": "6",
+      "category": "Warning:clang-diagnostic-extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ';' after member function definition [clang-diagnostic-extra-semi]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/print_log/test-src/test_main.cpp",
+      "lineStart": "34",
+      "columnStart": "6",
+      "category": "Warning:clang-diagnostic-extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ';' after member function definition [clang-diagnostic-extra-semi]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/print_log/test-src/test_main.cpp",
+      "lineStart": "41",
+      "columnStart": "6",
+      "category": "Warning:clang-diagnostic-extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ';' after member function definition [clang-diagnostic-extra-semi]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/print_log/test-src/test_main.cpp",
+      "lineStart": "45",
+      "columnStart": "6",
+      "category": "Warning:clang-diagnostic-extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ';' after member function definition [clang-diagnostic-extra-semi]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/print_log/test-src/test_main.cpp",
+      "lineStart": "71",
+      "columnStart": "6",
+      "category": "Warning:clang-diagnostic-extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ';' after member function definition [clang-diagnostic-extra-semi]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/print_log/test-src/test_util_log.cpp",
+      "lineStart": "56",
+      "columnStart": "6",
+      "category": "Warning:clang-diagnostic-extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ';' after member function definition [clang-diagnostic-extra-semi]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/print_log/test-src/test_util_log.cpp",
+      "lineStart": "64",
+      "columnStart": "6",
+      "category": "Warning:clang-diagnostic-extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ';' after member function definition [clang-diagnostic-extra-semi]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/print_log/test-src/test_util_log.cpp",
+      "lineStart": "69",
+      "columnStart": "6",
+      "category": "Warning:clang-diagnostic-extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ';' after member function definition [clang-diagnostic-extra-semi]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/print_log/main/print_log.cpp",
+      "lineStart": "44",
+      "columnStart": "1",
+      "category": "Warning:redundant-tags",
+      "severity": "NORMAL",
+      "message": "redundant class-key ‘struct’ in reference to ‘struct option’ [-Wredundant-tags]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/print_log/test-src/test_main.cpp",
+      "lineStart": "31",
+      "columnStart": "6",
+      "category": "Warning:extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ‘;’ after in-class function definition [-Wextra-semi]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/print_log/test-src/test_main.cpp",
+      "lineStart": "34",
+      "columnStart": "6",
+      "category": "Warning:extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ‘;’ after in-class function definition [-Wextra-semi]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/print_log/test-src/test_main.cpp",
+      "lineStart": "41",
+      "columnStart": "6",
+      "category": "Warning:extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ‘;’ after in-class function definition [-Wextra-semi]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/print_log/test-src/test_main.cpp",
+      "lineStart": "45",
+      "columnStart": "6",
+      "category": "Warning:extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ‘;’ after in-class function definition [-Wextra-semi]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/print_log/test-src/test_main.cpp",
+      "lineStart": "71",
+      "columnStart": "6",
+      "category": "Warning:extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ‘;’ after in-class function definition [-Wextra-semi]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/print_log/test-src/test_util_log.cpp",
+      "lineStart": "56",
+      "columnStart": "6",
+      "category": "Warning:extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ‘;’ after in-class function definition [-Wextra-semi]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/print_log/test-src/test_util_log.cpp",
+      "lineStart": "64",
+      "columnStart": "6",
+      "category": "Warning:extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ‘;’ after in-class function definition [-Wextra-semi]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/print_log/test-src/test_util_log.cpp",
+      "lineStart": "69",
+      "columnStart": "6",
+      "category": "Warning:extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ‘;’ after in-class function definition [-Wextra-semi]",
+      "moduleName": "print_log-tests"
+    }
+  ],
+  "size": 18
+}

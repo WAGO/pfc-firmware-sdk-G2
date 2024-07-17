@@ -7,13 +7,11 @@
 #include <memory>
 #include <optional>
 
-#include "CollectionUtils.hpp"
 #include "IInterfaceEvent.hpp"
 #include "INetlinkLink.hpp"
 #include "LinkHelper.hpp"
 #include "Logger.hpp"
 #include "NetDev.hpp"
-#include "NetworkInterfaceConstants.hpp"
 #include "Status.hpp"
 
 namespace netconf {
@@ -330,12 +328,15 @@ Interfaces NetDevManager::GetPorts(const Interface &interface) {
 
 void NetDevManager::BridgePortLeave(const Interface &port) {
   auto port_netdev = GetByInterface(port);
-  auto bridge_netdev = GetByIfIndex(port_netdev->GetParentIndex());
-  if (port_netdev && bridge_netdev) {
-    netlink_.DeleteParent(port_netdev->GetIndex());
-    port_netdev->SetLinkInfo(netlink_.GetLinkInfo(port_netdev->GetIndex()).value());
 
-    OnBridgePortsChange(bridge_netdev);
+  if (port_netdev) {
+    auto bridge_netdev = GetByIfIndex(port_netdev->GetParentIndex());
+    if (bridge_netdev) {
+      netlink_.DeleteParent(port_netdev->GetIndex());
+      port_netdev->SetLinkInfo(netlink_.GetLinkInfo(port_netdev->GetIndex()).value());
+
+      OnBridgePortsChange(bridge_netdev);
+    }
   }
 }
 

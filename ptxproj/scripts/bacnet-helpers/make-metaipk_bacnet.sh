@@ -16,6 +16,9 @@ while [[ $# -gt 0 ]]; do
     -u|--url)
       PTXCONF_OPKG_OPKG_CONF_URL="$2"
       ;;
+    --libwebsockets)
+      WITH_LIBWEBSOCKETS="$2"
+      ;;
     --libbacnetstack)
       WITH_BACNETSTACK="$2"
       ;;
@@ -49,7 +52,8 @@ while [[ $# -gt 0 ]]; do
   shift # past value
 done
 
-if [ -z "$WITH_BACNETSTACK" ] || \
+if [ -z "$WITH_LIBWEBSOCKETS" ] || \
+   [ -z "$WITH_BACNETSTACK" ] || \
    [ -z "$WITH_LIBBACNET" ] || \
    [ -z "$WITH_BACNETCONFIG" ] || \
    [ -z "$WITH_TSCIOBACNET" ] || \
@@ -72,6 +76,14 @@ PTX_PLATFORMDIR="$PTXDIST_PLATFORMDIR"
 # Local defines:
 BUILD_DIR=$PTXDIST_PLATFORMDIR/packages/
 FW_VERSION=$(cat  $PTXDIST_WORKSPACE/projectroot/etc/REVISIONS | grep "FIRMWARE=" | cut -d= -f2 | sed -e 's/(/_/g;s/)//g')
+
+if [ "$WITH_LIBWEBSOCKETS" = "y" ]; then
+  LIB_WEBSOCKETS_IPK=$(ls $PTXDIST_PLATFORMDIR/packages | grep libwebsockets_ | cut -f2)
+  if [ "$LIB_WEBSOCKETS_IPK" = "" ]; then
+    echo !!! LIB_WEBSOCKETS_IPK not found
+    exit 1
+  fi
+fi
 
 if [ "$WITH_BACNETSTACK" = "y" ]; then
   LIB_BACNET_STACK_IPK=$(ls $PTXDIST_PLATFORMDIR/packages | grep libbacnetstack_ | cut -f2)
@@ -137,7 +149,7 @@ if [ "$WITH_PPBACNET" = "y" ]; then
   fi
 fi
 
-PACKAGES="$LIB_BACNET_IPK $LIB_BACNET_CONFIG_IPK $CDS3_TSCIO_BACNET_IPK $CDS3_IODRV_BACNET_IPK $WAGO_NG_PLUGIN_BACNET_IPK $LIB_BACNET_STACK_IPK $BACNET_NATIVE_IPK $PP_BACNET_IPK"
+PACKAGES="$LIB_BACNET_IPK $LIB_BACNET_CONFIG_IPK $CDS3_TSCIO_BACNET_IPK $CDS3_IODRV_BACNET_IPK $WAGO_NG_PLUGIN_BACNET_IPK $LIB_BACNET_STACK_IPK $BACNET_NATIVE_IPK $PP_BACNET_IPK $LIB_WEBSOCKETS_IPK"
 VERSION="${BACNET_VERSION}"
 REPO_NAME="bacnet_rev${BACNET_REV}_${VERSION}_FW${FW_VERSION}.repo"
 
@@ -279,8 +291,19 @@ echo "    /root/install_bacnet.sh 2>&1 |  tee -a /var/log/bacnet_install.log" >>
 echo "    sync"                                                 >> ${BUILD_DIR}bacnet-repo-src/control/postinst
 echo "}"                                                        >> ${BUILD_DIR}bacnet-repo-src/control/postinst
 echo ""                                                         >> ${BUILD_DIR}bacnet-repo-src/control/postinst
+echo "function update_firewall"                                 >> ${BUILD_DIR}bacnet-repo-src/control/postinst
+echo "{"                                                        >> ${BUILD_DIR}bacnet-repo-src/control/postinst
+echo "    local CONTENT=\"        <rule state=\\\"on\\\" proto=\\\"tcp\\\" dst_port=\\\"47808\\\"\/>\"" >> ${BUILD_DIR}bacnet-repo-src/control/postinst
+echo "    local FILE=\"/etc/firewall/services/bacnet.xml\""     >> ${BUILD_DIR}bacnet-repo-src/control/postinst
+echo "    if ! grep -q \"tcp\" \$FILE; then"                    >> ${BUILD_DIR}bacnet-repo-src/control/postinst
+echo "        sed -i \"/<\/rules>/ s/.*/\$CONTENT\n&/\" \$FILE" >> ${BUILD_DIR}bacnet-repo-src/control/postinst
+echo "    fi"                                                   >> ${BUILD_DIR}bacnet-repo-src/control/postinst
+echo "    sync"                                                 >> ${BUILD_DIR}bacnet-repo-src/control/postinst
+echo "}"                                                        >> ${BUILD_DIR}bacnet-repo-src/control/postinst
+echo ""                                                         >> ${BUILD_DIR}bacnet-repo-src/control/postinst
 echo "PID_OF_IPKG=\$(pidof opkg)"                               >> ${BUILD_DIR}bacnet-repo-src/control/postinst
 echo "start_update \$PID_OF_IPKG &"                             >> ${BUILD_DIR}bacnet-repo-src/control/postinst
+echo "update_firewall"                                          >> ${BUILD_DIR}bacnet-repo-src/control/postinst
 echo ""                                                         >> ${BUILD_DIR}bacnet-repo-src/control/postinst
 echo "exit 0"                                                   >> ${BUILD_DIR}bacnet-repo-src/control/postinst
 echo ""                                                         >> ${BUILD_DIR}bacnet-repo-src/control/postinst
@@ -306,6 +329,10 @@ echo "opkg install --force-depends $(echo $PACKAGE | cut -f1 -d"_")" >> ${BUILD_
 done
 echo "opkg remove bacnet_repo"                          >> ${BUILD_DIR}bacnet-repo-src/data/root/install_bacnet.sh
 echo "/etc/init.d/runtime start"                        >> ${BUILD_DIR}bacnet-repo-src/data/root/install_bacnet.sh
+if [ "$WITH_PPBACNET" = "y" ]; then
+echo "sed -i -e 's/\"BACnet\"/\"BACnet_V2\"/g' /usr/share/wdd/*" >> ${BUILD_DIR}bacnet-repo-src/data/root/install_bacnet.sh
+echo "/etc/init.d/paramd restart"                       >> ${BUILD_DIR}bacnet-repo-src/data/root/install_bacnet.sh
+fi
 echo ""                                                 >> ${BUILD_DIR}bacnet-repo-src/data/root/install_bacnet.sh
 
 chmod +x ${BUILD_DIR}bacnet-repo-src/data/root/install_bacnet.sh

@@ -206,6 +206,13 @@ config WAGO_CUSTOM_INSTALL_LINKIN_DEVS_NAMES
 	 under /dev/...
 endif
 
+config WAGO_CUSTOM_INSTALL_SERIAL_FEATURES
+    bool
+    default n
+    prompt "install /etc/init.d/serial_features"
+    help
+    Install script to discover features of serial interface.
+
 config WAGO_CUSTOM_INSTALL_3G_MODEM_VERSION_INFO_FILE
     bool
     default n
@@ -316,4 +323,32 @@ config WAGO_CUSTOM_INSTALL_IOCHECK_ON
     prompt "install /etc/special/features/iocheck"
     help
 	Install to enable IO Check service in wbm and firewall
+
+config WAGO_CUSTOM_INSTALL_SETUP_SSH_KEYS
+    bool
+    depends on DROPBEAR
+    default n
+    prompt "install /usr/sbin/setup_ssh_keys"
+    help
+	Install script to replace default host keys with
+	newly generated. Script will be called from dropbear
+	init script
+
+config WAGO_CUSTOM_INSTALL_SETUP_HTTPS_KEY
+    bool
+    depends on LIGHTTPD_HTTPS
+    default n
+    prompt "install /usr/sbin/setup_https_key"
+    help
+	Install script to replace default certificate with a
+	newly generated self-signed. Script will be called
+	from lighttpd init script
+
+config WAGO_CUSTOM_INSTALL_KBUS_FIRMWARE_BLOB
+    bool
+    default n
+    prompt "install /etc/specific/kbus_application.bin"
+    help
+        Install KBUS Firmware Binary for KBUS FW-Update
+
 endif

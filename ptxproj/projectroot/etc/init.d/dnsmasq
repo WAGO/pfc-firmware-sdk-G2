@@ -4,31 +4,54 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2018-2022 WAGO GmbH & Co. KG
+# Copyright (c) 2018-2024 WAGO GmbH & Co. KG
 
 PIDFILE=/var/run/dnsmasq.pid
 DNSMASQ=/usr/sbin/dnsmasq
 CONFIG_TOOL=/etc/config-tools/config_dnsmasq_c
+DNSMASQ_CONFIG_FILE=/etc/dnsmasq.conf
+
+
+function contains_interface_config {
+    grep -q -E "^interface=[[:alnum:]]" "$1"
+}
+
+function is_any_interface_configured {
+    contains_interface_config $DNSMASQ_CONFIG_FILE && return 0
+    
+    while IFS= read -r line; do
+        local file_name="${line/conf-file=}"
+        if [[ -e $file_name ]]; then
+            contains_interface_config "$file_name" && return 0
+        fi
+    done < <(grep -E "^conf-file=" $DNSMASQ_CONFIG_FILE)
+
+    return 1
+}
 
 function start_dnsmasq {
     local generate=${1:-true}
     mkdir -p "/var/run/dnsmasq"
-    touch "/var/run/dnsmasq/dnsmasq_gadget.conf"
-    if [ ! -e $PIDFILE ]; then
-        echo "dnsmasq starting"
-        if [[ -x $CONFIG_TOOL && "$generate" == true ]]; then
-            $CONFIG_TOOL --gen-config
+    if [[ -x $CONFIG_TOOL && "$generate" == true ]]; then
+        $CONFIG_TOOL --gen-config
+    fi
+
+    if is_any_interface_configured; then
+        if [ ! -e $PIDFILE ]; then
+            echo "dnsmasq starting"
+            $DNSMASQ
+        else
+            echo "already running"
         fi
-        $DNSMASQ
     else
-        echo "already running"
+        stop_dnsmasq
     fi
 }
 
 function stop_dnsmasq {
     if [ -e $PIDFILE ]; then
         echo "stopping dnsmasq"
-        kill -TERM $(cat $PIDFILE)
+        kill -TERM "$(cat $PIDFILE)"
         rm -f $PIDFILE
     fi
 }
@@ -65,7 +88,7 @@ case $1 in
     reload)
         # /etc/dnsmasq.conf is not reloaded during this reload, see dnsmasq manual page.
         test -e $PIDFILE || { echo "not running" && exit 0; }
-        kill -s SIGHUP `cat $PIDFILE`
+        kill -s SIGHUP "$(cat $PIDFILE)"
         event_start
         ;;
 

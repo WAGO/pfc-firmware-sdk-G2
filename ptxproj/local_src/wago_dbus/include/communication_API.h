@@ -52,7 +52,6 @@
 #define WAGO_DBUS_LOGLIST_EL    "ListElement"
 #define WAGO_DBUS_LOGLIST_END   "ListEnd"
 
-
 #define  COM_TYPE_INVALID            DBUS_TYPE_INVALID
 #define  COM_TYPE_BYTE               DBUS_TYPE_BYTE
 #define  COM_TYPE_BOOLEAN            DBUS_TYPE_BOOLEAN
@@ -70,6 +69,15 @@
 #define  COM_TYPE_DBUS_TYPE_ARRAY    DBUS_TYPE_ARRAY
 #define  COM_TYPE_DBUS_TYPE_VARIANT  DBUS_TYPE_VARIANT
 #define  COM_TYPE_ARRAY              DBUS_TYPE_ARRAY
+
+#if __TIMESIZE == 32
+#define COM_TYPE_TIME_T COM_TYPE_INT32
+#elif __TIMESIZE == 64
+#define COM_TYPE_TIME_T COM_TYPE_INT64
+#else
+#error "__TIMESIZE needs to be 32 or 64 bit wide"
+#endif
+
 //------------------------------------------------------------------------------
 // Typedefs
 //------------------------------------------------------------------------------

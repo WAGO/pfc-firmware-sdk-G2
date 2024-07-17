@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WBM_NG_PLUGIN_BOOT_MODE) += wbm-ng-plugin-boot-mode
 #
 # Paths and names
 #
-WBM_NG_PLUGIN_BOOT_MODE_VERSION        := 1.0.0
+WBM_NG_PLUGIN_BOOT_MODE_VERSION        := 1.0.1
 WBM_NG_PLUGIN_BOOT_MODE                := wbm-boot-mode-$(WBM_NG_PLUGIN_BOOT_MODE_VERSION)
 WBM_NG_PLUGIN_BOOT_MODE_URL            := $(call jfrog_template_to_url, WBM_NG_PLUGIN_BOOT_MODE)
 WBM_NG_PLUGIN_BOOT_MODE_SUFFIX         := $(suffix $(WBM_NG_PLUGIN_BOOT_MODE_URL))

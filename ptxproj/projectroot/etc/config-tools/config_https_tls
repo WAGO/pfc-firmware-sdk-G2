@@ -75,8 +75,8 @@ for ARG in "$@"; do
     case "$ARG" in
         cipher-list=*)
             ciphers=${ARG#cipher-list=}
-            if [[ "$ciphers" == "standard" ]]; then
-                ciphers="extended-compatibility"
+            if [[ "$ciphers" == "standard" ]] || [[ "$ciphers" == "extended-compatibility" ]]; then
+                ciphers="extended_compatibility"
             fi
             ;;
         restart-webserver=*)
@@ -90,7 +90,7 @@ for ARG in "$@"; do
     esac
 done
 
-newlink="tls-$ciphers.conf"
+newlink="tls_$ciphers.conf"
 if [[ $status -eq 0 && "$ciphers" && "$(readlink $SYMLINK)" != "$newlink" ]]; then
     ln -sf "$newlink" "$SYMLINK"
     status=$?

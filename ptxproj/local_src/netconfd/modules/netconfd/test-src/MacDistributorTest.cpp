@@ -36,7 +36,7 @@ void SetNetDevMac(const NetDevPtr& netdev, MacAddress mac){
 using namespace std::string_literals;
 
 ACTION_P(PutToAssignmentList, list){
-  NetDevPtr& netdev = arg0;
+  const NetDevPtr& netdev = arg0;
   MacAddress mac = MacAddress::FromString(arg1);
   list.get().push_back( {netdev->GetInterface(), mac});
 }

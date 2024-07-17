@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WBM_NG_PLUGIN_PROFIBUS) += wbm-ng-plugin-profibus
 #
 # Paths and names
 #
-WBM_NG_PLUGIN_PROFIBUS_VERSION        := 1.1.1
+WBM_NG_PLUGIN_PROFIBUS_VERSION        := 1.1.2
 WBM_NG_PLUGIN_PROFIBUS                := wbm-profibus-$(WBM_NG_PLUGIN_PROFIBUS_VERSION)
 WBM_NG_PLUGIN_PROFIBUS_URL            := $(call jfrog_template_to_url, WBM_NG_PLUGIN_PROFIBUS)
 WBM_NG_PLUGIN_PROFIBUS_SUFFIX         := $(suffix $(WBM_NG_PLUGIN_PROFIBUS_URL))

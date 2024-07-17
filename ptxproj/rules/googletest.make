@@ -16,13 +16,13 @@ PACKAGES-$(PTXCONF_GOOGLETEST) += googletest
 #
 # Paths and names
 #
-GOOGLETEST_VERSION	:= 1.8.0
-GOOGLETEST_MD5		:= 16877098823401d1bf2ed7891d7dce36
+GOOGLETEST_VERSION	:= 1.12.1
+GOOGLETEST_MD5		:= e82199374acdfda3f425331028eb4e2a
 GOOGLETEST		:= googletest-$(GOOGLETEST_VERSION)
 GOOGLETEST_SUFFIX	:= tar.gz
 # This is the actual package URL. We renamed the archive file. To get file server mirror to work, a dummy URL with
 # the changed file name is required.
-#GOOGLETEST_URL		:= https://github.com/google/googletest/archive/release-$(GOOGLETEST_VERSION).$(GOOGLETEST_SUFFIX)
+#GOOGLETEST_URL		:= https://github.com/google/googletest/archive/refs/tags/release-$(GOOGLETEST_VERSION).$(GOOGLETEST_SUFFIX)
 GOOGLETEST_URL		:= https://github.com/google/googletest/archive/googletest-$(GOOGLETEST_VERSION).$(GOOGLETEST_SUFFIX)
 GOOGLETEST_SOURCE	:= $(SRCDIR)/$(GOOGLETEST).$(GOOGLETEST_SUFFIX)
 GOOGLETEST_DIR		:= $(BUILDDIR)/$(GOOGLETEST)

@@ -1,0 +1,150 @@
+{
+  "_class": "io.jenkins.plugins.analysis.core.restapi.ReportApi",
+  "issues": [
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
+      "lineStart": "116",
+      "columnStart": "10",
+      "category": "Warning:readability-implicit-bool-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion 'std::underlying_type<opt_actions>::type' (aka 'int') -> bool [readability-implicit-bool-conversion]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
+      "lineStart": "248",
+      "columnStart": "7",
+      "category": "Warning:readability-container-size-empty",
+      "severity": "NORMAL",
+      "message": "the 'empty' method should be used to check for emptiness instead of 'size' [readability-container-size-empty]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
+      "lineStart": "265",
+      "columnStart": "9",
+      "category": "Warning:cert-env33-c",
+      "severity": "NORMAL",
+      "message": "calling 'system' uses a command processor [cert-env33-c]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
+      "lineStart": "336",
+      "columnStart": "22",
+      "category": "Warning:readability-implicit-bool-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion bool -> 'int' [readability-implicit-bool-conversion]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
+      "lineStart": "336",
+      "columnStart": "28",
+      "category": "Warning:readability-implicit-bool-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion bool -> 'int' [readability-implicit-bool-conversion]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
+      "lineStart": "419",
+      "columnStart": "31",
+      "category": "Warning:readability-redundant-string-init",
+      "severity": "NORMAL",
+      "message": "redundant string initialization [readability-redundant-string-init]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
+      "lineStart": "420",
+      "columnStart": "31",
+      "category": "Warning:readability-redundant-string-init",
+      "severity": "NORMAL",
+      "message": "redundant string initialization [readability-redundant-string-init]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
+      "lineStart": "421",
+      "columnStart": "32",
+      "category": "Warning:readability-redundant-string-init",
+      "severity": "NORMAL",
+      "message": "redundant string initialization [readability-redundant-string-init]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_parameterc.cpp",
+      "lineStart": "260",
+      "columnStart": "9",
+      "category": "Warning:readability-container-size-empty",
+      "severity": "NORMAL",
+      "message": "the 'empty' method should be used to check for emptiness instead of 'size' [readability-container-size-empty]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_parameterc.hpp",
+      "lineStart": "235",
+      "columnStart": "12",
+      "category": "Warning:readability-inconsistent-declaration-parameter-name",
+      "severity": "NORMAL",
+      "message": "function 'wp::Config::cleanLogs' has a definition with different parameter names [readability-inconsistent-declaration-parameter-name]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_util.cpp",
+      "lineStart": "108",
+      "columnStart": "20",
+      "category": "Warning:clang-diagnostic-format-security",
+      "severity": "NORMAL",
+      "message": "format string is not a string literal (potentially insecure) [clang-diagnostic-format-security]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_util.cpp",
+      "lineStart": "116",
+      "columnStart": "16",
+      "category": "Warning:clang-diagnostic-format-security",
+      "severity": "NORMAL",
+      "message": "format string is not a string literal (potentially insecure) [clang-diagnostic-format-security]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_util.cpp",
+      "lineStart": "138",
+      "columnStart": "3",
+      "category": "Warning:cppcoreguidelines-pro-type-member-init",
+      "severity": "NORMAL",
+      "message": "uninitialized record type: 'dir_stat' [cppcoreguidelines-pro-type-member-init]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_util.cpp",
+      "lineStart": "139",
+      "columnStart": "3",
+      "category": "Warning:cppcoreguidelines-pro-type-member-init",
+      "severity": "NORMAL",
+      "message": "uninitialized record type: 'dir_parent_stat' [cppcoreguidelines-pro-type-member-init]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/pcap_log/src/wago_pcap/wp_parameterc.hpp",
+      "lineStart": "229",
+      "columnStart": "53",
+      "category": "Warning:google-runtime-references",
+      "severity": "NORMAL",
+      "message": "non-const reference parameter 'path', make it const or use a pointer [google-runtime-references]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/pcap_log/src/wago_pcap/wp_util.hpp",
+      "lineStart": "34",
+      "columnStart": "67",
+      "category": "Warning:google-runtime-references",
+      "severity": "NORMAL",
+      "message": "non-const reference parameter 'path', make it const or use a pointer [google-runtime-references]",
+      "moduleName": "pcap_log-tests"
+    }
+  ],
+  "size": 16
+}

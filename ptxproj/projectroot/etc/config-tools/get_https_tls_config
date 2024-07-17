@@ -52,14 +52,11 @@ case "$1" in
         status=$?
         if [[ $status -eq $SUCCESS ]]; then
         case "$LINKTARGET" in
-            tls-standard.conf)
-                # Alias for next option
-                ;&
-            tls-extended-compatibility.conf)
+            tls_extended_compatibility.conf)
                 # "standard" is the old value for "extended-compatibility" option
                 printf standard
                 ;;
-            tls-strong.conf)
+            tls_strong.conf)
                 printf strong
                 ;;
         esac

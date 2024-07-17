@@ -1,0 +1,80 @@
+-----------------------
+target: ethtool.install
+-----------------------
+
+ptxdist: executing: PATH=/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-cross/bin:/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-cross/sbin:\/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-host/lib/wrapper:/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-host/bin:/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-host/sbin:/home/user/workspace/bsp/ptxproj.2013.03.0/selected_toolchain:/home/user/workspace/ptxdist/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games PKG_CONFIG_PATH='' PKG_CONFIG_LIBDIR='/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/lib/pkgconfig:/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/lib/pkgconfig:/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/share/pkgconfig:/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/share/pkgconfig' SYSROOT='/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target' V=0 VERBOSE=0   make -C /home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/build-target/ethtool-3.18 DESTDIR="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/packages/ethtool-3.18" INSTALL_ROOT="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/packages/ethtool-3.18" install -j1
+make[1]: Entering directory `/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/build-target/ethtool-3.18'
+make[2]: Entering directory `/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/build-target/ethtool-3.18'
+ /home/user/workspace/ptxdist/bin/mkdir -p '/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/packages/ethtool-3.18/usr/sbin'
+  /home/user/workspace/ptxdist/bin/install -c ethtool '/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/packages/ethtool-3.18/usr/sbin'
+ /home/user/workspace/ptxdist/bin/mkdir -p '/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/packages/ethtool-3.18/usr/share/man/man8'
+ /home/user/workspace/ptxdist/bin/install -c -m 644 ethtool.8 '/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/packages/ethtool-3.18/usr/share/man/man8'
+make[2]: Leaving directory `/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/build-target/ethtool-3.18'
+make[1]: Leaving directory `/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/build-target/ethtool-3.18'
+finished target ethtool.install
+
+----------------------------
+target: ethtool.install.pack
+----------------------------
+
+finished target ethtool.install.pack
+
+----------------------------
+target: ethtool.install.post
+----------------------------
+
+finished target ethtool.install.post
+
+-----------------------------
+target: ethtool.targetinstall
+-----------------------------
+
+install_init:	preparing for image creation of 'ethtool'...
+install_init:	@ARCH@ -> arm
+install_init:	@PACKAGE@ -> ethtool
+install_init:	@VERSION@ -> 3.18
+install_init:	@DEPENDS@ -> 
+install_init:	preinst not available
+install_init:	postinst not available
+install_init:	prerm not available
+install_init:	postrm not available
+install_fixup:	@PRIORITY@ -> optional ... done.
+install_fixup:	@SECTION@ -> base ... done.
+install_fixup:	@AUTHOR@ -> "Robert Schwebel <r.schwebel\@pengutronix.de>" ... done.
+install_fixup:	@DESCRIPTION@ -> missing ... done.
+xpkg_finish:	collecting license (GPLv2) ... done.
+xpkg_finish:	creating ipkg package ... 
+install file:
+  src=ptxproj.2013.03.0/platform-wago-pfcXXX/packages/ethtool-3.18/usr/sbin/ethtool
+  dst=/usr/sbin/ethtool
+  owner=0 
+  group=0 
+  permissions=0755
+
+Packaged contents of /home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/packages/ethtool.tmp/ipkg into /home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/packages/ethtool_3.18_arm.ipk
+done.
+finished target ethtool.targetinstall
+
+----------------------------------
+target: ethtool.targetinstall.post
+----------------------------------
+
+finished target ethtool.targetinstall.post
+
+------------------------
+target: led-server-2.get
+------------------------
+
+finished target led-server-2.get
+
+----------------------------
+target: led-server-2.extract
+----------------------------
+
+#@MAKE="make" PTXDIST_SYSROOT_TARGET="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target" PTXDIST_SYSROOT_HOST="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-host" PTXDIST_SYSROOT_CROSS="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-cross" ptx_nfsroot="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/root" ptx_nfsroot_dbg="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/root-debug" ptx_extract_dir_target="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/build-target" ptx_extract_dir_host="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/build-host" ptx_extract_dir_cross="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/build-cross" ptx_state_dir="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/state" ptx_image_dir="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/images" ptx_lib_dir="/home/user/workspace/ptxdist/scripts/lib" ptx_pkg_dir="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/packages" ptx_pkg_dev_dir="" ptx_path_rules="/home/user/workspace/bsp/ptxproj.2013.03.0/rules:/home/user/workspace/bsp/ptxproj.2013.03.0/configs/wago-pfcXXX/rules:/home/user/workspace/ptxdist/rules:" ptx_path_target="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-cross/bin:/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-cross/sbin:\\$PATH" ptx_conf_env_target="AR=arm-cortexa8-linux-gnueabihf-ar AS=arm-cortexa8-linux-gnueabihf-as LD=arm-cortexa8-linux-gnueabihf-ld NM=arm-cortexa8-linux-gnueabihf-nm CC=arm-cortexa8-linux-gnueabihf-gcc CXX=arm-cortexa8-linux-gnueabihf-g++ CPP=arm-cortexa8-linux-gnueabihf-cpp RANLIB=arm-cortexa8-linux-gnueabihf-ranlib READELF=arm-cortexa8-linux-gnueabihf-readelf OBJCOPY=arm-cortexa8-linux-gnueabihf-objcopy OBJDUMP=arm-cortexa8-linux-gnueabihf-objdump STRIP=arm-cortexa8-linux-gnueabihf-strip DLLTOOL=arm-cortexa8-linux-gnueabihf-dlltool GNAT=arm-cortexa8-linux-gnueabihf-gnat GNATBIND=arm-cortexa8-linux-gnueabihf-gnatbind GNATCHOP=arm-cortexa8-linux-gnueabihf-gnatchop GNATCLEAN=arm-cortexa8-linux-gnueabihf-gnatclean GNATFIND=arm-cortexa8-linux-gnueabihf-gnatfind GNATKR=arm-cortexa8-linux-gnueabihf-gnatkr GNATLINK=arm-cortexa8-linux-gnueabihf-gnatlink GNATLS=arm-cortexa8-linux-gnueabihf-gnatls GNATMAKE=arm-cortexa8-linux-gnueabihf-gnatmake GNATNAME=arm-cortexa8-linux-gnueabihf-gnatname GNATPREP=arm-cortexa8-linux-gnueabihf-gnatprep GNATXREF=arm-cortexa8-linux-gnueabihf-gnatxref CC_FOR_BUILD=gcc CPP_FOR_BUILD=gcc LINK_FOR_BUILD=gcc SYSROOT=\"/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target\" PKG_CONFIG_PATH='' PKG_CONFIG_LIBDIR='/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/lib/pkgconfig:/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/lib/pkgconfig:/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/share/pkgconfig:/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/share/pkgconfig' PKG_CONFIG=\"/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-cross/bin/arm-cortexa8-linux-gnueabihf-pkg-config\" enable_option_checking=fatal ac_cv_file__dev_random=yes ac_cv_file__proc_self_exe=yes ac_cv_file__proc_self_fd=yes ac_cv_file__proc_self_maps=yes ac_cv_func_dcgettext=yes ac_cv_func_getpgrp_void=yes ac_cv_func_getrlimit=yes ac_cv_func_malloc_0_nonnull=yes ac_cv_func_memcmp_clean=yes ac_cv_func_memcmp_working=yes ac_cv_func_nonposix_getgrgid_r=no ac_cv_func_nonposix_getpwuid_r=no ac_cv_func_posix_getgrgid_r=yes ac_cv_func_posix_getpwnam_r=yes ac_cv_func_posix_getpwuid_r=yes ac_cv_func_printf_unix98=yes ac_cv_func_realloc_0_nonnull=yes ac_cv_func_setgrent_void=yes ac_cv_func_setpgrp_void=yes ac_cv_func_setvbuf_reversed=no ac_cv_func_strstr=yes ac_cv_func_strtod=yes ac_cv_func_strtoul=yes ac_cv_func_vsnprintf_c99=yes ac_cv_func_wait3_rusage=yes ac_cv_have_abstract_sockets=yes ac_cv_lib_c_inet_aton=yes ac_cv_sizeof_long_double=\"8\" ac_cv_sizeof_long_long=8 ac_cv_sysv_ipc=yes ac_cv_type_uintptr_t=yes bash_cv_func_ctype_nonascii=yes bash_cv_func_sigsetjmp=present bash_cv_func_strcoll_broken=no bash_cv_must_reinstall_sighandlers=no glib_cv_long_long_format=\"ll\" gt_cv_func_gettext_libintl=yes ac_cv_func_fork=yes ac_cv_func_fork_works=yes ac_cv_func_iconv_open=yes" ptx_conf_opt_autoconf_target="--prefix=/usr --sysconfdir=/etc --localstatedir=/var --libdir=/usr/lib --host=arm-cortexa8-linux-gnueabihf --build=i686-host-linux-gnu" ptx_conf_opt_cmake_target="-DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE='/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/state/config/toolchain-target.cmake'" ptx_conf_opt_qmake_target="-recursive CONFIG+=silent" ptx_path_host="\\$PATH" ptx_conf_env_host="PKG_CONFIG_PATH='' PKG_CONFIG_LIBDIR='/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-host/lib/pkgconfig:/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-host/share/pkgconfig' PYTHONPATH=\"/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-host/lib/python2.7/site-packages\"" ptx_conf_opt_autoconf_host="--prefix=" ptx_conf_opt_cmake_host="-DCMAKE_INSTALL_PREFIX= -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE='/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/state/config/toolchain-host.cmake'" ptx_conf_opt_autoconf_host_sysroot="--prefix=/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-host" ptx_conf_opt_cmake_host_sysroot="-DCMAKE_INSTALL_PREFIX=/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-host -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo -DCMAKE_TOOLCHAIN_FILE='/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/state/config/toolchain-host.cmake'" ptx_path_cross="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-cross/bin:/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-cross/sbin:\\$PATH" ptx_conf_env_cross="PKG_CONFIG_PATH='' PKG_CONFIG_LIBDIR='/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-host/lib/pkgconfig:/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-host/share/pkgconfig' PYTHONPATH=\"/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-host/lib/python2.7/site-packages\"" ptx_conf_opt_autoconf_cross="--prefix= --target=arm-cortexa8-linux-gnueabihf" ptx_conf_opt_autoconf_cross_sysroot="--prefix=/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-cross --target=arm-cortexa8-linux-gnueabihf" ptx_ipkg_extra_args="" ptx_opkg_extra_args= ptx_xpkg_type="ipkg" pkg_stamp="led-server-2.extract" pkg_pkg_dir="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/packages/led-server-2" pkg_pkg_dev="led-server-2-arm-9e1aa74fdef3b8a31fcbad5597707565-dev.tar.gz" pkg_license="unknown" pkg_build_deps="" pkg_run_deps="" pkg_pkg="led-server-2" pkg_version="2.0.2" pkg_config="" pkg_path="" pkg_src="" pkg_md5="" pkg_url="file:///home/user/workspace/bsp/ptxproj.2013.03.0/local_src//led-server-2" pkg_dir="/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/build-target/led-server-2" pkg_subdir="" pkg_strip_level="" pkg_tags_opt="" pkg_build_oot="NO" pkg_build_dir="" pkg_wrapper_blacklist="" pkg_conf_tool="autoconf" pkg_conf_env="" pkg_conf_opt="--prefix=/usr --sysconfdir=/etc --localstatedir=/var --libdir=/usr/lib --host=arm-cortexa8-linux-gnueabihf --build=i686-host-linux-gnu --with-hal=pca955x" pkg_make_env="" pkg_make_opt="" pkg_make_par="" pkg_install_opt="" pkg_binconfig_glob="" pkg_deprecated_builddir="" pkg_deprecated_env="" pkg_deprecated_autoconf="" pkg_deprecated_cmake="" pkg_deprecated_compile_env="" pkg_deprecated_makevars="" pkg_deprecated_extract_dir="" ptxd_make_world_extract
+rsync: link_stat "/home/user/workspace/bsp/ptxproj.2013.03.0/local_src/led-server-2" failed: No such file or directory (2)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1070) [sender=3.0.9]
+make: *** [/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/state/led-server-2.extract] Error 23
+
+}}} 2017-03-10T12:58:53+0100 /home/user/workspace/ptxdist/bin/ptxdist -q images; (exit value: 2)
+

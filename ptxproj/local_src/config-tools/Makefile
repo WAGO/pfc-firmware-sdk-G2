@@ -107,7 +107,7 @@ liblog/libctlog.so:
 # Common network-related functions
 
 # LIBSWCONFIG is a switch configuration library needed to switch DSA mode
-ifneq (,$(findstring ENABLE_DSA,$(CFLAGS)))
+ifneq (,$(findstring ENABLE_SWCONFIG,$(CFLAGS)))
 WITH_SWCONFIG=yes
 else
 WITH_SWCONFIG=no

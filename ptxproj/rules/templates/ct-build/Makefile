@@ -105,7 +105,7 @@ SHARED_CCXXFLAGS += -fPIC
 #/# https://gcc.gnu.org/wiki/Visibility and https://www.akkadia.org/drepper/dsohowto.pdf
 SHARED_CCXXFLAGS += -fvisibility=hidden
 SHARED_CFLAGS    += $(call option_std,gnu99)
-SHARED_CXXFLAGS  += $(call option_std,gnu++11)
+SHARED_CXXFLAGS  += $(call option_std,gnu++14)
 SHARED_CXXFLAGS  += -fvisibility-inlines-hidden
 
 

@@ -1,0 +1,14 @@
+Deleting src dir:
+/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/build-target/libwagosnmp/src
+
+
+}}} 2017-07-19T13:49:25+0000 /usr/local/lib/ptxdist-2013.03.0/bin/ptxdist clean libwagosnmp; (exit value: 0)
+
+
+
+{{{ 2017-07-19T13:49:25+0000 /usr/local/lib/ptxdist-2013.03.0/bin/ptxdist prepare libwagosnmp
+/home/user/pfc/trunk/ptxproj.2013.03.0/rules/io_check.make:55: warning: overriding commands for target `/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/state/io_check.extract.post'
+/home/user/pfc/trunk/ptxproj.2013.03.0/rules/io_check.make:49: warning: ignoring old commands for target `/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/state/io_check.extract.post'
+/home/user/pfc/trunk/ptxproj.2013.03.0/rules/wago-libs-024-libwagosnmp.make:44: *** "Error: /home/user/pfc/trunk/ptxproj.2013.03.0/local_src/libwagosnmp: directory not found!".  Stop.
+
+}}} 2017-07-19T13:49:27+0000 /usr/local/lib/ptxdist-2013.03.0/bin/ptxdist prepare libwagosnmp; (exit value: 2)

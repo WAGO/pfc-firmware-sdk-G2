@@ -14,9 +14,9 @@ PACKAGES-$(PTXCONF_DOCKER_CLI) += docker-cli
 #
 # Paths and names
 #
-DOCKER_CLI_VERSION	:= 20.10.21
-DOCKER_CLI_MD5			:= 0cd74653d2724e8880a4a106beb5233e
-DOCKER_CLI_GITCOMMIT:= baeda1f82a10204ec5708d5fbba130ad76cfee49
+DOCKER_CLI_VERSION	:= 25.0.4
+DOCKER_CLI_MD5			:= 5eec531f6d6f00aed2e9cb0d80a62b6b
+DOCKER_CLI_GITCOMMIT:= 1a576c50a9a33dd7ab2bcd78db1982cb965812b0
 DOCKER_CLI					:= cli-$(DOCKER_CLI_VERSION)
 DOCKER_CLI_SUFFIX		:= tar.gz
 DOCKER_CLI_URL			:= https://github.com/docker/cli/archive/refs/tags/v$(DOCKER_CLI_VERSION).$(DOCKER_CLI_SUFFIX)
@@ -32,6 +32,7 @@ DOCKER_CLI_GO_PACKAGE := github.com/docker/cli/cmd/docker
 
 DOCKER_CLI_BUILDMODE := -buildmode=pie
 DOCKER_CLI_CONF_TOOL	:= NO
+
 DOCKER_CLI_ENV:= \
 	AR=$(CROSS_AR) \
 	CC=$(CROSS_CC) \
@@ -41,7 +42,7 @@ DOCKER_CLI_ENV:= \
 	PKG_CONFIG=$(CROSS_PKG_CONFIG) \
 	GOPATH=$(DOCKER_CLI_DIR) \
 	GO111MODULE=auto \
-	GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=1 
+	GOOS=linux CGO_ENABLED=1 
 
 TIMESTAMP = $(shell date +"%d.%m.%YT%H:%M:%SZ")
 DOCKER_CLI_BUILD_TAGS:= \
@@ -80,7 +81,7 @@ $(STATEDIR)/docker-cli.compile:
 	@$(call targetinfo)
 		@PATH=$(CROSS_PATH):$(HOST_GO_BIN_DIR) ; \
 		cd $(DOCKER_CLI_DIR) &&  \
-		$(DOCKER_CLI_ENV) go build \
+		$(DOCKER_CLI_ENV) $(GO_ARCH) go build \
 			$(DOCKER_CLI_BUILDMODE) \
 			-o build/docker-linux-arm-v7 \
 			$(DOCKER_CLI_BUILD_TAGS) \

@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_LIBWSERIAL) += libwserial
 #
 # Paths and names
 #
-LIBWSERIAL_VERSION        := 0.1.5
+LIBWSERIAL_VERSION        := 0.2.2
 LIBWSERIAL_MD5            :=
 LIBWSERIAL                := libwserial
 LIBWSERIAL_BUILDCONFIG    := Release
@@ -39,7 +39,6 @@ LIBWSERIAL_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
 # Extract
 # ----------------------------------------------------------------------------
 
-
 $(STATEDIR)/libwserial.extract: 
 	@$(call targetinfo)
 	@mkdir -p $(LIBWSERIAL_BUILDROOT_DIR)
@@ -58,6 +57,9 @@ $(STATEDIR)/libwserial.prepare:
 	@$(call targetinfo)
 ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 	@$(call world/prepare, LIBWSERIAL)
+	@$(call xslt_compile, $(LIBWSERIAL_SRC_DIR)/src/led-message-ids.xml)
+	@echo "Create serial led log header file in sysroot-target/usr/include/ directory by using of XSLT-script"
+	@rm 	$(LIBWSERIAL_SRC_DIR)/src/diagnostics.dtd
 endif
 	@$(call touch)
 
@@ -110,10 +112,10 @@ $(STATEDIR)/libwserial.targetinstall:
 	@$(call install_fixup, libwserial,DESCRIPTION,missing)
 
 	@$(call install_lib, libwserial, 0, 0, 0644, libwserial)
-	@$(call install_copy, libwserial, 0, 0, 0750, -, /etc/config-tools/config_serial_mode)
+	@$(call install_copy, libwserial, 0, 0, 0750, -, /etc/config-tools/config_serial_interface)
 	@$(call install_copy, libwserial, 0, 0, 0644, -, /etc/specific/serial.conf)
-	@$(call install_copy, libwserial, 0, 0, 0444, -, /etc/sudoers.d/config_serial_mode)
-	@$(call install_copy, libwserial, 0, 0, 0750, -, /etc/config-tools/backup-restore/backup_serial_mode)
+	@$(call install_copy, libwserial, 0, 0, 0444, -, /etc/sudoers.d/config_serial_interface)
+	@$(call install_copy, libwserial, 0, 0, 0750, -, /etc/config-tools/backup-restore/backup_serial_interface)
 
 	@$(call install_finish, libwserial)
 

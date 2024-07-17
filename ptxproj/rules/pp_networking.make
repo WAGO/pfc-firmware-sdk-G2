@@ -39,7 +39,7 @@ PP_NETWORKING_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
 # ----------------------------------------------------------------------------
 
 
-$(STATEDIR)/pp_networking.extract: 
+$(STATEDIR)/pp_networking.extract:
 	@$(call targetinfo)
 	@mkdir -p $(PP_NETWORKING_BUILDROOT_DIR)
 ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
@@ -115,8 +115,6 @@ $(STATEDIR)/pp_networking.targetinstall:
 	@$(call install_link, pp_networking, ../init.d/pp_routing, /etc/rc.d/S90_pp_routing)
 	@$(call install_copy, pp_networking, 0, 0, 0755, -, /etc/init.d/pp_hostdomainname)
 	@$(call install_link, pp_networking, ../init.d/pp_hostdomainname, /etc/rc.d/S90_pp_hostdomainname)
-	@$(call install_copy, pp_networking, 0, 0, 0755, -, /etc/init.d/pp_switchconfig)
-	@$(call install_link, pp_networking, ../init.d/pp_switchconfig, /etc/rc.d/S90_pp_switchconfig)	
 
 	@$(call install_finish, pp_networking)
 

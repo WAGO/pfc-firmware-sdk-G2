@@ -36,11 +36,12 @@ fi
 if [ "$#" -eq "0" ]; then
 	/etc/init.d/runtime stop
 	/etc/config-tools/settings_backup restore "$DEFAULT_SETTINGS_DIR/$DEFAULT_SETTINGS_FILENAME"
-	cp -p $DEFAULT_SETTINGS_DIR/shadow.default /etc/shadow
-	cp -p $DEFAULT_SETTINGS_DIR/group.default /etc/group
-	cp -p $DEFAULT_SETTINGS_DIR/passwd.default /etc/passwd 
+	cp -p $DEFAULT_SETTINGS_DIR/shadow.default /etc/ && mv /etc/shadow.default /etc/shadow
+	cp -p $DEFAULT_SETTINGS_DIR/group.default /etc/ && mv /etc/group.default /etc/group
+	cp -p $DEFAULT_SETTINGS_DIR/passwd.default /etc/ && mv /etc/passwd.default /etc/passwd
 	rm -rf /home/codesys/*
 	rm -rf /home/user/bacnet/*
+	sync
 	# Need not to start runtime again, system will reboot
 else
 	case $1 in

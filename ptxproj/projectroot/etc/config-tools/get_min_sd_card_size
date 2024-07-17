@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2018-2022 WAGO GmbH & Co. KG
+# Copyright (c) 2018-2023 WAGO GmbH & Co. KG
 
 #-----------------------------------------------------------------------------#
 # Script-name: get_min_sd_card_size
@@ -18,10 +18,6 @@
 
 set -o nounset
 set -o errexit
-
-
-
-#-------------- main-programm ------------------------#
 
 function get_rootfs_offset
 {
@@ -38,9 +34,7 @@ function get_rootfs_offset
 function get_min_sd_card_size
 {
     local current_rootfs_size
-    current_rootfs_size=$(du / --apparent-size --summarize --one-file-system \
-                               --block-size=$((1024*1024)) | awk '{print $1}')
-
+    current_rootfs_size=$(df / | awk 'FNR == 2 {print $2}') 
     # Note: different partition layout:
     # 
     # NAND:     /home is an independent partition
@@ -50,25 +44,23 @@ function get_min_sd_card_size
 
     for mountpoint in /home /log; do
 
-        if mount | grep -q "on ${mountpoint} "; then
-            current_additional_size=$(( current_additional_size + 
-                                        $(du "${mountpoint}" --apparent-size \
-                                                             --summarize \
-                                                             --one-file-system \
-                                                             --block-size=$((1024*1024)) | awk '{print $1}') ))
+        if mount | grep -q "on ${mountpoint} "; then            
+            current_additional_size=$(( current_additional_size + $(df "${mountpoint}" | awk 'FNR == 2 {print $2}') ))          
         fi
 
     done
 
     local current_rootfs_offset
     current_rootfs_offset=$(get_rootfs_offset)
-
-    # add additional buffer with size 15% from rootfs+home 
-    # (due to low precision of calculate home and rootfs summary data size) 
-    local current_additional_buffer_coeff=15
     local root_and_home_size=$(( current_rootfs_size + current_additional_size ))
-    local current_additional_buffer=$(($((root_and_home_size/100))*current_additional_buffer_coeff))
-    echo $(( current_rootfs_offset + root_and_home_size + current_additional_buffer ))
+    local sd_device_size=$(/etc/config-tools/get_device_data size mmcblk0)
+    
+    # if size of partitions is bigger than sd card size, create-image should still work, so use sd size
+    if [[ $root_and_home_size -gt $sd_device_size ]]; then
+		    echo $((( sd_device_size ) / 1024 ))
+    else
+    echo $((( current_rootfs_offset + root_and_home_size ) / 1024 ))
+    fi
 }
 
 function __main
@@ -101,6 +93,8 @@ function __main
 
     exit "${status}"
 }
+
+#-------------- main-programm ------------------------#
 
 # Don't run main when the file is being sourced.
 # Required for unit testing.

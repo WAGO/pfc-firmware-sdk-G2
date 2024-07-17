@@ -1,3 +1,89 @@
+Firmware Release 04.05.10 (27) – CODESYS 3
+
+Engineering by CODESYS IDE V. 3.5 is supported
+Engineering by e!COCKPIT IDE is not supported
+CODESYS 2.3 is not supported
+
+Migration Guide – from e!COCKPIT to CODEYS V3.5:
+• https://techdocs.wago.com/Software/eCOCKPIT_Migration/en-US/index.html#index_content
+
+System:
+[NEW] Support for Spanning Tree Protocols STP/RSTP
+[NEW] WAT-35711 Support for VS code
+[NEW] Support for DHCP/DNS. Controller can act as DHCP/DNS server
+[NEW] Support for WAGO Device Sphere
+[FIXED] WAT-21892 Didn’t show all NTP Servers assigned via DHCP in WBM including
+                  statically configured NTP servers.
+[FIXED] WAT-36597 Placeholder in WDX response for IO LED diagnostic request
+[FIXED] WAT-36420 Pre-mature end of blink sequence during firmware update via SD card
+[FIXED] WAT-36635 Updated TZ-String for China to CST-9 and for Japan to JST-9
+[FIXED] WAT-35113 Error using Docker Swarm
+[FIXED] WAT-36431 Devices with two Ethernet interfaces: Loss of Ethernet connection on one
+                  Ethernet interface leads to communication interruption on the other Ethernet interface
+[FIXED] WAT-36006 IP address of the Docker Bridge0 in connection with temporary IP addresses
+[CHANGED] WAT-36240 Backup created with WAGO Upload does not contain docker related files
+[CHANGED] WAT-35865 Auto-Update via sd card: update of CODDESYS application will clear retain data by default.
+[REMOVED] Cloud Connectivity: IBM cloud specific functionality is removed
+[DEPRECATED] The network feature rate limiting is deprecated and will be removed in future versions
+[Note] ADVICE Code generation from WDA OpenAPI is possible via Postman
+
+Operating System:
+[FIXED] SECURITY CVE-2024-23651, CVE-2024-23652, CVE-2024-23653, CVE-2024-21626, CVE-2022-48624, CVE-2023-42465, 
+                 CVE-2023-48795, CVE-2023-29491, CVE-2023-45853, CVE-2023-28321, CVE-2023-28322, CVE-2023-28320, 
+                 CVE-2023-28319, CVE-2023-4527, CVE-2023-5156, CVE-2023-4911, CVE-2023-28320, CVE-2023-28319, 
+                 CVE-2023-37464, CVE-2023-28484, CVE-2023-29469, CVE-2022-23471, CVE-2022-48303, CVE-2024-25062, 
+                 CVE-2023-48795, CVE-2023-2603, CVE-2023-38545, CVE-2023-41913, CVE-2023-38545, CVE-2023-38546, 
+                 CVE-2019-11358, CVE 2020-11022, CVE-2020-11023, CVE-2020-23064
+[FIXED] WAT-36233 Update jQuery to 3.7.1
+[CHANGED] Update OpenSSL to v3.13
+[NEW] WAT-35711 Add libatomic
+[CHANGED] Updated ncurses to version 6.4
+[CHANGED] PFC300: Kernel update 6.6.15 rt22
+
+Runtime System:
+[NEW] CODESYS3 Runtime-System 3.5.19.50
+[NOTE] ADVICE PFC300: The behavior of the DAL watchdog may change on multicore systems.
+              If a high-priority IEC task on a core displaces all other IEC tasks on this core, 
+              the BUS is no longer driven into a defined state via the watchdog, as the system and 
+              therefore other IEC tasks on other cores can still be executed.
+              For controlled behavior, it is recommended to use the CODESYS internal task watchdog.
+[FIXED] WAT-36527 Flickering of LEDs when plugging Ethernet cables.
+[CHANGED] Fix scheduling policy for all background tasks of CODESYS runtime system (e.g. Webserver, OPCUA-Server) 
+          and customer application that was accidentally changed in FW26.
+[FIXED] WAT-36306 Creation of directory /media/sd directory even without sd card mounted.
+[FIXED] SECURITY CVE-2024-5000, CVE-2023-6357
+
+Fieldbus Interface & Protocols:
+[NEW] BACnet: Support of BACnet/SC
+              DRM License BACnet/SC Hub:
+                2759-2223_0211-1000 Runtime BACnet 300 Single License Plus
+                2759-2226_0211-1000 Runtime BACnet 600 Single License Plus
+              DRM License BACnet/SC Node:
+                2759-2273_0211-1000 Runtime BACnet 300 Single License
+                2759-2276_0211-1000 Runtime BACnet 600 Single License
+[NEW] BACnet: Support for PFC100 G2 devices. (750-8110, -8111, -8112)
+[FIXED] WAT-36652 CAN: Improve CAN Layer2 bus fault recovery to solve possible restart problem after partial disruption
+[FIXED] WAT-36604 CAN: Fix high task cycle time when using CAN layer2 frame transmission methods in Bus Off state.
+[KNOWN] WAT-36466 OPC UA Server: Denial of service after several link down for a specific time
+[KNOWN] WAT-36203 OPC UA Server: Stop publishing if the system time is set backward
+
+Libraries:
+[NEW] WagoAppSparkplug: NBIRTH message without alias for Node Control/Rebirth
+[FIXED] WAT-36493 CAA File: DirOpen leads to error message “Wrong Parameter”
+[FIXED] WAT-36624 WagoSysCom_Internal_PFC: Incompatibility with WagoSysPlainMem v.1.5.3.0.
+[NOTE] WAT-36624 When porting existing projects it is necessary to update the device or 
+                 set placeholder manually to WagoSysCom_Internal_PFC v1.0.2.7.
+[FIXED] WAT-36190 WagoAppFielDir: Access failure for creation of directories on SD card from CODESYS application.
+
+Web Based Management:
+[NEW] SECURITY Changeover to the central authentication service with new login form
+[FIXED] SECURITY CVE-2023-4089
+[KNOWN] WAT-36520 Mass Storage - Format memory card: If one or more USB sticks are connected to the device, 
+                  the memory card is not always formatted, but the last connected medium.
+                  Workaround: Remove USB stick(s).
+
+########################################################################################################################
+
 Firmware Release 04.04.03 (26) – CODESYS 3
 
 Engineering by CODESYS IDE V. 3.5 is supported

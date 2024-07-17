@@ -19,6 +19,7 @@
 -A FORWARD --logical-in br1 -j DROP
 -A FORWARD --logical-in br2 -j DROP
 -A FORWARD --logical-in br3 -j DROP
+-A FORWARD --logical-in usb0 -j DROP
 :OUTPUT ACCEPT
 
 *nat

@@ -4,6 +4,7 @@
 
 #include "Status.hpp"
 #include "Types.hpp"
+#include "IBridgeChangeEvent.hpp"
 
 namespace netconf {
 

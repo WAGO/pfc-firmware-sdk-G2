@@ -1,0 +1,3 @@
+config PLATFORMCONFIG_FOO
+    default n
+    prompt "platformconfig-foo"

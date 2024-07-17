@@ -17,8 +17,12 @@
 ///  \author   <author> : WAGO GmbH & Co. KG
 //------------------------------------------------------------------------------
 
+#include <errno.h>
 #include <error.h>
+#include <stdint.h>
+#include <sys/types.h>
 
+#include "wagosnmp_API.h"
 #include "wagosnmp_internal.h"
 
 INTERNAL_SYM unsigned int agent_init_alarm_register = 0;
@@ -39,8 +43,8 @@ static const oid objid_snmptrap[]  = {1, 3, 6, 1, 6, 3, 1, 1, 4, 1, 0};
 ///  This functions is changed, so that the output will not consider the MIB definitions
 ///
 //-----------------------------------------------------------------------------
-static int _SprintReallocValue(u_char **buf, size_t *buf_len, size_t *out_len, int allow_realloc, const oid *objid,
-                               size_t objidlen, const netsnmp_variable_list *variable) {
+static int _SprintReallocValue(u_char **buf, size_t *buf_len, size_t *out_len, int allow_realloc,
+                               const netsnmp_variable_list *variable) {
   if (variable->type == SNMP_NOSUCHOBJECT) {
     return snmp_strcat(buf, buf_len, out_len, allow_realloc,
                        (const u_char *)"No Such Object available on this agent at this OID");
@@ -175,25 +179,35 @@ static int get_netsnmp_auth_type(enum SnmpAuhtenticationProtocol auth) {
 ///  \param session  pointer to the actual snmp-session var
 ///
 //------------------------------------------------------------------------------
-INTERNAL_SYM int INTERNAL_SetAuthPriv(tWagoSnmpTranceiver *trcv, netsnmp_session *session) {
-  int ret = WAGOSNMP_RETURN_OK;
+INTERNAL_SYM tWagoSnmpReturnCode INTERNAL_SetAuthPriv(tWagoSnmpTranceiver *trcv, netsnmp_session *session) {
+  tWagoSnmpReturnCode ret = WAGOSNMP_RETURN_OK;
 
   int auth_type               = get_netsnmp_auth_type(trcv->typAuthProt);
   session->securityAuthProto  = sc_get_auth_oid(auth_type, &session->securityAuthProtoLen);
   session->securityAuthKeyLen = 0;
 
+  if (session->securityAuthProtoLen > UINT_MAX) {
+    snmp_log(LOG_ERR, "assert: sercurityAuthProtoLen exceeds UINT_MAX.\n");
+    return WAGOSNMP_RETURN_AUTH_ERR;
+  }
+
   int priv_type               = get_netsnmp_privacy_type(trcv->typPrivProt);
   session->securityPrivProto  = sc_get_priv_oid(priv_type, &session->securityPrivProtoLen);
   session->securityPrivKeyLen = 0;
+
+  if (session->securityPrivProtoLen > UINT_MAX) {
+    snmp_log(LOG_ERR, "assert: securityPrivProtoLen exceeds UINT_MAX.\n");
+    return WAGOSNMP_RETURN_PRIV_ERR;
+  }
 
   /* set the authentication key to a hashed version of our
      passphrase (which must be at least 8 characters long) */
   if (session->securityLevel != SNMP_SEC_LEVEL_NOAUTH) {
     session->securityAuthKeyLen = USM_AUTH_KU_LEN;
-    if (generate_Ku(session->securityAuthProto, session->securityAuthProtoLen, (u_char *)trcv->sAuthPass,
+    if (generate_Ku(session->securityAuthProto, (u_int)session->securityAuthProtoLen, (u_char *)trcv->sAuthPass,
                     strlen(trcv->sAuthPass), session->securityAuthKey,
                     &session->securityAuthKeyLen) != SNMPERR_SUCCESS) {
-      snmp_log(LOG_ERR, "Error generating Ku from authentication pass phrase. \n");
+      snmp_log(LOG_ERR, "Error generating Ku from authentication pass phrase.\n");
       ret = WAGOSNMP_RETURN_AUTH_ERR;
     }
   }
@@ -201,17 +215,19 @@ INTERNAL_SYM int INTERNAL_SetAuthPriv(tWagoSnmpTranceiver *trcv, netsnmp_session
      passphrase (which must be at least 8 characters long) */
   if (session->securityLevel == SNMP_SEC_LEVEL_AUTHPRIV) {
     session->securityPrivKeyLen = USM_PRIV_KU_LEN;
-    if (generate_Ku(session->securityAuthProto, session->securityAuthProtoLen, (u_char *)trcv->sPrivPass,
+    if (generate_Ku(session->securityAuthProto, (u_int)session->securityAuthProtoLen, (u_char *)trcv->sPrivPass,
                     strlen(trcv->sPrivPass), session->securityPrivKey,
                     &session->securityPrivKeyLen) != SNMPERR_SUCCESS) {
-      snmp_log(LOG_ERR, "Error generating Ku from privacy pass phrase. \n");
+      snmp_log(LOG_ERR, "Error generating Ku from privacy pass phrase.\n");
       ret = WAGOSNMP_RETURN_PRIV_ERR;
     }
   }
   return ret;
 }
 
-INTERNAL_SYM int INTERNAL_SnmpInput(int operation, netsnmp_session *session, int reqid, netsnmp_pdu *pdu, void *magic) {
+INTERNAL_SYM int INTERNAL_SnmpInput(__attribute__((unused)) int operation,
+                                    __attribute__((unused)) netsnmp_session *session, __attribute__((unused)) int reqid,
+                                    __attribute__((unused)) netsnmp_pdu *pdu, __attribute__((unused)) void *magic) {
   return 1;
 }
 
@@ -219,13 +235,13 @@ INTERNAL_SYM void INTERNAL_InitSnmp(void) {
   init_snmp("snmpapp");
 }
 
-INTERNAL_SYM void INTERNAL_ResetSnmpAgent() {
+INTERNAL_SYM void INTERNAL_ResetSnmpAgent(void) {
   // INIT_SNMP_ONCE;
   INTERNAL_SendReleaseOIDs();
   AGENT_DestroyShm();
   AGENT_DestroyMutex();
 }
-INTERNAL_SYM void INTERNAL_InitSnmpAgent() {
+INTERNAL_SYM void INTERNAL_InitSnmpAgent(void) {
   // INIT_SNMP_ONCE;
   INTERNAL_ResetSnmpAgent();
   AGENT_CreateMutex();
@@ -252,7 +268,8 @@ INTERNAL_SYM void INTERNAL_ReTwist(netsnmp_variable_list *stData) {
   }
 }
 
-INTERNAL_SYM int INTERNAL_SetVarTypedValue(netsnmp_variable_list *stData, u_char eType, u_char *input, size_t size) {
+INTERNAL_SYM int INTERNAL_SetVarTypedValue(netsnmp_variable_list *stData, tWagoSnmpDataType eType, const void *input,
+                                           size_t size) {
 #if USE_OWN_COPY_FUNCTION
   if (stData->next_variable != NULL) {
     netsnmp_variable_list *pNext = stData->next_variable;
@@ -291,11 +308,10 @@ INTERNAL_SYM void INTERNAL_DeTwist(netsnmp_variable_list *stData) {
 ///  Only a Wrapper for _SprintReallocValue to be equal to the snprin_value way
 ///
 //-----------------------------------------------------------------------------
-INTERNAL_SYM int INTERNAL_SnprintValue(char *buf, size_t buf_len, const oid *objid, size_t objidlen,
-                                       const netsnmp_variable_list *variable) {
+INTERNAL_SYM int INTERNAL_SnprintValue(char *buf, size_t buf_len, const netsnmp_variable_list *variable) {
   size_t out_len = 0;
 
-  if (_SprintReallocValue((u_char **)&buf, &buf_len, &out_len, 0, objid, objidlen, variable)) {
+  if (_SprintReallocValue((u_char **)&buf, &buf_len, &out_len, 0, variable)) {
     return (int)out_len;
   } else {
     return -1;
@@ -321,6 +337,8 @@ INTERNAL_SYM char *INTERNAL_StripQuotes(char *p) {
 INTERNAL_SYM tWagoSnmpReturnCode INTERNAL_GetSnmpSession(tWagoSnmpTranceiver *trcv, netsnmp_session **ss) {
   netsnmp_session tmpss;
   tWagoSnmpReturnCode ret = WAGOSNMP_RETURN_OK;
+  u_char sec_ebuf[MAX_ENGINEID_LENGTH];
+  u_char engineID[MAX_ENGINEID_LENGTH];
 
   INIT_SNMP_ONCE;
   snmp_sess_init(&tmpss);
@@ -328,8 +346,8 @@ INTERNAL_SYM tWagoSnmpReturnCode INTERNAL_GetSnmpSession(tWagoSnmpTranceiver *tr
   tmpss.retries = trcv->retries;
   tmpss.timeout = trcv->timeout_us;
   if (trcv->sHost[0] != 0) {
-    // tmpss.peername = strdup(msg->trcvData.sHost);//warum hier strdup und oben nicht?
-    tmpss.peername = trcv->sHost;  // ich sehe nicht warum das nihct gehen sollte
+    // peername is copied by snmp_open
+    tmpss.peername = trcv->sHost;
   }
 
   if ((trcv->version == SNMP_VERSION_1) || (trcv->version == SNMP_VERSION_2c)) {
@@ -344,50 +362,42 @@ INTERNAL_SYM tWagoSnmpReturnCode INTERNAL_GetSnmpSession(tWagoSnmpTranceiver *tr
 
     ret = INTERNAL_SetAuthPriv(trcv, &tmpss);
   }
+
   if (trcv->trcvType == WAGOSNMP_TRCV_INFORM) {
+    // TODO: calls to setup_engineID shoud be synchronized; the function is not thread safe
+    // as it sets multiple static variables within net-snmp library (snpmpv3.c). We get away with
+    // this because we declared the snmp library not thread safe for IEC users. Yay!
+    // Note that engineID should be persistend accross multiple snmp-requests in order to uniquily identify the a
+    // device. This is not the case here, as we generate a new engineID for each inform request.
+
+    if (setup_engineID(NULL, NULL) <= 0) {
+      return WAGOSNMP_RETURN_ERR_MALLOC;
+    }
     tmpss.callback       = INTERNAL_SnmpInput;
     tmpss.callback_magic = NULL;
-    setup_engineID(NULL, NULL);
-    if (tmpss.contextEngineIDLen == 0 || tmpss.contextEngineID == NULL) {
-      tmpss.contextEngineID = snmpv3_generate_engineID(&tmpss.contextEngineIDLen);
-    }
-#if 1
-    if (tmpss.version == SNMP_VERSION_3 && trcv->sEngineId != NULL && trcv->sEngineId[0] != 0) {
-      size_t ebuf_len = 32, eout_len = 0;
-      u_char *ebuf = (u_char *)malloc(ebuf_len);
 
-      if (!snmp_hex_to_binary(&ebuf, &ebuf_len, &eout_len, 1, trcv->sEngineId)) {
+    if (tmpss.contextEngineIDLen == 0 || tmpss.contextEngineID == NULL) {
+      tmpss.contextEngineID    = engineID;
+      tmpss.contextEngineIDLen = snmpv3_get_engineID(engineID, sizeof(engineID));
+    }
+
+    if (tmpss.version == SNMP_VERSION_3 && trcv->sEngineId != NULL && trcv->sEngineId[0] != 0) {
+      size_t sec_ebuf_len = sizeof(sec_ebuf);
+      size_t eout_len     = 0;
+      u_char *pebuf       = sec_ebuf;
+
+      if (!snmp_hex_to_binary(&pebuf, &sec_ebuf_len, &eout_len, 0, trcv->sEngineId)) {
         fprintf(stderr, "Bad engine ID value.\n");
-        free(ebuf);
         ret = WAGOSNMP_RETURN_ERROR_BAD_ENGINE_ID;
       }
-      if ((eout_len < 5) || (eout_len > 32)) {
+      if (eout_len < 5) {
         fprintf(stderr, "Invalid engine ID value\n");
-        free(ebuf);
         ret = WAGOSNMP_RETURN_ERROR_INVALID_ENGINE_ID;
       }
-      tmpss.securityEngineID    = ebuf;
+      tmpss.securityEngineID    = pebuf;
       tmpss.securityEngineIDLen = eout_len;
-#if 0
-      if (   (tmpss.securityEngineIDLen == 0)
-          || (tmpss.securityEngineID == NULL))
-      {
-          tmpss.securityEngineID = snmpv3_generate_engineID(&tmpss.securityEngineIDLen);
-      }
-
-                /*
-                 * set boots and time, which will cause problems if this
-                 * machine ever reboots and a remote trap receiver has cached our
-                 * boots and time...  I'll cause a not-in-time-window report to
-                 * be sent back to this machine.
-                 */
-                if (tmpss.engineBoots == 0)
-                  tmpss.engineBoots = 1;
-                if (tmpss.engineTime == 0)    /* not really correct, */
-                  tmpss.engineTime = get_uptime();  /* but it'll work. Sort of. */
-#endif
     }
-#endif
+
     if (ret == WAGOSNMP_RETURN_OK) {
       netsnmp_transport *transport = netsnmp_transport_open_client("snmptrap", tmpss.peername);
       *ss                          = snmp_add(&tmpss, transport, NULL, NULL);
@@ -412,7 +422,7 @@ INTERNAL_SYM tWagoSnmpReturnCode INTERNAL_GetSnmpSession(tWagoSnmpTranceiver *tr
 ///  \param pdu:  Pointer to the newly created pdu-poiner
 ///
 //------------------------------------------------------------------------------
-INTERNAL_SYM int INTERNAL_GetSnmpPdu(tWagoSnmpTranceiver *trcv, netsnmp_pdu **pdu) {
+INTERNAL_SYM tWagoSnmpReturnCode INTERNAL_GetSnmpPdu(tWagoSnmpTranceiver *trcv, netsnmp_pdu **pdu) {
   int type         = 0;
   size_t anOID_len = MAX_OID_LEN;
   oid anOID[MAX_OID_LEN];
@@ -461,7 +471,7 @@ INTERNAL_SYM int INTERNAL_GetSnmpPdu(tWagoSnmpTranceiver *trcv, netsnmp_pdu **pd
         return WAGOSNMP_RETURN_ERROR_PARAMETER;
       }
 
-      uptime = get_uptime();
+      uptime = (u_long)get_uptime();
       if (NULL == snmp_pdu_add_variable(*pdu, objid_sysuptime, sizeof(objid_sysuptime) / sizeof(oid), ASN_TIMETICKS,
                                         &uptime, sizeof(uptime))) {
         snmp_free_pdu(*pdu);
@@ -513,10 +523,10 @@ INTERNAL_SYM int INTERNAL_GetSnmpPdu(tWagoSnmpTranceiver *trcv, netsnmp_pdu **pd
 ///  \param ss:  session Pointer
 ///
 //-----------------------------------------------------------------------------
-INTERNAL_SYM int INTERNAL_Tranceive(tWagoSnmpTranceiver *trcv, netsnmp_pdu *pdu, netsnmp_session *ss) {
+INTERNAL_SYM tWagoSnmpReturnCode INTERNAL_Tranceive(tWagoSnmpTranceiver *trcv, netsnmp_pdu *pdu, netsnmp_session *ss) {
   int status;
-  int ret               = WAGOSNMP_RETURN_OK;
-  netsnmp_pdu *response = NULL;
+  tWagoSnmpReturnCode ret = WAGOSNMP_RETURN_OK;
+  netsnmp_pdu *response   = NULL;
 
   status = snmp_synch_response(ss, pdu, &response);
 
@@ -548,8 +558,8 @@ INTERNAL_SYM int INTERNAL_Tranceive(tWagoSnmpTranceiver *trcv, netsnmp_pdu *pdu,
   return ret;
 }
 
-INTERNAL_SYM int INTERNAL_ConvertTlvToTrapVar(tTrapVariableType *var, netsnmp_variable_list *stData) {
-  int ret = WAGOSNMP_RETURN_OK;
+INTERNAL_SYM tWagoSnmpReturnCode INTERNAL_ConvertTlvToTrapVar(tTrapVariableType *var, netsnmp_variable_list *stData) {
+  tWagoSnmpReturnCode ret = WAGOSNMP_RETURN_OK;
   INTERNAL_ReTwist(stData);
   switch (stData->type) {
     case ASN_INTEGER:
@@ -581,7 +591,10 @@ INTERNAL_SYM int INTERNAL_ConvertTlvToTrapVar(tTrapVariableType *var, netsnmp_va
       break;
   }
   var->type = stData->type;
-  var->len  = stData->val_len;
+  if (stData->val_len > UINT16_MAX)
+    return WAGOSNMP_RETURN_ERROR_PARAMETER;
+
+  var->len = (uint16_t)stData->val_len;
   INTERNAL_DeTwist(stData);
   return ret;
 }
@@ -653,6 +666,7 @@ INTERNAL_SYM netsnmp_session *INTERNAL_GenerateSession_v1_v2c(char sHost[128], c
   netsnmp_session tmpss;
   netsnmp_session *ss;
   netsnmp_transport *transport;
+  u_char engineID[MAX_ENGINEID_LENGTH];
   INIT_SNMP_ONCE;
   snmp_sess_init(&tmpss);
 
@@ -663,10 +677,14 @@ INTERNAL_SYM netsnmp_session *INTERNAL_GenerateSession_v1_v2c(char sHost[128], c
   tmpss.callback       = INTERNAL_SnmpInput;
   tmpss.callback_magic = NULL;
 
-  setup_engineID(NULL, NULL);
-  if (tmpss.contextEngineIDLen == 0 || tmpss.contextEngineID == NULL) {
-    tmpss.contextEngineID = snmpv3_generate_engineID(&tmpss.contextEngineIDLen);
+  if (setup_engineID(NULL, NULL) <= 0) {
+    return NULL;
   }
+  if (tmpss.contextEngineIDLen == 0 || tmpss.contextEngineID == NULL) {
+    tmpss.contextEngineID    = engineID;
+    tmpss.contextEngineIDLen = snmpv3_get_engineID(engineID, sizeof(engineID));
+  }
+
   transport = netsnmp_transport_open_client("snmptrap", tmpss.peername);
   if (transport == NULL) {
     return NULL;
@@ -676,12 +694,12 @@ INTERNAL_SYM netsnmp_session *INTERNAL_GenerateSession_v1_v2c(char sHost[128], c
   return ss;
 }
 
-INTERNAL_SYM int INTERNAL_AddVarAndSend(char sOID[128], netsnmp_variable_list *stData, netsnmp_session *ss,
-                                        netsnmp_pdu *pdu) {
+INTERNAL_SYM tWagoSnmpReturnCode INTERNAL_AddVarAndSend(char sOID[128], netsnmp_variable_list *stData,
+                                                        netsnmp_session *ss, netsnmp_pdu *pdu) {
   oid OID[MAX_OID_LEN];
   size_t OID_length;
   tTrapVariableType var;
-  int ret = WAGOSNMP_RETURN_OK;
+  tWagoSnmpReturnCode ret = WAGOSNMP_RETURN_OK;
   int status;
 
   if (ss == NULL) {

@@ -106,6 +106,12 @@ dropbear_start() {
 #    test -f $DROPBEAR_RSAKEY && KEY_ARGS="$KEY_ARGS -r $DROPBEAR_RSAKEY"
 
     log "starting ..."
+    # generate new host key if default one was found, this is
+    # done to ensure every device has a unique host key
+    #
+    # optional feature, only supported if "setup_ssh_keys" is
+    # installed!
+    [ -x /usr/sbin/setup_ssh_keys ] && /usr/sbin/setup_ssh_keys
     read_config
     start-stop-daemon -S -x "$DAEMON" --oknodo -- \
         $KEY_ARGS -p "$DROPBEAR_PORT" $DROPBEAR_EXTRA_ARGS > /dev/null 2>&1

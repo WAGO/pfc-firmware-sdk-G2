@@ -1,7 +1,7 @@
 ## -*-makefile-*-
 # $Id$
 #
-# Copyright (C) 2013 by WAGO GmbH & Co. KG
+# Copyright (C) 2024 by WAGO GmbH & Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -14,7 +14,7 @@
 #
 PACKAGES-$(PTXCONF_CDS3_TSCSNMP) += cds3-tscsnmp
 
-CDS3_TSCSNMP_VERSION	 := 0.0.1
+CDS3_TSCSNMP_VERSION	 := 0.1.0
 CDS3_TSCSNMP              := TscSnmp
 CDS3_TSCSNMP_DIR          := $(BUILDDIR)/$(CDS3_TSCSNMP)
 CDS3_TSCSNMP_URL          := file://$(PTXDIST_WORKSPACE)/wago_intern/codesys3-Component/$(CDS3_TSCSNMP)
@@ -67,6 +67,10 @@ endif
 
 $(STATEDIR)/cds3-tscsnmp.prepare:
 	@$(call targetinfo)
+ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	$(MAKE) -C $(CDS3_TSCSNMP_DIR) SYSROOT=$(PTXCONF_SYSROOT_TARGET) itf
+	$(MAKE) -C $(CDS3_TSCSNMP_DIR) SYSROOT=$(PTXCONF_SYSROOT_TARGET) dep
+endif
 	@$(call touch)
 
 
@@ -74,7 +78,7 @@ $(STATEDIR)/cds3-tscsnmp.prepare:
 # Compile
 # ----------------------------------------------------------------------------
 CDS3_TSCSNMP_PATH      := PATH=$(CROSS_PATH)
-CDS3_TSCSNMP_MAKE_ENV  := $(CROSS_ENV)
+CDS3_TSCSNMP_MAKE_ENV  := $(CROSS_ENV) ARCH=$(PTXCONF_ARCH_STRING)
 CDS3_TSCSNMP_MAKE_OPT  := CC=$(CROSS_CC)
 
 CDS3_TSCSNMP_MAKE_ENV += VERSION=$(CDS3_TSCSNMP_VERSION)
@@ -99,6 +103,7 @@ $(STATEDIR)/cds3-tscsnmp.install:
 ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
 	@cp $(CDS3_TSCSNMP_DIR)/*.h $(TSCSNMP_SYSROOT_INCLUDES)/
+	@cp $(CDS3_TSCSNMP_DIR)/*Itf.h $(PTXCONF_SYSROOT_TARGET)/usr/include/codesys3/
 	
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_RELEASE
 	@cd $(CDS3_TSCSNMP_DIR) && tar cvzf $(CDS3_TSCSNMP_PLATFORMCONFIGPACKAGEDIR)/$(CDS3_TSCSNMP_PACKAGE_NAME).tgz *.h

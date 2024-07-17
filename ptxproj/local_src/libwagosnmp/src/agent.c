@@ -18,11 +18,16 @@
 //------------------------------------------------------------------------------
 
 #define _GNU_SOURCE
-#include <pthread.h>
-#include <unistd.h>
+#include <errno.h>
+// clang-format off
+// dont reorder the net-snmp includes, otherwise it will not compile
 #include <net-snmp/net-snmp-config.h>
 #include <net-snmp/net-snmp-includes.h>
 #include <net-snmp/agent/net-snmp-agent-includes.h>
+// clang-format on
+#include <pthread.h>
+#include <unistd.h>
+
 #include "wagosnmp_API.h"
 #include "wagosnmp_internal.h"
 
@@ -39,7 +44,7 @@ static mqd_t trap_queue = -1;
 static sem_t *oidMutex = NULL;
 static int oidShmFd = -1;
 static tOidShm *pOidShm = NULL;
-static int localShmSize = sizeof(tOidShm);
+static size_t localShmSize = sizeof(tOidShm);
 
 PUBLIC_SYM void deinit_libwagosnmp_AgentEntry(void);
 
@@ -230,7 +235,7 @@ static void _Reset(void) {
   AGENT_CloseShm();
 }
 
-static void *_ServerMain() {
+static void *_ServerMain(void) {
   while (1) {
     struct pollfd fdrec;
     fdrec.fd      = trap_queue;
@@ -314,7 +319,7 @@ INTERNAL_SYM void AGENT_InitServerCommunication(unsigned int clientreg, void *cl
   }
 }
 
-INTERNAL_SYM int AGENT_CreateMutex() {
+INTERNAL_SYM int AGENT_CreateMutex(void) {
   int ret = 0;
   if (oidMutex == NULL) {
     oidMutex = sem_open(WAGO_SNMP_OID_MUTEX, O_RDWR | O_CREAT | O_EXCL, 0666, 1);
@@ -331,33 +336,33 @@ INTERNAL_SYM int AGENT_CreateMutex() {
   return ret;
 }
 
-INTERNAL_SYM void AGENT_MutexLock() {
+INTERNAL_SYM void AGENT_MutexLock(void) {
   if (AGENT_CreateMutex() >= 0) {
     sem_wait(oidMutex);
   }
 }
-INTERNAL_SYM void AGENT_MutexUnlock() {
+INTERNAL_SYM void AGENT_MutexUnlock(void) {
   if (AGENT_CreateMutex() >= 0) {
     sem_post(oidMutex);
   }
 }
 
-INTERNAL_SYM void AGENT_CloseMutex() {
+INTERNAL_SYM void AGENT_CloseMutex(void) {
   if (oidMutex != NULL) {
     sem_close(oidMutex);
     oidMutex = NULL;
   }
 }
 
-INTERNAL_SYM void AGENT_DestroyMutex() {
+INTERNAL_SYM void AGENT_DestroyMutex(void) {
   if (AGENT_CreateMutex() >= 0) {
     AGENT_CloseMutex();
     sem_unlink(WAGO_SNMP_OID_MUTEX);
   }
 }
 
-INTERNAL_SYM void AGENT_RemapShm() {
-  int newSize;
+INTERNAL_SYM void AGENT_RemapShm(void) {
+  size_t newSize;
   // Compile Errors
   // pOidShm = mremap(pOidShm,localShmSize,pOidShm->oidShmSize, MREMAP_MAYMOVE);
   newSize = pOidShm->oidShmSize;
@@ -401,11 +406,11 @@ INTERNAL_SYM void AGENT_DestroyShm(void) {
 }
 
 /* adding size bytes to SHM*/
-INTERNAL_SYM int AGENT_ExtendShm(int size) {
+INTERNAL_SYM int AGENT_ExtendShm(size_t size) {
   int ret = -1;
   if (oidShmFd >= 0) {
-    int newSize = size + pOidShm->oidShmSize;
-    ftruncate(oidShmFd, newSize);
+    size_t newSize = size + pOidShm->oidShmSize;
+    ftruncate(oidShmFd, (ssize_t)newSize);
     // Compile Errors
     // pOidShm = mremap(pOidShm, pOidShm->oidShmSize,newSize, MREMAP_MAYMOVE);
     munmap(pOidShm, pOidShm->oidShmSize);
@@ -431,7 +436,7 @@ INTERNAL_SYM tOidObject *AGENT_GetNextOidObject(tOidObject *pAct) {
   }
 
   // CALC_OBJ_SIZE(step,pAct->len,pAct->len <= OID_BUFFER_LEN);
-  pAct = (tOidObject *)(((unsigned int)pAct) + ((unsigned int)pAct->objLen));
+  pAct = (tOidObject *)(((uintptr_t)pAct) + pAct->objLen);
   return pAct;
 }
 
@@ -451,7 +456,7 @@ INTERNAL_SYM tOidObject *AGENT_GetOidObject(oid *anOID, size_t anOID_len) {
   return ret;
 }
 
-INTERNAL_SYM tOidObject *AGENT_GetFreeOidObject(int size) {
+INTERNAL_SYM tOidObject *AGENT_GetFreeOidObject(size_t size) {
   tOidObject *pAct;
   tOidObject *pLast = NULL;
   /*pAct = AGENT_GetNextOidObject(NULL);
@@ -496,7 +501,7 @@ INTERNAL_SYM tWagoSnmpReturnCode AGENT_CreateNewOidObject(oid *anOID, size_t anO
 
   if (oidShmFd >= 0) {
     tOidObject *pObj;
-    int objectSize;
+    size_t objectSize;
 
     CALC_OBJ_SIZE(objectSize, stData->val_len, stData->val.string == stData->buf);
     AGENT_MutexLock();

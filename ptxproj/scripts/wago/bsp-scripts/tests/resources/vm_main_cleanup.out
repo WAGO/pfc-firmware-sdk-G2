@@ -1,0 +1,10 @@
+find mybasedir/bsp -name *\@tmp -prune -exec rm -rf {} ;
+rm -rf mybasedir/bsp/src.orig mybasedir/bsp/local_src.orig myworkspace/src.orig myworkspace/local_src.orig
+pushd myworkspace
+./p --quiet clean
+rm ./p
+rm ./selected_platformconfig ./selected_ptxconfig ./selected_toolchain
+rm -rf ./platform
+rm -rf ./platform-dummy
+pushd mybasedir/ptxdist
+make distclean

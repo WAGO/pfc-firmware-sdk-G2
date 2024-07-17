@@ -45,7 +45,9 @@ $(STATEDIR)/dt-utils.targetinstall:
 	@$(call install_fixup, dt-utils,DESCRIPTION,missing)
 
 	@$(call install_lib, dt-utils, 0, 0, 0644, libdt-utils)
+ifdef PTXCONF_BAREBOX
 	@$(call install_copy, dt-utils, 0, 0, 0755, -, /usr/bin/barebox-state)
+endif
 	@$(call install_copy, dt-utils, 0, 0, 0755, -, /usr/bin/fdtdump)
 
 	@$(call install_finish, dt-utils)

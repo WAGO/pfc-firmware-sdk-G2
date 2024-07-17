@@ -400,7 +400,7 @@ activate()
         store_init_data
     fi
 
-    if [ ! -f "/settings/fwupdate_data" ]; then
+    if [ ! -f "$WAGO_FW_UPDATE_PERSISTENCE_DIR/fwupdate_data" ]; then
         fwupdate_report_error "Missing dependency fwupdate_data"
         return $CONFIG_FILE_MISSING
     fi

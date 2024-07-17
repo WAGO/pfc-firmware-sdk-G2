@@ -8,13 +8,14 @@
 #include "IHostnameManager.hpp"
 #include "IHostnameWillChange.hpp"
 #include "HostnameController.hpp"
+#include "MacAddress.hpp"
 #include "PrioritizedHostAndDomainname.hpp"
 
 namespace netconf {
 
 class HostnameManager : public IHostnameManager, public IHostnameWillChange {
  public:
-  HostnameManager();
+  explicit HostnameManager(const MacAddress& mac_address);
   ~HostnameManager() override = default;
 
   HostnameManager(const HostnameManager &other) = delete;

@@ -5,18 +5,13 @@
 #include <unistd.h>
 
 #include <algorithm>
-#include <cassert>
-#include <fstream>
 
 #include "CollectionUtils.hpp"
-#include "DynamicIPClientFactory.hpp"
 #include "DynamicIPEventAction.hpp"
 #include "FixIP.hpp"
 #include "IpAddressManipulator.hpp"
 #include "IpConfigHelper.hpp"
-#include "JsonConverter.hpp"
 #include "Logger.hpp"
-#include "NetDevManager.hpp"
 #include "TypesHelper.hpp"
 
 namespace netconf {
@@ -308,14 +303,28 @@ void IPManager::OnDynamicIPEvent(const Interface &interface, DynamicIPEventActio
         client->UpdateContentFromLease();
         ip_controller_.Configure(interface.GetName(), client->GetAddressFromLease(), client->GetNetmaskFromLease());
       } break;
-      case DynamicIPEventAction::RELEASE:
-        /*deconfig: This argument is used when udhcpc starts, and  when a leases is lost. The script should put the
+      case DynamicIPEventAction::RELEASE: {
+        /* deconfig: This argument is used when udhcpc starts, and  when a leases is lost. The script should put the
          interface in an up, but deconfigured state, ie: ifconfig $interface 0.0.0.0.*/
 
         ip_controller_.Flush(interface.GetName());
+
+        /* 06.06.2024 The following attempts to workaround a problem where udhcpc is seamingly stuck in the released
+         * state. */
+        auto ip_link = GetIPLinkByInterface(interface);
+        if (ip_link && ip_link->GetLinkState() == eth::InterfaceLinkState::Up) {
+          auto ip_config = ip_link->GetIPConfig();
+          if (ip_config) {
+            if (IPConfig::SourceIsAnyOf(ip_config.value(), IPSource::BOOTP, IPSource::DHCP)) {
+              client->Renew();
+            }
+          }
+        }
+
         break;
+      }
       case DynamicIPEventAction::RENEW:
-        /*renew: This argument is used when a DHCP lease is renewed. All of the paramaters are set in enviromental
+        /* renew: This argument is used when a DHCP lease is renewed. All of the paramaters are set in enviromental
          variables. This argument is used when the interface is already configured, so the IP address, will not change,
          however, the other DHCP paramaters, such as the default gateway, subnet mask, and dns server may change. */
         client->UpdateContentFromLease();
@@ -361,11 +370,16 @@ Status IPManager::Persist(const IPConfigs &config) {
 }
 
 Status IPManager::ApplyTempFixIpConfiguration() {
-  const auto &bridges = netdev_manager_.GetNetDevs({DeviceType::Bridge});
-  IPConfigs ip_configs;
-  for (const auto &netdev : bridges) {
-    ip_configs.emplace_back(netdev->GetInterface().GetName(), IPSource::NONE, ZeroIP, ZeroNetmask);
+  BridgeConfig config;
+  Status status = persistence_provider_.Read(config);
+  if(status.IsNotOk()){
+    return status;
   }
+
+  IPConfigs ip_configs;
+  for (const auto &bridge : config) {
+    ip_configs.emplace_back(bridge.first.GetName(), IPSource::NONE, ZeroIP, ZeroNetmask);
+  };
 
   SetFixedIps(ip_configs);
 

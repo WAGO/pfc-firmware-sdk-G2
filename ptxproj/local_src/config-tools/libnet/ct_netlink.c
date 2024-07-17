@@ -11,19 +11,11 @@
 #include <netlink/route/addr.h>
 #include <netlink/route/route.h>
 
-#ifdef __ENABLE_DSA
-  #include <linux/switch.h>
-#else
-  #include <linux/if.h>
-#endif
+#include <linux/if.h>
 
 #include <glib.h>
 
 #include <assert.h>
-
-#ifdef __ENABLE_DSA
-#include <swlib.h>
-#endif
 
 #include "../ct_error_handling.h"
 
@@ -372,7 +364,7 @@ int ct_netlink_get_link_flags(const char *devStr,
     assert(NULL != devStr);
     assert(NULL != flags);
 
-	assert(NULL != sessionHandle);
+    assert(NULL != sessionHandle);
 
     assert(NULL != sessionHandle->sock);
     assert(NULL != sessionHandle->link_cache);
@@ -514,7 +506,7 @@ int ct_netlink_enable_link(const char *devStr, netlinkSession_t *sessionHandle)
 {
     assert(NULL != devStr);
 
-	assert(NULL != sessionHandle);
+	  assert(NULL != sessionHandle);
 
     assert(NULL != sessionHandle->sock);
     assert(NULL != sessionHandle->link_cache);
@@ -525,8 +517,7 @@ int ct_netlink_enable_link(const char *devStr, netlinkSession_t *sessionHandle)
 int ct_netlink_disable_link(const char *devStr, netlinkSession_t *sessionHandle)
 {
     assert(NULL != devStr);
-
-	assert(NULL != sessionHandle);
+	  assert(NULL != sessionHandle);
 
     assert(NULL != sessionHandle->sock);
     assert(NULL != sessionHandle->link_cache);
@@ -534,121 +525,3 @@ int ct_netlink_disable_link(const char *devStr, netlinkSession_t *sessionHandle)
     return __set_link_state(devStr, CT_NL_LINK_STATE_DISABLED, sessionHandle);
 }
 
-#ifdef __ENABLE_DSA
-int ct_netlink_set_dsa_state(const char *value)
-{
-    int status = SUCCESS;
-
-    struct switch_dev *dev = NULL;
-    struct switch_attr *a = NULL;
-
-    dev = swlib_connect("switch0");
-
-    if(NULL == dev)
-    {
-        status = SYSTEM_CALL_ERROR;
-    }
-
-
-    if(SUCCESS == status)
-    {
-        swlib_scan(dev);
-        a = swlib_lookup_attr(dev, SWLIB_ATTR_GROUP_GLOBAL, "dsa_enable");
-
-        if(NULL == a)
-        {
-            status = SYSTEM_CALL_ERROR;
-        }
-    }
-
-    if(SUCCESS == status)
-    {
-        if(0 > swlib_set_attr_string(dev, a, -1, value))
-        {
-            status = SYSTEM_CALL_ERROR;
-        }
-    }
-
-   if(NULL != dev)
-   {
-       swlib_free_all(dev);
-   }
-
-    return status;
-}
-
-
-int ct_netlink_get_dsa_state(char * const szValue,
-                             size_t const valueLen)
-{
-    int status = SUCCESS;
-
-    struct switch_dev *dev = NULL;
-    struct switch_attr *attr = NULL;
-
-    dev = swlib_connect("switch0");
-
-    if(NULL == dev)
-    {
-        status = SYSTEM_CALL_ERROR;
-    }
-
-    if( 2 > valueLen)
-    {
-        status = SYSTEM_CALL_ERROR;
-    }
-
-    szValue[0] = '\0';
-
-    if(SUCCESS == status)
-    {
-        swlib_scan(dev);
-        attr = swlib_lookup_attr(dev, SWLIB_ATTR_GROUP_GLOBAL, "dsa_enable");
-
-        if(NULL == attr)
-        {
-            status = SYSTEM_CALL_ERROR;
-        }
-    }
-
-    if(SUCCESS == status)
-    {
-        struct switch_val val;
-        if(0 > swlib_get_attr(dev, attr, &val))
-        {
-            status = SYSTEM_CALL_ERROR;
-        }
-        else
-        {
-            if(attr->type == SWITCH_TYPE_INT)
-            {
-                if(0 == val.value.i)
-                {
-                    szValue[0] = '0';
-                    szValue[1] = '\0';
-                }
-                else if(1 == val.value.i)
-                {
-                    szValue[0] = '1';
-                    szValue[1] = '\0';
-                }
-                else
-                {
-                    status = SYSTEM_CALL_ERROR;
-                }
-            }
-            else
-            {
-              status = SYSTEM_CALL_ERROR;
-            }
-        }
-    }
-
-    if(NULL != dev)
-    {
-       swlib_free_all(dev);
-    }
-
-    return status;
-}
-#endif

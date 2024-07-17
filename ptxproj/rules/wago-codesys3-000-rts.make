@@ -14,31 +14,71 @@
 #
 PACKAGES-$(PTXCONF_CODESYS3) += codesys3
 
-CODESYS3_VERSION    := 3.5.19.2.0
+CODESYS3_VERSION    := 6.3.0.5
 CODESYS3            := codesys-3
 CODESYS3_DIR        := $(BUILDDIR)/$(CODESYS3)
-CODESYS3_URL        := file://$(PTXDIST_WORKSPACE)/wago_intern/plc/codesys/$(CODESYS3)/
-CODESYS3_SRC        := $(PTXDIST_WORKSPACE)/wago_intern/plc/codesys/$(CODESYS3)/
+ifdef PTXCONF_CODESYS3_SOURCE_LOCAL
+CODESYS3_SRC        := $(PTXCONF_CODESYS3_SOURCE_LOCAL_PATH)/
+else
+CODESYS3_SRC_RELATIVE := wago_intern/plc/codesys/$(CODESYS3)/
+CODESYS3_SRC        := $(PTXDIST_WORKSPACE)/$(CODESYS3_SRC_RELATIVE)
+endif
 
 CODESYS3_PACKAGE_NAME := codesys3_$(CODESYS3_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 CODESYS3_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
 CODESYS3_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(CODESYS3_PACKAGE_NAME)
 CODESYS3_INCLUDE := $(PTXCONF_SYSROOT_TARGET)/usr/include/codesys3
 
+ifdef PTXCONF_CODESYS3_SOURCE_GIT
+CODESYS3_GIT_URL         := https://tfs-eng:8081/tfs/ProductDevelopment/eRuntime/_git/eRuntime
+endif
+
+ifdef PTXCONF_CODESYS3_SOURCE_ARTIFACTORY
+CODESYS3_URL        := $(call jfrog_template_to_url, CODESYS3)
+
+CODESYS3_SUFFIX          := $(suffix $(CODESYS3_URL))
+CODESYS3_MD5              = $(shell [ -f $(CODESYS3_MD5_FILE) ] && cat $(CODESYS3_MD5_FILE))
+CODESYS3_MD5_FILE        := wago_intern/artifactory_sources/$(CODESYS3)$(CODESYS3_SUFFIX).md5
+CODESYS3_ARCHIVE         := $(CODESYS3)-$(CODESYS3_VERSION)$(CODESYS3_SUFFIX)
+endif
+
 # ----------------------------------------------------------------------------
 # Get
 # ----------------------------------------------------------------------------
 
+ifdef PTXCONF_CODESYS3_SOURCE_GIT
+
+$(STATEDIR)/codesys3.get: | $(CODESYS3_SRC)
+	@$(call targetinfo)
+
+$(CODESYS3_SRC):
+	{ git clone --branch $(PTXCONF_CODESYS3_SOURCE_GIT_BRANCH) $(CODESYS3_GIT_URL) $(CODESYS3_SRC); } \
+	|| rm -rf $(CODESYS3_SRC)
+	@$(call touch)
+
+	$(call ptx/in-path, PTXDIST_PATH, scripts/wago/artifactory.sh) fetch \
+    "https://artifactory.wago.local/artifactory/codesys-generic-prod-local/3S/WAGO_BUNDLE/WAGO_BUNDLE_$$(cat $(CODESYS3_SRC)/wago_bundle_version.txt).zip" \
+	'$(CODESYS3_SRC_RELATIVE)/jenkins/wago_bundle.zip' \
+	'$(CODESYS3_SRC_RELATIVE)/jenkins/wago_bundle.md5'
+
+	@$(CODESYS3_SRC)/jenkins/buildjob.sh $(CODESYS3_SRC)/jenkins/wago_bundle.zip > /dev/null
+endif
+
+ifdef PTXCONF_CODESYS3_SOURCE_ARTIFACTORY
 $(STATEDIR)/codesys3.get:
 	@$(call targetinfo)
+
+ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	$(call ptx/in-path, PTXDIST_PATH, scripts/wago/artifactory.sh) fetch \
+    '$(CODESYS3_URL)' 'wago_intern/artifactory_sources/$(CODESYS3_ARCHIVE)' '$(CODESYS3_MD5_FILE)'
+endif
+
 	@$(call touch)
+endif
 
 # ----------------------------------------------------------------------------
 # Extract
 # ----------------------------------------------------------------------------
-
-
-
 
 $(STATEDIR)/codesys3.extract:
 	@$(call targetinfo)
@@ -46,25 +86,23 @@ $(STATEDIR)/codesys3.extract:
 	mkdir -p $(CODESYS3_DIR)
 
 ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
-###extract will also be done in cds3-includes
-#normally this is needed to use but the old schroot does not have unzip so we have to go a workaround via tar.gz
-#	unzip $(CODESYS3_URL) Components/* Platforms/Linux/* -d $(CODESYS3_DIR)
-#	@$(call extract, CODESYS3, $(CODESYS3_DIR))
+
+ifdef PTXCONF_CODESYS3_SOURCE_ARTIFACTORY
+	@tar xvf wago_intern/artifactory_sources/$(CODESYS3_ARCHIVE) -C $(CODESYS3_DIR)
+else
 	rsync --copy-unsafe-links -a --exclude=Documentation \
 		--exclude=Templates/ \
 		--exclude=RtsConfigurator/ \
 		--exclude=Placeholder \
-		--exclude=BuildUtils/ \
 		--exclude=.svn/ \
 		--exclude=".*" \
 		--exclude="*.o" \
 		--exclude="*.pdf"  \
 		--exclude="*tar.bz2" \
 		$(CODESYS3_SRC) $(CODESYS3_DIR)
-
-	@$(call patchin, CODESYS3)
 endif
-
+endif
+	@$(call patchin, CODESYS3)
 	@$(call touch)
 
 # ----------------------------------------------------------------------------
@@ -76,10 +114,6 @@ endif
 #     via command line out of the box. Try to alter 3S' code as little as possible (override directive
 #     would be way to go otherwise).
 #
-
-#ifdef PTXCONF_CODESYS3_DEBUG
-#CODESYS3_CONF_ENV += DEBUG=1
-#endif
 
 $(STATEDIR)/codesys3.prepare:
 	@$(call targetinfo)
@@ -94,18 +128,13 @@ ifeq ($(PTXCONF_PLATFORM), vtp-ctp)
 endif
 
 endif
-
 	@$(call touch)
 
 
 # ----------------------------------------------------------------------------
 # Compile
 # ----------------------------------------------------------------------------
-#CODESYS3_PATH:= PATH=$(CROSS_PATH)
-CODESYS3_MAKE_ENV:= $(CROSS_ENV) ARCH=arm
-#                    DELIVERY_VERSION=testversion \
-#                   BUILD_CONFIG=wago_build.config
-#CODESYS3_MAKE_OPT:= CC=$(CROSS_CC)
+CODESYS3_MAKE_ENV:= $(CROSS_ENV) ARCH=$(PTXCONF_ARCH_STRING)
 $(STATEDIR)/codesys3.compile:
 	@$(call targetinfo)
 ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
@@ -128,6 +157,22 @@ ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_RELEASE
 	tar -czvf $(CODESYS3).tgz * && \
 	mv $(CODESYS3).tgz $(CODESYS3_PLATFORMCONFIGPACKAGEDIR)/
 endif
+	# Install codesys3 header files 
+	mkdir -p $(PTXCONF_SYSROOT_TARGET)/usr/include/codesys3
+	rsync -a --include='*.h' \
+	      --include='*.m4' \
+	      -f 'hide,! */' \
+	      $(CODESYS3_DIR)/Components/ $(PTXCONF_SYSROOT_TARGET)/usr/include/codesys3/
+
+	rsync -a --include='*.h' \
+	      --include='*.m4' \
+	       -f 'hide,! */' \
+	       $(CODESYS3_DIR)/Platforms/Linux/ $(PTXCONF_SYSROOT_TARGET)/usr/include/codesys3/
+
+	# Install m4 definitions
+	mkdir -p $(PTXCONF_SYSROOT_TARGET)/usr/share/M4Defs
+	rsync -a --include='*.m4' \
+                $(CODESYS3_DIR)/BuildUtils/M4Defs/ $(PTXCONF_SYSROOT_TARGET)/usr/share/M4Defs
 endif
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 	# Recover header from archive in configs/@platform@/packages
@@ -201,6 +246,10 @@ ifdef PTXCONF_CDS3_RETAIN_TYPE_CFG
 	@$(call install_replace, codesys3, $(PTXCONF_CDS3_PLCCONFIGDIR)/$(PTXCONF_CDS3_PLCCONFIGFILE), @CDS3_RETAIN_TYPE@, $(PTXCONF_CDS3_RETAIN_TYPE_CFG));
 endif
 
+ifdef PTXCONF_CDS3_IEC_CORE_SET
+	@$(call install_replace, codesys3, $(PTXCONF_CDS3_PLCCONFIGDIR)/$(PTXCONF_CDS3_PLCCONFIGFILE), @CDS3_IEC_CORE_SET@, $(PTXCONF_CDS3_IEC_CORE_SET));
+endif
+
 #ifdef PTXCONF_CDS3_SECURE_LOGIN_ENABLE
 #	@$(call install_replace, codesys3, $(PTXCONF_CDS3_PLCCONFIGDIR)/$(PTXCONF_CDS3_PLCCONFIGFILE), @CDS3_SECURE_LOGIN_ENABLE@, $(PTXCONF_CDS3_SECURE_LOGIN_ENABLE));
 #endif
@@ -262,4 +311,7 @@ $(STATEDIR)/codesys3.clean:
 	rm -rf $(CODESYS3_DIR)
 	rm -rf $(PTXCONF_SYSROOT_TARGET)/usr/include/codesys3/tests
 	rm -rf $(PTXCONF_SYSROOT_TARGET)/usr/lib/codesys3/tests
+ifdef PTXCONF_CODESYS3_SOURCE_ARTIFACTORY
+	rm -rf $(PTXDIST_WORKSPACE)/wago_intern/artifactory_sources/$(CODESYS3_ARCHIVE)
+endif
 

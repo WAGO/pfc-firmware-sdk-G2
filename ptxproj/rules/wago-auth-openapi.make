@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WAGO_AUTH_OPENAPI) += wago-auth-openapi
 #
 # Paths and names
 #
-WAGO_AUTH_OPENAPI_VERSION        := 1.0.1
+WAGO_AUTH_OPENAPI_VERSION        := 1.1.0
 WAGO_AUTH_OPENAPI                := openapi-auth-$(WAGO_AUTH_OPENAPI_VERSION)
 WAGO_AUTH_OPENAPI_URL            := $(call jfrog_template_to_url, WAGO_AUTH_OPENAPI)
 WAGO_AUTH_OPENAPI_SUFFIX         := $(suffix $(WAGO_AUTH_OPENAPI_URL))

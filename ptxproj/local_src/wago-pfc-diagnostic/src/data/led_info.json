@@ -41,7 +41,13 @@
                 {
                     "name":"NS",
                     "startid":"0x00000004"
+                },
+                {
+                    "name":"TRM",
+                    "startid":"0x00010600",
+                    "alias":["U7"]
                 }
+                
             ]
         },
         {

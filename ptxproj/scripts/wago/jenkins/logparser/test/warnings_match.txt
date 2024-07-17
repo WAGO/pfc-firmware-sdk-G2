@@ -1,0 +1,5 @@
+
+Makefile:5: recipe for target 'check' failed
+Makefile:5: recipe for target 'all' failed
+Makefile:464: recipe for target 'install-shlibs' failed
+Makefile:454: recipe for target 'install' failed

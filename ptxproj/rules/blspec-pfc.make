@@ -22,6 +22,9 @@ BLSPEC_PFC_ROOTARG_NAND_ROOTFS0	:= $(call remove_quotes,$(PTXCONF_BLSPEC_PFC_NAN
 BLSPEC_PFC_ROOTARG_NAND_ROOTFS1	:= $(call remove_quotes,$(PTXCONF_BLSPEC_PFC_NAND_ROOTARG_ROOTFS1))
 BLSPEC_PFC_TARGET		:= $(call remove_quotes,$(PTXCONF_BLSPEC_PFC_TARGET_PREFIX))
 
+BLSPEC_PFC_PROJECTDIR_BOOT	:= $(call ptx/get-alternative, projectroot, /boot)
+
+
 # ----------------------------------------------------------------------------
 # Target-Install
 # ----------------------------------------------------------------------------
@@ -38,7 +41,7 @@ $(STATEDIR)/blspec-pfc.targetinstall: $(STATEDIR)/kernel.targetinstall.post
 ifdef PTXCONF_BLSPEC_PFC_SD
 
 # SD-Entrys
-	@$(foreach file, $(shell find $(PTXDIST_PLATFORMCONFIGDIR)/projectroot/boot/sd/loader/entries/$(BLSPEC_PFC_TARGET)* -type f), \
+	@$(foreach file, $(shell find $(BLSPEC_PFC_PROJECTDIR_BOOT)/sd/loader/entries/$(BLSPEC_PFC_TARGET)* -type f), \
 		@$(call install_alternative, blspec-pfc, 0, 0, 0755, /boot/sd/loader/entries/$(notdir $(file))) \
 		@$(call install_replace, blspec-pfc, /boot/sd/loader/entries/$(notdir $(file)), @KERNEL_VERSION@, "$(BLSPEC_PFC_KERNEL_VERSION)") \
 		@$(call install_replace, blspec-pfc, /boot/sd/loader/entries/$(notdir $(file)), @ROOTARG@, "$(BLSPEC_PFC_ROOTARG_SD_ROOTFS)"))
@@ -48,12 +51,12 @@ endif
 ifdef PTXCONF_BLSPEC_PFC_EMMC
 
 # EMMC-Entrys
-	@$(foreach file, $(shell find $(PTXDIST_PLATFORMCONFIGDIR)/projectroot/boot/emmc0/loader/entries/$(BLSPEC_PFC_TARGET)* -type f), \
+	@$(foreach file, $(shell find $(BLSPEC_PFC_PROJECTDIR_BOOT)/emmc0/loader/entries/$(BLSPEC_PFC_TARGET)* -type f), \
 		@$(call install_alternative, blspec-pfc, 0, 0, 0755, /boot/emmc0/loader/entries/$(notdir $(file))) \
 		@$(call install_replace, blspec-pfc, /boot/emmc0/loader/entries/$(notdir $(file)), @KERNEL_VERSION@, "$(BLSPEC_PFC_KERNEL_VERSION)") \
 		@$(call install_replace, blspec-pfc, /boot/emmc0/loader/entries/$(notdir $(file)), @ROOTARG@, "$(BLSPEC_PFC_ROOTARG_EMMC_ROOTFS0)"))
 
-	@$(foreach file, $(shell find $(PTXDIST_PLATFORMCONFIGDIR)/projectroot/boot/emmc1/loader/entries/$(BLSPEC_PFC_TARGET)* -type f), \
+	@$(foreach file, $(shell find $(BLSPEC_PFC_PROJECTDIR_BOOT)/emmc1/loader/entries/$(BLSPEC_PFC_TARGET)* -type f), \
 		@$(call install_alternative, blspec-pfc, 0, 0, 0755, /boot/emmc1/loader/entries/$(notdir $(file))) \
 		@$(call install_replace, blspec-pfc, /boot/emmc1/loader/entries/$(notdir $(file)), @KERNEL_VERSION@, "$(BLSPEC_PFC_KERNEL_VERSION)") \
 		@$(call install_replace, blspec-pfc, /boot/emmc1/loader/entries/$(notdir $(file)), @ROOTARG@, "$(BLSPEC_PFC_ROOTARG_EMMC_ROOTFS1)"))
@@ -64,12 +67,12 @@ endif
 ifdef PTXCONF_BLSPEC_PFC_NAND
 
 # NAND-Entrys
-	@$(foreach file, $(shell find $(PTXDIST_PLATFORMCONFIGDIR)/projectroot/boot/nand0/loader/entries/$(BLSPEC_PFC_TARGET)* -type f), \
+	@$(foreach file, $(shell find $(BLSPEC_PFC_PROJECTDIR_BOOT)/nand0/loader/entries/$(BLSPEC_PFC_TARGET)* -type f), \
 		@$(call install_alternative, blspec-pfc, 0, 0, 0755, /boot/nand0/loader/entries/$(notdir $(file))) \
 		@$(call install_replace, blspec-pfc, /boot/nand0/loader/entries/$(notdir $(file)), @KERNEL_VERSION@, "$(BLSPEC_PFC_KERNEL_VERSION)") \
 		@$(call install_replace, blspec-pfc, /boot/nand0/loader/entries/$(notdir $(file)), @ROOTARG@, "$(BLSPEC_PFC_ROOTARG_NAND_ROOTFS0)"))
 
-	@$(foreach file, $(shell find $(PTXDIST_PLATFORMCONFIGDIR)/projectroot/boot/nand1/loader/entries/$(BLSPEC_PFC_TARGET)* -type f), \
+	@$(foreach file, $(shell find $(BLSPEC_PFC_PROJECTDIR_BOOT)/nand1/loader/entries/$(BLSPEC_PFC_TARGET)* -type f), \
 		@$(call install_alternative, blspec-pfc, 0, 0, 0755, /boot/nand1/loader/entries/$(notdir $(file))) \
 		@$(call install_replace, blspec-pfc, /boot/nand1/loader/entries/$(notdir $(file)), @KERNEL_VERSION@, "$(BLSPEC_PFC_KERNEL_VERSION)") \
 		@$(call install_replace, blspec-pfc, /boot/nand1/loader/entries/$(notdir $(file)), @ROOTARG@, "$(BLSPEC_PFC_ROOTARG_NAND_ROOTFS1)"))

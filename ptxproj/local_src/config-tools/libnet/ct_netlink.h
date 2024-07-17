@@ -46,12 +46,6 @@ int ct_netlink_enable_link(const char *devStr,
 int ct_netlink_disable_link(const char *devStr,
 						    netlinkSession_t *sessionHandle);
 
-#ifdef __ENABLE_DSA
-int ct_netlink_set_dsa_state(const char *value);
-int ct_netlink_get_dsa_state(char * const szValue,
-                             size_t const valueLen);
-#endif
-
 __END_DECLS
 
 #endif

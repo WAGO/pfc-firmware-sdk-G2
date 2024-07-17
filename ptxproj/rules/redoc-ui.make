@@ -87,6 +87,10 @@ $(STATEDIR)/redoc-ui.targetinstall:
 	@$(call install_copy, redoc-ui, 0, 0, 0644, -, /$(REDOC_UI_OPENAPI_DIR)/redoc.standalone.js)
 	@$(call install_copy, redoc-ui, 0, 0, 0644, -, /$(REDOC_UI_LICENSE_DIR)/license.redoc-ui_$(REDOC_UI_VERSION_PTX).txt)
 
+	# Install webserver config
+	@$(call install_alternative, redoc-ui, 0, 0, 0600, \
+		/etc/lighttpd/apps.confd/openapi.conf)
+
 	@$(call install_finish, redoc-ui)
 	@$(call touch)
 

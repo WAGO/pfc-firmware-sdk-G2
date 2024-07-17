@@ -14,28 +14,32 @@
 #
 PACKAGES-$(PTXCONF_CDS3_IODRVDAL) += cds3-iodrvdal
 
-CDS3_IODRVDAL_VERSION    := 0.0.1
-CDS3_IODRVDAL            := IoDrvDal
-CDS3_IODRVDAL_DIR        := $(BUILDDIR)/$(CDS3_IODRVDAL)
-CDS3_IODRVDAL_URL        := file://wago_intern/codesys3-Component/$(CDS3_IODRVDAL)
-CDS3_IODRVDAL_SRC_DIR    :=$(call ptx/in-path, PTXDIST_PATH, wago_intern/codesys3-Component/$(CDS3_IODRVDAL))
-CDS3_IODRVDAL_SRC        := $(CDS3_IODRVDAL_SRC_DIR)/$(CDS3_IODRVDAL)
-CDS3_IODRVDAL_BIN        := lib$(CDS3_IODRVDAL).so.$(CDS3_IODRVDAL_VERSION)
+#
+# Paths and names
+#
+CDS3_IODRVDAL_VERSION       := 0.0.2
+CDS3_IODRVDAL_MD5           :=
+CDS3_IODRVDAL               := IoDrvDal
+CDS3_IODRVDAL_BUILDCONFIG   := Release
+CDS3_IODRVDAL_SRC_DIR       :=$(call ptx/in-path, PTXDIST_PATH, wago_intern/codesys3-Component/$(CDS3_IODRVDAL))
+CDS3_IODRVDAL_BUILDROOT_DIR := $(BUILDDIR)/$(CDS3_IODRVDAL)
+CDS3_IODRVDAL_DIR           := $(CDS3_IODRVDAL_BUILDROOT_DIR)/src
+CDS3_IODRVDAL_BUILD_DIR     := $(CDS3_IODRVDAL_BUILDROOT_DIR)/bin/$(CDS3_IODRVDAL_BUILDCONFIG)
+CDS3_IODRVDAL_LICENSE       := WAGO
+CDS3_IODRVDAL_CONF_TOOL     := NO
+CDS3_IODRVDAL_SO_NAME       := lib$(CDS3_IODRVDAL).so
+CDS3_IODRVDAL_MAKE_ENV  := $(CROSS_ENV) \
+BUILDCONFIG=$(CDS3_IODRVDAL_BUILDCONFIG) \
+BIN_DIR=$(CDS3_IODRVDAL_BUILD_DIR) \
+SCRIPT_DIR=$(PTXDIST_SYSROOT_HOST)/lib/ct-build \
+PKG_CONFIG_PATH=$(PTXCONF_SYSROOT_TARGET)/usr/lib/pkgconfig
+
+CDS3_IODRVDAL_PATH          := PATH=$(CROSS_PATH)
+CDS3_IODRVDAL_MAKE_OPT      := CC=$(CROSS_CC)
 
 CDS3_IODRVDAL_PACKAGE_NAME := cds3-iodrvdal_$(CDS3_IODRVDAL_VERSION)_$(PTXDIST_IPKG_ARCH_STRING)
 CDS3_IODRVDAL_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
 CDS3_IODRVDAL_PACKAGE_DIR := $(PTXDIST_TEMPDIR)/package/$(CDS3_IODRVDAL_PACKAGE_NAME)
-
-#CDS3_IODRVDAL_CMP_INCLUDE:=$(PLCLINUXRT_V3_DIR)/Components/
-#CDS3_IODRVDAL_PLATFORM_INCLUDE:=$(PLCLINUXRT_V3_DIR)/Platforms/Linux/
-
-# ----------------------------------------------------------------------------
-# Get
-# ----------------------------------------------------------------------------
-
-$(STATEDIR)/cds3-iodrvdal.get:
-	@$(call targetinfo)
-	@$(call touch)
 
 # ----------------------------------------------------------------------------
 # Extract
@@ -43,20 +47,11 @@ $(STATEDIR)/cds3-iodrvdal.get:
 
 $(STATEDIR)/cds3-iodrvdal.extract:
 	@$(call targetinfo)
-	mkdir -p $(CDS3_IODRVDAL_DIR)
+	mkdir -p $(CDS3_IODRVDAL_BUILDROOT_DIR)
 ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
- 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
-
-#normally this is needed to use but the old schroot does not have unzip so we have to go a workaround via tar.gz
-	rsync -a --exclude=.svn/ \
-		--exclude=".*" \
-		--exclude="*.d" \
-		--exclude="*.o" \
-		--exclude="*.pdf"  \
-		--exclude="*tar.bz2" \
-		$(CDS3_IODRVDAL_SRC_DIR)/ $(CDS3_IODRVDAL_DIR)/
-
-#	$(call patchin, CDS3_IODRVDAL)
+	@if [ ! -L $(CDS3_IODRVDAL_DIR) ]; then \
+	  ln -s $(CDS3_IODRVDAL_SRC_DIR) $(CDS3_IODRVDAL_DIR); \
+	fi
 endif
 	@$(call touch)
 
@@ -64,22 +59,16 @@ endif
 # Prepare
 # ----------------------------------------------------------------------------
 
-
 $(STATEDIR)/cds3-iodrvdal.prepare:
 	@$(call targetinfo)
+ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	@$(call world/prepare, CDS3_IODRVDAL)
+endif
 	@$(call touch)
-
 
 # ----------------------------------------------------------------------------
 # Compile
 # ----------------------------------------------------------------------------
-CDS3_IODRVDAL_PATH      := PATH=$(CROSS_PATH)
-CDS3_IODRVDAL_MAKE_ENV  := $(CROSS_ENV)
-CDS3_IODRVDAL_MAKE_OPT  := CC=$(CROSS_CC)
-
-#CDS3_IODRVDAL_MAKE_OPT += "DBGMODE=-g3"
-#CDS3_IODRVDAL_MAKE_OPT += "OPTIMIZE=-O3"
-
 
 $(STATEDIR)/cds3-iodrvdal.compile:
 	@$(call targetinfo)
@@ -99,13 +88,8 @@ $(STATEDIR)/cds3-iodrvdal.install:
 
 ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
-
-	@cd $(CDS3_IODRVDAL_DIR) && \
-	for header in *.h; do \
-		install -D $$header $(CDS3_IODRVDAL_PKGDIR)/usr/include/IoDrvDal/$$header; \
-	done; \
-	install -D $(CDS3_IODRVDAL_DIR)/$(CDS3_IODRVDAL_BIN) $(CDS3_IODRVDAL_PKGDIR)/usr/lib/libIoDrvDal.so
-   
+	@$(call world/install, CDS3_IODRVDAL)
+	
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_RELEASE
 	@cd $(CDS3_IODRVDAL_PKGDIR) && tar cvzf $(CDS3_IODRVDAL_PLATFORMCONFIGPACKAGEDIR)/$(CDS3_IODRVDAL_PACKAGE_NAME).tgz *
 endif
@@ -139,9 +123,8 @@ ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 else
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
 
-	@$(call install_copy, cds3-iodrvdal, 0, 0, 0750, $(CDS3_IODRVDAL_DIR)/$(CDS3_IODRVDAL_BIN), /usr/lib/$(CDS3_IODRVDAL_BIN))
-	@$(call install_link, cds3-iodrvdal, ./$(CDS3_IODRVDAL_BIN), /usr/lib/lib$(CDS3_IODRVDAL).so);
-	@$(call install_link, cds3-iodrvdal, ../$(CDS3_IODRVDAL_BIN), /usr/lib/cds3-custom-components/lib$(CDS3_IODRVDAL).so);
+	@$(call install_lib, cds3-iodrvdal, 0, 0, 0640, libIoDrvDal)
+	@$(call install_link, cds3-iodrvdal, ../$(CDS3_IODRVDAL_SO_NAME), /usr/lib/cds3-custom-components/$(CDS3_IODRVDAL_SO_NAME))
 	@$(call install_copy, cds3-iodrvdal, 0, 0, 0640, $(CDS3_IODRVDAL_DIR)/$(CDS3_IODRVDAL).cfg, $(PTXCONF_CDS3_PLCCONFIGDIR)/$(CDS3_IODRVDAL).cfg, n)
 
 endif
@@ -155,9 +138,13 @@ endif
 # ----------------------------------------------------------------------------
 # Clean
 # ----------------------------------------------------------------------------
-
 $(STATEDIR)/cds3-iodrvdal.clean:
-	@-cd $(CDS3_IODRVDAL_DIR) && \
-		$(CDS3_IODRVDAL_ENV) $(CDS3_IODRVDAL_PATH) $(MAKE) clean
+	@$(call targetinfo)
+	@if [ -d $(CDS3_IODRVDAL_DIR) ]; then \
+		$(CDS3_IODRVDAL_MAKE_ENV) $(CDS3_IODRVDAL_PATH) $(MAKE) $(MFLAGS) -C $(CDS3_IODRVDAL_DIR) clean; \
+	fi
 	@$(call clean_pkg, CDS3_IODRVDAL)
+	@rm -rf $(CDS3_IODRVDAL_BUILDROOT_DIR)
+
+# vim: syntax=make
 

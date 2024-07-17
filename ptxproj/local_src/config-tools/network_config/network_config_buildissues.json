@@ -1,0 +1,87 @@
+{
+  "_class": "io.jenkins.plugins.analysis.core.restapi.ReportApi",
+  "issues": [
+    {
+      "fileName": "local_src/config-tools/network_config/src/network_config/OptionParser.cpp",
+      "lineStart": "46",
+      "columnStart": "13",
+      "category": "Warning:clang-diagnostic-unused-function",
+      "severity": "NORMAL",
+      "message": "unused function 'validate' [clang-diagnostic-unused-function]",
+      "moduleName": "network_config-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/network_config/src/network_config/OptionParser.cpp",
+      "lineStart": "54",
+      "columnStart": "13",
+      "category": "Warning:clang-diagnostic-unused-function",
+      "severity": "NORMAL",
+      "message": "unused function 'validate' [clang-diagnostic-unused-function]",
+      "moduleName": "network_config-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/network_config/src/network_config/OptionParser.cpp",
+      "lineStart": "62",
+      "columnStart": "13",
+      "category": "Warning:clang-diagnostic-unused-function",
+      "severity": "NORMAL",
+      "message": "unused function 'validate' [clang-diagnostic-unused-function]",
+      "moduleName": "network_config-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/network_config/src/network_config/OptionParser.cpp",
+      "lineStart": "70",
+      "columnStart": "13",
+      "category": "Warning:clang-diagnostic-unused-function",
+      "severity": "NORMAL",
+      "message": "unused function 'validate' [clang-diagnostic-unused-function]",
+      "moduleName": "network_config-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/network_config/test-src/OutoutTest.cpp",
+      "lineStart": "40",
+      "columnStart": "34",
+      "category": "Warning:performance-unnecessary-value-param",
+      "severity": "NORMAL",
+      "message": "the parameter 'text' is copied for each invocation but only used as a const reference; consider making it a const reference [performance-unnecessary-value-param]",
+      "moduleName": "network_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/network_config/src/network_config/OptionParser.cpp",
+      "lineStart": "46",
+      "columnStart": "13",
+      "category": "Warning:unused-function",
+      "severity": "NORMAL",
+      "message": "‘void network_config::validate(boost::any&, const std::vector<std::__cxx11::basic_string<char> >&, network_config::StateOption*, int)’ defined but not used [-Wunused-function]",
+      "moduleName": "network_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/network_config/src/network_config/OptionParser.cpp",
+      "lineStart": "54",
+      "columnStart": "13",
+      "category": "Warning:unused-function",
+      "severity": "NORMAL",
+      "message": "‘void network_config::validate(boost::any&, const std::vector<std::__cxx11::basic_string<char> >&, network_config::AutonegOption*, int)’ defined but not used [-Wunused-function]",
+      "moduleName": "network_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/network_config/src/network_config/OptionParser.cpp",
+      "lineStart": "62",
+      "columnStart": "13",
+      "category": "Warning:unused-function",
+      "severity": "NORMAL",
+      "message": "‘void network_config::validate(boost::any&, const std::vector<std::__cxx11::basic_string<char> >&, network_config::SpeedOption*, int)’ defined but not used [-Wunused-function]",
+      "moduleName": "network_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/network_config/src/network_config/OptionParser.cpp",
+      "lineStart": "70",
+      "columnStart": "13",
+      "category": "Warning:unused-function",
+      "severity": "NORMAL",
+      "message": "‘void network_config::validate(boost::any&, const std::vector<std::__cxx11::basic_string<char> >&, network_config::DuplexOption*, int)’ defined but not used [-Wunused-function]",
+      "moduleName": "network_config-tests"
+    }
+  ],
+  "size": 9
+}

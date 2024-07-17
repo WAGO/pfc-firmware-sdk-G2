@@ -120,12 +120,12 @@ LC_ALL=C
 #       o '-' character must either be the first or the last one
 # That's why they are placed within the main regex.
 
-specialChars="\x20\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2a\x2b\x2c\x2e\x2f\x3a\x3b\x3c\x3d\x3e\x3f\x40\x5b\x5c\x5e\x5f\x60\x7b\x7c\x7d\x7e"
+specialChars="\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2a\x2b\x2c\x2e\x2f\x3a\x3b\x3c\x3d\x3e\x3f\x40\x5b\x5c\x5e\x5f\x60\x7b\x7c\x7d\x7e"
 
 if [[ ! "$newPassword" =~ ^[]abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$(echo -e $specialChars)-]*$ ]]; then
   status=$INVALID_PARAMETER
   ReportError $status "(password contains non-ASCII characters)"
-  SetLastError "Illegal characters used. Please only use letters (a-z, A-Z),\nnumbers and ASCII special characters: \n""] !\"#$%&'()*+,./:;<=>?@[\^_\`{|}~-"
+  SetLastError "Illegal characters used. Please only use letters (a-z, A-Z),\nnumbers and ASCII special characters: \n""!\"#$%&'()*+,./:;<=>?@[]\^_\`{|}~-"
   exit $status
 fi
 

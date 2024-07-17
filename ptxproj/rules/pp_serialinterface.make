@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_PP_SERIALINTERFACE) += pp_serialinterface
 #
 # Paths and names
 #
-PP_SERIALINTERFACE_VERSION        := 1.1.0
+PP_SERIALINTERFACE_VERSION        := 1.2.0
 PP_SERIALINTERFACE_MD5            :=
 PP_SERIALINTERFACE                := pp_serialinterface
 PP_SERIALINTERFACE_BUILDCONFIG    := Release

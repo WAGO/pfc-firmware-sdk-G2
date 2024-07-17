@@ -20,6 +20,12 @@ config WAGO_CUSTOM_LINK_DEVICES_BBINIT_LINK
 	prompt "link_devices"
 	default "S01_link_devices"
 
+config WAGO_CUSTOM_SERIAL_FEATURES_BBINIT_LINK
+	string
+	depends on WAGO_CUSTOM_INSTALL_SERIAL_FEATURES
+	prompt "serial_features"
+	default "S02_serial_features"
+
 config WAGO_CUSTOM_DETERMINE_HOSTNAME_BBINIT_LINK
 	string
 	depends on WAGO_CUSTOM_INSTALL_DETERMINE_HOSTNAME

@@ -4,6 +4,8 @@ config LIBCGROUPCPULOAD
 	bool
 	default n
 	select HOST_CT_BUILD
+	select FFF
+	select GOOGLETEST
 	prompt "libcgroupcpuload"
 	help
 		Library to read the cpu usage of a specific cgroup (using cpuacct controller).

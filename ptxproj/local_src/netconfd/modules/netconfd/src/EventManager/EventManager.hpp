@@ -51,6 +51,7 @@ class EventManager : public IEventManager {
   ::std::vector<char> GetBridgeConfigAsJson();
   ::std::vector<char> GetIPConfigAsJson();
   ::std::vector<char> GetInterfaceConfigAsJson();
+  ::std::vector<char> GetInterfaceStatusesAsJson();
 };
 
 }  // namespace netconf

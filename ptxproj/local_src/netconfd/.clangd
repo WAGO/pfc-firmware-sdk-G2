@@ -1,0 +1,8 @@
+CompileFlags:
+  Remove: [ -Wpre-c++17-compat, -Wpre-c++14-compat ]
+
+Diagnostics:
+  Suppress: [ pre-c++17-compat, pre-c++14-compat ]
+  ClangTidy:
+    Add: modernize*
+    Remove: [modernize-use-trailing-return-type, modernize-use-nodiscard]

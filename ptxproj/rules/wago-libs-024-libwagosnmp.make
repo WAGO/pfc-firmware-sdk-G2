@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# Copyright (C) 2015 by <HFS>
+# Copyright (C) 2024 by WAGO GmbH & Co. KG
 #
 # See CREDITS for details about who has contributed to this project.
 #
@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_LIBWAGOSNMP) += libwagosnmp
 #
 # Paths and names
 #
-LIBWAGOSNMP_VERSION        := 0.0.4
+LIBWAGOSNMP_VERSION        := 0.1.0
 LIBWAGOSNMP_MD5            :=
 LIBWAGOSNMP                := libwagosnmp
 LIBWAGOSNMP_URL            := file://local_src/$(LIBWAGOSNMP)

@@ -66,13 +66,17 @@ endif
 
 $(STATEDIR)/cds3-tsciodrvkbus.prepare:
 	@$(call targetinfo)
+ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	$(MAKE) -C $(CDS3_TSCIODRVKBUS_DIR) SYSROOT=$(PTXCONF_SYSROOT_TARGET) itf
+	$(MAKE) -C $(CDS3_TSCIODRVKBUS_DIR) SYSROOT=$(PTXCONF_SYSROOT_TARGET) dep
+endif
 	@$(call touch)
 
 # ----------------------------------------------------------------------------
 # Compile
 # ----------------------------------------------------------------------------
 CDS3_TSCIODRVKBUS_PATH      := PATH=$(CROSS_PATH)
-CDS3_TSCIODRVKBUS_MAKE_ENV  := $(CROSS_ENV)
+CDS3_TSCIODRVKBUS_MAKE_ENV  := $(CROSS_ENV) ARCH=$(PTXCONF_ARCH_STRING)
 CDS3_TSCIODRVKBUS_MAKE_OPT  := CC=$(CROSS_CC)
 
 
@@ -102,6 +106,8 @@ ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 	for header in *.h; do \
 		install -D $$header $(CDS3_TSCIODRVKBUS_PKGDIR)/usr/include/TscIoDrvKbus/$$(basename $$header); \
 	done;
+
+	@cp $(CDS3_TSCIODRVKBUS_DIR)/*Itf.h $(PTXCONF_SYSROOT_TARGET)/usr/include/codesys3/
 
 ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_RELEASE
 	@cd $(CDS3_TSCIODRVKBUS_PKGDIR) && tar -czvf $(CDS3_TSCIODRVKBUS_PLATFORMCONFIGPACKAGEDIR)/$(CDS3_TSCIODRVKBUS_PACKAGE_NAME).tgz *

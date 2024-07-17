@@ -172,14 +172,12 @@ Statuses WriteSnmpConfig(const SnmpConfig &config) {
 
   WriteConfigFiles(config);
 
+  StopDaemons();  
+  wago::util::RemoveSnmpUser("/var/net-snmp/snmpd.conf");
+  
   if (config.snmp_enable_) {
-    auto state = StartDaemons();
-    if (state == AlreadyRunning) {
-      InformDaemonAboutChangedConfig();
-    }
-  } else {
-    StopDaemons();
-  }
+    StartDaemons();
+  } 
 
   TriggerEventFolder();
 

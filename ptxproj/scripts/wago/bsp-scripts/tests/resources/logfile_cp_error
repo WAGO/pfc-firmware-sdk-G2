@@ -1,0 +1,28 @@
+-------------------------------
+target: glib.targetinstall.post
+-------------------------------
+
+finished target glib.targetinstall.post
+
+----------------------
+target: libmisc.tar.gz
+----------------------
+
+finished target libmisc.tar.gz
+
+-------------------
+target: libmisc.get
+-------------------
+
+finished target libmisc.get
+
+-----------------------
+target: libmisc.extract
+-----------------------
+
+cp -r /home/user/workspace/bsp/ptxproj.2013.03.0/src/libmisc /home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/build-target/libmisc
+cp: cannot stat `/home/user/workspace/bsp/ptxproj.2013.03.0/src/libmisc': No such file or directory
+make: *** [/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/state/libmisc.extract] Error 1
+
+}}} 2017-03-10T13:32:08+0100 /home/user/workspace/ptxdist/bin/ptxdist -q images; (exit value: 2)
+

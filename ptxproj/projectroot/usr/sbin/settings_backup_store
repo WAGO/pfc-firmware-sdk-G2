@@ -164,7 +164,44 @@ createBackupFile()
 
     /etc/config-tools/network_config --backup $backupFile $BACKUP_TARGET_VERSION_PARAM
     ProcessErrRestoreOperation $? "Failed to get network parameters by " "/etc/config-tools/network_config"
-     
+    
+    #-------------------------------------------------------------
+    # stp settings
+    BACKUP_TARGET_VERSION_PARAM=
+    if [ -n "${WAGO_BACKUP_TARGET_VERSION:-}" ]; then
+      BACKUP_TARGET_VERSION_PARAM="--backup-targetversion=${WAGO_BACKUP_TARGET_VERSION:-}"
+    fi
+    /etc/config-tools/get_stp_config --backup $BACKUP_TARGET_VERSION_PARAM >> "$backupFile"
+    ProcessErrRestoreOperation $? "Failed to get stp parameters by " "/etc/config-tools/get_stp_config"
+
+    #-------------------------------------------------------------
+    # switch settings
+    if IsSwitchConfigV2; then 
+      BACKUP_TARGET_VERSION_PARAM=
+      if [ -n "${WAGO_BACKUP_TARGET_VERSION:-}" ]; then
+        BACKUP_TARGET_VERSION_PARAM="--backup-targetversion=${WAGO_BACKUP_TARGET_VERSION:-}"
+      fi
+      /etc/config-tools/get_switch_config --backup $BACKUP_TARGET_VERSION_PARAM >> "$backupFile"
+      ProcessErrRestoreOperation $? "Failed to get switch parameters by " "/etc/config-tools/get_switch_config"
+    fi
+
+    #-------------------------------------------------------------
+    # save dhcp server settings
+    /etc/config-tools/config_dnsmasq_c --store-config "$backupFile"
+    ProcessErrRestoreOperation $? "Failed to get config_dnsmasq by " "/etc/config-tools/config_dnsmasq_c"
+         
+    #-------------------------------------------------------------
+    # save dns service settings
+    state=$(/etc/config-tools/get_dns_service_config -g dns-state)
+    ProcessErrBackupOperation $? "Failed to get dns_service config dns-state from port:" $port
+    mode=$(/etc/config-tools/get_dns_service_config -g dns-mode)
+    ProcessErrBackupOperation $? "Failed to get dns_service config dns-mode from port:" $port
+    fixhosts=$(/etc/config-tools/get_dns_service_config -g dns-fix-host)
+    ProcessErrBackupOperation $? "Failed to get dns_service config fix-host from port:" $port
+    SaveBackupValue "dns-state" "${state}" "$backupFile"
+    SaveBackupValue "dns-mode" "${mode}" "$backupFile"
+    SaveBackupValue "dns-fixhosts" "${fixhosts}" "$backupFile"
+
     #-------------------------------------------------------------
     # save snmp user definitions
 
@@ -272,6 +309,8 @@ createBackupFile()
 
     # admin user password hash
     SaveBackupValue "linux-admin-pwd-info" $(/etc/config-tools/urlencode -e $(/etc/config-tools/get_user_hash --shadow-get-info admin)) "$backupFile"
+    # wbm user password hash
+    SaveBackupValue "linux-user-pwd-info" $(/etc/config-tools/urlencode -e $(/etc/config-tools/get_user_hash --shadow-get-info user)) "$backupFile"
 
     # backup firewall settings
     if [[ -x /etc/config-tools/firewall ]]; then

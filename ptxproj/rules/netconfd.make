@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_NETCONFD) += netconfd
 #
 # Paths and names
 #
-NETCONFD_VERSION        := 2.0.0
+NETCONFD_VERSION        := 2.1.1
 NETCONFD_MD5            :=
 NETCONFD                := netconfd
 NETCONFD_URL            := file://local_src/netconfd

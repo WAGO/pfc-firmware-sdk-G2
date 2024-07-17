@@ -14,6 +14,8 @@ SRC_DIR = $(PROJECT_ROOT)/src
 
 #CLANG_TIDY_HEADER_FILTER :=
 
+VALGRIND_FLAGS += --suppressions=$(PTXDIST_PLATFORMDIR)/sysroot-target/usr/share/glib-2.0/valgrind/glib.supp
+
 #######################################################################################################################
 # Optional package/ platform feature configuration
 -include $(SCRIPT_DIR)/platform_1.mk
@@ -78,8 +80,8 @@ libnetwork_config.a_CLANG_TIDY_CHECKS += -google-runtime-references
 
 #######################################################################################################################
 # Settings for build target alltests.elf
-alltests.elf_LIBS             += network_config gmock_main gmock boost_system boost_program_options
-alltests.elf_STATICALLYLINKED += network_config gmock_main gmock
+alltests.elf_LIBS             += network_config gmock_main gmock gtest boost_system boost_program_options
+alltests.elf_STATICALLYLINKED += network_config gmock_main gmock gtest
 alltests.elf_PKG_CONFIGS      += $(libnetwork_config.a_PKG_CONFIGS)
 alltests.elf_DISABLEDWARNINGS += suggest-override
 alltests.elf_PREREQUISITES    += $(call local_prerequisites,alltests.elf)

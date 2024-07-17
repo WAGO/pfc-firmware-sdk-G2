@@ -4,6 +4,7 @@
 
 #include "Logger.hpp"
 #include "FileEditor.hpp"
+#include "MacAddress.hpp"
 #include "StringUtils.hpp"
 
 namespace netconf {
@@ -31,16 +32,14 @@ namespace netconf {
   return hostname;
 }
 
-::std::string GetDefaultHostname() {
+::std::string GetDefaultHostname(const MacAddress& mac_address) {
 
   FileEditor reader;
 
   ::std::string board_variant;
   reader.Read("/sys/class/wago/system/board_variant", board_variant);
-  ::std::string base_mac;
-  reader.Read("/sys/class/net/eth0/address", base_mac);
 
-  return GetDefaultHostname(board_variant, base_mac);
+  return GetDefaultHostname(board_variant, mac_address.ToString());
 }
 
 } /* namespace netconf */

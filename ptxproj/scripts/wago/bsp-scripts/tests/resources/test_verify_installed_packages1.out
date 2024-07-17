@@ -1,0 +1,10 @@
+Checking installed packages in comparison to the reference (stage 1) build...
+
+Only in default FW                                                 Only in BSP
+                                                 
+cds3-iodrvcanl2 0.0.1
+mdmd 0.1.1
+                                                 mdmd 0.1.3
+qcheck 1.0.0
+svnrevision 1.0
+===============================================================================================

@@ -41,8 +41,8 @@ MAIN_BUILDTARGETS += \
 	cpuloadmonitor.elf
 
 # This package does not contain any tests yet.
-#TEST_BUILDTARGETS += \
-	alltests.elf
+TEST_BUILDTARGETS += \
+	alltests_test.elf
 
 BUILDTARGETS += \
 	$(MAIN_BUILDTARGETS) \
@@ -114,8 +114,34 @@ cpuloadmonitor.elf_LDFLAGS						+= $(call option_lib_raw,$(cpuloadmonitor.elf_LI
 cpuloadmonitor.elf_PREREQUISITES			+= $(call lib_buildtarget_raw,$(cpuloadmonitor.elf_LIBS))
 
 #######################################################################################################################
+# Settings for build target alltests_test.elf
+
+alltests_test.elf_LIBS             += gmock_main gmock gtest
+alltests_test.elf_STATICALLYLINKED += gmock_main gmock gtest
+alltests_test.elf_PKG_CONFIGS      += 
+alltests_test.elf_DISABLEDWARNINGS += missing-declarations unused-parameter
+alltests_test.elf_PREREQUISITES    += $(call local_prerequisites,alltests_test.elf)
+alltests_test.elf_SOURCES          += $(call fglob_r,$(PROJECT_ROOT)/test-src/unit-tests,$(SOURCE_FILE_EXTENSIONS))
+alltests_test.elf_SOURCES          += $(SRC_DIR)/cgroupcpuload/cgroupcpuload.c
+alltests_test.elf_CPPFLAGS         += -I$(PTXCONF_SYSROOT_HOST)/usr/include
+alltests_test.elf_CPPFLAGS         += -I$(PROJECT_ROOT)/test-src/unit-tests
+alltests_test.elf_CPPFLAGS         += $(call pkg_config_cppflags,$(alltests_test.elf_PKG_CONFIGS))
+alltests_test.elf_CCXXFLAGS        += $(SHARED_CCXXFLAGS)
+alltests_test.elf_CCXXFLAGS        += $(call option_disable_warning,$(alltests_test.elf_DISABLEDWARNINGS))
+alltests_test.elf_CFLAGS           += $(SHARED_CFLAGS) $(libcgroupcpuload.so_CFLAGS)
+alltests_test.elf_CFLAGS           += $(alltests_test.elf_CCXXFLAGS)
+alltests_test.elf_CFLAGS           += $(call pkg_config_cflags,$(alltests_test.elf_PKG_CONFIGS))
+alltests_test.elf_CXXFLAGS         += $(SHARED_CXXFLAGS)
+alltests_test.elf_CXXFLAGS         += $(alltests_test.elf_CCXXFLAGS)
+alltests_test.elf_CXXFLAGS         += $(call pkg_config_cxxflags,$(alltests_test.elf_PKG_CONFIGS))
+alltests_test.elf_LDFLAGS          += $(call option_lib,$(alltests_test.elf_LIBS),alltests_test.elf)
+alltests_test.elf_LDFLAGS          += $(call pkg_config_ldflags,$(alltests_test.elf_PKG_CONFIGS))
+alltests_test.elf_CLANG_TIDY_CHECKS += $(GTEST_CLANG_TIDY_CHECKS)
+
+#######################################################################################################################
 # Build infrastructure
 include $(SCRIPT_DIR)/buildclang_1.mk
+-include $(PTXDIST_WORKSPACE)/../wago_intern/debugging/scripts/valgrind-target.mk
 
 #######################################################################################################################
 # Custom rules

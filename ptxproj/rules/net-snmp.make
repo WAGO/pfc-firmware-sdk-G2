@@ -18,8 +18,8 @@ PACKAGES-$(PTXCONF_NET_SNMP) += net-snmp
 #
 # Paths and names
 #
-NET_SNMP_VERSION	:= 5.9.3
-NET_SNMP_MD5		:= 59996e266a655a1119fc6a5daa6e85aa
+NET_SNMP_VERSION	:= 5.9.4
+NET_SNMP_MD5		:= 5f20c82c59b441043449c380307a95b9
 NET_SNMP		:= net-snmp-$(NET_SNMP_VERSION)
 NET_SNMP_SUFFIX		:= tar.gz
 NET_SNMP_URL		:= $(call ptx/mirror, SF, net-snmp/$(NET_SNMP).$(NET_SNMP_SUFFIX))

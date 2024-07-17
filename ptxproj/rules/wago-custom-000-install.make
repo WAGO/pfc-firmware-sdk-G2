@@ -26,7 +26,7 @@ $(STATEDIR)/wago-custom-install.install:
 	@$(call world/install, WAGO_CUSTOM_INSTALL)
 
 	@mkdir -p $(PKGDIR)/$(WAGO_CUSTOM_INSTALL)/etc/specific/features/
-	@echo "hardware-available=false" >$(PKGDIR)/$(WAGO_CUSTOM_INSTALL)/etc/specific/features/rs232_485-interface
+	@echo "hardware-available=false" >$(PKGDIR)/$(WAGO_CUSTOM_INSTALL)/etc/specific/features/serial-interface
 	@echo "hardware-available=false" >$(PKGDIR)/$(WAGO_CUSTOM_INSTALL)/etc/specific/features/serial-service-interface
 	@echo "hardware-available=false" >$(PKGDIR)/$(WAGO_CUSTOM_INSTALL)/etc/specific/features/profibus-dp-slave
 
@@ -190,7 +190,7 @@ ifdef PTXCONF_WAGO_CUSTOM_CONFIG_USB_GADGET_STARTSCRIPT
 		/etc/init.d/config_usb_gadget, @USB_GADGET_STORAGE_FILE@, \
 		$(PTXCONF_WAGO_CUSTOM_CONFIG_USB_GADGET_STORAGE_FILE))
 	@$(call install_alternative, wago-custom-install, 0, 0, 0644, \
-		/lib/udev/rules.d/90-usb-gadget.rules)
+		/usr/lib/udev/rules.d/90-usb-gadget.rules)
 
 ifneq ($(PTXCONF_WAGO_CUSTOM_CONFIG_USB_GADGET_BBINIT_LINK),)
 	@$(call install_link, wago-custom-install, ../init.d/config_usb_gadget, \
@@ -566,7 +566,6 @@ ifneq ($(PTXCONF_WAGO_CUSTOM_INSTALL_LINKIN_DEVS_NAMES),)
 	@$(call install_copy, wago-custom-install, 0, 0, 0755, $(_TMP_FILE), /etc/specific/.devs_to_link, n)
 	@$(call install_alternative, wago-custom-install, 0, 0, 0755, /etc/init.d/link_devices, n)
 	@$(call install_copy, wago-custom-install, 0, 0, 0750, /etc/specific/features/)
-	@$(call install_copy, wago-custom-install, 0, 0, 0644, -, /etc/specific/features/rs232_485-interface)
 	@$(call install_copy, wago-custom-install, 0, 0, 0644, -, /etc/specific/features/serial-service-interface)
 	@$(call install_copy, wago-custom-install, 0, 0, 0644, -, /etc/specific/features/profibus-dp-slave)
 
@@ -587,10 +586,17 @@ ifneq ($(PTXCONF_RUNTIME_RC_LINK),)
 endif
 endif
 
-
-
 else
 	@$(error "ERROR: please define one or more dev-names that need to be linked, or unselect WAGO_CUSTOM_INSTALL_LINKIN_DEVS")
+endif
+
+ifdef PTXCONF_WAGO_CUSTOM_INSTALL_SERIAL_FEATURES
+	@$(call install_alternative, wago-custom-install, 0, 0, 0755, /etc/init.d/serial_features, n)
+	@$(call install_copy, wago-custom-install, 0, 0, 0644, -, /etc/specific/features/serial-interface)
+ifneq ($(PTXCONF_WAGO_CUSTOM_SERIAL_FEATURES_BBINIT_LINK),)
+	@$(call install_link, wago-custom-install, ../init.d/serial_features, \
+		/etc/rc.d/$(PTXCONF_WAGO_CUSTOM_SERIAL_FEATURES_BBINIT_LINK))
+endif
 endif
 
 endif
@@ -617,6 +623,10 @@ ifneq ($(PTXCONF_WAGO_CUSTOM_CHECK_RTC_BBINIT_LINK),)
 	@$(call install_link, wago-custom-install, ../init.d/check_rtc, \
 		/etc/rc.d/$(PTXCONF_WAGO_CUSTOM_CHECK_RTC_BBINIT_LINK))
 endif
+endif
+
+ifdef PTXCONF_WAGO_CUSTOM_INSTALL_KBUS_FIRMWARE_BLOB
+	@$(call install_alternative, wago-custom-install, 0, 0, 0644, /etc/specific/kbus_application.bin)
 endif
 
 ifdef PTXCONF_WAGO_CUSTOM_INSTALL_RTSVERSION
@@ -660,12 +670,16 @@ ifdef PTXCONF_WAGO_CUSTOM_INSTALL_IOCHECK_ON
 	@$(call install_copy, wago-custom-install, 0, 0, 0644, -, /etc/specific/features/iocheck)
 endif
 
-	@$(call install_copy, wago-custom-install, 0, 0, 0755, \
-		$(PTXDIST_WORKSPACE)/projectroot/usr/sbin/setup_ssh_keys, \
+ifdef PTXCONF_WAGO_CUSTOM_INSTALL_SETUP_SSH_KEYS
+	@$(call install_alternative, wago-custom-install, 0, 0, 0755, \
 		/usr/sbin/setup_ssh_keys, n)
-	@$(call install_copy, wago-custom-install, 0, 0, 0755, \
-		$(PTXDIST_WORKSPACE)/projectroot/usr/sbin/setup_https_key, \
+endif # PTXCONF_WAGO_CUSTOM_INSTALL_SETUP_SSH_KEYS
+
+ifdef PTXCONF_WAGO_CUSTOM_INSTALL_SETUP_HTTPS_KEY
+	@$(call install_alternative, wago-custom-install, 0, 0, 0755, \
 		/usr/sbin/setup_https_key, n)
+endif # PTXCONF_WAGO_CUSTOM_INSTALL_SETUP_HTTPS_KEY
+
 	@$(call install_copy, wago-custom-install, 0, 0, 0755, \
 		$(PTXDIST_WORKSPACE)/projectroot/usr/sbin/random_seed, \
 		/usr/sbin/random_seed, n)
@@ -677,6 +691,7 @@ ifdef PTXCONF_CDS3_TSCIOBACNET
 		-v $(BACNET_VERSION) \
 		-r $(BACNETSTACK_REVISION) \
 		-u $(PTXCONF_OPKG_OPKG_CONF_URL) \
+		--libwebsockets $(or $(PTXCONF_LIBWEBSOCKETS), n) \
 		--libbacnetstack $(or $(PTXCONF_LIBBACNETSTACK), n) \
 		--libbacnet $(or $(PTXCONF_LIBBACNET), n) \
 		--libbacnetconfig $(or $(PTXCONF_LIBBACNETCONFIG), n) \

@@ -17,11 +17,11 @@ PACKAGES-$(PTXCONF_PP_BACNET) += pp_bacnet
 # Paths and names
 #
 PP_BACNET                := pp_bacnet
-PP_BACNET_VERSION        := 1.0.0
+PP_BACNET_VERSION        := 1.2.0
 PP_BACNET_FOLDER         := pp_bacnet_git
 
 ifdef PTXCONF_LIBBACNETCONFIG_SOURCE_DEV
-PP_BACNET_GIT_URL           := ssh://svtfs01007:22/tfs/ProductDevelopment/BACnet_Stack/_git/PP_BACnet
+PP_BACNET_GIT_URL           := git@svgithub01001.wago.local:BU-Automation/bacnet-ptxdist-pp_bacnet.git
 endif
 
 PP_BACNET_REL_PATH          := wago_intern/$(PP_BACNET_FOLDER)
@@ -89,7 +89,7 @@ endif
 # ----------------------------------------------------------------------------
 
 
-$(STATEDIR)/pp_bacnet.extract: 
+$(STATEDIR)/pp_bacnet.extract:
 	@$(call targetinfo)
 	@mkdir -p $(PP_BACNET_BUILDROOT_DIR)
 ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
@@ -178,7 +178,7 @@ $(STATEDIR)/pp_bacnet.targetinstall:
 	@$(call install_copy, pp_bacnet, 0, 0, 0750, -, /usr/sbin/pp_bacnet)
 	@$(call install_copy, pp_bacnet, 0, 0, 0700, -, /etc/init.d/pp_bacnet)
 	@$(call install_link, pp_bacnet, ../init.d/pp_bacnet, /etc/rc.d/S87_pp_bacnet)
-	
+
 	@$(call install_finish, pp_bacnet)
 
 	@$(call touch)

@@ -144,7 +144,7 @@ firewall.elf_SOURCES += $(call fglob_r,$(PROJECT_ROOT)/src/app,$(SOURCE_FILE_EXT
 # Settings for build target alltests.elf
 
 alltests.elf_STATICALLYLINKED += firewall gmock_main gmock gtest
-alltests.elf_LIBS += $(alltests.elf_STATICALLYLINKED) boost_filesystem
+alltests.elf_LIBS += $(alltests.elf_STATICALLYLINKED)
 alltests.elf_PKG_CONFIGS += $(libfirewall.a_PKG_CONFIGS)
 alltests.elf_PKG_CONFIG_LIBS +=
 alltests.elf_DISABLEDWARNINGS +=
@@ -170,6 +170,7 @@ alltests.elf_SOURCES += $(call fglob_r,$(PROJECT_ROOT)/test-src,$(SOURCE_FILE_EX
 # Build infrastructure
 
 -include $(SCRIPT_DIR)/buildclang_1.mk
+-include $(PTXDIST_WORKSPACE)/../wago_intern/debugging/scripts/valgrind-target.mk
 
 #######################################################################################################################
 # Custom rules

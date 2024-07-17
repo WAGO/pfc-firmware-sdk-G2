@@ -14,7 +14,7 @@
 #
 PACKAGES-$(PTXCONF_CDS3_INCLUDES) += cds3-includes
 
-CDS3_INCLUDES_VERSION	 := 0.0.1
+CDS3_INCLUDES_VERSION      := 0.0.1
 CDS3_INCLUDES              := cds3-includes
 CDS3_INCLUDES_DIR          := $(BUILDDIR)/$(CDS3_INCLUDES)
 CDS3_INCLUDES_RTS_NAME     := codesys-3
@@ -49,20 +49,7 @@ $(STATEDIR)/cds3-includes.extract:
 	mkdir -p $(CDS3_INCLUDES_DIR)
 ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
  	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
-	-mkdir $(CDS3_INCLUDES_RTS_DIR)
-	rsync -a --exclude=Documentation \
-		--exclude=Templates/ \
-		--exclude=RtsConfigurator/ \
-		--exclude=Placeholder \
-		--exclude=BuildUtils/ \
-		--exclude=.svn/ \
-		--exclude=".*" \
-		--exclude="*.o" \
-		--exclude="*.pdf"  \
-		--exclude="*tar.bz2" \
-		$(CDS3_INCLUDES_RTS_SRC_DIR) $(CDS3_INCLUDES_RTS_DIR)
 
-#normally this is needed to use but the old schroot does not have unzip so we have to go a workaround via tar.gz
 	rsync -a --exclude=.svn/ \
 		--exclude=".*" \
 		--exclude="*.d" \
@@ -100,19 +87,7 @@ $(STATEDIR)/cds3-includes.install:
 	@$(call targetinfo)
 ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 	# WAGO_TOOLS_BUILD_VERSION_TRUNK | WAGO_TOOLS_BUILD_VERSION_RELEASE
-	-mkdir -p $(PTXCONF_SYSROOT_TARGET)/usr/include/codesys3
-	rsync -a --include='*.h' \
-                 -f 'hide,! */' \
-                $(CODESYS3_DIR)/Components/ $(PTXCONF_SYSROOT_TARGET)/usr/include/codesys3/
-	rsync -a --include='*.h' \
-                 -f 'hide,! */' \
-                $(CODESYS3_DIR)/Platforms/Linux/ $(PTXCONF_SYSROOT_TARGET)/usr/include/codesys3/
 	@cp $(CDS3_INCLUDES_DIR)/*.h $(PTXCONF_SYSROOT_TARGET)/usr/include/codesys3
-	cp $(CDS3_INCLUDES_DIR)/TscInterfaces/*.h  $(PTXCONF_SYSROOT_TARGET)/usr/include/codesys3
-	$(AR) -r $(PTXCONF_SYSROOT_TARGET)/usr/lib/libcds3-includes.a
-ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_RELEASE
-
-endif
 endif
 	@$(call touch)
 

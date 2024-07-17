@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WAGO_LOGGING) += wago-logging
 #
 # Paths and names
 #
-WAGO_LOGGING_VERSION        := 1.0.0
+WAGO_LOGGING_VERSION        := 1.0.1
 WAGO_LOGGING_MD5            :=
 WAGO_LOGGING                := wago-logging
 WAGO_LOGGING_BUILDCONFIG    := Release

@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_PLCHANDLER) += plchandler
 #
 # Paths and names
 #
-PLCHANDLER_VERSION        := 3.5.17.20
+PLCHANDLER_VERSION        := 3.5.19.50
 PLCHANDLER                := PLCHandler_SDK_Linux_$(PLCHANDLER_VERSION)
 PLCHANDLER_URL            := $(call jfrog_template_to_url, PLCHANDLER)
 PLCHANDLER_SUFFIX         := $(suffix $(PLCHANDLER_URL))
@@ -25,7 +25,7 @@ PLCHANDLER_ARTIFACT        = $(call jfrog_get_filename,$(PLCHANDLER_URL))
 PLCHANDLER_SRC            := wago_intern/artifactory_sources
 PLCHANDLER_BUILDROOT_DIR  := $(BUILDDIR)/$(PLCHANDLER)
 PLCHANDLER_MD5_FILE       := $(PLCHANDLER_SRC)/$(PLCHANDLER)$(PLCHANDLER_SUFFIX).md5
-PLCHANDLER_LIB_NAME       := libCmpPLCHandler-arm
+PLCHANDLER_LIB_NAME       := libCmpPLCHandler
 # ----------------------------------------------------------------------------
 # Get
 # ----------------------------------------------------------------------------
@@ -86,7 +86,22 @@ ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 	
 	cp $(PLCHANDLER_BUILDROOT_DIR)/Include/Linux/*.h $(PTXDIST_SYSROOT_TARGET)/usr/include/plchandler
 	cp $(PLCHANDLER_BUILDROOT_DIR)/Include/*.h $(PTXDIST_SYSROOT_TARGET)/usr/include/plchandler
-	cp $(PLCHANDLER_BUILDROOT_DIR)/bin/Linux/arm/$(PLCHANDLER_LIB_NAME).a $(PTXDIST_SYSROOT_TARGET)/usr/lib
+
+ifeq ($(PTXCONF_ARCH_STRING),arm)
+	cp $(PLCHANDLER_BUILDROOT_DIR)/bin/Linux/arm/$(PLCHANDLER_LIB_NAME)-arm.a $(PTXDIST_SYSROOT_TARGET)/usr/lib/$(PLCHANDLER_LIB_NAME).a
+endif
+
+ifeq ($(PTXCONF_ARCH_STRING),arm64)
+	cp $(PLCHANDLER_BUILDROOT_DIR)/bin/Linux/arm64/$(PLCHANDLER_LIB_NAME)-arm64.a $(PTXDIST_SYSROOT_TARGET)/usr/lib/$(PLCHANDLER_LIB_NAME).a
+endif
+
+ifeq ($(PTXCONF_ARCH_STRING),x86)
+	cp $(PLCHANDLER_BUILDROOT_DIR)/bin/Linux/x86/$(PLCHANDLER_LIB_NAME)-x86.a $(PTXDIST_SYSROOT_TARGET)/usr/lib/$(PLCHANDLER_LIB_NAME).a
+endif
+
+ifeq ($(PTXCONF_ARCH_STRING),x86_64)
+	cp $(PLCHANDLER_BUILDROOT_DIR)/bin/Linux/x64/$(PLCHANDLER_LIB_NAME)-x64.a $(PTXDIST_SYSROOT_TARGET)/usr/lib/$(PLCHANDLER_LIB_NAME).a
+endif
 endif
 
 	@$(call touch)

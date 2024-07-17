@@ -1,0 +1,30 @@
+contents
+contents
+contents
+
+menu "abc"
+endmenu
+
+
+contents  	 
+contents menu "abc"
+next line contains spaces
+    
+next line contains tabs
+		
+menu "def"
+contents
+endmenu
+
+menu "hij"
+
+endmenu
+
+menu "spaces"
+    
+endmenu
+
+menu "tabs"
+		
+endmenu
+

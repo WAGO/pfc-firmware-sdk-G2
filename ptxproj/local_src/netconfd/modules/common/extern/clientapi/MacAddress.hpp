@@ -1,16 +1,15 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 #pragma once
 
+
 #include <string>
 #include <cstdint>
 #include <gsl/gsl>
-#include <type_traits>
 
 namespace netconf {
-
 struct MacAddress {
   static constexpr ::std::size_t LENGTH = 6;
-  ::std::uint8_t addr_[LENGTH] = {0};
+  ::std::array<uint8_t, LENGTH> addr_ = {};
 
   MacAddress() = default;
   explicit constexpr MacAddress(const ::std::uint8_t(& array)[LENGTH]) noexcept: addr_{}{
@@ -19,12 +18,12 @@ struct MacAddress {
     }
   }
 
-  explicit MacAddress(::gsl::span<const ::std::uint8_t, LENGTH> mac) {
-    std::copy(::std::begin(mac), ::std::end(mac), ::std::begin(addr_));
+  explicit MacAddress(const void* mac){
+    ::std::memcpy(addr_.data(), mac, LENGTH);  //NOLINT void* type must be supported because the system api only returns void*
   }
 
-  explicit MacAddress(const void* mac){
-    ::std::memcpy(addr_, mac, LENGTH);  //NOLINT void* type must be supported because the system api only returns void*
+  explicit MacAddress(const ::std::array<uint8_t, LENGTH> &mac){
+    addr_ = mac;
   }
 
   ::std::string ToString(char delim = ':') const;
@@ -40,12 +39,16 @@ struct MacAddress {
    */
   MacAddress Increment(uint32_t inc) const;
 
+  bool IsValid() const{
+      return (addr_[0] & 1) ==  0;
+  }
+
   bool operator ==(const MacAddress& other) const{
     return std::equal(std::begin(addr_), std::end(addr_), std::begin(other.addr_));
   }
 
-  constexpr const uint8_t* data() const{
-    return &addr_[0];
+  const uint8_t* data() const{
+    return addr_.data();
   }
 };
 

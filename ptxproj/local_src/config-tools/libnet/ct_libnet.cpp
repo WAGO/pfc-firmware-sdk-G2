@@ -29,7 +29,7 @@
 #include "ct_xml.h"
 #include "ct_xml_xpath.h"
 #include "ct_xslt.h"
-#ifdef __ENABLE_DSA
+#ifdef __ENABLE_SWCONFIG
 #include "ct_swconfig.h"
 #endif
 
@@ -47,6 +47,7 @@ extern "C" {
 #include <sys/stat.h>
 
 #include <typelabel_API.h>
+}
 
 struct libnetSession {
     xmlSession_t *xml;
@@ -234,24 +235,6 @@ int port2dev_ip(const ::std::string interface,
 
   strcpy(dev, bridge.c_str());
   return SUCCESS;
-}
-
-int exec_post_netconfig_scripts(const char *dev)
-{
-    int status = SUCCESS;
-    int rc;
-    GString *cmd = g_string_new("/bin/run-parts");
-
-    assert(NULL != dev);
-    if('\0' != *dev)
-    {
-        g_string_append_printf(cmd, " -a %s", dev);
-    }
-    g_string_append(cmd, " /etc/config-tools/post_netconfig.d");
-    rc = system((const char *)cmd->str);
-    status = WEXITSTATUS(rc);
-    g_string_free(cmd, TRUE);
-    return status;
 }
 
 // Assumption: string is already stripped
@@ -1579,8 +1562,7 @@ int ct_libnet_calculate_broadcast(const char *ipAddr,
     return status;
 }
 
-#ifdef __ENABLE_DSA
-
+#ifdef __ENABLE_SWCONFIG
 bool ct_libnet_swconfig_is(const char* alias)
 {
   swconfigSession_t *sessionHandle = NULL;
@@ -1615,6 +1597,7 @@ bool ct_libnet_swconfig_default_for_unsupported_switch(const char* default_value
   }
   return false;
 }
+#endif
 
 static int get_dsa_state__(char * const value, size_t const valueLen, const napi::BridgeConfig& bridge_config)
 {
@@ -1670,6 +1653,12 @@ int ct_libnet_set_dsa_state(const char *value, libnetSession_t *)
         bridge_config.AssignInterfaceToBridge("ethX2", "br1");
     }
 
+    error = napi::SetBridgeConfig(bridge_config);
+    if (error.IsNotOk())
+    {
+        return INVALID_PARAMETER;
+    }
+
     return SUCCESS;
 }
 
@@ -1689,6 +1678,7 @@ int ct_libnet_get_actual_dsa_state(char * const value, size_t const valueLen)
     return get_dsa_state__(value, valueLen, bridge_config);
 }
 
+#ifdef __ENABLE_SWCONFIG
 namespace {
 
 int swconfig_set_attr(const char *dev, const char *attr, const char *value, const char *valid_arg_list[])
@@ -2120,20 +2110,4 @@ int ct_libnet_save_switch_settings_to_config(const char *configFile, ct_switch_s
     return status;
 }
 
-
-#else
-
-// Provide value '0' if platform has no DSA feature.
-int ct_libnet_get_dsa_state(char *value, size_t valueLen, libnetSession_t *)
-{
-    assert(NULL != value);
-    assert(1 < valueLen);
-
-    value[0] = '0';
-    value[1] = '\0';
-    return SUCCESS;
-}
-
 #endif
-
-}

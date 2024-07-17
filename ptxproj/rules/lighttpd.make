@@ -21,7 +21,7 @@ PACKAGES-$(PTXCONF_LIGHTTPD) += lighttpd
 # Paths and names
 #
 LIGHTTPD_BASE_VERSION  := 1.4.70
-LIGHTTPD_WAGO_VERSION  := wago3
+LIGHTTPD_WAGO_VERSION  := wago8
 LIGHTTPD_VERSION       := $(LIGHTTPD_BASE_VERSION)+$(LIGHTTPD_WAGO_VERSION)
 LIGHTTPD_ARCHIVE_NAME  := lighttpd-$(LIGHTTPD_BASE_VERSION)
 LIGHTTPD               := lighttpd-$(LIGHTTPD_VERSION)
@@ -166,45 +166,23 @@ endif
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
 		/etc/lighttpd/mode_http+https.conf)
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/redirect_wbm.conf)
-	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/websocket_off.conf)
-	@$(call install_alternative, lighttpd, 0, 0, 0600, \
 		/etc/lighttpd/lighttpd.conf)
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
 		/etc/lighttpd/mode_https.conf)
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/redirect_webvisu.conf)
-	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/websocket_on.conf)
-	@$(call install_alternative, lighttpd, 0, 0, 0600, \
 		/etc/lighttpd/mime_types.conf)
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/tls-extended-compatibility.conf)
+		/etc/lighttpd/tls_extended_compatibility.conf)
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/tls-strong.conf)
-	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/wbm_enabled.conf)
-	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/wbm_disabled.conf)
-	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/webvisu_ports_default.conf)
-	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/webvisu_ports_separated.conf)
-	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/webvisu.conf)
-	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/openapi.conf)
-	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/auth_service.conf)
+		/etc/lighttpd/tls_strong.conf)
 
-# Config directory for FCGI plugins
+# Config directory for application specific config files
 	@$(call install_copy, lighttpd, 0, 0, 0755, \
-		/etc/lighttpd/fastcgi.confd);
+		/etc/lighttpd/apps.confd);
 
 ifdef PTXCONF_LIGHTTPD_MOD_FASTCGI_PHP
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/fastcgi.confd/php.conf)
+		/etc/lighttpd/apps.confd/php.conf)
 endif
 
 ifdef PTXCONF_LIGHTTPD_HTTPS
@@ -224,10 +202,10 @@ endif
 #	# TLS configuration (strong or standard)
 #	#
 ifdef PTXCONF_LIGHTTPD_INSTALL_CONF_LINK_HTTPS_STRONG
-	@$(call install_link, lighttpd, tls-strong.conf, \
+	@$(call install_link, lighttpd, tls_strong.conf, \
 		/etc/lighttpd/tls.conf)
 else
-	@$(call install_link, lighttpd, tls-extended-compatibility.conf, \
+	@$(call install_link, lighttpd, tls_extended_compatibility.conf, \
 		/etc/lighttpd/tls.conf)
 endif
 
@@ -251,34 +229,52 @@ else
 endif
 
 #	#
-#	# Websockets
+#	# Elrest Websocket
 #	#
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/websocket_off.conf, n)
+		/etc/lighttpd/apps.confd/websocket/websocket_off.conf)
 	@$(call install_alternative, lighttpd, 0, 0, 0600, \
-		/etc/lighttpd/websocket_on.conf, n)
-
+		/etc/lighttpd/apps.confd/websocket/websocket_on.conf)
 ifdef PTXCONF_CDS3_TSCWEBSOCKETSERVER
-	@$(call install_link, lighttpd, websocket_on.conf, \
-		/etc/lighttpd/websocket.conf)
+	@$(call install_link, lighttpd, websocket/websocket_on.conf, \
+		/etc/lighttpd/apps.confd/websocket.conf)
+else ifdef PTXCONF_CDS3_CMPWSSERVER
+	@$(call install_link, lighttpd, websocket/websocket_on.conf, \
+		/etc/lighttpd/apps.confd/websocket.conf)
 else
-	@$(call install_link, lighttpd, websocket_off.conf, \
-		/etc/lighttpd/websocket.conf)
+	@$(call install_link, lighttpd, websocket/websocket_off.conf, \
+		/etc/lighttpd/apps.confd/websocket.conf)
 endif
 
 #	#
 #	# WBM
 #	#
-	@$(call install_link, lighttpd, redirect_wbm.conf, \
+	@$(call install_alternative, lighttpd, 0, 0, 0600, \
+		/etc/lighttpd/apps.confd/wbm/wbm_enabled.conf)
+	@$(call install_alternative, lighttpd, 0, 0, 0600, \
+		/etc/lighttpd/apps.confd/wbm/wbm_disabled.conf)
+	@$(call install_alternative, lighttpd, 0, 0, 0600, \
+		/etc/lighttpd/apps.confd/wbm/redirect_wbm.conf)
+	@$(call install_link, lighttpd, wbm/wbm_enabled.conf, \
+		/etc/lighttpd/apps.confd/wbm.conf)
+
+# Redirect setting
+	@$(call install_link, lighttpd, apps.confd/wbm/redirect_wbm.conf, \
 		/etc/lighttpd/redirect_default.conf)
-	@$(call install_link, lighttpd, wbm_enabled.conf, \
-		/etc/lighttpd/wbm.conf)
 
 #	#
 #	# WebVisu
 #	#
+	@$(call install_alternative, lighttpd, 0, 0, 0600, \
+		/etc/lighttpd/apps.confd/webvisu.conf)
+	@$(call install_alternative, lighttpd, 0, 0, 0600, \
+		/etc/lighttpd/apps.confd/webvisu/webvisu_ports_default.conf)
+	@$(call install_alternative, lighttpd, 0, 0, 0600, \
+		/etc/lighttpd/apps.confd/webvisu/webvisu_ports_separated.conf)
 	@$(call install_link, lighttpd, webvisu_ports_default.conf, \
-		/etc/lighttpd/webvisu_ports.conf)
+		/etc/lighttpd/apps.confd/webvisu/webvisu_ports.conf)
+	@$(call install_alternative, lighttpd, 0, 0, 0600, \
+		/etc/lighttpd/apps.confd/webvisu/redirect_webvisu.conf)
 
 #	#
 #	# busybox init: start script

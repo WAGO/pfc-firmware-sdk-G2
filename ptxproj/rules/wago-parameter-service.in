@@ -11,10 +11,9 @@ config WAGO_PARAMETER_SERVICE
 	select LIBCOMMONHEADER                                      if WAGO_PARAMETER_SERVICE_LIB
 	select WAGO_PARAMETER_SERVICE_CORE                          if WAGO_PARAMETER_SERVICE_LIB
 	select NLOHMANN_JSON                                        if WAGO_PARAMETER_SERVICE_LIB
-	select PAM                                                  if WAGO_PARAMETER_SERVICE_LIB
-	select PAM_PAM_SUCCEED_IF                                   if PAM
 	select FCGI                                                 if WAGO_PARAMETER_SERVICE_LIB
 	select CJOSE                                                if WAGO_PARAMETER_SERVICE_LIB
+	select LIBCURL                                              if WAGO_PARAMETER_SERVICE_LIB
 	select LIGHTTPD                                             if WAGO_PARAMETER_SERVICE_LIGHTTPD_INTEGRATION
 	select WAGO_PARAMETER_SERVICE_COM                           if WAGO_PARAMETER_SERVICE_LIB
 	select WAGO_PARAMETER_SERVICE_COM_LIB                       if WAGO_PARAMETER_SERVICE_DAEMON
@@ -22,6 +21,7 @@ config WAGO_PARAMETER_SERVICE
 	select WAGO_PARAMETER_SERVICE_MODEL_FILES_WDX_CPP_HEADERS   if WAGO_PARAMETER_SERVICE_LIB
 	select WAGO_PRIVILEGES                                      if WAGO_PARAMETER_SERVICE_DAEMON
 	select WAGO_OPTPARSING                                      if WAGO_PARAMETER_SERVICE_DAEMON
+	select WAGO_AUTH_SERVICE                                    if WAGO_PARAMETER_SERVICE_DAEMON
 
 config WAGO_PARAMETER_SERVICE_LIB
 	bool

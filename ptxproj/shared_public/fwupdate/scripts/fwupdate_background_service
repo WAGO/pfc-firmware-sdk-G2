@@ -508,14 +508,16 @@ finish_clean_runtime()
     KEEP_APP=$(fwupdate_get_keep_app_flag)
     fwupdate_report_info "keep runtime application: $KEEP_APP"
 
-    if [ "$KEEP_APP" == false ]; then
-        # Runtime application will be incompatible, delete it
-        finish_clean_runtime_home
-        fwupdate_unchecked_progress_update 970 true
+    if [[ ! "$(/etc/config-tools/get_typelabel_value order)" == 750-83?? ]]; then
+        if [ "$KEEP_APP" == false ]; then
+            # Runtime application will be incompatible, delete it
+            finish_clean_runtime_home
+            fwupdate_unchecked_progress_update 970 true
 
-        # Runtime retain memory will also be incompatible, delete it
-        finish_clean_runtime_retain
-        fwupdate_unchecked_progress_update 980 true
+            # Runtime retain memory will also be incompatible, delete it
+            finish_clean_runtime_retain
+            fwupdate_unchecked_progress_update 980 true
+        fi
     fi
 }
 

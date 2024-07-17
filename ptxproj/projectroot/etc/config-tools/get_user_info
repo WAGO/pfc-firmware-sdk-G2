@@ -5,7 +5,7 @@
 #
 # This file is part of PTXdist package config-tools.
 #
-# Copyright (c) 2013-2022 WAGO GmbH & Co. KG
+# Copyright (c) 2013-2024 WAGO GmbH & Co. KG
 #-----------------------------------------------------------------------------#
 # Script:   /etc/config-tools/get_user_info
 #
@@ -61,6 +61,18 @@ function CompareDefaultWithCurrent
   return $SUCCESS
 }
 
+
+function CheckExpired
+{
+  if chage -l "$1" | grep 'Password expires' | grep -q 'password must be changed'; then
+    echo 1
+  else
+    echo 0
+  fi
+  
+  return $SUCCESS
+}
+
 #-------------- start of main-programm ------------------------#
 
 
@@ -88,6 +100,11 @@ case "$1" in
   "--is-default-pwd"|"--is-default-pwd-linux")
     login="$2"
     CompareDefaultWithCurrent $DEFAULT_AUTH_FILE_LINUX $CURRENT_AUTH_FILE_LINUX
+    status=$?
+    ;;
+  "--is-pwd-expired")
+    login="$2"
+    CheckExpired "$login"
     status=$?
     ;;
   *)

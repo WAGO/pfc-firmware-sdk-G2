@@ -59,12 +59,12 @@ fi
 
 case "$newUseSeparatedPorts" in
 
-"YES")    (cd /etc/lighttpd && ln -sf webvisu_ports_separated.conf webvisu_ports.conf)
+"YES")    (cd /etc/lighttpd/apps.confd/webvisu && ln -sf webvisu_ports_separated.conf webvisu_ports.conf)
           [[ -d /etc/config-tools/events/codesys/ ]] && run-parts -a config /etc/config-tools/events/codesys/
           restartWebserver "$restartOption"
           ;;
 
-"NO")     (cd /etc/lighttpd && ln -sf webvisu_ports_default.conf webvisu_ports.conf)
+"NO")     (cd /etc/lighttpd/apps.confd/webvisu && ln -sf webvisu_ports_default.conf webvisu_ports.conf)
           [[ -d /etc/config-tools/events/codesys/ ]] && run-parts -a config /etc/config-tools/events/codesys/
           restartWebserver "$restartOption"
           ;;

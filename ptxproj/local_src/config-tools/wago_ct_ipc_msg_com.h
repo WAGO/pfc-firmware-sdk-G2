@@ -43,7 +43,7 @@ typedef int (*tpFktProcessMessage)(void*    pstMsgContent,
 typedef struct 
 {
   // first element of message structure, normaly "message type" - used for addressing
-  uint32_t  receiveAddress;
+  long  receiveAddress;
 
   // addresser which has sended the message and wants to get the answer (if one is necessairy)
   uint32_t  returnAddress;

@@ -52,7 +52,7 @@ INSTALL_TARGETS += \
 SHARED_CCXXFLAGS += -fPIC
 SHARED_CCXXFLAGS += -fvisibility=hidden
 SHARED_CFLAGS    += $(call option_std,gnu11)
-SHARED_CXXFLAGS  += $(call option_std,gnu++2a) -fchar8_t
+SHARED_CXXFLAGS  += $(call option_std,gnu++17) -fchar8_t
 SHARED_CXXFLAGS  += -fvisibility-inlines-hidden
 SHARED_INCLUDES  += -I$(PROJECT_ROOT)/src/get_snmp_data/
 
@@ -84,8 +84,8 @@ libget_snmp_data.a_CLANG_TIDY_CHECKS += -clang-diagnostic-c++98-c++11-c++14-comp
 #######################################################################################################################
 # Settings for build target alltests.elf
 
-alltests.elf_LIBS             += get_snmp_data gmock_main gmock
-alltests.elf_STATICALLYLINKED += get_snmp_data gmock_main gmock
+alltests.elf_LIBS             += get_snmp_data gmock_main gmock gtest
+alltests.elf_STATICALLYLINKED += get_snmp_data gmock_main gmock gtest
 alltests.elf_PKG_CONFIGS      += $(libget_snmp_data.a_PKG_CONFIGS)
 alltests.elf_DISABLEDWARNINGS +=
 alltests.elf_PREREQUISITES    += $(call local_prerequisites,alltests.elf)

@@ -118,7 +118,7 @@ class EthTool {
     return supports_link_settings_;
   }
  private:
-  int link_mode_masks_nwords_ = 0;
+  size_t link_mode_masks_nwords_ = 0;
   Socket socket_;
   bool supports_link_settings_ = false;
   ::ifreq ifreq_;

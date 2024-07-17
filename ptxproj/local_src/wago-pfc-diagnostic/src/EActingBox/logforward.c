@@ -142,8 +142,8 @@ void SyslogForwarder (com_tConnection* con, com_tComMessage* msg)
   int perm;
 
 
-  com_MSG_GetParams(con, msg,  COM_TYPE_INT32,   &tv.tv_sec,
-                               COM_TYPE_INT32,   &tv.tv_usec,
+  com_MSG_GetParams(con, msg,  COM_TYPE_TIME_T,  &tv.tv_sec,
+                               COM_TYPE_TIME_T,  &tv.tv_usec,
                                COM_TYPE_STRING,  &programname,
                                COM_TYPE_BOOLEAN, &set,
                                COM_TYPE_INVALID);

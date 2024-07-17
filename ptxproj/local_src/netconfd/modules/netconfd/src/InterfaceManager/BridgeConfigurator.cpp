@@ -3,6 +3,7 @@
 #include "BridgeConfigurator.hpp"
 
 #include <algorithm>
+#include <cstddef>
 
 #include "CollectionUtils.hpp"
 #include "CommandExecutor.hpp"
@@ -10,7 +11,9 @@
 
 namespace netconf {
 
-BridgeConfigurator::BridgeConfigurator(INetDevManager &netdev_manager) : netdev_manager_{netdev_manager} {
+BridgeConfigurator::BridgeConfigurator(INetDevManager &netdev_manager, IBridgeChangeEvent &bridge_change_event)
+    : netdev_manager_{netdev_manager}, bridge_change_event_{bridge_change_event} {
+      LogDebug("use default BridgeConfigurator");
 }
 
 Status BridgeConfigurator::RemoveAllActualBridgesThatAreNotNeeded(BridgeConfig const &config,
@@ -22,6 +25,7 @@ Status BridgeConfigurator::RemoveAllActualBridgesThatAreNotNeeded(BridgeConfig c
 
   for (const auto &bridge : bridges) {
     if (config.find(bridge) == config.end()) {
+      bridge_change_event_.OnBridgeRemove(bridge);
       netdev_manager_.SetDown(bridge);
       netdev_manager_.Delete(bridge);
     } else {
@@ -40,6 +44,7 @@ Status BridgeConfigurator::RemoveAllActualBridgeInterfacesThatAreNotNeeded(Bridg
     for (const auto &port_interface : actual_port_interfaces) {
       if (IsNotIncluded(port_interface, port_interfaces)) {
         netdev_manager_.BridgePortLeave(port_interface);
+        bridge_change_event_.OnBridgeAddOrPortChange(actual_bridge, port_interfaces);
       }
     }
   }
@@ -82,6 +87,7 @@ Status BridgeConfigurator::AddMissingBridgesAndTheirInterfaces(BridgeConfig cons
           break;
         }
       }
+      bridge_change_event_.OnBridgeAddOrPortChange(bridge_interface, port_interfaces);
     }
   }
   return status;
@@ -95,11 +101,10 @@ Status BridgeConfigurator::SetAllBridgesUp(Interfaces const &bridges) const {
   return status;
 }
 
-Status BridgeConfigurator::Configure(const BridgeConfig& config) const {
+Status BridgeConfigurator::Configure(const BridgeConfig &config) const {
   Interfaces current_bridges;
   Status status = RemoveAllActualBridgesThatAreNotNeeded(config, current_bridges);
   LOG_STATUS(status);
-
   if (status.IsOk()) {
     status = RemoveAllActualBridgeInterfacesThatAreNotNeeded(config, current_bridges);
     LOG_STATUS(status);
@@ -112,6 +117,7 @@ Status BridgeConfigurator::Configure(const BridgeConfig& config) const {
     status = AddMissingBridgesAndTheirInterfaces(config, current_bridges);
     LOG_STATUS(status);
   }
+
   if (status.IsOk()) {
     status = SetAllBridgesUp(current_bridges);
     LOG_STATUS(status);
@@ -126,7 +132,6 @@ Interfaces BridgeConfigurator::GetBridgeAssignedInterfaces() const {
     interfaces = Concatenate(interfaces, netdev_manager_.GetPorts(bridge));
   }
   return interfaces;
-
 }
 
 }  // namespace netconf

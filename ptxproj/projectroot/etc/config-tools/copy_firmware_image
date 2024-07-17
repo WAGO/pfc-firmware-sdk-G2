@@ -6,7 +6,7 @@
 #
 # This file is part of PTXdist package config-tools.
 #
-# Copyright (c) 2011-2022 WAGO GmbH & Co. KG
+# Copyright (c) 2011-2024 WAGO GmbH & Co. KG
 #-----------------------------------------------------------------------------#
 #-----------------------------------------------------------------------------#
 # Script:   copy_firmware_image
@@ -16,6 +16,7 @@
 # Author:   StM: WAGO GmbH & Co. KG
 # Author:   AGa: WAGO GmbH & Co. KG
 # Author:   PEn: WAGO GmbH & Co. KG
+# Author:   WF : WAGO GmbH & Co. KG
 #-----------------------------------------------------------------------------#
 
 
@@ -225,15 +226,13 @@ if [[ "$destinationMedium" == "$SD_CARD" ]] && [[ "$size" == "" ]]; then
   exit $MISSING_PARAMETER
 fi
 
+echo "start copy from ${sourceDevice} to ${destinationDevice}"
+eventmsg -n copy_firmware_image 0x000000A
+
 if [[ "$ret" == "$SUCCESS" ]]; then
     # copy firmware contents
-    echo "start copy from ${sourceDevice} to ${destinationDevice}"
-    eventmsg -n copy_firmware_image 0x000000A
-
     FORCE_UMOUNT=$FORCE_UMOUNT "/usr/sbin/${BOARD_ID}_copy_data.sh" "${sourceDevice}" "${destinationDevice}" "${size}"
     ret=$?
-
-    eventmsg -r -n copy_firmware_image 0x000000A
 fi
 
 if [[ "$ret" == "$SUCCESS" ]]; then
@@ -246,6 +245,8 @@ if [[ "$ret" == "$SUCCESS" ]]; then
         fi
     fi
 fi
+
+eventmsg -r -n copy_firmware_image 0x000000A
 
 case $ret in 
   $SUCCESS)

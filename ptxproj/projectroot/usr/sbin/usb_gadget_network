@@ -42,7 +42,6 @@ start  $START
 stop  $STOP
 interface  $IFNAME
 lease_file $LEASES
-option  domain  $DOMAIN
 option subnet 255.255.255.252
 EOF
   mv "$UDHCPD".tmp "$UDHCPD"

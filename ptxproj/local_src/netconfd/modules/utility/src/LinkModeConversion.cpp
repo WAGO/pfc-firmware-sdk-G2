@@ -111,7 +111,7 @@ LinkModes ToLinkModes(gsl::span<const uint32_t> linkmodes) {
     for(auto i = 0U; i < 32; ++i) {
       if (BitIsSet(linkmode, i)) {
         auto lm = ToLinkMode(static_cast<ethtool_link_mode_bit_indices>(bitIndex));
-        if (lm){
+        if (lm && modes.cend() == ::std::find(modes.cbegin(), modes.cend(), lm)) {
           modes.push_back(lm);
         }
       }

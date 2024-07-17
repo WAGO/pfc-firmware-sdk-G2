@@ -87,8 +87,6 @@ else ifdef PTXCONF_LED_SERVER_2_HAL_GPIO_PERSPECTO
 	LED_SERVER_2_CONF_OPT +=  --with-gpiovariant=perspecto
 endif
 
-	LED_SERVER_2_CONF_OPT += --with-platform=$(PTXCONF_PLATFORM)
-
 ifdef PTXCONF_LED_SERVER_2_DEBUGGING
 	LED_SERVER_2_CONF_OPT += --enable-debug 
 endif

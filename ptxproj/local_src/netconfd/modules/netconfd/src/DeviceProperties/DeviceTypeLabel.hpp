@@ -30,10 +30,6 @@ class DeviceTypeLabel : public IDeviceTypeLabel {
   MacAddress mac_;
   uint32_t mac_count_;
 
-  void GetMacFallback();
-  void GetOrderFallback();
-
-
 };
 
 }

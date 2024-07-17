@@ -118,6 +118,8 @@ PRODUCTION_IMAGES += $(OUT_DIR)/emmc-commission-pfc200v3_$(IMAGE_ID).img
 
 PRODUCTION_IMAGES += $(OUT_DIR)/emmc-wago-production-pfc100g2_$(IMAGE_ID).img
 PRODUCTION_IMAGES += $(OUT_DIR)/emmc-commission-pfc100g2_$(IMAGE_ID).img
+else ifeq ($(PLATFORM),wago-pfc300)
+PRODUCTION_IMAGES += $(OUT_DIR)/linuximage-production_$(IMAGE_ID).fit
 endif
 
 PRODUCTION_IMAGES += $(OUT_DIR)/firmware_$(IMAGE_ID).hex
@@ -133,6 +135,8 @@ ROOT_DEBUG_ARCHIVE += $(OUT_DIR)/root-debug_$(IMAGE_ID).tar.gz
 
 INDEX ?= $(OUT_DIR)/index.json
 INDEX_GENERATOR ?= $(BUILDSUPPORTDIR)/create_index.sh
+
+SBOM = $(OUT_DIR)/sbom.txt
 
 # Select default dist targets
 DIST_TARGETS += $(OUT_DIR)/root.tgz
@@ -156,6 +160,7 @@ ifneq ($(IMAGE_DIR),$(OUT_DIR))
 DIST_TARGETS += $(ROOT_DEBUG_ARCHIVE)
 endif
 #DIST_TARGETS += $(INDEX)
+DIST_TARGETS += $(SBOM)
 
 .PHONY: default
 default: dist
@@ -168,7 +173,7 @@ default: dist
 
 # Main targets
 #######################################################################################################################
-.PHONY: dist distclean sdcard wup updatefile updatepack production_images additional_packages fw_desc_files index
+.PHONY: dist distclean sdcard wup updatefile updatepack production_images additional_packages fw_desc_files index sbom
 
 
 dist: $(DIST_TARGETS) additional_packages
@@ -187,6 +192,8 @@ additional_packages:
 	ptxdist targetinstall $(ADDITIONAL_PACKAGES)
 
 index: $(INDEX)
+
+sbom: $(SBOM)
 
 distclean:
 	   rm -f $(DIST_TARGETS) \
@@ -209,6 +216,10 @@ $(OUT_DIR)/ptxdist.images.stage: | $(OUT_DIR)
 
 $(OUT_DIR)/%: $(TARGETROOT)/etc/% | $(OUT_DIR)
 	@echo "Extract from target root directory: $<"
+	cp $< $@
+
+$(OUT_DIR)/%_$(IMAGE_ID).fit: $(IMAGE_DIR)/%.fit | $(OUT_DIR)
+	@echo "Create versioned image by copy: $<"
 	cp $< $@
 
 $(OUT_DIR)/%_$(IMAGE_ID).img: $(IMAGE_DIR)/%.img | $(OUT_DIR)
@@ -291,6 +302,12 @@ $(INDEX): $(INDEX_GENERATOR) Makefile | $(OUT_DIR)
 	                                $(SD_IMAGE) \
 	                                $(RAUC_UPDATEFILE)\
 	                                $(WUP)\
+
+.PHONY: $(SBOM)
+$(SBOM): | $(OUT_DIR)
+	@echo "Create SBOM"
+	# Note: base and platform-opengl are meta packages without further information
+	ptxdist package-info `ptxdist print PACKAGES-y | sed -e 's/ base / /g' -e 's/ platform-opengl / /g'` > $(SBOM)
 
 $(OUT_DIR):
 	mkdir -p $@

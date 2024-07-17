@@ -67,6 +67,9 @@ endif
 
 $(STATEDIR)/cds3-tscsyncbootproject.prepare:
 	@$(call targetinfo)
+ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	$(MAKE) -C $(CDS3_TSCSYNCBOOTPROJECT_DIR) SYSROOT=$(PTXCONF_SYSROOT_TARGET) dep
+endif
 	@$(call touch)
 
 

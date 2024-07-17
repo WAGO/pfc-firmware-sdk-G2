@@ -46,7 +46,9 @@ static const ::std::map<StatusCode, ::std::string> status_text = {
     { StatusCode::LINK_MODE_NOT_SUPPORTED,       "Interface %s does not support (speed %s/duplex %s)" },
     { StatusCode::AUTONEGOTIATION_NOT_SUPPORTED, "Interface %s does not support Autonegotiation" },
     { StatusCode::DEVICE_TYPE_NOT_SOPPORTED,     "Device type %s not supported" },
-    { StatusCode::INTERFACE_VALIDATION,          "Interface validation error: %s" }
+    { StatusCode::INTERFACE_VALIDATION,          "Interface validation error: %s" },
+    { StatusCode::REDUNDANCY,                    "Redundancy error: %s" },
+    { StatusCode::LINK_MODE_NOT_CONFIGURABLE,    "Interface %s does not allow to configure (speed %s/duplex %s)" },
 
 };
   // clang-format on

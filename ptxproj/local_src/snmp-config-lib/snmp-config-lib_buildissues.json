@@ -1,0 +1,15 @@
+{
+  "_class": "io.jenkins.plugins.analysis.core.restapi.ReportApi",
+  "issues": [
+    {
+      "fileName": "local_src/snmp-config-lib/test-src/SnmpUserConfTest.cpp",
+      "lineStart": "51",
+      "columnStart": "1",
+      "category": "Warning:clang-diagnostic-deprecated-declarations",
+      "severity": "NORMAL",
+      "message": "'InstantiateTestCase_P_IsDeprecated' is deprecated: INSTANTIATE_TEST_CASE_P is deprecated, please use INSTANTIATE_TEST_SUITE_P [clang-diagnostic-deprecated-declarations]",
+      "moduleName": "snmp-config-lib-tests"
+    }
+  ],
+  "size": 1
+}

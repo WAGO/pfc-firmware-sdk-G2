@@ -1,0 +1,264 @@
+#!/bin/bash
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2020-2022 WAGO GmbH & Co. KG
+
+#-----------------------------------------------------------------------------#
+# Script-name: config_docker
+#
+# Configure docker settings.
+#
+# Author: WAGO GmbH & Co.KG
+#-----------------------------------------------------------------------------#
+
+# load general definitions and functions
+if [ ! -f "/etc/config-tools/config_tool_lib" ]; then
+  SetLastError "Config_tool_lib missing"
+  status=255
+  exit $status
+fi
+
+. /etc/config-tools/config_tool_lib
+
+#--------------------------------------------------------------------
+# help text (requested with specified parameter).
+#--------------------------------------------------------------------
+
+# show help-text if requested
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+  echo
+  echo "* Change docker settings *"
+  echo
+  echo "Usage: config_docker -h, --help or"
+  echo "       config_docker <<argument>>"
+  echo
+  echo "-h --help            Prints this help"
+  echo
+  echo "The config-tool can be called with the following arguments:"
+  echo
+  echo "install              Installs docker on the system"
+  echo "remove               Removes docker from the system"
+  echo "activate             Activates docker on startup"
+  echo "deactivate           Deactivates docker on startup"
+  echo
+  exit $SUCCESS
+fi
+
+DOCKER_DAEMON=dockerd
+DOCKER_START_SCRIPT=S99_docker
+
+DOCKER_DATA=/home/docker
+
+EBT_CONFIG='/etc/firewall/ebtables/ebwlist.xml'
+DOCKER_MAC='02:42:00:00:00:00'
+DOCKER_MASK='ff:ff:00:00:00:00'
+
+#--------------------------------------------------------------------
+# functions
+#--------------------------------------------------------------------
+
+checkBootDevice() {
+  if [ $(/etc/config-tools/get_filesystem_data active-partition-medium) = "sd-card" ]; then
+    SetLastError "Device is booted from sd-card"
+    status=-2
+    exit $status
+  fi
+}
+
+install() {
+
+    STATUS=$(/etc/config-tools/get_docker_config activation-status)
+    if [[ $STATUS != "inactive" ]]; then
+    		SetLastError "internal error"
+        status=$INTERNAL_ERROR
+    fi 
+}
+
+remove() {
+    STATUS=$(/etc/config-tools/get_docker_config activation-status)
+    if [[ $STATUS == "active" ]]; then
+    		deactivate
+    fi
+    rm -rf $DOCKER_DATA
+}
+
+activate() {
+    STATUS=$(/etc/config-tools/get_docker_config install-status)
+    if [[ $STATUS == "not installed" ]]; then
+    		install
+    fi
+    
+    if [ -f /etc/rc.d/disabled/$DOCKER_START_SCRIPT ]; then
+        mv /etc/rc.d/disabled/$DOCKER_START_SCRIPT /etc/rc.d
+    fi
+    
+    IP_FORWARDING=$(/etc/config-tools/config_routing -g general)
+    if [[ $IP_FORWARDING == "state=disabled" ]]; then
+        /etc/config-tools/config_routing -c general state=enabled > /dev/null 2>&1
+    fi
+
+    add_or_enable_docker_ebt_rule
+
+    /etc/init.d/$DOCKER_DAEMON start > /dev/null 2>&1
+
+    STATUS=$(/etc/config-tools/get_docker_config activation-status)
+    START_TIME=$(date +%s)
+
+    while [[ "$STATUS" != "active" ]] && [ $(( NOW_TIME - START_TIME )) -lt 30 ]; do
+      sleep 2
+      STATUS=$(/etc/config-tools/get_docker_config activation-status)
+      NOW_TIME=$(date +%s)
+    done
+
+    if [[ "$STATUS" != "active" ]]; then
+      SetLastError "Docker could not be activated"
+      status=-3
+      exit $status
+    fi
+}
+
+deactivate() {
+    if [ -f /etc/rc.d/$DOCKER_START_SCRIPT ]; then
+        mv /etc/rc.d/$DOCKER_START_SCRIPT /etc/rc.d/disabled
+    fi
+    /etc/init.d/$DOCKER_DAEMON stop > /dev/null 2>&1
+    if pidof dockerd; then
+        killall -9 dockerd
+    fi
+
+    disable_docker_ebt_rule
+}
+
+query_ebt_config ()
+{
+  local path; path="$1"
+
+  xmlstarlet sel -N f=http://www.wago.com/security/firewall -T -t -v "${path}" "${EBT_CONFIG}"
+}
+
+ebt_mode ()
+{
+  query_ebt_config '/f:firewall/f:ethernet/@mode'
+}
+
+ebt_count_rules ()
+{
+  query_ebt_config 'count(/f:firewall/f:ethernet/f:whitelist/f:host)'
+}
+
+ebt_rule_state ()
+{
+  local index; index="$1"
+
+  query_ebt_config "/f:firewall/f:ethernet/f:whitelist/f:host[${index}]/@state"
+}
+
+ebt_rule_mac ()
+{
+  local index; index="$1"
+
+  query_ebt_config "/f:firewall/f:ethernet/f:whitelist/f:host[${index}]/@mac"
+}
+
+ebt_rule_mask ()
+{
+  local index; index="$1"
+
+  query_ebt_config "/f:firewall/f:ethernet/f:whitelist/f:host[${index}]/@mask"
+}
+
+ebt_enable_docker_rule ()
+{
+  local index; index="$1"
+
+  /etc/config-tools/firewall ebtables --upd-host ${index} on "${DOCKER_MAC}" "${DOCKER_MASK}" --apply 1>/dev/null 2>&1
+}
+
+ebt_disable_docker_rule ()
+{
+  local index; index="$1"
+
+  /etc/config-tools/firewall ebtables --upd-host ${index} off "${DOCKER_MAC}" "${DOCKER_MASK}" --apply 1>/dev/null 2>&1
+}
+
+ebt_add_docker_rule ()
+{
+  /etc/config-tools/firewall ebtables --add-host on "${DOCKER_MAC}" "${DOCKER_MASK}" --apply 1>/dev/null 2>&1
+}
+
+ebt_find_docker_rule ()
+{
+  local number_of_rules
+  number_of_rules=$(ebt_count_rules)
+  local i; i=1
+
+  while [ ${number_of_rules} -ge ${i} ]; do
+    # check if this is special docker rule matching
+    # docker bridge MAC address and mask
+    if [ "${DOCKER_MAC}" = "$(ebt_rule_mac ${i})" ] && \
+         [ "${DOCKER_MASK}" = "$(ebt_rule_mask ${i})" ]; then
+      echo ${i}
+      return
+    fi
+
+    i=$((i+1))
+  done
+
+  return 1
+}
+
+add_or_enable_docker_ebt_rule ()
+{
+  local rule
+
+  if [ "whitelist" = "$(ebt_mode)" ]; then
+    if rule=$(ebt_find_docker_rule); then
+      if [ "off" = "$(ebt_rule_state ${rule})" ]; then
+        # rule exists, but is inactive
+        ebt_enable_docker_rule ${rule}
+      fi
+    else
+      # rule not found
+      ebt_add_docker_rule
+    fi
+  fi
+}
+
+disable_docker_ebt_rule ()
+{
+  local rule
+
+  if [ "whitelist" = "$(ebt_mode)" ]; then
+    if rule=$(ebt_find_docker_rule); then
+      if [ "on" = "$(ebt_rule_state ${rule})" ]; then
+        # rule exists and is inactive
+        ebt_disable_docker_rule ${rule}
+      fi
+    fi
+  fi
+}
+
+#--------------------------------------------------------------------
+# main
+#--------------------------------------------------------------------
+
+status=$SUCCESS
+
+checkBootDevice
+
+if [ "$1" = "install" ]; then
+    install
+elif [ "$1" = "remove" ]; then
+    remove
+elif [ "$1" = "activate" ]; then
+    activate
+elif [ "$1" = "deactivate" ]; then
+    deactivate
+else
+    SetLastError "Invalid input parameter ($1)"
+    status=$INVALID_PARAMETER
+fi
+
+exit $status

@@ -19,7 +19,6 @@
 #ifndef WAGOSNMP_INTERNAL_H_
 #define WAGOSNMP_INTERNAL_H_
 
-#include <errno.h>
 #include <mqueue.h>
 #include <net-snmp/net-snmp-config.h>
 #include <net-snmp/net-snmp-includes.h>
@@ -107,31 +106,31 @@ typedef struct {
 } __attribute__((packed)) tOidObject;
 
 typedef struct {
-  int oidShmSize;
-  int oidCount;
+  size_t oidShmSize;
+  size_t oidCount;
   tOidObject oidStart[];
 } __attribute__((packed)) tOidShm;
 
 int INTERNAL_SnmpInput(int operation, netsnmp_session *session, int reqid, netsnmp_pdu *pdu, void *magic);
-INTERNAL_SYM int INTERNAL_SetAuthPriv(tWagoSnmpTranceiver *trcv, netsnmp_session *session);
+INTERNAL_SYM tWagoSnmpReturnCode INTERNAL_SetAuthPriv(tWagoSnmpTranceiver *trcv, netsnmp_session *session);
 INTERNAL_SYM void INTERNAL_InitSnmp(void);
 INTERNAL_SYM void INTERNAL_ResetSnmpAgent(void);
 INTERNAL_SYM void INTERNAL_InitSnmpAgent(void);
 INTERNAL_SYM void INTERNAL_ReTwist(netsnmp_variable_list *stData);
-INTERNAL_SYM int INTERNAL_SetVarTypedValue(netsnmp_variable_list *stData, u_char eType, u_char *input, size_t size);
+INTERNAL_SYM int INTERNAL_SetVarTypedValue(netsnmp_variable_list *stData, tWagoSnmpDataType eType, const void *input, size_t size);
 INTERNAL_SYM void INTERNAL_DeTwist(netsnmp_variable_list *stData);
-INTERNAL_SYM int INTERNAL_SnprintValue(char *buf, size_t buf_len, const oid *objid, size_t objidlen,
+INTERNAL_SYM int INTERNAL_SnprintValue(char *buf, size_t buf_len,
                                        const netsnmp_variable_list *variable);
 INTERNAL_SYM char *INTERNAL_StripQuotes(char *p);
-INTERNAL_SYM int INTERNAL_Tranceive(tWagoSnmpTranceiver *trcv, netsnmp_pdu *pdu, netsnmp_session *ss);
-INTERNAL_SYM int INTERNAL_GetSnmpPdu(tWagoSnmpTranceiver *trcv, netsnmp_pdu **pdu);
+INTERNAL_SYM tWagoSnmpReturnCode INTERNAL_Tranceive(tWagoSnmpTranceiver *trcv, netsnmp_pdu *pdu, netsnmp_session *ss);
+INTERNAL_SYM tWagoSnmpReturnCode INTERNAL_GetSnmpPdu(tWagoSnmpTranceiver *trcv, netsnmp_pdu **pdu);
 INTERNAL_SYM tWagoSnmpReturnCode INTERNAL_GetSnmpSession(tWagoSnmpTranceiver *trcv, netsnmp_session **ss);
-INTERNAL_SYM int INTERNAL_ConvertTlvToTrapVar(tTrapVariableType *var, netsnmp_variable_list *stData);
+INTERNAL_SYM tWagoSnmpReturnCode INTERNAL_ConvertTlvToTrapVar(tTrapVariableType *var, netsnmp_variable_list *stData);
 INTERNAL_SYM int INTERNAL_SendTrapMsg(tWagoSnmpMsg *msg);
 INTERNAL_SYM int INTERNAL_SendReleaseOIDs(void);
 INTERNAL_SYM int INTERNAL_InformForNewOid(tOidObject *object);
 INTERNAL_SYM netsnmp_session *INTERNAL_GenerateSession_v1_v2c(char sHost[128], char sCommunity[64], long version);
-INTERNAL_SYM int INTERNAL_AddVarAndSend(char sOID[128], netsnmp_variable_list *stData, netsnmp_session *ss,
+INTERNAL_SYM tWagoSnmpReturnCode INTERNAL_AddVarAndSend(char sOID[128], netsnmp_variable_list *stData, netsnmp_session *ss,
                                         netsnmp_pdu *pdu);
 INTERNAL_SYM netsnmp_pdu *INTERNAL_GetTrap2PDU_v2_v3(char sEnterprise[128], tWagoSnmpReturnCode *result);
 
@@ -146,11 +145,11 @@ INTERNAL_SYM void AGENT_DestroyMutex(void);
 INTERNAL_SYM void AGENT_CreateShm(void);
 INTERNAL_SYM void AGENT_CloseShm(void);
 INTERNAL_SYM void AGENT_DestroyShm(void);
-INTERNAL_SYM int AGENT_ExtendShm(int size);
+INTERNAL_SYM int AGENT_ExtendShm(size_t size);
 
 INTERNAL_SYM tOidObject *AGENT_GetNextOidObject(tOidObject *pAct);
 INTERNAL_SYM tOidObject *AGENT_GetOidObject(oid *anOID, size_t anOID_len);
-INTERNAL_SYM tOidObject *AGENT_GetFreeOidObject(int size);
+INTERNAL_SYM tOidObject *AGENT_GetFreeOidObject(size_t size);
 INTERNAL_SYM void AGENT_SetOidObjectValue(tOidObject *pObj, netsnmp_variable_list *stData);
 INTERNAL_SYM tWagoSnmpReturnCode AGENT_CreateNewOidObject(oid *anOID, size_t anOID_len, netsnmp_variable_list *stData,
                                                           uint8_t readOnly);

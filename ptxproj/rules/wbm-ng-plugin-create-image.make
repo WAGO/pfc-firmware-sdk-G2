@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WBM_NG_PLUGIN_CREATE_IMAGE) += wbm-ng-plugin-create-image
 #
 # Paths and names
 #
-WBM_NG_PLUGIN_CREATE_IMAGE_VERSION        := 1.2.1
+WBM_NG_PLUGIN_CREATE_IMAGE_VERSION        := 1.2.2
 WBM_NG_PLUGIN_CREATE_IMAGE                := wbm-create-image-$(WBM_NG_PLUGIN_CREATE_IMAGE_VERSION)
 WBM_NG_PLUGIN_CREATE_IMAGE_URL            := $(call jfrog_template_to_url, WBM_NG_PLUGIN_CREATE_IMAGE)
 WBM_NG_PLUGIN_CREATE_IMAGE_SUFFIX         := $(suffix $(WBM_NG_PLUGIN_CREATE_IMAGE_URL))

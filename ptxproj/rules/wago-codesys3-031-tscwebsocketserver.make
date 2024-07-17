@@ -14,11 +14,11 @@
 #
 PACKAGES-$(PTXCONF_CDS3_TSCWEBSOCKETSERVER) += cds3-tscwebsocketserver
 
-CDS3_TSCWEBSOCKETSERVER_VERSION      := 2.0.18
-CDS3_SYSUTIL_VERSION                 := 2.0.13
-CDS3_TSCWEBSOCKETSERVER_MD5          := bbb6e55cc8c3c59930a01963e22187c9
+CDS3_TSCWEBSOCKETSERVER_VERSION      := 2.0.19
+CDS3_SYSUTIL_VERSION1                 := 2.0.13
+CDS3_TSCWEBSOCKETSERVER_MD5          := 0be487380cde215e586eb439df19eb46
 CDS3_TSCWEBSOCKETSERVER_SUFFIX       := tgz
-CDS3_TSCWEBSOCKETSERVER              := cds3_cmp_wsserver_2_0_18_wsfrontend_1_7_0
+CDS3_TSCWEBSOCKETSERVER              := cds3_cmp_wsserver_2_0_19_wsfrontend_1_7_0
 CDS3_TSCWEBSOCKETSERVER_DIR          := $(BUILDDIR)/$(CDS3_TSCWEBSOCKETSERVER)
 CDS3_TSCWEBSOCKETSERVER_URL          := http://svsv01003/svn/repo14/$(CDS3_TSCWEBSOCKETSERVER).$(CDS3_TSCWEBSOCKETSERVER_SUFFIX)
 
@@ -80,10 +80,10 @@ $(STATEDIR)/cds3-tscwebsocketserver.install:
 	@ln -s $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libCmpWSServer.so.$(CDS3_TSCWEBSOCKETSERVER_VERSION) $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libCmpWSServer.so
 # Clean all libSysUtil.so files and install the proper files and links
 	@rm -f $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libSysUtil.so*
-	@install -D -m755 $(CDS3_TSCWEBSOCKETSERVER_DIR)/libSysUtil.so.$(CDS3_SYSUTIL_VERSION) $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libSysUtil.so.$(CDS3_SYSUTIL_VERSION)
-	@ln -s $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libSysUtil.so.$(CDS3_SYSUTIL_VERSION) $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libSysUtil.so.2.0
-	@ln -s $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libSysUtil.so.$(CDS3_SYSUTIL_VERSION) $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libSysUtil.so.2
-	@ln -s $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libSysUtil.so.$(CDS3_SYSUTIL_VERSION) $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libSysUtil.so	
+	@install -D -m755 $(CDS3_TSCWEBSOCKETSERVER_DIR)/libSysUtil.so.$(CDS3_SYSUTIL_VERSION1) $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libSysUtil.so.$(CDS3_SYSUTIL_VERSION1)
+	@ln -s $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libSysUtil.so.$(CDS3_SYSUTIL_VERSION1) $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libSysUtil.so.2.0
+	@ln -s $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libSysUtil.so.$(CDS3_SYSUTIL_VERSION1) $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libSysUtil.so.2
+	@ln -s $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libSysUtil.so.$(CDS3_SYSUTIL_VERSION1) $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/usr/lib/libSysUtil.so	
 # Clean eWS.js file and install proper one
 	@rm -f $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/eWS.js
 	@install -D -m755 $(CDS3_TSCWEBSOCKETSERVER_DIR)/eWS.js $(PKGDIR)/$(CDS3_TSCWEBSOCKETSERVER)/eWS.js
@@ -105,7 +105,7 @@ $(STATEDIR)/cds3-tscwebsocketserver.targetinstall:
 	@$(call install_lib, cds3-tscwebsocketserver, 0, 0, 0755, libCmpWSServer)
 	@$(call install_lib, cds3-tscwebsocketserver, 0, 0, 0755, libSysUtil)
 	@$(call install_link, cds3-tscwebsocketserver, ../libCmpWSServer.so.$(CDS3_TSCWEBSOCKETSERVER_VERSION), /usr/lib/cds3-custom-components/libCmpWSServer.so)
-	@$(call install_link, cds3-tscwebsocketserver, ../libSysUtil.so.$(CDS3_SYSUTIL_VERSION), /usr/lib/cds3-custom-components/libSysUtil.so)
+	@$(call install_link, cds3-tscwebsocketserver, ../libSysUtil.so.$(CDS3_SYSUTIL_VERSION1), /usr/lib/cds3-custom-components/libSysUtil.so)
 
 	@$(call install_alternative, cds3-tscwebsocketserver , 0, 0, 0644, $(PTXCONF_CDS3_PLCCONFIGDIR)/$(CDS3_TSCWEBSOCKETSERVER_CONFIGFILE))
 

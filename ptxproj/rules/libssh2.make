@@ -14,8 +14,8 @@ PACKAGES-$(PTXCONF_LIBSSH2) += libssh2
 #
 # Paths and names
 #
-LIBSSH2_VERSION	:= 1.9.0
-LIBSSH2_MD5	:= 1beefafe8963982adc84b408b2959927
+LIBSSH2_VERSION	:= 1.11.0
+LIBSSH2_MD5	:= a01d543fd891ca48fe47726540d50b17
 LIBSSH2		:= libssh2-$(LIBSSH2_VERSION)
 LIBSSH2_SUFFIX	:= tar.gz
 LIBSSH2_URL	:= http://www.libssh2.org/download/$(LIBSSH2).$(LIBSSH2_SUFFIX)
@@ -36,9 +36,6 @@ LIBSSH2_AUTOCONF := \
 	$(CROSS_AUTOCONF_USR) \
 	$(GLOBAL_LARGE_FILE_OPTION) \
 	--disable-rpath \
-	--enable-crypt-none \
-	--enable-mac-none \
-	--disable-gex-new \
 	--disable-clear-memory \
 	--enable-debug \
 	--enable-hidden-symbols \

@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_LIBCGROUPCPULOAD) += libcgroupcpuload
 #
 # Paths and names
 #
-LIBCGROUPCPULOAD_VERSION        := 0.0.1
+LIBCGROUPCPULOAD_VERSION        := 0.0.2
 LIBCGROUPCPULOAD_MD5            :=
 LIBCGROUPCPULOAD                := libcgroupcpuload
 LIBCGROUPCPULOAD_SUFFIX         :=

@@ -6,6 +6,7 @@
 #include "HostsFile.hpp"
 #include "DefaultHostname.hpp"
 #include "Logger.hpp"
+#include "MacAddress.hpp"
 
 namespace netconf {
 
@@ -35,8 +36,8 @@ void UpdateEtcHosts(const IPConfigs &ip_configs, const ::std::string &hostname, 
 
 }
 
-HostnameManager::HostnameManager() {
-  default_hostname_ = GetDefaultHostname();
+HostnameManager::HostnameManager(const MacAddress& mac_address) {
+  default_hostname_ = GetDefaultHostname(mac_address);
 
   auto host_conf = HostConfFile::ParseFile();
   hostname_ = host_conf.GetHostname().empty() ? default_hostname_ : host_conf.GetHostname();

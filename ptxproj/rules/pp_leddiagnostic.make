@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_PP_LEDDIAGNOSTIC) += pp_leddiagnostic
 #
 # Paths and names
 #
-PP_LEDDIAGNOSTIC_VERSION        := 1.0.0
+PP_LEDDIAGNOSTIC_VERSION        := 1.0.1
 PP_LEDDIAGNOSTIC_MD5            :=
 PP_LEDDIAGNOSTIC_BASE           := pp_leddiagnostic
 PP_LEDDIAGNOSTIC                := pp_leddiagnostic-$(PP_LEDDIAGNOSTIC_VERSION)

@@ -1,0 +1,26 @@
+[tool.pylint.'FORMAT']
+max-line-length = 120
+output-format = "msvs"
+
+[tool.pylint.'MESSAGES CONTROL']
+enable = [
+    "unnecessary-comprehension",
+]
+
+disable = [
+    "missing-function-docstring",
+    "missing-class-docstring",
+    "missing-module-docstring",
+    "too-many-arguments",
+    "duplicate-code",
+]
+
+[tool.black]
+line-length = 120
+
+[tool.autopep8]
+max_line_length = 120
+in-place = true
+recursive = true
+ignore = ["E203"]
+aggressive = 1

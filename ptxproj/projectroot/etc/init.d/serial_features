@@ -1,0 +1,61 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2024 WAGO GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
+# Script:   /etc/init.d/serial_features
+#
+# Brief:    Init script to discover features of a serial interface.
+#
+# Author:   PEn:  WAGO GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+
+ORDER_NO="$(/etc/config-tools/get_typelabel_value ORDER)"
+SERIAL_DEV_PATH="/dev/serial"
+
+
+case $1 in
+
+    start)
+        if [[ -c "$SERIAL_DEV_PATH" ]]; then
+            echo "hardware-available=true" >"/etc/specific/features/serial-interface"
+            if [[ "${ORDER_NO:0:8}" == "751-9301" || "${ORDER_NO:0:8}" == "751-9401" ]]; then
+                echo "INFO: Serial interface mode is limited to RS485"
+                rm -f "/etc/specific/features/rs232-console"
+                rm -f "/etc/specific/features/rs232_485-interface"
+                rm -f "/etc/specific/features/rs485-bus-termination"
+                rm -f "/etc/specific/features/rs485-bias-network"
+            elif [[ "${ORDER_NO:0:6}" == "750-83" ]]; then
+                echo "INFO: Serial interface mode is limited to RS485"
+                echo "INFO: Serial interface has feature 'bus termination'"
+                echo "INFO: Serial interface has feature 'bias network'"
+                rm -f "/etc/specific/features/rs232-console"
+                rm -f "/etc/specific/features/rs232_485-interface"
+                touch "/etc/specific/features/rs485-bus-termination"
+                touch "/etc/specific/features/rs485-bias-network"
+            else
+                echo "INFO: Serial interface mode has RS232 and RS485 available"
+                echo "INFO: Serial interface has feature 'Linux console'"
+                touch "/etc/specific/features/rs232-console"
+                touch "/etc/specific/features/rs232_485-interface"
+                rm -f "/etc/specific/features/rs485-bus-termination"
+                rm -f "/etc/specific/features/rs485-bias-network"
+            fi
+        else
+            echo "INFO: Serial interface is not available"
+            echo "hardware-available=false" >"/etc/specific/features/serial-interface"
+            rm -f "/etc/specific/features/rs232-console"
+            rm -f "/etc/specific/features/rs232_485-interface"
+            rm -f "/etc/specific/features/rs485-bus-termination"
+            rm -f "/etc/specific/features/rs485-bias-network"
+        fi
+    ;;
+
+    stop)
+    ;;
+
+esac

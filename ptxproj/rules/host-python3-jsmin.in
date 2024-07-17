@@ -1,0 +1,10 @@
+## SECTION=python3
+
+config HOST_PYTHON3_JSMIN
+	tristate
+	default n
+    prompt "host-python3-jsmin"
+	select HOST_PYTHON3
+    select HOST_PYTHON3_SETUPTOOLS
+	help
+	  Javascript minifier for python

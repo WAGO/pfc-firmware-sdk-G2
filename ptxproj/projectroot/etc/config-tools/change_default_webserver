@@ -59,11 +59,11 @@ fi
 
 case "$newDefaultWebserver" in
 
-"Webserver")    (cd /etc/lighttpd; ln -sf redirect_wbm.conf redirect_default.conf)
+"Webserver")    (cd /etc/lighttpd; ln -sf apps.confd/wbm/redirect_wbm.conf redirect_default.conf)
                 restartWebserver $restartOption
                 ;;
 
-"Webvisu")      (cd /etc/lighttpd; ln -sf redirect_webvisu.conf redirect_default.conf)
+"Webvisu")      (cd /etc/lighttpd; ln -sf apps.confd/webvisu/redirect_webvisu.conf redirect_default.conf)
                 restartWebserver $restartOption
                 ;;
 

@@ -701,18 +701,21 @@ fwupdate_start_normal_operation()
            break
        fi
     done
+
+    if [[ $RESULT -eq 0 ]]; then
+
+        # Prepare finalize_root if not already done
+        chmod a+x "/etc/init.d/finalize_root" &>/dev/null && sync
+        if [ ! -x "/etc/init.d/finalize_root" ]; then
+            fwupdate_report_warning "Failed to enable finalize_root"
+        fi
+    fi
     
     if fwupdate_runtime_available && [[ $RESULT -eq 0 ]]; then
         # Prepare runtime autostart if not already done
         chmod a+x "$CDS_INITSCRIPT" &>/dev/null && sync
         if [ ! -x "$CDS_INITSCRIPT" ]; then
             fwupdate_report_warning "Failed to enable runtime autostart"
-        fi
-        
-        # Prepare finalize_root if not already done
-        chmod a+x "/etc/init.d/finalize_root" &>/dev/null && sync
-        if [ ! -x "/etc/init.d/finalize_root" ]; then
-            fwupdate_report_warning "Failed to enable finalize_root"
         fi
         
         # Start codesys webserver
@@ -734,9 +737,11 @@ fwupdate_start_normal_operation()
                 RESULT=$?
             fi
         fi
-        if [ $RESULT -ne 0 ]; then
-            fwupdate_report_warning "Failed to start normal operation"
-        fi
+    fi
+
+    
+    if [ $RESULT -ne 0 ]; then
+        fwupdate_report_warning "Failed to start normal operation"
     fi
 
     # Check if reboot requested or necessary

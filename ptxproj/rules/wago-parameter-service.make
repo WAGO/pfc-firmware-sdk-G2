@@ -24,7 +24,7 @@ PACKAGES-$(PTXCONF_WAGO_PARAMETER_SERVICE) += wago-parameter-service
 #
 # Paths and names
 #
-WAGO_PARAMETER_SERVICE_VERSION        := 1.0.2
+WAGO_PARAMETER_SERVICE_VERSION        := 1.3.0
 WAGO_PARAMETER_SERVICE_MD5            :=
 WAGO_PARAMETER_SERVICE_BASE           := parameter-service
 WAGO_PARAMETER_SERVICE                := wago-$(WAGO_PARAMETER_SERVICE_BASE)-$(WAGO_PARAMETER_SERVICE_VERSION)
@@ -123,11 +123,10 @@ $(STATEDIR)/wago-parameter-service.targetinstall:
 
 ifdef PTXCONF_WAGO_PARAMETER_SERVICE_LIB
 #	@$(call install_lib, wago-parameter-service, 0, 0, 0755, libparamserv)
-	@$(call install_copy, wago-parameter-service, 0, 0, 0644, -, /etc/pam.d/wda)
 endif
 
 ifdef PTXCONF_WAGO_PARAMETER_SERVICE_LIGHTTPD_INTEGRATION
-	@$(call install_alternative, wago-parameter-service, 0, 0, 0600, /etc/lighttpd/fastcgi.confd/param-service.conf)
+	@$(call install_alternative, wago-parameter-service, 0, 0, 0600, /etc/lighttpd/apps.confd/param_service.conf)
 endif
 
 ifdef PTXCONF_WAGO_PARAMETER_SERVICE_DAEMON

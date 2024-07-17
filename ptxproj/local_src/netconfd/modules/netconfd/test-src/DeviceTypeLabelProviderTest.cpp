@@ -6,8 +6,6 @@
 ///
 ///  \author   <author> : WAGO GmbH & Co. KG
 //------------------------------------------------------------------------------
-#include "CommonTestDependencies.hpp"
-
 #include "MockCommandExecutor.hpp"
 #include "DeviceTypeLabel.hpp"
 
@@ -15,6 +13,7 @@
 using testing::_;
 using testing::SetArgReferee;
 using testing::Return;
+using testing::DoAll;
 
 
 namespace netconf {
@@ -90,21 +89,30 @@ TEST_F(ADeviceTypeLabelProvider_Host, GetsAMacAddress) {
 TEST_F(ADeviceTypeLabelProvider_Host, IsNotAbleToExecuteTypelabelToolSuccessfully) {
   EXPECT_CALL(mock_executor_, Execute(_, _)).WillOnce(Return(Status(StatusCode::SYSTEM_EXECUTE)));
 
-  EXPECT_THROW(::std::make_unique<DeviceTypeLabel>(mock_executor_), ::std::runtime_error);
+  auto dtl = ::std::make_unique<DeviceTypeLabel>(mock_executor_);
+  EXPECT_THAT(dtl->GetMac().ToString(), testing::StartsWith("02:30:DE:"));
+  EXPECT_EQ(dtl->GetMacCount(), 1);
+  EXPECT_EQ(dtl->GetOrderNumber(), "wago-pfc");
 }
 
 TEST_F(ADeviceTypeLabelProvider_Host, FailedToReadMissingTypelabelValue) {
   EXPECT_CALL(mock_executor_, Execute(_, _))
       .WillOnce(DoAll(SetArgReferee<1>(type_label_ini_missing_value_), Return(Status(StatusCode::OK))));
 
-  EXPECT_THROW(::std::make_unique<DeviceTypeLabel>(mock_executor_), ::std::runtime_error);
+  auto dtl = ::std::make_unique<DeviceTypeLabel>(mock_executor_);
+  EXPECT_THAT(dtl->GetMac().ToString(), testing::StartsWith("02:30:DE:"));
+  EXPECT_EQ(dtl->GetMacCount(), 1);
+  EXPECT_EQ(dtl->GetOrderNumber(), "wago-pfc");
 }
 
 TEST_F(ADeviceTypeLabelProvider_Host, FailedToReadCorruptTypelabelIniFile) {
   EXPECT_CALL(mock_executor_, Execute(_, _))
       .WillOnce(DoAll(SetArgReferee<1>(type_label_ini_corrupt_), Return(Status(StatusCode::OK))));
 
-  EXPECT_THROW(::std::make_unique<DeviceTypeLabel>(mock_executor_), ::std::runtime_error);
+  auto dtl = ::std::make_unique<DeviceTypeLabel>(mock_executor_);
+  EXPECT_THAT(dtl->GetMac().ToString(), testing::StartsWith("02:30:DE:"));
+  EXPECT_EQ(dtl->GetMacCount(), 1);
+  EXPECT_EQ(dtl->GetOrderNumber(), "wago-pfc");
 }
 
 } /* namespace netconf */

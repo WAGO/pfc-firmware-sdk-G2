@@ -22,6 +22,7 @@
 #include "NetlinkMonitor.hpp"
 #include "NetworkConfigBrain.hpp"
 #include "PersistenceProvider.hpp"
+#include "Redundancy.hpp"
 #include "Server.h"
 #include "UriEscape.hpp"
 #include "HostnameManager.hpp"
@@ -57,6 +58,7 @@ class NetworkConfiguratorImpl {
   EventManager event_manager_;
   DipSwitch ip_dip_switch_;
   PersistenceProvider persistence_provider_;
+  Redundancy stp_;
   BridgeManager bridge_manager_;
   EthernetInterfaceFactory ethernet_interface_factory_;
   InterfaceConfigManager interface_manager_;
@@ -80,9 +82,10 @@ NetworkConfiguratorImpl::NetworkConfiguratorImpl(InterprocessCondition &start_co
       mac_distributor_ { device_type_label_.GetMac(), device_type_label_.GetMacCount(), netdev_manager_ },
       ip_dip_switch_ { DEV_DIP_SWITCH_VALUE },
       persistence_provider_ { persistence_file_path, ip_dip_switch_, static_cast<uint32_t>(netdev_manager_.GetNetDevs({DeviceType::Port}).size()) },
-      bridge_manager_ { netdev_manager_, mac_distributor_ },
+      bridge_manager_ { netdev_manager_, mac_distributor_, stp_, device_type_label_.GetOrderNumber() },
       interface_manager_ { netdev_manager_, persistence_provider_, ethernet_interface_factory_ },
       dyn_ip_client_admin_ {device_type_label_.GetOrderNumber() },
+      hostname_manager_{device_type_label_.GetMac()},
       ip_manager_ { event_manager_, persistence_provider_, netdev_manager_, ip_dip_switch_, interface_manager_,
           dyn_ip_client_admin_, ip_controller_, ip_monitor_, hostname_manager_},
       network_config_brain_ { bridge_manager_, bridge_manager_, ip_manager_, event_manager_,

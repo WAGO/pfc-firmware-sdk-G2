@@ -13,6 +13,16 @@
 # kernel threads
 # --------------------------
 kworker/gpio-ke;f;90
+\birq/[[:digit:]]+-kbus\b;f;86
+\bspi[[:digit:]]+\b;f;86
+\birq/[[:digit:]]+-485c0000\b;f;85
+\birq/[[:digit:]]+-44e07000\b;f;86
+\birq/[[:digit:]]+-49054000\b;f;86
+\birq/[[:digit:]]+-UIO_DPC[[:digit:]]+\b;f;70
+\birq/[[:digit:]]+-RUN\b;f;90
+\birq/[[:digit:]]+-STOP\b;f;90
+\birq/[[:digit:]]+-RESET\b;f;90
+\birq/[[:digit:]]+-RESET_ALL?\b;f;90
 
 # --------------------------
 # other processes
@@ -23,5 +33,3 @@ omsd;f;90
 # com_DBUS_worker is used in several processes => only specify once
 # cause we don't look at the parent process.
 com_DBUS_worker;f;49
-
-

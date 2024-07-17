@@ -23,6 +23,7 @@
 #include <stdexcept>
 #include <syslog.h>
 #include <unistd.h>
+#include <cstdlib>
 
 
 namespace wago {
@@ -211,9 +212,14 @@ xmldoc parse_string(const std::string& xmldata)
 
 void store_file(const std::string& fname, const xmldoc& doc)
 {
-    // tmpnam is deprecated and not the prefered solution,
-    // but for now it should be something like "okay"
-    const std::string temp_file = std::string(std::tmpnam(nullptr));
+    char tmp[] = "XXXXXX";
+    int fd = mkstemp(tmp);
+    if(fd == -1)
+        throw std::runtime_error("Failed to create temporary file");
+
+    close(fd);
+
+    const std::string temp_file(tmp);
 
     if (doc.is_empty())
         throw std::logic_error("Can't store null xml document.");

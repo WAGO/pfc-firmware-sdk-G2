@@ -1,0 +1,278 @@
+--------------------------------
+target: f2fs-tools-1.12.0.tar.xz
+--------------------------------
+
+git: fetching 'git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git into '/home/user/pfc/trunk/ptxproj.2013.03.0/src/git.kernel.org.pub.scm.linux.kernel.git.jaegeuk.f2fs-tools.git'...
+remote: Counting objects: 38, done.        
+remote: Compressing objects:   2% (1/38)           remote: Compressing objects:   5% (2/38)           remote: Compressing objects:   7% (3/38)           remote: Compressing objects:  10% (4/38)           remote: Compressing objects:  13% (5/38)           remote: Compressing objects:  15% (6/38)           remote: Compressing objects:  18% (7/38)           remote: Compressing objects:  21% (8/38)           remote: Compressing objects:  23% (9/38)           remote: Compressing objects:  26% (10/38)           remote: Compressing objects:  28% (11/38)           remote: Compressing objects:  31% (12/38)           remote: Compressing objects:  34% (13/38)           remote: Compressing objects:  36% (14/38)           remote: Compressing objects:  39% (15/38)           remote: Compressing objects:  42% (16/38)           remote: Compressing objects:  44% (17/38)           remote: Compressing objects:  47% (18/38)           remote: Compressing objects:  50% (19/38)           remote: Compressing objects:  52% (20/38)           remote: Compressing objects:  55% (21/38)           remote: Compressing objects:  57% (22/38)           remote: Compressing objects:  60% (23/38)           remote: Compressing objects:  63% (24/38)           remote: Compressing objects:  65% (25/38)           remote: Compressing objects:  68% (26/38)           remote: Compressing objects:  71% (27/38)           remote: Compressing objects:  73% (28/38)           remote: Compressing objects:  76% (29/38)           remote: Compressing objects:  78% (30/38)           remote: Compressing objects:  81% (31/38)           remote: Compressing objects:  84% (32/38)           remote: Compressing objects:  86% (33/38)           remote: Compressing objects:  89% (34/38)           remote: Compressing objects:  92% (35/38)           remote: Compressing objects:  94% (36/38)           remote: Compressing objects:  97% (37/38)           remote: Compressing objects: 100% (38/38)           remote: Compressing objects: 100% (38/38), done.        
+remote: Total 38 (delta 14), reused 0 (delta 0)        
+From git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools
+   50e22bd..c6968d4  dev        -> dev
+ + dd5d22a...c6968d4 dev-test   -> dev-test  (forced update)
+   22d758e..c6968d4  master     -> master
+ * [new branch]      dev        -> origin/dev
+ * [new branch]      dev-test   -> origin/dev-test
+ * [new branch]      experimental -> origin/experimental
+ * [new branch]      master     -> origin/master
+
+----------------------
+target: f2fs-tools.get
+----------------------
+
+finished target f2fs-tools.get
+
+--------------------------
+target: f2fs-tools.extract
+--------------------------
+
+extract: pkg_src=ptxproj.2013.03.0/src/f2fs-tools-1.12.0.tar.xz
+extract: pkg_extract_dir=ptxproj.2013.03.0/platform-wago-pfcXXX/build-target/f2fs-tools-1.12.0
+
+pkg_patch_dir:     'ptxproj.2013.03.0/patches/f2fs-tools-1.12.0'
+pkg_patch_series:  '<none>'
+
+finished target f2fs-tools.extract
+
+}}} 2019-03-27T15:17:31+0100 /usr/local/lib/ptxdist-2017.11.1/bin/ptxdist extract f2fs-tools; (exit value: 0)
+
+
+
+{{{ 2019-03-27T15:17:43+0100 /usr/local/lib/ptxdist-2017.11.1/bin/ptxdist prepare f2fs-tools
+
+-------------------------------
+target: f2fs-tools.extract.post
+-------------------------------
+
+pkg_patch_autogen: 'ptxproj.2013.03.0/patches/f2fs-tools-1.12.0/autogen.sh'
+
+libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'build-aux'.
+libtoolize: copying file 'build-aux/ltmain.sh'
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'm4'.
+libtoolize: copying file 'm4/libtool.m4'
+libtoolize: copying file 'm4/ltoptions.m4'
+libtoolize: copying file 'm4/ltsugar.m4'
+libtoolize: copying file 'm4/ltversion.m4'
+libtoolize: copying file 'm4/lt~obsolete.m4'
+aclocal: warning: unknown warning category 'cross'
+configure.ac:49: warning: The macro `AC_PROG_LIBTOOL' is obsolete.
+configure.ac:49: You should run autoupdate.
+m4/libtool.m4:99: AC_PROG_LIBTOOL is expanded from...
+configure.ac:49: the top level
+libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'build-aux'.
+libtoolize: copying file 'build-aux/ltmain.sh'
+libtoolize: putting macros in AC_CONFIG_MACRO_DIRS, 'm4'.
+libtoolize: copying file 'm4/libtool.m4'
+libtoolize: copying file 'm4/ltoptions.m4'
+libtoolize: copying file 'm4/ltsugar.m4'
+libtoolize: copying file 'm4/ltversion.m4'
+libtoolize: copying file 'm4/lt~obsolete.m4'
+aclocal: warning: unknown warning category 'cross'
+configure.ac:49: warning: The macro `AC_PROG_LIBTOOL' is obsolete.
+configure.ac:49: You should run autoupdate.
+m4/libtool.m4:99: AC_PROG_LIBTOOL is expanded from...
+configure.ac:49: the top level
+automake: warning: unknown warning category 'cross'
+configure.ac:48: installing 'build-aux/compile'
+configure.ac:49: installing 'build-aux/config.guess'
+configure.ac:49: installing 'build-aux/config.sub'
+configure.ac:36: installing 'build-aux/install-sh'
+configure.ac:36: installing 'build-aux/missing'
+fsck/Makefile.am: installing 'build-aux/depcomp'
+patchin: autogen: done
+
+patchin: fixup:
+ptxproj.2013.03.0/platform-wago-pfcXXX/build-target/f2fs-tools-1.12.0/configure
+ptxproj.2013.03.0/platform-wago-pfcXXX/build-target/f2fs-tools-1.12.0/build-aux/ltmain.sh
+ptxproj.2013.03.0/platform-wago-pfcXXX/build-target/f2fs-tools-1.12.0/build-aux/config.sub
+patchin: fixup: done
+
+finished target f2fs-tools.extract.post
+
+--------------------------
+target: f2fs-tools.prepare
+--------------------------
+
+ptxdist: executing: PATH=/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-cross/bin:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-cross/sbin:\/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-host/lib/wrapper:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-host/bin:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-host/sbin:/home/user/pfc/trunk/ptxproj.2013.03.0/selected_toolchain:/usr/local/lib/ptxdist-2017.11.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/lib/ptxdist-2017.11.1/bin:/opt/docker-18.06.1-ce:/opt/docker-cli-scripts:/opt/LINARO.Toolchain-2017.10/arm-linux-gnueabihf/bin PKGCONFIG_WHITELIST='blkid fdisk formw menuw mount ncursesw panelw smartcols uuid' PKGCONFIG_WHITELIST_SRC='f2fs-tools' PKG_CONFIG_PATH='' PKG_CONFIG_LIBDIR='/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/lib/pkgconfig:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/lib/pkgconfig:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/share/pkgconfig:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/share/pkgconfig' PKG_CONFIG_SYSTEM_LIBRARY_PATH='/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/lib/pkgconfig/../../lib:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/lib/pkgconfig/../../lib:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/share/pkgconfig/../../lib:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/share/pkgconfig/../../lib:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/lib/pkgconfig/../lib:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/lib/pkgconfig/../lib:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/share/pkgconfig/../lib:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/share/pkgconfig/../lib:/usr/lib:/lib' PKG_CONFIG_SYSTEM_INCLUDE_PATH='/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/lib/pkgconfig/../../include:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/lib/pkgconfig/../../include:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/share/pkgconfig/../../include:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/share/pkgconfig/../../include:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/lib/pkgconfig/../include:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/lib/pkgconfig/../include:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/share/pkgconfig/../include:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/share/pkgconfig/../include:/usr/include:/include' SYSROOT='/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target' V=0 VERBOSE= PTXDIST_ICECC= AR=arm-linux-gnueabihf-ar AS=arm-linux-gnueabihf-as LD=arm-linux-gnueabihf-ld NM=arm-linux-gnueabihf-nm CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ CPP="arm-linux-gnueabihf-gcc -E" RANLIB=arm-linux-gnueabihf-ranlib READELF=arm-linux-gnueabihf-readelf OBJCOPY=arm-linux-gnueabihf-objcopy OBJDUMP=arm-linux-gnueabihf-objdump STRIP=arm-linux-gnueabihf-strip DLLTOOL=arm-linux-gnueabihf-dlltool GNAT=arm-linux-gnueabihf-gnat GNATBIND=arm-linux-gnueabihf-gnatbind GNATCHOP=arm-linux-gnueabihf-gnatchop GNATCLEAN=arm-linux-gnueabihf-gnatclean GNATFIND=arm-linux-gnueabihf-gnatfind GNATKR=arm-linux-gnueabihf-gnatkr GNATLINK=arm-linux-gnueabihf-gnatlink GNATLS=arm-linux-gnueabihf-gnatls GNATMAKE=arm-linux-gnueabihf-gnatmake GNATNAME=arm-linux-gnueabihf-gnatname GNATPREP=arm-linux-gnueabihf-gnatprep GNATXREF=arm-linux-gnueabihf-gnatxref CC_FOR_BUILD=gcc CPP_FOR_BUILD="gcc -E" LINK_FOR_BUILD=gcc SYSROOT="/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target" PKG_CONFIG_PATH='' PKG_CONFIG_LIBDIR='/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/lib/pkgconfig:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/lib/pkgconfig:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/share/pkgconfig:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/share/pkgconfig' PKG_CONFIG_SYSTEM_LIBRARY_PATH='/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/lib/pkgconfig/../../lib:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/lib/pkgconfig/../../lib:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/share/pkgconfig/../../lib:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/share/pkgconfig/../../lib:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/lib/pkgconfig/../lib:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/lib/pkgconfig/../lib:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/share/pkgconfig/../lib:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/share/pkgconfig/../lib:/usr/lib:/lib' PKG_CONFIG_SYSTEM_INCLUDE_PATH='/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/lib/pkgconfig/../../include:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/lib/pkgconfig/../../include:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/share/pkgconfig/../../include:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/share/pkgconfig/../../include:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/lib/pkgconfig/../include:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/lib/pkgconfig/../include:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/share/pkgconfig/../include:/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/share/pkgconfig/../include:/usr/include:/include' PKG_CONFIG="/home/user/pfc/trunk/ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-cross/bin/arm-linux-gnueabihf-pkg-config" enable_option_checking=fatal enable_maintainer_mode=no enable_static=no ac_cv_file__dev_random=yes ac_cv_file__proc_self_exe=yes ac_cv_file__proc_self_fd=yes ac_cv_file__proc_self_maps=yes ac_cv_func_dcgettext=yes ac_cv_func_getpgrp_void=yes ac_cv_func_getrlimit=yes ac_cv_func_malloc_0_nonnull=yes ac_cv_func_memcmp_clean=yes ac_cv_func_memcmp_working=yes ac_cv_func_nonposix_getgrgid_r=no ac_cv_func_nonposix_getpwuid_r=no ac_cv_func_posix_getgrgid_r=yes ac_cv_func_posix_getpwnam_r=yes ac_cv_func_posix_getpwuid_r=yes ac_cv_func_printf_unix98=yes ac_cv_func_realloc_0_nonnull=yes ac_cv_func_setgrent_void=yes ac_cv_func_setpgrp_void=yes ac_cv_func_setvbuf_reversed=no ac_cv_func_strstr=yes ac_cv_func_strtod=yes ac_cv_func_strtoul=yes ac_cv_func_vsnprintf_c99=yes ac_cv_func_wait3_rusage=yes ac_cv_have_abstract_sockets=yes ac_cv_lib_c_inet_aton=yes ac_cv_sizeof_long_double="8" ac_cv_sizeof_long_long=8 ac_cv_sysv_ipc=yes ac_cv_type_uintptr_t=yes bash_cv_func_ctype_nonascii=yes bash_cv_func_sigsetjmp=present bash_cv_func_strcoll_broken=no bash_cv_must_reinstall_sighandlers=no glib_cv_long_long_format="ll" gt_cv_func_gettext_libintl=yes ac_cv_func_fork=yes ac_cv_func_fork_works=yes ac_cv_func_iconv_open=yes ac_cv_file__git=no ./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --libdir=/usr/lib --build=x86_64-host-linux-gnu --host=arm-linux-gnueabihf --without-selinux
+
+checking for a BSD-compatible install... /usr/local/lib/ptxdist-2017.11.1/bin/install -c
+checking whether build environment is sane... yes
+checking for arm-linux-gnueabihf-strip... arm-linux-gnueabihf-strip
+checking for a thread-safe mkdir -p... /usr/local/lib/ptxdist-2017.11.1/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking how to create a pax tar archive... gnutar
+checking for arm-linux-gnueabihf-gcc... arm-linux-gnueabihf-gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... yes
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether arm-linux-gnueabihf-gcc accepts -g... yes
+checking for arm-linux-gnueabihf-gcc option to accept ISO C89... none needed
+checking whether arm-linux-gnueabihf-gcc understands -c and -o together... yes
+checking whether make supports the include directive... yes (GNU style)
+checking dependency style of arm-linux-gnueabihf-gcc... gcc3
+checking build system type... x86_64-host-linux-gnu
+checking host system type... arm-unknown-linux-gnueabihf
+checking how to print strings... printf
+checking for a sed that does not truncate output... /usr/local/lib/ptxdist-2017.11.1/bin/sed
+checking for grep that handles long lines and -e... /bin/grep
+checking for egrep... /bin/grep -E
+checking for fgrep... /bin/grep -F
+checking for ld used by arm-linux-gnueabihf-gcc... arm-linux-gnueabihf-ld
+checking if the linker (arm-linux-gnueabihf-ld) is GNU ld... yes
+checking for BSD- or MS-compatible name lister (nm)... arm-linux-gnueabihf-nm
+checking the name lister (arm-linux-gnueabihf-nm) interface... BSD nm
+checking whether ln -s works... yes
+checking the maximum length of command line arguments... 1572864
+checking how to convert x86_64-host-linux-gnu file names to arm-unknown-linux-gnueabihf format... func_convert_file_noop
+checking how to convert x86_64-host-linux-gnu file names to toolchain format... func_convert_file_noop
+checking for arm-linux-gnueabihf-ld option to reload object files... -r
+checking for arm-linux-gnueabihf-objdump... arm-linux-gnueabihf-objdump
+checking how to recognize dependent libraries... pass_all
+checking for arm-linux-gnueabihf-dlltool... arm-linux-gnueabihf-dlltool
+checking how to associate runtime and link libraries... printf %s\n
+checking for arm-linux-gnueabihf-ar... arm-linux-gnueabihf-ar
+checking for archiver @FILE support... @
+checking for arm-linux-gnueabihf-strip... (cached) arm-linux-gnueabihf-strip
+checking for arm-linux-gnueabihf-ranlib... arm-linux-gnueabihf-ranlib
+checking command to parse arm-linux-gnueabihf-nm output from arm-linux-gnueabihf-gcc object... ok
+checking for sysroot... no
+checking for a working dd... /bin/dd
+checking how to truncate binary pipes... /bin/dd bs=4096 count=1
+checking for arm-linux-gnueabihf-mt... no
+checking for mt... no
+checking if : is a manifest tool... no
+checking how to run the C preprocessor... arm-linux-gnueabihf-gcc -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking for dlfcn.h... yes
+checking for objdir... .libs
+checking if arm-linux-gnueabihf-gcc supports -fno-rtti -fno-exceptions... no
+checking for arm-linux-gnueabihf-gcc option to produce PIC... -fPIC -DPIC
+checking if arm-linux-gnueabihf-gcc PIC flag -fPIC -DPIC works... yes
+checking if arm-linux-gnueabihf-gcc static flag -static works... yes
+checking if arm-linux-gnueabihf-gcc supports -c -o file.o... yes
+checking if arm-linux-gnueabihf-gcc supports -c -o file.o... (cached) yes
+checking whether the arm-linux-gnueabihf-gcc linker (arm-linux-gnueabihf-ld) supports shared libraries... yes
+checking whether -lc should be explicitly linked in... no
+checking dynamic linker characteristics... GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking whether stripping libraries is possible... yes
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+checking whether to build static libraries... no
+checking for ldconfig... /sbin/ldconfig
+checking pkg-config is at least version 0.9.0... yes
+checking for libuuid... yes
+checking for libblkid... yes
+checking attr/xattr.h usability... no
+checking attr/xattr.h presence... no
+checking for attr/xattr.h... no
+checking byteswap.h usability... yes
+checking byteswap.h presence... yes
+checking for byteswap.h... yes
+checking fcntl.h usability... yes
+checking fcntl.h presence... yes
+checking for fcntl.h... yes
+checking linux/blkzoned.h usability... no
+checking linux/blkzoned.h presence... no
+checking for linux/blkzoned.h... no
+checking linux/falloc.h usability... yes
+checking linux/falloc.h presence... yes
+checking for linux/falloc.h... yes
+checking linux/fs.h usability... yes
+checking linux/fs.h presence... yes
+checking for linux/fs.h... yes
+checking linux/hdreg.h usability... yes
+checking linux/hdreg.h presence... yes
+checking for linux/hdreg.h... yes
+checking linux/limits.h usability... yes
+checking linux/limits.h presence... yes
+checking for linux/limits.h... yes
+checking linux/posix_acl.h usability... no
+checking linux/posix_acl.h presence... no
+checking for linux/posix_acl.h... no
+checking linux/types.h usability... yes
+checking linux/types.h presence... yes
+checking for linux/types.h... yes
+checking linux/xattr.h usability... yes
+checking linux/xattr.h presence... yes
+checking for linux/xattr.h... yes
+checking mntent.h usability... yes
+checking mntent.h presence... yes
+checking for mntent.h... yes
+checking scsi/sg.h usability... yes
+checking scsi/sg.h presence... yes
+checking for scsi/sg.h... yes
+checking for stdlib.h... (cached) yes
+checking for string.h... (cached) yes
+checking sys/acl.h usability... no
+checking sys/acl.h presence... no
+checking for sys/acl.h... no
+checking sys/ioctl.h usability... yes
+checking sys/ioctl.h presence... yes
+checking for sys/ioctl.h... yes
+checking sys/syscall.h usability... yes
+checking sys/syscall.h presence... yes
+checking for sys/syscall.h... yes
+checking sys/mount.h usability... yes
+checking sys/mount.h presence... yes
+checking for sys/mount.h... yes
+checking sys/sysmacros.h usability... yes
+checking sys/sysmacros.h presence... yes
+checking for sys/sysmacros.h... yes
+checking sys/utsname.h usability... yes
+checking sys/utsname.h presence... yes
+checking for sys/utsname.h... yes
+checking sys/xattr.h usability... yes
+checking sys/xattr.h presence... yes
+checking for sys/xattr.h... yes
+checking for unistd.h... (cached) yes
+checking for inline... inline
+checking for int32_t... yes
+checking for int8_t... yes
+checking for size_t... yes
+checking for library containing getmntent... none required
+checking for add_key... no
+checking for fallocate... yes
+checking for fsetxattr... yes
+checking for fstat... yes
+checking for fstat64... yes
+checking for getmntent... (cached) yes
+checking for keyctl... no
+checking for llseek... yes
+checking for lseek64... yes
+checking for memset... yes
+checking for setmntent... yes
+checking whether bswap_64 is declared... yes
+checking whether llseek is declared... no
+checking whether lseek64 is declared... yes
+checking that generated files are newer than configure... done
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating man/Makefile
+config.status: creating lib/Makefile
+config.status: creating mkfs/Makefile
+config.status: creating fsck/Makefile
+config.status: creating tools/Makefile
+config.status: creating tools/sg_write_buffer/Makefile
+config.status: creating config.h
+config.status: executing depfiles commands
+config.status: executing libtool commands
+finished target f2fs-tools.prepare
+
+}}} 2019-03-27T15:17:56+0100 /usr/local/lib/ptxdist-2017.11.1/bin/ptxdist prepare f2fs-tools; (exit value: 0)
+
+
+

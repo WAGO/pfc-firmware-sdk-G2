@@ -14,9 +14,9 @@ PACKAGES-$(PTXCONF_RUNC) += runc
 #
 # Paths and names
 #
-RUNC_VERSION	:= 1.1.4
-RUNC_MD5			:= ae8e2ac9335b8606eeccd2e7c031350a
-RUNC_GITCOMMIT:= 5fd4c4d144137e991c4acebb2146ab1483a97925
+RUNC_VERSION	:= 1.1.12
+RUNC_MD5			:= e77fb3f6d3070da60f58688bde3e7583
+RUNC_GITCOMMIT:= 51d5e94601ceffbbd85688df1c928ecccbfa4685
 RUNC					:= runc-$(RUNC_VERSION)
 RUNC_SUFFIX		:= tar.gz
 RUNC_URL			:= https://github.com/opencontainers/runc/archive/refs/tags/v$(RUNC_VERSION).$(RUNC_SUFFIX)
@@ -34,7 +34,7 @@ RUNC_GO_ENV:= \
 	CGO_CFLAGS=$(CROSS_CFLAGS) \
 	CGO_LDFLAGS=$(CROSS_LDFLAGS) \
 	PKG_CONFIG=$(CROSS_PKG_CONFIG) \
-	GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=1
+	GOOS=linux CGO_ENABLED=1
 
 # ----------------------------------------------------------------------------
 # Get
@@ -52,7 +52,7 @@ $(STATEDIR)/runc.compile:
 	@$(call targetinfo)
 	@PATH=$(CROSS_PATH):$(HOST_GO_BIN_DIR) ; \
 		cd $(RUNC_DIR) &&  \
-		$(RUNC_GO_ENV) $(MAKE) target=static COMMIT=$(RUNC_GITCOMMIT)
+		$(RUNC_GO_ENV) $(GO_ARCH) $(MAKE) target=static COMMIT=$(RUNC_GITCOMMIT)
 	@$(call touch)
 
 # ----------------------------------------------------------------------------

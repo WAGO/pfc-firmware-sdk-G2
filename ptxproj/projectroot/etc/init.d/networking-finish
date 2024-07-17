@@ -25,37 +25,6 @@ function has_marvell_switch
     [[ $switch_model == "mv88e6321" ]]
 }
 
-function has_micrel_switch
-{
-   [[ $switch_model == "ksz8863" ]]
-}
-
-function get_next_macs
-{
-    local startMac="$1"
-    local macCount="$2"
-    local isValidMac="FALSE"
-
-    # Check MAC address has valid format.
-    [[ "$startMac" =~ ^([[:xdigit:]]{2}:){5}[[:xdigit:]]{2}$ ]] && isValidMac="TRUE"
-
-    if [[ $isValidMac == "TRUE" ]]; then
-        # Remove colons
-        local mac_plain=${startMac//:/}
-
-        local i=0
-        while [[ "$i" < "$macCount" ]] ; do
-
-            local mac_num=$(printf "%012X" $(( 0x$mac_plain + i )) )
-            local mac_str=${mac_num:0:2}:${mac_num:2:2}:${mac_num:4:2}:${mac_num:6:2}:${mac_num:8:2}:${mac_num:10:2}
-            macs=( "${macs[@]}" $mac_str )
-            ((i++))
-        done
-    else
-        echo "NETWORK_INIT - Invalid MAC address \"startMac\". Failed generating subsequent addresses."
-    fi
-}
-
 function marvell_update_eeprom
 {
    /sbin/pfcXXX_config_network_switch_eeprom.sh /sys/firmware/devicetree/base/ocp/interconnect@4a000000/segment@0/target-module@100000/switch@0/mdio@1000/switch@0/eeprom
@@ -66,34 +35,14 @@ function marvell_update_eeprom
    fi
 }
 
-
-function micrel_configure_atu
-{
-    local macaddr
-    macaddr=$(/etc/config-tools/get_typelabel_value MAC | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}')
-    log "add own macs to atu"
-    declare -a macs
-    get_next_macs "$macaddr" $mac_addr_count
-    for mac in "${macs[@]}"; do
-        swconfig dev switch0 set statmacs "0,${mac},4,1,0,0,0,0"
-    done
-}
-
 function networking_finish
 {
     log "networking finish"
 
-    # get configured mac address and use it for the dsa slave devices
-    # NOTE: config-tools dependency here!!
     if has_marvell_switch; then
         log "found marvell switch"
         marvell_update_eeprom
     fi
-    if has_micrel_switch; then
-       log "found micrel switch"
-       micrel_configure_atu
-    fi
-
 }
 
 case "$1" in

@@ -1,0 +1,159 @@
+{
+  "_class": "io.jenkins.plugins.analysis.core.restapi.ReportApi",
+  "issues": [
+    {
+      "fileName": "-",
+      "lineStart": "0",
+      "columnStart": "0",
+      "category": "Warning:missing-include-dirs",
+      "severity": "NORMAL",
+      "message": "./modules/clientapi/test-extern/: No such file or directory [-Wmissing-include-dirs]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "-",
+      "lineStart": "0",
+      "columnStart": "0",
+      "category": "Warning:missing-include-dirs",
+      "severity": "NORMAL",
+      "message": "./modules/main: No such file or directory [-Wmissing-include-dirs]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/common/extern/clientapi/BaseTypes.hpp",
+      "lineStart": "125",
+      "columnStart": "60",
+      "category": "Warning:modernize-pass-by-value",
+      "severity": "NORMAL",
+      "message": "pass by value and use std::move [modernize-pass-by-value]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/common/extern/clientapi/BaseTypes.hpp",
+      "lineStart": "130",
+      "columnStart": "25",
+      "category": "Warning:performance-unnecessary-value-param",
+      "severity": "NORMAL",
+      "message": "parameter 'dhcp_client_id' is passed by value and only copied once; consider moving it to avoid unnecessary copies [performance-unnecessary-value-param]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/common/src/MacAddress.cpp",
+      "lineStart": "15",
+      "columnStart": "30",
+      "category": "Warning:cppcoreguidelines-pro-bounds-constant-array-index",
+      "severity": "NORMAL",
+      "message": "std::array<> index 6 is past the end of the array (which contains 6 elements) [cppcoreguidelines-pro-bounds-constant-array-index]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/common/test-src/IPValidatorTest.cpp",
+      "lineStart": "330",
+      "columnStart": "1",
+      "category": "Warning:clang-diagnostic-deprecated-declarations",
+      "severity": "NORMAL",
+      "message": "'InstantiateTestCase_P_IsDeprecated' is deprecated: INSTANTIATE_TEST_CASE_P is deprecated, please use INSTANTIATE_TEST_SUITE_P [clang-diagnostic-deprecated-declarations]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/BridgeConfigurator.hpp",
+      "lineStart": "22",
+      "columnStart": "3",
+      "category": "Warning:modernize-use-override",
+      "severity": "NORMAL",
+      "message": "annotate this function with 'override' or (rarely) 'final' [modernize-use-override]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/BridgeConfiguratorTiSwitch.cpp",
+      "lineStart": "115",
+      "columnStart": "7",
+      "category": "Warning:cert-env33-c",
+      "severity": "NORMAL",
+      "message": "calling 'system' uses a command processor [cert-env33-c]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/BridgeConfiguratorTiSwitch.cpp",
+      "lineStart": "117",
+      "columnStart": "7",
+      "category": "Warning:cert-env33-c",
+      "severity": "NORMAL",
+      "message": "calling 'system' uses a command processor [cert-env33-c]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/BridgeConfiguratorTiSwitch.hpp",
+      "lineStart": "22",
+      "columnStart": "3",
+      "category": "Warning:modernize-use-override",
+      "severity": "NORMAL",
+      "message": "annotate this function with 'override' or (rarely) 'final' [modernize-use-override]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/Redundancy/Redundancy.cpp",
+      "lineStart": "30",
+      "columnStart": "7",
+      "category": "Warning:bugprone-inaccurate-erase",
+      "severity": "NORMAL",
+      "message": "this call will remove at most one item even when multiple items should be removed [bugprone-inaccurate-erase]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/utility/src/EthTool.cpp",
+      "lineStart": "213",
+      "columnStart": "3",
+      "category": "Warning:cppcoreguidelines-pro-type-member-init",
+      "severity": "NORMAL",
+      "message": "uninitialized record type: 'ls' [cppcoreguidelines-pro-type-member-init]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/utility/src/EthTool.cpp",
+      "lineStart": "303",
+      "columnStart": "23",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/utility/src/EthTool.cpp",
+      "lineStart": "303",
+      "columnStart": "46",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/netconfd/modules/common/test-src/MacAddressTest.cpp",
+      "lineStart": "73",
+      "columnStart": "50",
+      "category": "Warning:missing-braces",
+      "severity": "NORMAL",
+      "message": "missing braces around initializer for ‘std::__array_traits<unsigned char, 6>::_Type’ {aka ‘unsigned char [6]’} [-Wmissing-braces]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/netconfd/modules/netconfd/test-src/MacDistributorTest.cpp",
+      "lineStart": "52",
+      "columnStart": "78",
+      "category": "Warning:missing-braces",
+      "severity": "NORMAL",
+      "message": "missing braces around initializer for ‘std::__array_traits<unsigned char, 6>::_Type’ {aka ‘unsigned char [6]’} [-Wmissing-braces]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/netconfd/modules/utility/src/EthernetInterface.cpp",
+      "lineStart": "34",
+      "columnStart": "7",
+      "category": "Warning:missing-braces",
+      "severity": "NORMAL",
+      "message": "missing braces around initializer for ‘std::__array_traits<unsigned char, 6>::_Type’ {aka ‘unsigned char [6]’} [-Wmissing-braces]",
+      "moduleName": "netconfd-tests"
+    }
+  ],
+  "size": 17
+}

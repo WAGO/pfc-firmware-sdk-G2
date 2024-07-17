@@ -26,21 +26,21 @@ GCOVR_EXCLUDE += $(libnetconfd_PROJECT_ROOT)/test-extern
 
 libnetconfd.a_INCLUDES += \
 $(NETCONFD_SHARED_INCLUDES)	\
--I$(libnetconfd_PROJECT_ROOT)/extern \
 -I$(libnetconfd_PROJECT_ROOT)/src \
--I$(libnetconfd_PROJECT_ROOT)/src/InterfaceManager \
 -I$(libnetconfd_PROJECT_ROOT)/src/DeviceProperties \
--I$(libnetconfd_PROJECT_ROOT)/src/PersistenceProvider \
--I$(libnetconfd_PROJECT_ROOT)/src/Logger \
 -I$(libnetconfd_PROJECT_ROOT)/src/EventManager \
+-I$(libnetconfd_PROJECT_ROOT)/src/Hostname \
+-I$(libnetconfd_PROJECT_ROOT)/src/InterfaceManager \
 -I$(libnetconfd_PROJECT_ROOT)/src/IPManager \
 -I$(libnetconfd_PROJECT_ROOT)/src/IPManager/DynamicIPClient \
 -I$(libnetconfd_PROJECT_ROOT)/src/IPManager/GratuitousArp \
--I$(libnetconfd_PROJECT_ROOT)/src/NetDevs \
--I$(libnetconfd_PROJECT_ROOT)/src/Hostname \
+-I$(libnetconfd_PROJECT_ROOT)/src/Logger \
 -I$(libnetconfd_PROJECT_ROOT)/src/MacDistribution/ \
+-I$(libnetconfd_PROJECT_ROOT)/src/NetDevs \
+-I$(libnetconfd_PROJECT_ROOT)/src/PersistenceProvider \
+-I$(libnetconfd_PROJECT_ROOT)/src/Redundancy/ \
 -I$(PROJECT_ROOT)/modules/common/extern/clientapi 	\
--I$(PROJECT_ROOT)/modules/common/extern 
+-I$(PROJECT_ROOT)/modules/common/extern
 
 
 libnetconfd.a_DISABLEDWARNINGS += packed inline
@@ -49,9 +49,9 @@ libnetconfd.a_CDISABLEDWARNINGS += $(libnetconfd.a_DISABLEDWARNINGS)
 libnetconfd.a_DEFINES += -DBOOST_LOG_DYN_LINK
 libnetconfd.a_STATICALLYLINKED +=
 libnetconfd.a_LIBS += boost_log boost_thread boost_system boost_serialization boost_interprocess rt
-libnetconfd.a_PKG_CONFIGS += glib-2.0
+libnetconfd.a_PKG_CONFIGS += glib-2.0 libconfigstp
 libnetconfd.a_PREREQUISITES += $(call lib_buildtarget_raw,$(netconfd.a_LIBS) $(netconfd.a_PKG_CONFIG_LIBS),$(netconfd.a_STATICALLYLINKED))
-libnetconfd.a_CPPFLAGS += $(call uniq, $(libnetconfd.a_INCLUDES) $(libutility.a_INCLUDES) $(libnetconfddbus.a_INCLUDES)) 
+libnetconfd.a_CPPFLAGS += $(call uniq, $(libnetconfd.a_INCLUDES) $(libutility.a_INCLUDES) $(libnetconfddbus.a_INCLUDES))
 libnetconfd.a_CPPFLAGS += $(call uniq, $(libnetconfd.a_DEFINES)  $(libutility.a_DEFINES))
 libnetconfd.a_CPPFLAGS += $(call pkg_config_cppflags,$(libnetconfd.a_PKG_CONFIGS) $(libnetconfddbus.a_PKG_CONFIGS))
 libnetconfd.a_CPPFLAGS += -isystem ${SYSROOT}/usr/include/gio-unix-2.0
@@ -77,13 +77,12 @@ netconfd.elf_INCLUDES =           \
   $(NETCONFD_SHARED_INCLUDES)     \
 -I$(PROJECT_ROOT)/modules/main    \
 -I$(PROJECT_ROOT)/modules/utility/extern \
--I$(PROJECT_ROOT)/modules/netconfd/extern \
 -I$(PROJECT_ROOT)/modules/common/extern/clientapi 	\
--I$(PROJECT_ROOT)/modules/common/extern 
+-I$(PROJECT_ROOT)/modules/common/extern
 
 netconfd.elf_VERSION = $(NETCONFD_VERSION)
 netconfd.elf_DISABLEDWARNINGS += packed inline
-netconfd.elf_CDISABLEDWARNINGS += $(netconfd.elf_DISABLEDWARNINGS)  
+netconfd.elf_CDISABLEDWARNINGS += $(netconfd.elf_DISABLEDWARNINGS)
 netconfd.elf_CXXDISABLEDWARNINGS += $(netconfd.elf_DISABLEDWARNINGS) abi-tag useless-cast
 netconfd.elf_STATICALLYLINKED += netconfd common utility netconfddbus
 netconfd.elf_LIBS += netconfd common boost_log utility boost_thread boost_system boost_filesystem boost_serialization netconfddbus rt
@@ -126,7 +125,7 @@ $(libnetconfd.a_INCLUDES) \
 -I$(libnetconfd_PROJECT_ROOT)/src \
 
 
-netconfd_tests.elf_STATICALLYLINKED += netconfd common utility gmock_main gmock gtest 
+netconfd_tests.elf_STATICALLYLINKED += netconfd common utility gmock_main gmock gtest
 netconfd_tests.elf_LIBS += netconfd common utility gmock_main gmock gtest boost_log boost_thread boost_system boost_filesystem boost_serialization
 netconfd_tests.elf_PKG_CONFIGS += $(libnetconfd.a_PKG_CONFIGS)
 netconfd_tests.elf_PKG_CONFIG_LIBS += $(libnetconfd.a_PKG_CONFIG_LIBS)
@@ -139,7 +138,7 @@ netconfd_tests.elf_CPPFLAGS += $(call uniq, $(libnetconfd.a_DEFINES))
 netconfd_tests.elf_CPPFLAGS += $(call pkg_config_cppflags,$(netconfd_tests.elf_PKG_CONFIGS))
 netconfd_tests.elf_CFLAGS += $(call option_std,gnu99)
 netconfd_tests.elf_CFLAGS += $(call option_disable_warning,$(netconfd_tests.elf_CDISABLEDWARNINGS))
-netconfd_tests.elf_CXXFLAGS += $(call option_std,gnu++17) 
+netconfd_tests.elf_CXXFLAGS += $(call option_std,gnu++17)
 netconfd_tests.elf_CXXFLAGS += $(call option_disable_warning,$(netconfd_tests.elf_CXXDISABLEDWARNINGS))
 netconfd_tests.elf_LDFLAGS += $(call option_lib,$(netconfd_tests.elf_LIBS),netconfd_tests.elf)
 netconfd_tests.elf_LDFLAGS += $(call pkg_config_ldflags,$(netconfd_tests.elf_PKG_CONFIGS))
@@ -149,6 +148,5 @@ netconfd_tests.elf_CLANG_TIDY_CHECKS += $(GTEST_CLANG_TIDY_CHECKS)
 netconfd_tests.elf_CLANG_TIDY_CHECKS += $(SHARED_CLANG_TIDY_CHECKS)
 # filter only source files in this sub-module
 netconfd_tests.elf_GCOVR_FILTER += $(libnetconfd_PROJECT_ROOT)
-# modules to include into this test's coverage report 
+# modules to include into this test's coverage report
 netconfd_tests.elf_GCOVR_SEARCH_PATH += libnetconfd.a
-

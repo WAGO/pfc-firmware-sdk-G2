@@ -54,7 +54,7 @@ class InterfaceConfigManagerPersistenceTest : public InterfaceConfigManagerBaseT
    */
   void SetUp() override {
     persisted_matching_port_config.emplace_back(Interface::CreatePort("X1"), InterfaceState::UP, Autonegotiation::ON, 100, Duplex::FULL, MacLearning::ON);
-    persisted_matching_port_config.emplace_back(Interface::CreatePort("X2"), InterfaceState::UP, Autonegotiation::OFF, 1000, Duplex::HALF, MacLearning::ON);
+    persisted_matching_port_config.emplace_back(Interface::CreatePort("X2"), InterfaceState::UP, Autonegotiation::OFF, 10, Duplex::HALF, MacLearning::ON);
 
     persisted_missing_port_config.emplace_back(Interface::CreatePort("X1"), InterfaceState::UP, Autonegotiation::ON, 100, Duplex::FULL, MacLearning::ON);
 
@@ -62,19 +62,19 @@ class InterfaceConfigManagerPersistenceTest : public InterfaceConfigManagerBaseT
     expected_port_config_missing.emplace_back(Interface::CreatePort("X2"), InterfaceState::UP, Autonegotiation::ON, 100, Duplex::FULL, MacLearning::ON);
 
     persisted_oversized_port_config.emplace_back(Interface::CreatePort("X1"), InterfaceState::UP, Autonegotiation::ON, 100, Duplex::FULL, MacLearning::ON);
-    persisted_oversized_port_config.emplace_back(Interface::CreatePort("X2"), InterfaceState::UP, Autonegotiation::OFF, 1000, Duplex::HALF, MacLearning::ON);
+    persisted_oversized_port_config.emplace_back(Interface::CreatePort("X2"), InterfaceState::UP, Autonegotiation::OFF, 10, Duplex::HALF, MacLearning::ON);
     persisted_oversized_port_config.emplace_back(Interface::CreatePort("X12"), InterfaceState::UP, Autonegotiation::ON, 10, Duplex::FULL, MacLearning::ON);
     persisted_oversized_port_config.emplace_back(Interface::CreatePort("X11"), InterfaceState::DOWN, Autonegotiation::OFF, 100, Duplex::FULL, MacLearning::ON);
 
     expected_port_config_oversized.emplace_back(Interface::CreatePort("X1"), InterfaceState::UP, Autonegotiation::ON, 100, Duplex::FULL, MacLearning::ON);
-    expected_port_config_oversized.emplace_back(Interface::CreatePort("X2"), InterfaceState::UP, Autonegotiation::OFF, 1000, Duplex::HALF, MacLearning::ON);
+    expected_port_config_oversized.emplace_back(Interface::CreatePort("X2"), InterfaceState::UP, Autonegotiation::OFF, 10, Duplex::HALF, MacLearning::ON);
 
     new_port_configs_partial.emplace_back(Interface::CreatePort("X2"), InterfaceState::UP, Autonegotiation::ON, 10, Duplex::FULL, MacLearning::ON);
 
     persisted_new_port_configs_partial.emplace_back(Interface::CreatePort("X1"), InterfaceState::UP, Autonegotiation::ON, 100, Duplex::FULL, MacLearning::ON);
     persisted_new_port_configs_partial.emplace_back(Interface::CreatePort("X2"), InterfaceState::UP, Autonegotiation::ON, 10, Duplex::FULL, MacLearning::ON);
 
-    new_port_configs_full.emplace_back(Interface::CreatePort("X1"), InterfaceState::DOWN, Autonegotiation::OFF, 1000, Duplex::HALF, MacLearning::ON);
+    new_port_configs_full.emplace_back(Interface::CreatePort("X1"), InterfaceState::DOWN, Autonegotiation::OFF, 100, Duplex::HALF, MacLearning::ON);
     new_port_configs_full.emplace_back(Interface::CreatePort("X2"), InterfaceState::DOWN, Autonegotiation::ON, 10, Duplex::FULL, MacLearning::ON);
 
     netdevs_.insert(
@@ -155,7 +155,7 @@ TEST_F(InterfaceConfigManagerPersistenceTest, StartWithMatchingPersistenceData) 
   EXPECT_EQ(eth::DeviceState::Up, itf_X2->state_);
 
   EXPECT_EQ(100, itf_X1->speed_);
-  EXPECT_EQ(1000, itf_X2->speed_);
+  EXPECT_EQ(10, itf_X2->speed_);
 
   EXPECT_EQ(eth::Duplex::Full, itf_X1->duplex_);
   EXPECT_EQ(eth::Duplex::Half, itf_X2->duplex_);
@@ -188,7 +188,7 @@ TEST_F(InterfaceConfigManagerPersistenceTest, StartWithOversizedPersistenceData)
   EXPECT_EQ(eth::DeviceState::Up, itf_X2->state_);
 
   EXPECT_EQ(100, itf_X1->speed_);
-  EXPECT_EQ(1000, itf_X2->speed_);
+  EXPECT_EQ(10, itf_X2->speed_);
 
   EXPECT_EQ(eth::Duplex::Full, itf_X1->duplex_);
   EXPECT_EQ(eth::Duplex::Half, itf_X2->duplex_);

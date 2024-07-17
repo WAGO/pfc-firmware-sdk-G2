@@ -4,14 +4,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2019-2022 WAGO GmbH & Co. KG
+# Copyright (c) 2019-2023 WAGO GmbH & Co. KG
 
 SWCONFIG=$(which swconfig)
 
-if [[ -e /etc/switch_settings.conf ]] && [[ -x "${SWCONFIG}" ]]; then
+if [[ -e /etc/switch_settings.conf && -x "${SWCONFIG}" ]]; then
     . /etc/switch_settings.conf
     
     ${SWCONFIG} dev switch0 set port_mirror     $PORT_MIRROR
     ${SWCONFIG} dev switch0 set bcast_protect   $BCAST_PROTECT
     ${SWCONFIG} dev switch0 set rate_limit      $RATE_LIMIT
+fi
+
+if [[ -e /etc/specific/switchconfig.json && -x /etc/config-tools/config_switch ]]; then
+    /etc/config-tools/config_switch --update
 fi

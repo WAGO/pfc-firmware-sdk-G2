@@ -2,6 +2,8 @@
 
 #include "EthernetInterface.hpp"
 
+#include <cstdint>
+#include <string>
 #include <utility>
 #include <unistd.h>
 #include <sys/socket.h>
@@ -65,7 +67,7 @@ void EthernetInterface::UpdateMtu() {
   if (ioctl(socket_.fd(), SIOCGIFMTU, &ifreq_) < 0) {
     throw ::std::system_error(errno, ::std::system_category(), "EthernetInterface: ioctl() SIOCGIFHWADDR failed");
   }
-  mtu_ = static_cast<std::size_t>(ifreq_.ifr_mtu);  // NOLINT: must access union members in legacy data structures.
+  mtu_ = static_cast<std::uint32_t>(ifreq_.ifr_mtu);  // NOLINT: must access union members in legacy data structures.
 }
 
 void EthernetInterface::InitializeData() {
@@ -88,7 +90,7 @@ eth::Duplex EthernetInterface::GetDuplex() const {
 }
 
 MacAddress EthernetInterface::GetMac() const {
-  return MacAddress(::gsl::make_span(mac_));
+  return MacAddress(mac_);
 }
 
 bool EthernetInterface::GetAutonegSupport() const {
@@ -162,9 +164,9 @@ void EthernetInterface::SetState(DeviceState state) {
 }
 
 ::std::string EthernetInterface::IndexToName(::std::uint32_t ifindex) {
-  char nameBuf[IFNAMSIZ + 1] = { 0 };
-  if_indextoname(ifindex, static_cast<char*>(nameBuf));
-  return ::std::string { static_cast<char*>(nameBuf) };
+  ::std::array<char, IFNAMSIZ + 1> nameBuf{};
+  if_indextoname(ifindex, nameBuf.data());
+  return ::std::string { nameBuf.data()};
 }
 
 }  // namespace pfcspecific

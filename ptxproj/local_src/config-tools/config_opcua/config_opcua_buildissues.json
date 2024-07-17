@@ -1,0 +1,726 @@
+{
+  "_class": "io.jenkins.plugins.analysis.core.restapi.ReportApi",
+  "issues": [
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "137",
+      "columnStart": "20",
+      "category": "Warning:modernize-use-emplace",
+      "severity": "NORMAL",
+      "message": "use emplace_back instead of push_back [modernize-use-emplace]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "141",
+      "columnStart": "20",
+      "category": "Warning:modernize-use-emplace",
+      "severity": "NORMAL",
+      "message": "use emplace_back instead of push_back [modernize-use-emplace]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "151",
+      "columnStart": "20",
+      "category": "Warning:modernize-use-emplace",
+      "severity": "NORMAL",
+      "message": "use emplace_back instead of push_back [modernize-use-emplace]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "162",
+      "columnStart": "34",
+      "category": "Warning:readability-container-size-empty",
+      "severity": "NORMAL",
+      "message": "the 'empty' method should be used to check for emptiness instead of 'size' [readability-container-size-empty]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "162",
+      "columnStart": "59",
+      "category": "Warning:readability-container-size-empty",
+      "severity": "NORMAL",
+      "message": "the 'empty' method should be used to check for emptiness instead of 'size' [readability-container-size-empty]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "17",
+      "columnStart": "1",
+      "category": "Warning:google-build-using-namespace",
+      "severity": "NORMAL",
+      "message": "do not use namespace using-directives; use using-declarations instead [google-build-using-namespace]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "174",
+      "columnStart": "9",
+      "category": "Warning:readability-container-size-empty",
+      "severity": "NORMAL",
+      "message": "the 'empty' method should be used to check for emptiness instead of comparing to an empty object [readability-container-size-empty]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "177",
+      "columnStart": "11",
+      "category": "Warning:readability-container-size-empty",
+      "severity": "NORMAL",
+      "message": "the 'empty' method should be used to check for emptiness instead of comparing to an empty object [readability-container-size-empty]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "212",
+      "columnStart": "33",
+      "category": "Warning:readability-container-size-empty",
+      "severity": "NORMAL",
+      "message": "the 'empty' method should be used to check for emptiness instead of 'size' [readability-container-size-empty]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "22",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'cfg_file_path' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "24",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'opt_string_short' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "25",
+      "columnStart": "27",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'opts_long' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "27",
+      "columnStart": "25",
+      "category": "Warning:modernize-use-nullptr",
+      "severity": "NORMAL",
+      "message": "use nullptr [modernize-use-nullptr]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "28",
+      "columnStart": "28",
+      "category": "Warning:modernize-use-nullptr",
+      "severity": "NORMAL",
+      "message": "use nullptr [modernize-use-nullptr]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "29",
+      "columnStart": "30",
+      "category": "Warning:modernize-use-nullptr",
+      "severity": "NORMAL",
+      "message": "use nullptr [modernize-use-nullptr]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "30",
+      "columnStart": "28",
+      "category": "Warning:modernize-use-nullptr",
+      "severity": "NORMAL",
+      "message": "use nullptr [modernize-use-nullptr]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "31",
+      "columnStart": "30",
+      "category": "Warning:modernize-use-nullptr",
+      "severity": "NORMAL",
+      "message": "use nullptr [modernize-use-nullptr]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "32",
+      "columnStart": "30",
+      "category": "Warning:modernize-use-nullptr",
+      "severity": "NORMAL",
+      "message": "use nullptr [modernize-use-nullptr]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "35",
+      "columnStart": "12",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'set_regex' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "66",
+      "columnStart": "48",
+      "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
+      "severity": "NORMAL",
+      "message": "do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/config_opcua.cpp",
+      "lineStart": "73",
+      "columnStart": "12",
+      "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
+      "severity": "NORMAL",
+      "message": "do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/loglevel-util.cpp",
+      "lineStart": "6",
+      "columnStart": "15",
+      "category": "Warning:clang-diagnostic-c++17-extensions",
+      "severity": "NORMAL",
+      "message": "nested namespace definition is a C++17 extension; define each namespace separately [clang-diagnostic-c++17-extensions]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/loglevel-util.hpp",
+      "lineStart": "50",
+      "columnStart": "2",
+      "category": "Warning:clang-diagnostic-c++98-compat-extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ';' outside of a function is incompatible with C++98 [clang-diagnostic-c++98-compat-extra-semi]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/loglevel-util.hpp",
+      "lineStart": "8",
+      "columnStart": "15",
+      "category": "Warning:clang-diagnostic-c++17-extensions",
+      "severity": "NORMAL",
+      "message": "nested namespace definition is a C++17 extension; define each namespace separately [clang-diagnostic-c++17-extensions]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "143",
+      "columnStart": "7",
+      "category": "Warning:readability-container-size-empty",
+      "severity": "NORMAL",
+      "message": "the 'empty' method should be used to check for emptiness instead of comparing to an empty object [readability-container-size-empty]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "163",
+      "columnStart": "7",
+      "category": "Warning:readability-container-size-empty",
+      "severity": "NORMAL",
+      "message": "the 'empty' method should be used to check for emptiness instead of comparing to an empty object [readability-container-size-empty]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "20",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'cmd_restart_runtime' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "211",
+      "columnStart": "15",
+      "category": "Warning:readability-redundant-string-init",
+      "severity": "NORMAL",
+      "message": "redundant string initialization [readability-redundant-string-init]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "23",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'section_server' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "231",
+      "columnStart": "15",
+      "category": "Warning:clang-diagnostic-c++17-extensions",
+      "severity": "NORMAL",
+      "message": "nested namespace definition is a C++17 extension; define each namespace separately [clang-diagnostic-c++17-extensions]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "24",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'section_cds_provider' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "25",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'section_stack' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "278",
+      "columnStart": "12",
+      "category": "Warning:readability-implicit-bool-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion 'gboolean' (aka 'int') -> bool [readability-implicit-bool-conversion]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "28",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'cfg_key_enabled' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "29",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'cfg_key_ctrl_config_name' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "30",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'cfg_key_log_level' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "31",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'cfg_key_sec_policy' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "32",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'cfg_key_sec_mode' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "321",
+      "columnStart": "5",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "assigning newly created 'gsl::owner<>' to non-owner 'FILE *' (aka '_IO_FILE *') [cppcoreguidelines-owning-memory]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "33",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'cfg_key_plain_password' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "331",
+      "columnStart": "7",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "calling legacy resource function without passing a 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "34",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'cfg_key_anon_access' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "347",
+      "columnStart": "15",
+      "category": "Warning:readability-redundant-string-init",
+      "severity": "NORMAL",
+      "message": "redundant string initialization [readability-redundant-string-init]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "35",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'cfg_key_cert_name' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "359",
+      "columnStart": "15",
+      "category": "Warning:readability-redundant-string-init",
+      "severity": "NORMAL",
+      "message": "redundant string initialization [readability-redundant-string-init]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "36",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'cfg_key_cert_company' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "369",
+      "columnStart": "9",
+      "category": "Warning:readability-container-size-empty",
+      "severity": "NORMAL",
+      "message": "the 'empty' method should be used to check for emptiness instead of comparing to an empty object [readability-container-size-empty]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "37",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'cfg_key_cert_city' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "38",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'cfg_key_cert_state' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "39",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'cfg_key_cert_country' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "42",
+      "columnStart": "35",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'bool_de_activated' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "47",
+      "columnStart": "35",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'bool_yes_no' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "488",
+      "columnStart": "9",
+      "category": "Warning:readability-container-size-empty",
+      "severity": "NORMAL",
+      "message": "the 'empty' method should be used to check for emptiness instead of comparing to an empty object [readability-container-size-empty]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "497",
+      "columnStart": "9",
+      "category": "Warning:readability-container-size-empty",
+      "severity": "NORMAL",
+      "message": "the 'empty' method should be used to check for emptiness instead of comparing to an empty object [readability-container-size-empty]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "52",
+      "columnStart": "35",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'bool_enabled_enforced' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "542",
+      "columnStart": "7",
+      "category": "Warning:cert-env33-c",
+      "severity": "NORMAL",
+      "message": "calling 'system' uses a command processor [cert-env33-c]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "59",
+      "columnStart": "42",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'sec_policy_values' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.cpp",
+      "lineStart": "69",
+      "columnStart": "42",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'sec_mode_values' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.hpp",
+      "lineStart": "11",
+      "columnStart": "15",
+      "category": "Warning:clang-diagnostic-c++17-extensions",
+      "severity": "NORMAL",
+      "message": "nested namespace definition is a C++17 extension; define each namespace separately [clang-diagnostic-c++17-extensions]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.hpp",
+      "lineStart": "18",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'param_enabled' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.hpp",
+      "lineStart": "19",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'param_ctrl_config_name' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.hpp",
+      "lineStart": "20",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'param_log_level' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.hpp",
+      "lineStart": "21",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'param_sec_policy' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.hpp",
+      "lineStart": "22",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'param_sec_mode' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.hpp",
+      "lineStart": "23",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'param_plain_password' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.hpp",
+      "lineStart": "24",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'param_anon_access' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.hpp",
+      "lineStart": "26",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'param_cert_name' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.hpp",
+      "lineStart": "27",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'param_cert_company' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.hpp",
+      "lineStart": "28",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'param_cert_city' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.hpp",
+      "lineStart": "29",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'param_cert_state' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.hpp",
+      "lineStart": "30",
+      "columnStart": "19",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'param_cert_country' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.hpp",
+      "lineStart": "32",
+      "columnStart": "32",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'all_keys' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/src/opcua-config/opcua-config.hpp",
+      "lineStart": "50",
+      "columnStart": "7",
+      "category": "Warning:cppcoreguidelines-special-member-functions",
+      "severity": "NORMAL",
+      "message": "class 'config_store' defines a non-default destructor but does not define a copy constructor, a copy assignment operator, a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/test-src/test_config_opcua.cpp",
+      "lineStart": "127",
+      "columnStart": "15",
+      "category": "Warning:readability-redundant-string-init",
+      "severity": "NORMAL",
+      "message": "redundant string initialization [readability-redundant-string-init]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/test-src/test_config_opcua.cpp",
+      "lineStart": "134",
+      "columnStart": "35",
+      "category": "Warning:performance-faster-string-find",
+      "severity": "NORMAL",
+      "message": "'find' called with a string literal consisting of a single character; consider using the more effective overload accepting a character [performance-faster-string-find]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/test-src/test_config_opcua.cpp",
+      "lineStart": "158",
+      "columnStart": "15",
+      "category": "Warning:readability-redundant-string-init",
+      "severity": "NORMAL",
+      "message": "redundant string initialization [readability-redundant-string-init]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/test-src/test_config_opcua.cpp",
+      "lineStart": "38",
+      "columnStart": "7",
+      "category": "Warning:readability-implicit-bool-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion 'gboolean' (aka 'int') -> bool [readability-implicit-bool-conversion]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/test-src/test_config_opcua.cpp",
+      "lineStart": "55",
+      "columnStart": "9",
+      "category": "Warning:readability-implicit-bool-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion 'GError *' (aka '_GError *') -> bool [readability-implicit-bool-conversion]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/test-src/test_config_opcua.cpp",
+      "lineStart": "644",
+      "columnStart": "26",
+      "category": "Warning:modernize-raw-string-literal",
+      "severity": "NORMAL",
+      "message": "escaped string literal can be written as a raw string literal [modernize-raw-string-literal]",
+      "moduleName": "config_opcua-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/config_opcua/test-src/test_config_opcua.cpp",
+      "lineStart": "687",
+      "columnStart": "32",
+      "category": "Warning:modernize-raw-string-literal",
+      "severity": "NORMAL",
+      "message": "escaped string literal can be written as a raw string literal [modernize-raw-string-literal]",
+      "moduleName": "config_opcua-tests"
+    }
+  ],
+  "size": 80
+}

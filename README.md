@@ -82,7 +82,7 @@ Alternatively you can also run pfc-builder in bash mode (```make bash```) and en
 
     ptxdist select configs/wago-pfcXXX/ptxconfig_pfc_g2 && \ 
     ptxdist platform configs/wago-pfcXXX/platformconfig && \      
-    ptxdist toolchain /opt/gcc-Toolchain-2022.08/LINARO.Toolchain-2022.08/arm-linux-gnueabihf/bin/ && \
+    ptxdist toolchain /opt/gcc-Toolchain-2022.08-wago.1/LINARO.Toolchain-2022.08-wago.1/arm-linux-gnueabihf/bin/ && \
     ptxdist clean -q
     
 #### 3.1) Get and download all packages

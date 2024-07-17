@@ -1,0 +1,27 @@
+  permissions=0644
+
+install link:
+  src=libulockmgr.so.1.0.1
+  dst=/usr/lib/libulockmgr.so
+
+install link:
+  src=libulockmgr.so.1.0.1
+  dst=/usr/lib/libulockmgr.so.1
+
+Packaged contents of /home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/packages/fuse.tmp/ipkg into /home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/packages/fuse_2.9.0_arm.ipk
+done.
+finished target fuse.targetinstall
+
+----------------
+target: mdmd.get
+----------------
+
+finished target mdmd.get
+
+--------------------
+target: mdmd.extract
+--------------------
+
+ptxdist: error: the URL 'file:///home/user/workspace/bsp/ptxproj.2013.03.0/local_src/mdmd' points to non existing directory or file.
+make: *** [/home/user/workspace/bsp/ptxproj.2013.03.0/platform-wago-pfcXXX/state/mdmd.extract] Error 1
+

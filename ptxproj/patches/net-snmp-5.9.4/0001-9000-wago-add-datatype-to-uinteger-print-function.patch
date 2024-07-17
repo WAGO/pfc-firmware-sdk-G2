@@ -1,0 +1,29 @@
+From: unknown author <unknown.author@example.com>
+Date: Tue, 6 Sep 2022 10:36:03 +0200
+Subject: [PATCH] 9000-wago-add-datatype-to-uinteger-print-function
+
+===================================================================
+
+Author: Hans-Florian Scholz, 26.02.2015
+---
+ snmplib/mib.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/snmplib/mib.c b/snmplib/mib.c
+index 662f0ee98d6c..68daf6185a41 100644
+--- a/snmplib/mib.c
++++ b/snmplib/mib.c
+@@ -1485,6 +1485,13 @@ sprint_realloc_uinteger(u_char ** buf, size_t * buf_len, size_t * out_len,
+         }
+     }
+ 
++    if (!netsnmp_ds_get_boolean(NETSNMP_DS_LIBRARY_ID, NETSNMP_DS_LIB_QUICK_PRINT)) {
++        if (!snmp_strcat(buf, buf_len, out_len, allow_realloc,
++                         (const u_char *) "UINTEGER: ")) {
++            return 0;
++        }
++    }
++
+     if (enum_string == NULL ||
+         netsnmp_ds_get_boolean(NETSNMP_DS_LIBRARY_ID, NETSNMP_DS_LIB_PRINT_NUMERIC_ENUM)) {
+         if (hint) {

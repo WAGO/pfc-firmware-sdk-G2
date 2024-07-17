@@ -1,0 +1,41 @@
+## SECTION=networking
+menuconfig RSYNC3
+	tristate
+	prompt "rsync v3                      "
+	select ZLIB
+	select OPENSSH	if RUNTIME
+	select OPENSSH_SSH
+	select ACL	if RSYNC3_ACL
+	select ZSTD	if RSYNC3_ZSTD
+	help
+	  rsync is a program that behaves in much the same way that rcp does,
+	  but has many more options and uses the rsync remote-update protocol to
+	  greatly speed up file transfers when the destination file is being
+	  updated.
+
+if RSYNC3
+
+config RSYNC3_STARTSCRIPT
+	bool
+	default y
+	depends on INITMETHOD_BBINIT
+	prompt "install /etc/init.d/rsync"
+
+config RSYNC3_ACL
+	bool
+	prompt "enable ACL support"
+	help
+	  --enable-acl-support
+
+config RSYNC3_ATTR
+	bool
+	prompt "enable extended attribute support"
+	help
+	  --enable-xattr-support
+
+config RSYNC3_ZSTD
+	bool
+	prompt "enable zstd compression support"
+	help
+	  --enable-zstd
+endif

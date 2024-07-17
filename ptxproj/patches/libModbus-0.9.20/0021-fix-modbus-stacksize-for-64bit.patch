@@ -1,0 +1,14 @@
+--- libModbus-0.9.20/src/modbus_intern.h	2024-04-04 17:24:46.261239961 +0200
++++ libModbus-0.9.20/src/modbus_intern.h	2024-04-04 17:29:37.646992063 +0200
+@@ -1,7 +1,11 @@
+ #ifndef __MODBUS_INTERN_H__
+ #define __MODBUS_INTERN_H__
+ 
++#if defined(__aarch64__)
++#define MB_STACKSIZE PTHREAD_STACK_MIN
++#else
+ #define MB_STACKSIZE                  ((size_t)65536)
++#endif
+ 
+ #define MB_THREAD_PRIORITY            42
+ #define MB_SCHED_POLICY               SCHED_FIFO

@@ -37,7 +37,7 @@ TINI_GO_ENV:= \
 	CGO_CFLAGS=$(CROSS_CFLAGS) \
 	CGO_LDFLAGS=$(CROSS_LDFLAGS) \
 	PKG_CONFIG=$(CROSS_PKG_CONFIG) \
-	GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=1
+	GOOS=linux CGO_ENABLED=1
 
 # ----------------------------------------------------------------------------
 # Get

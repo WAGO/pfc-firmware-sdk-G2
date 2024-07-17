@@ -169,6 +169,7 @@ int ct_libnet_get_actual_dsa_state(char * const value, size_t const valueLen);
 
 const char * ct_libnet_get_last_error(void);
 
+#ifdef __ENABLE_SWCONFIG
 int ct_libnet_set_bcast_protect(const char *dev, const char *value);
 int ct_libnet_get_bcast_protect(const char *dev, char *value, size_t valueLen);
 void ct_libnet_print_bcast_protect_args(void);
@@ -193,6 +194,7 @@ typedef struct {
 } ct_switch_settings_t;
 
 int ct_libnet_save_switch_settings_to_config(const char *configFile, ct_switch_settings_t *settings);
+#endif
 
 __END_DECLS
 

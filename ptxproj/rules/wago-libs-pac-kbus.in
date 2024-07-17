@@ -32,6 +32,13 @@ if LIBPACKBUS
 		help
 			Compile test application for the library. Do not enable this unless requested by support.
 
+config LIBPACKBUS_NO_FIRMWARE_LOAD
+		bool
+		default n
+		prompt "Skip XE164 specific firmware load (needed for PFC300)"
+		help
+			PFC300 firmware is already active at this stage
+
 	menuconfig LIBPACKBUS_DEBUG_DD
 		bool
 		default n

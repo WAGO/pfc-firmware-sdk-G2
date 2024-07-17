@@ -34,7 +34,7 @@ PTXDIST_PACKAGE_MK_FILE ?= $(PTXDIST_WORKSPACE)/rules/wago-config-000-modular-co
 SRC_DIR = $(PROJECT_ROOT)/src
 
 CFLAGS += $(call option_std,gnu99)
-CXXFLAGS += $(call option_std,gnu++11)
+CXXFLAGS += $(call option_std,gnu++14)
 
 
 #######################################################################################################################
@@ -94,7 +94,7 @@ libconfigtoolutils.a_CCXXFLAGS += $(call option_disable_warning,$(libconfigtoolu
 libconfigtoolutils.a_CFLAGS += $(libconfigtoolutils.a_CCXXFLAGS)
 #libconfigtoolutils.a_CFLAGS += $(call option_std,gnu99)
 libconfigtoolutils.a_CXXFLAGS += $(libconfigtoolutils.a_CCXXFLAGS)
-#libconfigtoolutils.a_CXXFLAGS += $(call option_std,gnu++11)
+#libconfigtoolutils.a_CXXFLAGS += $(call option_std,gnu++14)
 libconfigtoolutils.a_SOURCES += $(call fglob_r,$(PROJECT_ROOT)/src/libconfigtoolutils,$(SOURCE_FILE_EXTENSIONS))
 
 
@@ -111,15 +111,15 @@ libconfigtoolfail.a_CCXXFLAGS += $(call option_disable_warning,$(libconfigtoolfa
 libconfigtoolfail.a_CFLAGS += $(libconfigtoolfail.a_CCXXFLAGS)
 #libconfigtoolfail.a_CFLAGS += $(call option_std,gnu99)
 libconfigtoolfail.a_CXXFLAGS += $(libconfigtoolfail.a_CCXXFLAGS)
-#libconfigtoolfail.a_CXXFLAGS += $(call option_std,gnu++11)
+#libconfigtoolfail.a_CXXFLAGS += $(call option_std,gnu++14)
 libconfigtoolfail.a_SOURCES += $(PROJECT_ROOT)/src/common/fail.c
 
 
 #######################################################################################################################
 # Settings for build target libconfigtoolutils_tests.elf
 
-libconfigtoolutils_tests.elf_STATICALLYLINKED += configtoolutils gmock_main gmock
-libconfigtoolutils_tests.elf_LIBS += configtoolutils gmock gmock_main
+libconfigtoolutils_tests.elf_STATICALLYLINKED += configtoolutils gmock_main gmock gtest
+libconfigtoolutils_tests.elf_LIBS += configtoolutils gmock gmock_main gtest
 libconfigtoolutils_tests.elf_LIBS += $(libconfigtoolutils.a_DYNAMICALLYREQUIRED)
 libconfigtoolutils_tests.elf_PKG_CONFIGS += 
 libconfigtoolutils_tests.elf_DISABLEDWARNINGS += 
@@ -133,7 +133,7 @@ libconfigtoolutils_tests.elf_CCXXFLAGS += $(call pkg_config_cflags,$(libconfigto
 libconfigtoolutils_tests.elf_CFLAGS += $(libconfigtoolutils_tests.elf_CCXXFLAGS)
 #libconfigtoolutils_tests.elf_CFLAGS += $(call option_std,gnu99)
 libconfigtoolutils_tests.elf_CXXFLAGS += $(libconfigtoolutils_tests.elf_CCXXFLAGS)
-#libconfigtoolutils_tests.elf_CXXFLAGS += $(call option_std,gnu++11)
+#libconfigtoolutils_tests.elf_CXXFLAGS += $(call option_std,gnu++14)
 libconfigtoolutils_tests.elf_CXXFLAGS += $(call option_disable_warning,$(TESTS_DISABLEDWARNINGS))
 libconfigtoolutils_tests.elf_LDFLAGS += $(call option_lib,$(libconfigtoolutils_tests.elf_LIBS),libconfigtoolutils_tests.elf)
 libconfigtoolutils_tests.elf_LDFLAGS += $(call pkg_config_ldflags,$(libconfigtoolutils_tests.elf_PKG_CONFIGS))
@@ -144,8 +144,8 @@ libconfigtoolutils_tests.elf_SOURCES += $(call fglob_r,$(PROJECT_ROOT)/test-src/
 #######################################################################################################################
 # Settings for build target libconfigtoolcommonmain_tests.elf
 
-libconfigtoolcommonmain_tests.elf_STATICALLYLINKED += configtoolutils gmock_main gmock
-libconfigtoolcommonmain_tests.elf_LIBS += configtoolutils gmock_main gmock
+libconfigtoolcommonmain_tests.elf_STATICALLYLINKED += configtoolutils gmock_main gmock gtest
+libconfigtoolcommonmain_tests.elf_LIBS += configtoolutils gmock_main gmock gtest
 libconfigtoolcommonmain_tests.elf_LIBS += $(libconfigtoolutils.a_DYNAMICALLYREQUIRED)
 libconfigtoolcommonmain_tests.elf_PKG_CONFIGS += 
 libconfigtoolcommonmain_tests.elf_DISABLEDWARNINGS += 
@@ -159,7 +159,7 @@ libconfigtoolcommonmain_tests.elf_CCXXFLAGS += $(call pkg_config_cflags,$(libcon
 libconfigtoolcommonmain_tests.elf_CFLAGS += $(libconfigtoolcommonmain_tests.elf_CCXXFLAGS)
 #libconfigtoolcommonmain_tests.elf_CFLAGS += $(call option_std,gnu99)
 libconfigtoolcommonmain_tests.elf_CXXFLAGS += $(libconfigtoolcommonmain_tests.elf_CCXXFLAGS)
-#libconfigtoolcommonmain_tests.elf_CXXFLAGS += $(call option_std,gnu++11)
+#libconfigtoolcommonmain_tests.elf_CXXFLAGS += $(call option_std,gnu++14)
 libconfigtoolcommonmain_tests.elf_CXXFLAGS += $(call option_disable_warning,$(TESTS_DISABLEDWARNINGS))
 libconfigtoolcommonmain_tests.elf_LDFLAGS += $(call option_lib,$(libconfigtoolcommonmain_tests.elf_LIBS),libconfigtoolcommonmain_tests.elf)
 libconfigtoolcommonmain_tests.elf_LDFLAGS += $(call pkg_config_ldflags,$(libconfigtoolcommonmain_tests.elf_PKG_CONFIGS))
@@ -187,7 +187,7 @@ helloworld.elf_CCXXFLAGS += $(call pkg_config_cflags,$(helloworld.elf_PKG_CONFIG
 helloworld.elf_CFLAGS += $(helloworld.elf_CCXXFLAGS)
 #helloworld.elf_CFLAGS += $(call option_std,gnu99)
 helloworld.elf_CXXFLAGS += $(helloworld.elf_CCXXFLAGS)
-#helloworld.elf_CXXFLAGS += $(call option_std,gnu++11)
+#helloworld.elf_CXXFLAGS += $(call option_std,gnu++14)
 helloworld.elf_LDFLAGS += $(call option_lib,$(helloworld.elf_LIBS),helloworld.elf)
 helloworld.elf_LDFLAGS += $(call pkg_config_ldflags,$(helloworld.elf_PKG_CONFIGS))
 helloworld.elf_SOURCES += $(call fglob_r,$(PROJECT_ROOT)/src/exampleHelloWorld,$(SOURCE_FILE_EXTENSIONS))
@@ -216,7 +216,7 @@ config_linux_user.elf_CCXXFLAGS += $(call pkg_config_cflags,$(config_linux_user.
 config_linux_user.elf_CFLAGS += $(config_linux_user.elf_CCXXFLAGS)
 #config_linux_user.elf_CFLAGS += $(call option_std,gnu99)
 config_linux_user.elf_CXXFLAGS += $(config_linux_user.elf_CCXXFLAGS)
-#config_linux_user.elf_CXXFLAGS += $(call option_std,gnu++11)
+#config_linux_user.elf_CXXFLAGS += $(call option_std,gnu++14)
 config_linux_user.elf_LDFLAGS += $(call option_lib,$(config_linux_user.elf_LIBS),config_linux_user.elf)
 config_linux_user.elf_LDFLAGS += $(call pkg_config_ldflags,$(config_linux_user.elf_PKG_CONFIGS))
 config_linux_user.elf_SOURCES += $(call fglob_r,$(PROJECT_ROOT)/src/config_linux_user,$(SOURCE_FILE_EXTENSIONS))
@@ -226,8 +226,8 @@ config_linux_user.elf_SOURCES += $(PROJECT_ROOT)/src/common/main.c
 #######################################################################################################################
 # Settings for build target config_linux_user_tests.elf
 
-config_linux_user_tests.elf_STATICALLYLINKED += configtoolutils gmock_main gmock
-config_linux_user_tests.elf_LIBS += configtoolutils crypt gmock_main gmock
+config_linux_user_tests.elf_STATICALLYLINKED += configtoolutils gmock_main gmock gtest
+config_linux_user_tests.elf_LIBS += configtoolutils crypt gmock_main gmock gtest
 config_linux_user_tests.elf_LIBS += $(libconfigtoolutils.a_DYNAMICALLYREQUIRED)
 config_linux_user_tests.elf_PKG_CONFIGS += 
 config_linux_user_tests.elf_DISABLEDWARNINGS += 
@@ -244,7 +244,7 @@ config_linux_user_tests.elf_CCXXFLAGS += $(call pkg_config_cflags,$(config_linux
 config_linux_user_tests.elf_CFLAGS += $(config_linux_user_tests.elf_CCXXFLAGS)
 #config_linux_user_tests.elf_CFLAGS += $(call option_std,gnu99)
 config_linux_user_tests.elf_CXXFLAGS += $(config_linux_user_tests.elf_CCXXFLAGS)
-#config_linux_user_tests.elf_CXXFLAGS += $(call option_std,gnu++11)
+#config_linux_user_tests.elf_CXXFLAGS += $(call option_std,gnu++14)
 config_linux_user_tests.elf_CXXFLAGS += $(call option_disable_warning,$(TESTS_DISABLEDWARNINGS))
 config_linux_user_tests.elf_LDFLAGS += $(call option_lib,$(config_linux_user_tests.elf_LIBS),config_linux_user_tests.elf)
 config_linux_user_tests.elf_LDFLAGS += $(call pkg_config_ldflags,$(config_linux_user_tests.elf_PKG_CONFIGS))
@@ -253,7 +253,8 @@ config_linux_user_tests.elf_SOURCES += $(call fglob_r,$(PROJECT_ROOT)/test-src/c
 config_linux_user_tests.elf_SOURCES += $(call fglob_r,$(PROJECT_ROOT)/src/config_linux_user,$(SOURCE_FILE_EXTENSIONS))
 # TODO: Replace this filter by a better solution (not overwriting the original gtest filter settings)
 config_linux_user_tests.elf_VALGRIND_HOST_FLAGS += '--gtest_filter=*:-*_NoQemuValgrind*.*:*.*_NoQemuValgrind*'
-
+config_linux_user_tests.elf_VG_RUNAS_USER = 0
+config_linux_user_tests.elf_VG_RUNAS_GROUP = 0
 
 #######################################################################################################################
 # Settings for build target reserved_area.elf
@@ -276,7 +277,7 @@ reserved_area.elf_CFLAGS += $(reserved_area.elf_CCXXFLAGS)
 #reserved_area.elf_CFLAGS += $(call option_std,gnu99)
 reserved_area.elf_CFLAGS += -D__STDC_FORMAT_MACROS
 reserved_area.elf_CXXFLAGS += $(reserved_area.elf_CCXXFLAGS)
-#reserved_area.elf_CXXFLAGS += $(call option_std,gnu++11)
+#reserved_area.elf_CXXFLAGS += $(call option_std,gnu++14)
 reserved_area.elf_LDFLAGS += $(call option_lib,$(reserved_area.elf_LIBS),reserved_area.elf)
 reserved_area.elf_LDFLAGS += $(call pkg_config_ldflags,$(reserved_area.elf_PKG_CONFIGS))
 reserved_area.elf_SOURCES += $(call fglob_r,$(PROJECT_ROOT)/src/reserved_area,$(SOURCE_FILE_EXTENSIONS))
@@ -286,8 +287,8 @@ reserved_area.elf_SOURCES += $(PROJECT_ROOT)/src/common/main.c
 #######################################################################################################################
 # Settings for build target reserved_area_tests.elf
 
-reserved_area_tests.elf_STATICALLYLINKED += configtoolutils gmock_main gmock
-reserved_area_tests.elf_LIBS += configtoolutils gmock_main gmock
+reserved_area_tests.elf_STATICALLYLINKED += configtoolutils gmock_main gmock gtest
+reserved_area_tests.elf_LIBS += configtoolutils gmock_main gmock gtest
 reserved_area_tests.elf_LIBS += $(libconfigtoolutils.a_DYNAMICALLYREQUIRED)
 reserved_area_tests.elf_PKG_CONFIGS += 
 reserved_area_tests.elf_DISABLEDWARNINGS += 
@@ -303,7 +304,7 @@ reserved_area_tests.elf_CFLAGS += $(reserved_area_tests.elf_CCXXFLAGS)
 #reserved_area_tests.elf_CFLAGS += $(call option_std,gnu99)
 reserved_area_tests.elf_CFLAGS += -D__STDC_FORMAT_MACROS
 reserved_area_tests.elf_CXXFLAGS += $(reserved_area_tests.elf_CCXXFLAGS)
-#reserved_area_tests.elf_CXXFLAGS += $(call option_std,gnu++11)
+#reserved_area_tests.elf_CXXFLAGS += $(call option_std,gnu++14)
 reserved_area_tests.elf_CXXFLAGS += $(call option_disable_warning,$(TESTS_DISABLEDWARNINGS))
 reserved_area_tests.elf_LDFLAGS += $(call option_lib,$(reserved_area_tests.elf_LIBS),reserved_area_tests.elf)
 reserved_area_tests.elf_LDFLAGS += $(call pkg_config_ldflags,$(reserved_area_tests.elf_PKG_CONFIGS))
@@ -334,7 +335,7 @@ detect_feature.elf_CFLAGS += $(detect_feature.elf_CCXXFLAGS)
 #detect_feature.elf_CFLAGS += $(call option_std,gnu99)
 detect_feature.elf_CFLAGS += -D__STDC_FORMAT_MACROS
 detect_feature.elf_CXXFLAGS += $(detect_feature.elf_CCXXFLAGS)
-#detect_feature.elf_CXXFLAGS += $(call option_std,gnu++11)
+#detect_feature.elf_CXXFLAGS += $(call option_std,gnu++14)
 detect_feature.elf_LDFLAGS += $(call option_lib,$(detect_feature.elf_LIBS),detect_feature.elf)
 detect_feature.elf_LDFLAGS += $(call pkg_config_ldflags,$(detect_feature.elf_PKG_CONFIGS))
 detect_feature.elf_SOURCES += $(call fglob_r,$(PROJECT_ROOT)/src/detect_feature,$(SOURCE_FILE_EXTENSIONS))
@@ -344,8 +345,8 @@ detect_feature.elf_SOURCES += $(PROJECT_ROOT)/src/common/main.c
 #######################################################################################################################
 # Settings for build target detect_feature_tests.elf
 
-detect_feature_tests.elf_STATICALLYLINKED += configtoolutils gmock_main gmock
-detect_feature_tests.elf_LIBS += configtoolutils gmock_main gmock
+detect_feature_tests.elf_STATICALLYLINKED += configtoolutils gmock_main gmock gtest
+detect_feature_tests.elf_LIBS += configtoolutils gmock_main gmock gtest
 detect_feature_tests.elf_LIBS += $(libconfigtoolutils.a_DYNAMICALLYREQUIRED)
 detect_feature_tests.elf_PKG_CONFIGS += 
 detect_feature_tests.elf_DISABLEDWARNINGS += 
@@ -361,7 +362,7 @@ detect_feature_tests.elf_CFLAGS += $(detect_feature_tests.elf_CCXXFLAGS)
 #detect_feature_tests.elf_CFLAGS += $(call option_std,gnu99)
 detect_feature_tests.elf_CFLAGS += -D__STDC_FORMAT_MACROS
 detect_feature_tests.elf_CXXFLAGS += $(detect_feature_tests.elf_CCXXFLAGS)
-#detect_feature_tests.elf_CXXFLAGS += $(call option_std,gnu++11)
+#detect_feature_tests.elf_CXXFLAGS += $(call option_std,gnu++14)
 detect_feature_tests.elf_CXXFLAGS += $(call option_disable_warning,$(TESTS_DISABLEDWARNINGS))
 detect_feature_tests.elf_LDFLAGS += $(call option_lib,$(detect_feature_tests.elf_LIBS),detect_feature_tests.elf)
 detect_feature_tests.elf_LDFLAGS += $(call pkg_config_ldflags,$(detect_feature_tests.elf_PKG_CONFIGS))
@@ -374,6 +375,7 @@ detect_feature_tests.elf_SOURCES += $(call fglob_r,$(PROJECT_ROOT)/src/detect_fe
 # Build infrastructure
 
 -include $(SCRIPT_DIR)/buildclang_1.mk
+-include $(PTXDIST_WORKSPACE)/../wago_intern/debugging/scripts/valgrind-target.mk
 
 #######################################################################################################################
 # Custom rules

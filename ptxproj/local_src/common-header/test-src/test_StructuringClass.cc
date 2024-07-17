@@ -36,6 +36,12 @@ class derived_from_interface : public interface
 
 };
 
+class impl_of_interface : public interface
+{
+  WC_INTERFACE_IMPL_CLASS(impl_of_interface);
+  impl_of_interface() = default;
+};
+
 class without_limitations
 {
 
@@ -113,6 +119,20 @@ TEST(Structuring, class_interface)
   EXPECT_TRUE(std::is_move_assignable<derived_from_interface>::value);
 
   derived_from_interface test_instance;
+}
+
+TEST(Structuring, class_impl_of_interface)
+{
+  // Interface implementation
+  EXPECT_TRUE(std::is_polymorphic<impl_of_interface>::value);
+
+  EXPECT_FALSE(std::is_default_constructible<impl_of_interface>::value);
+
+  EXPECT_FALSE(std::is_copy_constructible<impl_of_interface>::value);
+  EXPECT_FALSE(std::is_copy_assignable<impl_of_interface>::value);
+
+  EXPECT_FALSE(std::is_move_constructible<impl_of_interface>::value);
+  EXPECT_FALSE(std::is_move_assignable<impl_of_interface>::value);
 }
 
 TEST(Structuring, class_without_limitations)

@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WBM_NG_PLUGIN_OPCUA) += wbm-ng-plugin-opcua
 #
 # Paths and names
 #
-WBM_NG_PLUGIN_OPCUA_VERSION        := 2.5.2
+WBM_NG_PLUGIN_OPCUA_VERSION        := 2.5.4
 WBM_NG_PLUGIN_OPCUA                := wbm-opcua-$(WBM_NG_PLUGIN_OPCUA_VERSION)
 WBM_NG_PLUGIN_OPCUA_URL            := $(call jfrog_template_to_url, WBM_NG_PLUGIN_OPCUA)
 WBM_NG_PLUGIN_OPCUA_SUFFIX         := $(suffix $(WBM_NG_PLUGIN_OPCUA_URL))

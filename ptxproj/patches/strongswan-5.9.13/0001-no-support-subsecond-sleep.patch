@@ -1,0 +1,22 @@
+From: unknown author <unknown.author@example.com>
+Date: Tue, 21 Nov 2023 06:59:46 +0100
+Subject: [PATCH] 0001-no-support-subsecond-sleep
+
+---
+ src/ipsec/_ipsec.in | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/ipsec/_ipsec.in b/src/ipsec/_ipsec.in
+index 5bce25e04d7f..9e6daee42461 100644
+--- a/src/ipsec/_ipsec.in
++++ b/src/ipsec/_ipsec.in
+@@ -257,7 +257,8 @@ stop)
+ 			loop=110
+ 			while [ $loop -gt 0 ] ; do
+ 				kill -0 $spid 2>/dev/null || break
+-				sleep 0.1 2>/dev/null
++				#sleep 0.1 2>/dev/null    !!doesn't work with busybox!!
++				usleep 100000
+ 				if [ $? -ne 0 ]
+ 				then
+ 					sleep 1

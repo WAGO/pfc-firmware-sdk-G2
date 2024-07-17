@@ -16,12 +16,12 @@ PACKAGES-$(PTXCONF_LIBBACNET) += libbacnet
 #--- paths and names --------------------------------------------------------- 
 #
 LIBBACNET                   := libbacnet
-LIBBACNET_VERSION        		:= 2.0.0
+LIBBACNET_VERSION        		:= 2.0.1
 LIBBACNET_SO_VERSION        := $(LIBBACNET_VERSION)
 LIBBACNET_FOLDER            := libbacnet_git
 
 ifdef PTXCONF_LIBBACNET_SOURCE_DEV
-LIBBACNET_GIT_URL           := ssh://svtfs01007:22/tfs/ProductDevelopment/BACnet_Stack/_git/Libbacnet
+LIBBACNET_GIT_URL           := git@svgithub01001.wago.local:BU-Automation/bacnet-ptxdist-libbacnet.git
 endif
 
 

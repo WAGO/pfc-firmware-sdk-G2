@@ -9,6 +9,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdalign.h>
 #include <string.h>
 
 #include "wagosnmp_API.h"
@@ -43,7 +44,7 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_GetErrorString(tWagoSnmpReturnCode co
                                       RET_TO_STRING(WAGOSNMP_RETURN_PARSE_OID_ERROR),
                                       RET_TO_STRING(WAGOSNMP_RETURN_TRANSCEIVE_ERROR),
                                       RET_TO_STRING(WAGOSNMP_RETURN_BAD_DATATYPE),
-                                      RET_TO_STRING(WAGOSNMP_RETURN_WARN_STR_VAL_TO_LONG),
+                                      RET_TO_STRING(WAGOSNMP_RETURN_WARN_STR_VAL_TOO_LONG),
                                       RET_TO_STRING(WAGOSNMP_RETURN_ERR_MALLOC),
                                       RET_TO_STRING(WAGOSNMP_RETURN_BAD_STR_VALUE),
                                       RET_TO_STRING(WAGOSNMP_RETURN_ERROR_UNINIT_DATA),
@@ -52,7 +53,7 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_GetErrorString(tWagoSnmpReturnCode co
                                       RET_TO_STRING(WAGOSNMP_RETURN_FB_ERROR),
                                       RET_TO_STRING(WAGOSNMP_RETURN_AUTH_ERR),
                                       RET_TO_STRING(WAGOSNMP_RETURN_PRIV_ERR),
-                                      RET_TO_STRING(WAGOSNMP_RETURN_ERROR_BUFFER_TO_SMALL),
+                                      RET_TO_STRING(WAGOSNMP_RETURN_ERROR_BUFFER_TOO_SMALL),
                                       RET_TO_STRING(WAGOSNMP_RETURN_ERROR_CONVERT),
                                       RET_TO_STRING(WAGOSNMP_RETURN_ERROR_BAD_ENGINE_ID),
                                       RET_TO_STRING(WAGOSNMP_RETURN_ERROR_INVALID_ENGINE_ID),
@@ -73,7 +74,7 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_GetErrorString(tWagoSnmpReturnCode co
 
   i = strlen(pStr) + 1;
   if (szString < i) {
-    ret = WAGOSNMP_RETURN_WARN_STR_VAL_TO_LONG;
+    ret = WAGOSNMP_RETURN_WARN_STR_VAL_TOO_LONG;
   }
   strncpy(str, pStr, szString);
   str[szString - 1] = 0;
@@ -91,6 +92,13 @@ PUBLIC_SYM void libwagosnmp_TlvDeinit(tWagoSnmpTlv *stTlvData) {
 PUBLIC_SYM tWagoSnmpDataType libwagosnmp_TlvGetType(tWagoSnmpTlv *stTlvData) {
   netsnmp_variable_list *stData = (netsnmp_variable_list *)stTlvData;
   return (tWagoSnmpDataType)stData->type;
+}
+
+PUBLIC_SYM void libwagosnmp_CloneTlv(tWagoSnmpTlv *dst, tWagoSnmpTlv *src) {
+  INTERNAL_ReTwist(SNMP_TLV(src));
+   (void)snmp_clone_var(SNMP_TLV(src), SNMP_TLV(dst));
+  INTERNAL_DeTwist(SNMP_TLV(src));
+  INTERNAL_DeTwist(SNMP_TLV(dst));
 }
 
 //-- Function: PLCSNMP_MANAGER_null_to_tlv -----------------------------------------
@@ -119,9 +127,9 @@ PUBLIC_SYM tWagoSnmpDataType libwagosnmp_TlvGetType(tWagoSnmpTlv *stTlvData) {
 PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_NullToTlv(tWagoSnmpTlv *stTlvData) {
   tWagoSnmpReturnCode ret       = WAGOSNMP_RETURN_OK;
   netsnmp_variable_list *stData = (netsnmp_variable_list *)stTlvData;
-  u_char null                   = 0;
+  u_char zero                   = 0;
   INTERNAL_ReTwist(stData);
-  if (INTERNAL_SetVarTypedValue(stData, ASN_NULL, &null, sizeof(null))) {
+  if (INTERNAL_SetVarTypedValue(stData, ASN_NULL, &zero, sizeof(zero))) {
     ret = WAGOSNMP_RETURN_ERR_MALLOC;
   }
   INTERNAL_DeTwist(stData);
@@ -137,7 +145,7 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_Int32ToTlv(int32_t input, tWagoSnmpDa
   }
 
   INTERNAL_ReTwist(stData);
-  if (INTERNAL_SetVarTypedValue(stData, (u_char)eType, (u_char *)&input, sizeof(int))) {
+  if (INTERNAL_SetVarTypedValue(stData, eType, &input, sizeof(int))) {
     ret = WAGOSNMP_RETURN_ERR_MALLOC;
   }
   INTERNAL_DeTwist(stData);
@@ -154,7 +162,7 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_Uint32ToTlv(uint32_t input, tWagoSnmp
   }
 
   INTERNAL_ReTwist(stData);
-  if (INTERNAL_SetVarTypedValue(stData, (u_char)eType, (u_char *)&input, sizeof(uint32_t))) {
+  if (INTERNAL_SetVarTypedValue(stData, eType, &input, sizeof(uint32_t))) {
     ret = WAGOSNMP_RETURN_ERR_MALLOC;
   }
   INTERNAL_DeTwist(stData);
@@ -167,12 +175,19 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_Uint32ToTlv(uint32_t input, tWagoSnmp
 ///  try to convert all given STRING-Values into the given data-type
 ///
 //-----------------------------------------------------------------------------
-PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_StrToTlv(char *str, tWagoSnmpDataType eType, tWagoSnmpTlv *stTlvData) {
+PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_StrToTlv(const char *str, tWagoSnmpDataType eType, tWagoSnmpTlv *stTlvData) {
   tWagoSnmpReturnCode ret       = WAGOSNMP_RETURN_OK;
   netsnmp_variable_list *stData = (netsnmp_variable_list *)stTlvData;
-  u_char val_buf[WAGOSNMP_MAX_STR_LEN + 1];
-  u_char *str_val = val_buf;
-  size_t val_len  = 0;
+  alignas(long long int) u_char val_buf[WAGOSNMP_MAX_STR_LEN + 1];
+  union {
+    void *ptr;
+    int *pInt;
+    unsigned int *pUint;
+    unsigned long long int *pUllint;
+  } buf = {.ptr = val_buf};
+
+  const void *pValue = buf.ptr;
+  size_t val_len       = 0;
 
   oid anOID[MAX_OID_LEN];
   INIT_SNMP_ONCE;
@@ -186,13 +201,19 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_StrToTlv(char *str, tWagoSnmpDataType
     case ASN_UINTEGER: {
       char *endptr = NULL;
       if (eType == ASN_INTEGER) {
-        int *pInt = (int *)str_val;
-        errno     = 0;
-        *pInt     = strtol(str, &endptr, 0);
+        errno  = 0;
+        long l = strtol(str, &endptr, 0);
+        if (l > INT_MAX || l < INT_MIN) {
+          ret = WAGOSNMP_RETURN_BAD_STR_VALUE;
+        }
+        *buf.pInt = (int)l;
       } else {
-        unsigned int *pUint = (unsigned int *)str_val;
-        errno               = 0;
-        *pUint              = strtoul(str, &endptr, 0);
+        errno           = 0;
+        unsigned long l = strtoul(str, &endptr, 0);
+        if (l > UINT_MAX) {
+          ret = WAGOSNMP_RETURN_BAD_STR_VALUE;
+        }
+        *buf.pUint = (unsigned int)l;
       }
       if ((errno != 0) || (endptr == str)) {
         ret = WAGOSNMP_RETURN_BAD_STR_VALUE;
@@ -209,21 +230,16 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_StrToTlv(char *str, tWagoSnmpDataType
         ret = WAGOSNMP_RETURN_BAD_STR_VALUE;
       }
       SNMP_MutexUnlock();
-      str_val = (u_char *)anOID;
+      pValue  = anOID;
       val_len = anOID_len * (sizeof(oid));
       break;
     }
     case ASN_IPADDRESS: /* snmp_build_var_op treats IPADDR like a string */
     {
-      int IPaddr[4];
-      int i;
-      if (4 == sscanf(str, "%d.%d.%d.%d", &IPaddr[0], &IPaddr[1], &IPaddr[2], &IPaddr[3]))
-
-      {
-        for (i = 0; i < 4; i++) {
-          str_val[i] = (u_char)IPaddr[i];
-          val_len    = 4;
-        }
+      unsigned char IPaddr[4];
+      if (4 == sscanf(str, "%hhu.%hhu.%hhu.%hhu", &IPaddr[0], &IPaddr[1], &IPaddr[2], &IPaddr[3])) {
+        memcpy(val_buf, IPaddr, sizeof(IPaddr));
+        val_len = sizeof(IPaddr);
       } else {
         ret = WAGOSNMP_RETURN_BAD_STR_VALUE;
       }
@@ -234,26 +250,26 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_StrToTlv(char *str, tWagoSnmpDataType
     case ASN_BIT_STR:
     case ASN_OPAQUE:
     case ASN_NSAP:
-      str_val = (u_char *)str;
+      pValue  = str;
       val_len = strlen(str);
       break;
     case ASN_COUNTER64: {
-      unsigned long long int *pUllint = (unsigned long long int *)str_val;
-      char *endptr                    = NULL;
-      errno                           = 0;
-      *pUllint                        = strtoull(str, &endptr, 0);
+      char *endptr = NULL;
+      errno        = 0;
+      *buf.pUllint = strtoull(str, &endptr, 0);
       if ((errno != 0) || (endptr == str)) {
         ret = WAGOSNMP_RETURN_BAD_STR_VALUE;
       }
-      val_len = sizeof(unsigned long long int);
+      val_len = sizeof(*buf.pUllint);
       break;
     }
     default:
       ret = WAGOSNMP_RETURN_BAD_DATATYPE;
       break;
   }
+
   if (ret == WAGOSNMP_RETURN_OK) {
-    if (INTERNAL_SetVarTypedValue(stData, (u_char)eType, str_val, val_len)) {
+    if (INTERNAL_SetVarTypedValue(stData, eType, pValue, val_len)) {
       ret = WAGOSNMP_RETURN_ERR_MALLOC;
     }
   }
@@ -273,7 +289,7 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_TlvToInt32(tWagoSnmpTlv *stTlvData, i
   netsnmp_variable_list *stData = (netsnmp_variable_list *)stTlvData;
   INTERNAL_ReTwist(stData);
   if (stData->type == ASN_INTEGER) {
-    *input = *(stData->val.integer);
+    *input = (int32_t) *(stData->val.integer);
   } else {
     ret = WAGOSNMP_RETURN_BAD_DATATYPE;
   }
@@ -311,20 +327,28 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_TlvToStr(tWagoSnmpTlv *stTlvData, cha
 
   size_t len = stData->val_len;
   char buf[WAGOSNMP_MAX_STR_LEN + 64];
+  memset(buf, 0, sizeof(buf));
+
   if (len == 0) {
     return WAGOSNMP_RETURN_ERROR_UNINIT_DATA;
   }
   if (len > WAGOSNMP_MAX_STR_LEN) {
-    ret = WAGOSNMP_RETURN_WARN_STR_VAL_TO_LONG;
+    ret = WAGOSNMP_RETURN_WARN_STR_VAL_TOO_LONG;
     len = WAGOSNMP_MAX_STR_LEN;
   }
   if (len > szValue) {
-    return WAGOSNMP_RETURN_ERROR_BUFFER_TO_SMALL;
+    return WAGOSNMP_RETURN_ERROR_BUFFER_TOO_SMALL;
   }
+  if(value == NULL) {
+    return WAGOSNMP_RETURN_ERR_MALLOC;
+  }
+
   INTERNAL_ReTwist(stData);
-  if (-1 == INTERNAL_SnprintValue(buf, sizeof(buf), stData->name, stData->name_length, stData)) {
+
+  if (-1 == INTERNAL_SnprintValue(buf, sizeof(buf), stData)) {
     ret = WAGOSNMP_RETURN_BAD_DATATYPE;
   } else {
+    memset(value, 0, szValue + 1);
     char *p = strchr(buf, ':');
 
     if (p != NULL) {
@@ -334,19 +358,20 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_TlvToStr(tWagoSnmpTlv *stTlvData, cha
       if (stData->type == ASN_OCTET_STR) {
         p = INTERNAL_StripQuotes(p);
       }
-      bufsiz = (size_t)(p - buf);
-      if (bufsiz <= (sizeof(buf) - WAGOSNMP_MAX_STR_LEN)) {
+      bufsiz = (size_t)(p - buf); // value_offset
+      if (bufsiz <= (sizeof(buf) - WAGOSNMP_MAX_STR_LEN)/*64*/) {
         bufsiz = WAGOSNMP_MAX_STR_LEN;
       } else {
         bufsiz = WAGOSNMP_MAX_STR_LEN - bufsiz;
       }
-      memcpy(value, p, bufsiz - 1);
-      value[bufsiz] = 0;
+      memcpy(value, p, bufsiz);
     } else {
       ret = WAGOSNMP_RETURN_ERROR_CONVERT;
     }
   }
+
   INTERNAL_DeTwist(stData);
+
   return ret;
 }
 
@@ -463,6 +488,10 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_SendTrapToAdrV1(char *sHost, char *sC
   }
   SNMP_MutexUnlock();
   pdu->enterprise = (oid *)malloc(entOID_length * sizeof(oid));
+  if (!pdu->enterprise) {
+    fprintf(stderr, "Failed to allocate memory for enterprise OID\n");
+    return WAGOSNMP_RETURN_ERR_MALLOC;
+  }
   memcpy(pdu->enterprise, entOID, entOID_length * sizeof(oid));
   pdu->enterprise_length = entOID_length;
 
@@ -471,7 +500,7 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_SendTrapToAdrV1(char *sHost, char *sC
 
   myaddr    = (in_addr_t *)pdu->agent_addr;
   *myaddr   = get_myaddr();
-  pdu->time = get_uptime();
+  pdu->time = (u_long)get_uptime(); // uptime is never negative
 
   ret = INTERNAL_AddVarAndSend(sOID, stData, ss, pdu);
 
@@ -506,6 +535,10 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_SendTrapToAdrV3(char *sHost, char *sE
   netsnmp_pdu *pdu;
   netsnmp_variable_list *stData = (netsnmp_variable_list *)stTlvData;
 
+  size_t sec_ebuf_len = MAX_ENGINEID_LENGTH;
+  u_char sec_ebuf[MAX_ENGINEID_LENGTH];
+  u_char engineID[MAX_ENGINEID_LENGTH];
+
   tWagoSnmpTranceiver trcv;
 
   netsnmp_session tmpss;
@@ -529,34 +562,43 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_SendTrapToAdrV3(char *sHost, char *sE
   trcv.sPrivPass      = privPass;
   INTERNAL_SetAuthPriv(&trcv, &tmpss);
 
+  // TODO: refactor hint: the following engineID handling is pretty similar to the one in 
+  // INTERNAL_GetSnmpSession and could be pulled out into a separate function
+
   tmpss.callback       = INTERNAL_SnmpInput;
   tmpss.callback_magic = NULL;
 
-  setup_engineID(NULL, NULL);
+  // FIXME: setup_engineID is not thread-safe and it should only be done once as the engineID is used to identify the
+  // device
+  if (setup_engineID(NULL, NULL) <= 0) {
+    return WAGOSNMP_RETURN_ERR_MALLOC;
+  }
+
   if (tmpss.contextEngineIDLen == 0 || tmpss.contextEngineID == NULL) {
-    tmpss.contextEngineID = snmpv3_generate_engineID(&tmpss.contextEngineIDLen);
+    tmpss.contextEngineID    = engineID;
+    tmpss.contextEngineIDLen = snmpv3_get_engineID(engineID, sizeof(engineID));
   }
 
   if (sEngineId != NULL && sEngineId[0] != 0) {
-    size_t ebuf_len = 32, eout_len = 0;
-    u_char *ebuf = (u_char *)malloc(ebuf_len);
+    size_t eout_len = 0;
+    u_char *pebuf = sec_ebuf;
 
-    if (!snmp_hex_to_binary(&ebuf, &ebuf_len, &eout_len, 1, sEngineId)) {
+    if (!snmp_hex_to_binary(&pebuf, &sec_ebuf_len, &eout_len, 0, sEngineId)) {
       fprintf(stderr, "Bad engine ID value.\n");
-      free(ebuf);
       return WAGOSNMP_RETURN_ERROR_BAD_ENGINE_ID;
     }
-    if ((eout_len < 5) || (eout_len > 32)) {
+    if (eout_len < 5) {
       fprintf(stderr, "Invalid engine ID value\n");
-      free(ebuf);
       return WAGOSNMP_RETURN_ERROR_INVALID_ENGINE_ID;
     }
-    tmpss.securityEngineID    = ebuf;
+    tmpss.securityEngineID    = pebuf;
     tmpss.securityEngineIDLen = eout_len;
   }
 
   if (tmpss.securityEngineIDLen == 0 || tmpss.securityEngineID == NULL) {
-    tmpss.securityEngineID = snmpv3_generate_engineID(&tmpss.securityEngineIDLen);
+    // no security engine ID provided by caller -> reuse contextEngineID
+    tmpss.securityEngineID = tmpss.contextEngineID;
+    tmpss.securityEngineIDLen = tmpss.contextEngineIDLen;
   }
 
   /*
@@ -608,6 +650,7 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_RegisterCustomOid(char *sOID, tWagoSn
     result = AGENT_CreateNewOidObject(anOID, anOID_len, stData, readOnly);
   }
   if (result == WAGOSNMP_RETURN_OK) {
+    // FIXME: bad conversion -> mq_send int to tWagoSnmpReturnCode
     result = INTERNAL_InformForNewOid(AGENT_GetOidObject(anOID, anOID_len));
   }
   INTERNAL_DeTwist(stData);
@@ -652,7 +695,7 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_SetCustomOid(char *sOID, tWagoSnmpTlv
   oid anOID[MAX_OID_LEN];
   tOidObject *object = NULL;
 
-  if (!SNMP_TLV_INITALIZED(stTlvData) || SNMP_TLV_IS_NULL(stTlvData)) {
+  if (!SNMP_TLV_INITALIZED(stData) || SNMP_TLV_IS_NULL(stData)) {
     return WAGOSNMP_RETURN_ERROR_PARAMETER;
   }
 
@@ -676,3 +719,4 @@ PUBLIC_SYM tWagoSnmpReturnCode libwagosnmp_SetCustomOid(char *sOID, tWagoSnmpTlv
   INTERNAL_DeTwist(stData);
   return result;
 }
+

@@ -1,12 +1,12 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.59)
-AC_INIT(liboslinux, 1.0)
+AC_PREREQ([2.69])
+AC_INIT([liboslinux],[1.0])
 AC_PROG_CC
 
 AC_CONFIG_HEADERS([include/OsConfig.h])
 
-AC_CANONICAL_SYSTEM
+AC_CANONICAL_TARGET
 
 dnl Initialize automake
 AM_INIT_AUTOMAKE
@@ -19,7 +19,7 @@ LT_INIT
 
 dnl Check if Libtool is present
 dnl Libtool is used for building share libraries 
-AC_PROG_LIBTOOL
+LT_INIT
 
 
 AC_MSG_CHECKING([whether to enable trace output])

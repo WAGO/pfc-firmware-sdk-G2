@@ -1,0 +1,23 @@
+#!/bin/bash
+# wdaphpdemo post package remove script: remove demo client from auth service config
+# WAGO GmbH & Co. KG
+
+AUTH_SERVICE_CONFIG_FILE=/etc/authd/authd.conf
+
+remove_demo_client_to_auth_service_config()
+{
+	# remove client from list of known clients
+	sed -ie '/^clients\s*=/s/;wdaphpdemo//' "$AUTH_SERVICE_CONFIG_FILE"
+	sed -i '/^clients=wdaphpdemo/d' "$AUTH_SERVICE_CONFIG_FILE"
+
+	# remove client config lines
+	sed -i '/WDA PHP Demo Client/d' "$AUTH_SERVICE_CONFIG_FILE"
+	sed -i '/\.wdaphpdemo/d' "$AUTH_SERVICE_CONFIG_FILE"
+
+	# restart auth service to load new config
+	/etc/init.d/authd restart
+}
+
+remove_demo_client_to_auth_service_config
+
+exit 0

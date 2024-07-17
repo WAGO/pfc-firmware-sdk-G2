@@ -17,11 +17,11 @@ PACKAGES-$(PTXCONF_CDS3_TSCIOBACNET) += cds3-tsciobacnet
 #--- paths and names --------------------------------------------------------- 
 #
 CDS3_TSCIOBACNET                 := TscIoBacnet
-CDS3_TSCIOBACNET_SO_VERSION      := 2.0.2
+CDS3_TSCIOBACNET_SO_VERSION      := 2.1.0
 CDS3_TSCIOBACNET_FOLDER          := TscIoBacnet_git
 
 ifdef PTXCONF_CDS3_TSCIOBACNET_SOURCE_DEV
-CDS3_TSCIOBACNET_GIT_URL         := ssh://svtfs01007:22/tfs/ProductDevelopment/BACnet_Stack/_git/TscIoBacnet
+CDS3_TSCIOBACNET_GIT_URL         := git@svgithub01001.wago.local:BU-Automation/bacnet-ptxdist-tsciobacnet.git
 endif
 
 CDS3_TSCIOBACNET_REL_PATH        := wago_intern/codesys3-Component/$(CDS3_TSCIOBACNET_FOLDER)
@@ -101,14 +101,12 @@ $(STATEDIR)/cds3-tsciobacnet.extract:
 	@$(call targetinfo)
 	@mkdir -p $(CDS3_TSCIOBACNET_BUILDROOT_DIR)
 ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
-ifdef PTXCONF_CDS3_TSCIOBACNET_SOURCE_RELEASED
 	@mkdir -p $(CDS3_TSCIOBACNET_DIR)
+ifdef PTXCONF_CDS3_TSCIOBACNET_SOURCE_RELEASED
 	@tar xvf wago_intern/artifactory_sources/$(CDS3_TSCIOBACNET_ARCHIVE) -C $(CDS3_TSCIOBACNET_DIR) --strip-components=1
 	@$(call patchin, CDS3_TSCIOBACNET)
 else
-	@if [ ! -L $(CDS3_TSCIOBACNET_DIR) ]; then \
-	  	ln -s $(CDS3_TSCIOBACNET_SRC_DIR) $(CDS3_TSCIOBACNET_DIR); \
-	fi
+	@mv $(CDS3_TSCIOBACNET_SRC_DIR)/* $(CDS3_TSCIOBACNET_DIR)
 endif
 endif
 	@$(call touch)
@@ -130,6 +128,9 @@ endif
 $(STATEDIR)/cds3-tsciobacnet.prepare:
 	@$(call targetinfo)
 ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	$(MAKE) -C $(CDS3_TSCIOBACNET_DIR) SYSROOT=$(PTXCONF_SYSROOT_TARGET) itf
+	$(MAKE) -C $(CDS3_TSCIOBACNET_DIR) SYSROOT=$(PTXCONF_SYSROOT_TARGET) dep
+	
 	@$(call world/prepare, CDS3_TSCIOBACNET)
 endif
 	@$(call touch)
@@ -212,4 +213,5 @@ $(STATEDIR)/cds3-tsciobacnet.clean:
 	fi
 	@$(call clean_pkg, CDS3_TSCIOBACNET)
 	
+	rm -rf $(CDS3_TSCIOBACNET_SRC_DIR)
 	rm -rf $(CDS3_TSCIOBACNET_BUILDROOT_DIR)

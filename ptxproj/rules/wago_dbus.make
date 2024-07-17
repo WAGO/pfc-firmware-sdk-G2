@@ -22,7 +22,7 @@ else
 WAGO_DBUS_VERSION	:= 1.1
 endif
 WAGO_DBUS		:= wago_dbus
-WAGO_DBUS_URL		:= file:///local_src/$(WAGO_DBUS)
+WAGO_DBUS_URL		:= file://local_src/$(WAGO_DBUS)
 WAGO_DBUS_SRC		:= $(call ptx/in-path, PTXDIST_PATH, local_src/$(WAGO_DBUS))
 ifeq ($(WAGO_DBUS_SRC),)
 WAGO_DBUS_SRC	:= $(PTXDIST_WORKSPACE)/local_src/$(WAGO_DBUS)

@@ -368,6 +368,7 @@ fwupdate_service_second_boot()
 		DOCKER_WAS_ACTIVE="$(fwupdate_storage --get 'docker')"    
 		if [[ "$DOCKER_WAS_ACTIVE" == "active" ]]; then
 				/etc/config-tools/config_docker activate
+				fwupdate_report_info "Docker started in new system"
 		fi
     
     # Update sub state
@@ -491,6 +492,13 @@ fwupdate_service_finish_rollback()
     if [ "$RESULT" -eq "0" ]; then
         fwupdate_start_normal_operation_on_error
     fi
+    
+    # Start Docker if it was enabled before the fwupdate to enable fwupdate via docker
+		DOCKER_WAS_ACTIVE="$(fwupdate_storage --get 'docker')"    
+		if [[ "$DOCKER_WAS_ACTIVE" == "active" ]]; then
+				/etc/config-tools/config_docker activate
+				fwupdate_report_info "Docker started in old system"
+		fi
 
     # Set final state
     fwupdate_checkpoint_error true

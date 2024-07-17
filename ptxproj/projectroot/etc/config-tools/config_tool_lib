@@ -216,9 +216,6 @@ PLC_CONFIG_FILE="/etc/rts3s.cfg"
 MENU_LST="/boot/grub/menu.lst"
 INITTAB="/etc/inittab"
 LICENSE_INFORMATION_FILENAME="/etc/LICENSE"
-PASSWD_CHECK_BIN="/usr/bin/true"
-PASS_MIN_LENGTH=10
-IS_PASS_WEAK_CHECK="y"
 TRACE_FILENAME="/etc/config-tools/trace_debug.txt"
 SNMP_USER_DEFINES_FILE="/etc/specific/snmp_user.conf"
 
@@ -1322,6 +1319,20 @@ function GetInactiveSystemPartition
   echo $(/usr/sbin/${BOARD_ID}_get_inactive_system_partition.sh)
 }
 
+# Get actual active system partition number
+#-----------------------------------------------------------------------------#
+function GetActiveSystemPartitionNumber
+{
+  local bootedRootPartition="$(readlink -f /dev/rootfs_active)"
+  if [ "$bootedRootPartition" == "$(readlink -f /dev/partition_rootfs.1)" ]; then
+    echo 1
+  elif [ "$bootedRootPartition" == "$(readlink -f /dev/partition_rootfs.2)" ]; then
+    echo 2
+  else
+    echo 0
+  fi
+}
+
 # Switch flag which defines boot partition in menu.lst to the actual inactive system partition
 #-----------------------------------------------------------------------------#
 function SwitchBootPartition
@@ -1339,7 +1350,6 @@ function SwitchBootPartition
 
   return "$status"
 }
-
 
 # Windows 7 writes garbage to the card's partition table and creates
 # a filesystem directly on device
@@ -1457,6 +1467,15 @@ function GetTargetName
   echo "${product}"
 }
 
+#-----------------------------------------------------------------------------#
+function CheckPasswordQuality
+{
+  if [[ -x "/usr/bin/pwqcheck" ]]; then
+    pwqcheck -1 min=disabled,disabled,disabled,disabled,10 passphrase=0 match=0 <<<"$1" 1>/dev/null 2>&1
+  fi
+}
+
+#-----------------------------------------------------------------------------#
 function CheckEncryptionPassphrase
 {
 
@@ -1465,14 +1484,8 @@ function CheckEncryptionPassphrase
   
   CheckStringForASCII "$password" || return "$INVALID_PARAMETER"
 
-  # check password complexity only
-  $PASSWD_CHECK_BIN minLength=$PASS_MIN_LENGTH weakCheck="$IS_PASS_WEAK_CHECK" username=" " oldPasswd=" " \
-                    newPasswd="$password" confirmPasswd="$password" hostname=" "
-  if [ $? -ne 0 ]; then
-    status=$INVALID_PARAMETER
-    ReportError $status $?
-    SetLastError $?
-  fi
+  # check password complexity (only done if pwqcheck is available)
+  CheckPasswordQuality "${password}" || return $INVALID_PARAMETER
 
   return $status
 }

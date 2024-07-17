@@ -149,12 +149,14 @@ $(STATEDIR)/wago-pfc-diagnostic.targetinstall:
 	@$(call install_copy, wago-pfc-diagnostic, 0, 0, 0755, -, /etc/specific/led.0x1009.TP600.xml)
 	@$(call install_copy, wago-pfc-diagnostic, 0, 0, 0755, -, /etc/specific/led.0x1010.TP600.xml)
 	@$(call install_copy, wago-pfc-diagnostic, 0, 0, 0755, -, /etc/specific/led.0x1011.CC100.xml)
+	@$(call install_copy, wago-pfc-diagnostic, 0, 0, 0755, -, /etc/specific/led.0x1012.CC100.xml)
 	@$(call install_copy, wago-pfc-diagnostic, 0, 0, 0755, -, /etc/specific/led.0x1013.CC100.xml)
 	@$(call install_link, wago-pfc-diagnostic, "../../etc/specific/led.0x000C.PFC200.xml", "/etc/specific/led.0x1004.PFC200.xml")
 	@$(call install_link, wago-pfc-diagnostic, "../../etc/specific/led.0x000C.PFC200.xml", "/etc/specific/led.0x1007.PFC200.xml")
+	@$(call install_link, wago-pfc-diagnostic, "../../etc/specific/led.0x000C.PFC200.xml", "/etc/specific/led.0x100C.PFC300.xml")
 	@$(call install_link, wago-pfc-diagnostic, "../../etc/specific/led.0x000F.PFC200.xml", "/etc/specific/led.0x004E.PFC200.xml")
 	@$(call install_link, wago-pfc-diagnostic, "../../tmp/led.xml", "/etc/specific/led.xml")
-	@$(call install_copy, wago-pfc-diagnostic, 0, 0, 0755, -, /etc/specific/led.0x3005.PFC200-ADV.xml)
+	@$(call install_copy, wago-pfc-diagnostic, 0, 0, 0755, -, /etc/specific/led.0x100C.PFC300.xml)
 
 	@$(call install_alternative, wago-pfc-diagnostic, 0, 0, 0755, /etc/specific/led_info.json)
 

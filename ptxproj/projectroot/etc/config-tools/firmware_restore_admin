@@ -71,8 +71,8 @@ function StartDaemon
 
         /usr/sbin/daemonize -p $DAEMON_PID_FILE $FIRMWARE_RESTORE "$@"
         
-        local timeout=20000000 # 10 sec in usec
-        local delta=200000
+        local timeout=$((2 * 60 * 1000000)) # mehr als 10 sec in usec
+        local delta=$((1 * 1000000))
         while [[ $timeout -gt 0 && ! -e $RESTORE_PROCESS_STATUS_TMP_FILE ]]; do
             usleep $delta
             timeout=$((timeout-delta))

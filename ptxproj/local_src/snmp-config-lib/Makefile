@@ -17,6 +17,8 @@ PTXDIST_PACKAGE_MK_FILE ?= $(PTXDIST_WORKSPACE)/rules/snmp-config-lib.make
 
 SRC_DIR = $(PROJECT_ROOT)
 
+VALGRIND_FLAGS += --suppressions=$(PTXDIST_PLATFORMDIR)/sysroot-target/usr/share/glib-2.0/valgrind/glib.supp
+
 #######################################################################################################################
 # Optional package/ platform feature configuration
 
@@ -135,8 +137,8 @@ libsnmpconfig.a_CLANG_TIDY_CHECKS += -google-runtime-references
 #######################################################################################################################
 # Settings for build target alltests.elf
 
-alltests.elf_LIBS             += gmock_main gmock snmpconfig $(libsnmpconfig.a_LIBS)
-alltests.elf_STATICALLYLINKED += gmock_main gmock snmpconfig
+alltests.elf_LIBS             += gmock_main gmock gtest snmpconfig $(libsnmpconfig.a_LIBS)
+alltests.elf_STATICALLYLINKED += gmock_main gmock gtest snmpconfig
 alltests.elf_PKG_CONFIGS      += 
 alltests.elf_PKG_CONFIGS      += $(libsnmpconfig.a_PKG_CONFIGS)
 alltests.elf_DISABLEDWARNINGS += suggest-override

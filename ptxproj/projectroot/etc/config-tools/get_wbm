@@ -38,7 +38,7 @@ fi
 
 case "$1" in
 
-"wbm-enabled")    (cd /etc/lighttpd && [[ $(readlink wbm.conf) == "wbm_enabled.conf" ]] && echo -n "YES" || echo -n "NO")
+"wbm-enabled")    (cd /etc/lighttpd/apps.confd && [[ $(readlink wbm.conf) == "wbm/wbm_enabled.conf" ]] && echo -n "YES" || echo -n "NO")
           ;;
 
 *)        status="$INVALID_PARAMETER"

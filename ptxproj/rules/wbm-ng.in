@@ -22,9 +22,12 @@ config WBM_NG
 	prompt "Base WBM"
 
 	select LIGHTTPD
+	select LIGHTTPD_MOD_FASTCGI
+	select LIGHTTPD_MOD_FASTCGI_PHP
 	select PHP_SELECTION
-	select PHP_PAM
-
+	select WAGO_AUTH_SERVICE
+	select WAGO_AUTH_SERVICE_DAEMON
+	
 	help
 	 "Modular Web-based-Management"
 

@@ -5,14 +5,15 @@
 
     <parameters>
         <interfaces>
-            <interface name="br0"  rname="br0"  ethernet="yes"/>
-            <interface name="br1"  rname="br1"  ethernet="yes"/>
-            <interface name="br2"  rname="br2"  ethernet="yes"/>
-            <interface name="br3"  rname="br3"  ethernet="yes"/>
-            <interface name="WAN" rname="wwan0" ethernet="yes" ipsec_srv="yes"/>
-            <interface name="VPN" rname="wwan0" ethernet="no"  ipsec="yes"/>
-            <interface name="VPN" rname="tun+"  ethernet="no" />
-            <interface name="VPN" rname="tap+"  ethernet="yes"/>
+            <interface name="br0"  rname="br0"   ethernet="yes"/>
+            <interface name="br1"  rname="br1"   ethernet="yes"/>
+            <interface name="br2"  rname="br2"   ethernet="yes"/>
+            <interface name="br3"  rname="br3"   ethernet="yes"/>
+            <interface name="WAN"  rname="wwan0" ethernet="yes" ipsec_srv="yes"/>
+            <interface name="VPN"  rname="wwan0" ethernet="no"  ipsec="yes"/>
+            <interface name="VPN"  rname="tun+"  ethernet="no" />
+            <interface name="VPN"  rname="tap+"  ethernet="yes"/>
+            <interface name="usb0" rname="usb0"  ethernet="yes"/>
         </interfaces>
     </parameters>
 

@@ -16,25 +16,25 @@ PACKAGES-$(PTXCONF_LIBBACNETCONFIG) += libbacnetconfig
 #--- paths and names --------------------------------------------------------- 
 #
 LIBBACNETCONFIG                   := libbacnetconfig
-LIBBACNETCONFIG_FOLDER						:= libbacnetconfig_git
+LIBBACNETCONFIG_FOLDER            := libbacnetconfig_git
 
 # select BACnet stack revision
 ifdef PTXCONF_LIBBACNETSTACK_SOURCE_DEV
-BACNETSTACK_REVISION := 24
+BACNETSTACK_REVISION              := 25
 # configure BACnet version (IPK)
-BACNET_VERSION       := 1.7.0
-LIBBACNETCONFIG_VERSION        := 1.6.1
+BACNET_VERSION                    := 2.0.2
+LIBBACNETCONFIG_VERSION           := 2.2.0
 endif
 
 ifdef PTXCONF_LIBBACNETSTACK_SOURCE_RELEASED
-BACNETSTACK_REVISION := 24
+BACNETSTACK_REVISION              := 25
 # configure BACnet version (IPK)
-BACNET_VERSION       := 1.7.0
-LIBBACNETCONFIG_VERSION        := 1.7.2
+BACNET_VERSION                    := 2.0.2
+LIBBACNETCONFIG_VERSION           := 2.2.0
 endif
 
 ifdef PTXCONF_LIBBACNETCONFIG_SOURCE_DEV
-LIBBACNETCONFIG_GIT_URL           := ssh://svtfs01007:22/tfs/ProductDevelopment/BACnet_Stack/_git/LibbacnetConfig
+LIBBACNETCONFIG_GIT_URL           := git@svgithub01001.wago.local:BU-Automation/bacnet-ptxdist-libbacnetconfig.git
 endif
 
 LIBBACNETCONFIG_REL_PATH          := wago_intern/device/bacnet/$(LIBBACNETCONFIG_FOLDER)

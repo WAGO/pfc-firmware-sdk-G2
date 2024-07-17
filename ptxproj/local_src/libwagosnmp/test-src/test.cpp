@@ -24,6 +24,7 @@
 
 #include <cstring>
 #include <string>
+#include <array>
 
 extern "C" {
 #include "wagosnmp_API.h"
@@ -51,6 +52,12 @@ extern "C" {
 //------------------------------------------------------------------------------
 // function implementation
 //------------------------------------------------------------------------------
+TEST(Tlv, size) {
+  printf("sizeof netsnmp_variable_list: %lu\n", sizeof(netsnmp_variable_list));
+  printf("sizeof tWagoSnmpTlv: %lu\n", sizeof(tWagoSnmpTlv));
+  static_assert(sizeof(tWagoSnmpTlv) >= sizeof(netsnmp_variable_list), "tWagoSnmpTlv is too small to hold netsnmp_variable_list");
+}
+
 TEST(Tlv, callSo) {
   // setup
 
@@ -84,7 +91,7 @@ TEST(Tlv, Uninitialized_DeathTest) {
   // teardown
 }
 
-TEST(Tlv, Conversion) {
+TEST(Tlv, ConversionInt) {
   // setup
   tWagoSnmpTlv tlvData;
   memset(&tlvData, 0, sizeof(tlvData));
@@ -99,9 +106,30 @@ TEST(Tlv, Conversion) {
   // teardown
 }
 
+TEST(Tlv, ConversionString) {
+  // setup
+  tWagoSnmpTlv tlvData;
+  ::std::string input;
+  ::std::array<char, WAGOSNMP_MAX_STR_LEN + 1> output{};
+  memset(output.data(), 'x', output.size());
+
+  for(int length = 1; length <= WAGOSNMP_MAX_STR_LEN; length++) {
+    input.append(1, 'a');
+    memset(&tlvData, 0, sizeof(tlvData));
+    // test
+    ASSERT_EQ(WAGOSNMP_RETURN_OK, libwagosnmp_StrToTlv(input.c_str(), ASN_OCTET_STR, &tlvData));
+    ASSERT_EQ(WAGOSNMP_RETURN_OK, libwagosnmp_TlvToStr(&tlvData, output.data(), WAGOSNMP_MAX_STR_LEN));
+    ASSERT_EQ(strnlen(output.data(), output.size()), length);
+    ASSERT_STREQ(input.c_str(), output.data());
+    libwagosnmp_TlvDeinit(&tlvData);
+  }
+
+  // teardown
+}
+
 struct SecAuthParams {
-  enum SnmpAuhtenticationProtocol auth;
-  enum SnmpPrivacyProtocol priv;
+  SnmpAuhtenticationProtocol auth;
+  SnmpPrivacyProtocol priv;
   tWagoSnmpSecLevel secLevel;
   oid* expectedAuthProto;
   int expectedAuthProtoLen;

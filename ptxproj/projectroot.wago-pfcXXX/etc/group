@@ -1,6 +1,6 @@
 root:x:0:
 daemon:x:1:
-shadow:x:42:authd,paramd,www
+shadow:x:42:authd,paramd
 www:x:102:
 messagebus:x:104:
 cdrom:x:105:
@@ -30,4 +30,5 @@ docker:x:1001:
 wagoupload:x:234:wagoupload,admin
 wbmuser:x:130:user,admin,root
 wbmadmin:x:131:admin,root
+wbm:x:132:user,admin,root
 netconf:x:501:admin,iot

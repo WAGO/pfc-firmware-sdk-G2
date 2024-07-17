@@ -1,6 +1,7 @@
 ## SECTION=wago_specific_tools
 
 config EEPROM_XSECTION
+	select HOST_CT_BUILD 
 	bool
 	prompt "eeprom-xsection"
 	help

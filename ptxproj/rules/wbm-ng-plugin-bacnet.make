@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WBM_NG_PLUGIN_BACNET) += wbm-ng-plugin-bacnet
 #
 # Paths and names
 #
-WBM_NG_PLUGIN_BACNET_VERSION        := 1.4.3
+WBM_NG_PLUGIN_BACNET_VERSION        := 2.1.0
 WBM_NG_PLUGIN_BACNET                := wbm-bacnet-$(WBM_NG_PLUGIN_BACNET_VERSION)
 WBM_NG_PLUGIN_BACNET_URL            := $(call jfrog_template_to_url, WBM_NG_PLUGIN_BACNET)
 WBM_NG_PLUGIN_BACNET_SUFFIX         := $(suffix $(WBM_NG_PLUGIN_BACNET_URL))

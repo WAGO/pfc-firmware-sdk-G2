@@ -171,7 +171,10 @@ case "$sourceFilename" in
       else
         tar -xf "${sourceFilename}" -C ${destinationDir} --exclude ./codesys_root || exit "$SHELL_ERROR"
       fi
+      rm -rf /media/sd/*
+      rm -rf /media/sd/.* ||:  # ||: is needed because .* throws error by deleting . and ..
       tar -xvf "${sourceFilename}" -C /media/sd/ ./codesys_root/ --strip-components=2 || exit "$SHELL_ERROR"
+      mv -f /media/sd/CODESYSControl_User.cfg /etc/codesys3.d/CODESYSControl_User.cfg 2>/dev/null ||:
     else
       if [[ "$(which pv)" != "" ]]; then
         # show progress bar
@@ -181,6 +184,7 @@ case "$sourceFilename" in
       else
         tar 2>/dev/null xzpf "${sourceFilename}" -C ${destinationDir} || exit "$SHELL_ERROR"
       fi
+      mv -f /home/codesys_root/CODESYSControl_User.cfg /etc/codesys3.d/CODESYSControl_User.cfg 2>/dev/null ||:
     fi
 esac
 	

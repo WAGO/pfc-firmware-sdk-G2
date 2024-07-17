@@ -22,6 +22,7 @@
 using testing::Return;
 using testing::_;
 using testing::SetArgReferee;
+using testing::DoAll;
 
 namespace netconf
 {

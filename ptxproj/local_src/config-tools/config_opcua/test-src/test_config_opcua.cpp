@@ -92,7 +92,7 @@ SECURITY.State=\n\
 SECURITY.Country=\n";
   }
 
-  std::ofstream cfg_file("/etc/codesys3.d/CODESYSControl.cfg");
+  std::ofstream cfg_file("/etc/codesys3.d/CODESYSControl_User.cfg");
   cfg_file << text;
 }
 
@@ -103,7 +103,7 @@ int set_in_cfg_file(const std::string & key, const std::string & value)
 
   std::string command = "sed -i \"s/";
   command += key + "=.*/";
-  command += key + "=" + value + "/g\" /etc/codesys3.d/CODESYSControl.cfg";
+  command += key + "=" + value + "/g\" /etc/codesys3.d/CODESYSControl_User.cfg";
 
   int result = exec_command(command, &std_out, &std_err);
 
@@ -125,7 +125,7 @@ std::string get_from_cfg_file(const std::string & key)
   gchar * std_err;
 
   std::string result = "";
-  if(exec_command("cat /etc/codesys3.d/CODESYSControl.cfg", &std_out, &std_err) == EXIT_SUCCESS && std_out != nullptr)
+  if(exec_command("cat /etc/codesys3.d/CODESYSControl_User.cfg", &std_out, &std_err) == EXIT_SUCCESS && std_out != nullptr)
   {
     std::string str_out = std_out;
     size_t pos = str_out.find(key);

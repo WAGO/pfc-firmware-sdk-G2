@@ -20,15 +20,15 @@ LIBBACNETSTACK                   := libbacnetstack
 LIBBACNETSTACK_FOLDER            := libbacnetstack_git
  
 ifdef PTXCONF_LIBBACNETSTACK_SOURCE_DEV
-LIBBACNETSTACK_REVISION          := 24
-LIBBACNETSTACK_SO_VERSION        := 2.0.2
-LIBBACNETSTACK_GIT_URL           := ssh://svtfs01007:22/tfs/ProductDevelopment/_git/BACnet_Stack
+LIBBACNETSTACK_REVISION          := 25
+LIBBACNETSTACK_SO_VERSION        := 3.2.1
+LIBBACNETSTACK_GIT_URL           := git@svgithub01001.wago.local:BU-Automation/bacnet-ptxdist-libbacnetstack.git
 LIBBACNETSTACK_ENVIRON           := DEVELOP
 endif
 
 ifdef PTXCONF_LIBBACNETSTACK_SOURCE_RELEASED
-LIBBACNETSTACK_REVISION          := 24
-LIBBACNETSTACK_SO_VERSION        := 2.0.12
+LIBBACNETSTACK_REVISION          := 25
+LIBBACNETSTACK_SO_VERSION        := 3.2.1
 LIBBACNETSTACK_ENVIRON           := RELEASE
 endif
 

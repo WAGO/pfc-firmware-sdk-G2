@@ -14,9 +14,9 @@ PACKAGES-$(PTXCONF_DOCKERD) += dockerd
 #
 # Paths and names
 #
-DOCKERD_VERSION		:= 20.10.21
-DOCKERD_MD5				:= 60830ade43c0eef9905cb97f246040cc
-DOCKERD_GITCOMMIT	:= 3056208812eb5e792fa99736c9167d1e10f4ab49
+DOCKERD_VERSION		:= 25.0.4
+DOCKERD_MD5				:= 43f87e5a65cc258858de78981de661fa
+DOCKERD_GITCOMMIT	:= 061aa95809be396a6b5542618d8a34b02a21ff77
 DOCKERD						:= moby-$(DOCKERD_VERSION)
 DOCKERD_SUFFIX		:= tar.gz
 DOCKERD_URL				:= https://github.com/moby/moby/archive/refs/tags/v$(DOCKERD_VERSION).$(DOCKERD_SUFFIX)
@@ -38,7 +38,7 @@ DOCKERD_GO_ENV:= \
 	PKG_CONFIG=$(CROSS_PKG_CONFIG) \
 	GOPATH=$(DOCKERD_DIR) \
 	GO111MODULE=off \
-	GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=1
+	GOOS=linux CGO_ENABLED=1
 
 DOCKERD_BUILDTAGS:=-tags ' \
 	netgo \
@@ -90,7 +90,7 @@ $(STATEDIR)/dockerd.compile:
 	@$(call targetinfo)
 	PATH=$(CROSS_PATH):$(HOST_GO_BIN_DIR) ; \
 	cd $(DOCKERD_DIR) &&  \
-		$(DOCKERD_GO_ENV) go build \
+		$(DOCKERD_GO_ENV) $(GO_ARCH) go build \
 			-o bundles/cross/linux/armv7/dockerd-$(DOCKERD_VERSION)-wago \
 			$(DOCKERD_BUILDTAGS) \
 			$(DOCKERD_BUILDMODE) \

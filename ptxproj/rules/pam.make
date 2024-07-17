@@ -16,8 +16,8 @@ PACKAGES-$(PTXCONF_PAM) += pam
 #
 # Paths and names
 #
-PAM_VERSION       := 1.5.2
-PAM_MD5           := 895e8adfa14af334f679bbeb28503f66
+PAM_VERSION       := 1.5.3
+PAM_MD5           := a913bd5fbf9edeafaacf3eb1eb86fd83
 PAM               := Linux-PAM-$(PAM_VERSION)
 PAM_SUFFIX        := tar.xz
 PAM_URL           := https://github.com/linux-pam/linux-pam/releases/download/v$(PAM_VERSION)/$(PAM).$(PAM_SUFFIX)

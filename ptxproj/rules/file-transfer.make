@@ -13,7 +13,7 @@
 #
 PACKAGES-$(PTXCONF_FILE_TRANSFER) += file-transfer
 
-FILE_TRANSFER_VERSION	:= 0.0.1
+FILE_TRANSFER_VERSION	:= 0.0.2
 
 # ----------------------------------------------------------------------------
 # Get
@@ -108,7 +108,7 @@ $(STATEDIR)/file-transfer.targetinstall:
 
 # Files that should be copied to the target
 
-	@$(call install_copy, file-transfer, 0, 0, 0750, $(PTXDIST_WORKSPACE)/projectroot/etc/config-tools/file_transfer, /etc/config-tools/file_transfer);
+	@$(call install_alternative, file-transfer, 0, 0, 0750, /etc/config-tools/file_transfer);
 
 	@$(call install_finish,file-transfer)
 

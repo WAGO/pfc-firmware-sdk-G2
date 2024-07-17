@@ -35,7 +35,6 @@
 #include <ct_error_handling.h>
 
 #define TTY "/dev/serial"
-#define VTPCTP_BROWSER "/usr/bin/webenginebrowser"
 #define RS_SEL_PATH "/sys/class/leds/rs-sel/brightness"
 #define BOARD_PATH "/sys/class/wago/system/board_variant"
 
@@ -73,7 +72,7 @@ int main(int argc, char **argv)
 	struct serial_rs485 srs;	// Mode selection (RS232 or RS485)
 	struct termios tp;			// Communication params
 	struct stat StatInfo;		// file infos provided by stat()
-	int iPanelFound, iValue;
+	int iRSSelFound, iValue;	// RS_SEL used by TP600, EC, CC100 V2
 	FILE *pFile;
 	char szFileMode[5];
 	strcpy(szFileMode, "rb");
@@ -92,19 +91,29 @@ int main(int argc, char **argv)
         exit(SUCCESS);
     }
 
+    // detect RS_SEL method (only TP600, EC, CC100 V2)
+    if(stat(RS_SEL_PATH, &StatInfo) == 0)
+        iRSSelFound = 1;
+    else
+        iRSSelFound = 0;
+
     // detect CC100 device, only rs485 available no switching possible
     if (ReadBoardVariant(&szOut[0], sizeof(szOut)) == 0)
     {
       if (strncmp(szOut, "CC100", 5) == 0)
       {
-        if(strcmp(argv[1], "rs485") == 0)
+        if (iRSSelFound == 0)
         {
-          return 0; //success
-        }
-        if (strcmp(argv[1], "rs232") == 0)
-        {
-          //perror("ERROR: rs232 is not available ");
-          return -1; //not available
+            //CC100 751-9301 751-9401 with fix RS485 on Com1
+            if(strcmp(argv[1], "rs485") == 0)
+            {
+              return 0; //success
+            }
+            if (strcmp(argv[1], "rs232") == 0)
+            {
+              //perror("ERROR: rs232 is not available ");
+              return -1; //not available
+            }
         }
       }
     }
@@ -120,12 +129,6 @@ int main(int argc, char **argv)
         }
     }
 
-	/* detect VTPCTP panel */
-	if(stat(VTPCTP_BROWSER, &StatInfo) == 0)
-		iPanelFound = 1;
-	else
-		iPanelFound = 0;
-
     if(SUCCESS == ret)
     {
         if (tcgetattr(serialFd, &tp) < 0)
@@ -133,7 +136,7 @@ int main(int argc, char **argv)
       		perror("ERROR: tcgetattr() - Can't read settings");
             ret = SYSTEM_CALL_ERROR;
       }
-      if( (iPanelFound == 0 )
+      if( (iRSSelFound == 0 )
         &&(ioctl(serialFd, TIOCGRS485, &srs) < 0))
       {
         perror("ERROR: ioctl(TIOCGRS485)  - Can't read settings");
@@ -149,8 +152,8 @@ int main(int argc, char **argv)
         	srs.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND;
 		    tp.c_iflag |= IGNBRK;  	//Ignore break condition(required by RS485?)
 		    tp.c_cflag |= CREAD;   //it was detected by coincidence that this bit need to be set 
-			/* vtpctp enable rs485 */
-			if ( iPanelFound == 1 ) {
+			/* vtpctp, EC, CC100 V2 enable rs485 */
+			if ( iRSSelFound == 1 ) {
 				strcpy(szFileMode, "rb+");
 				pFile = fopen(RS_SEL_PATH, szFileMode);
 				if (pFile != NULL)
@@ -159,7 +162,7 @@ int main(int argc, char **argv)
 					iValue = 0;
 					sprintf(&szOut[0], "%d", iValue);
 					if (fwrite (&szOut[0] , sizeof(unsigned char), sizeof(szOut), (FILE*)pFile) <= 0) {
-						perror("ERROR: vtpctp can't change serial mode ");
+						perror("ERROR: RS_SEL can't change serial mode ");
 						ret = SYSTEM_CALL_ERROR;
 					}
 					fclose((FILE *)pFile);
@@ -171,8 +174,8 @@ int main(int argc, char **argv)
 		    tp.c_iflag &= ~IGNBRK;
 		    tp.c_cflag &= ~CREAD;
 		    srs.flags &= ~(SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND);
-			/* vtpctp disable rs485 */
-			if ( iPanelFound == 1 ) {
+			/* vtpctp, EC, CC100 V2 disable rs485 */
+			if ( iRSSelFound == 1 ) {
 				strcpy(szFileMode, "rb+");
 				pFile = fopen(RS_SEL_PATH, szFileMode);
 				if (pFile != NULL)
@@ -181,7 +184,7 @@ int main(int argc, char **argv)
 					iValue = 255;
 					sprintf(&szOut[0], "%d", iValue);
 					if (fwrite (&szOut[0] , sizeof(unsigned char), sizeof(szOut), (FILE*)pFile) <= 0) {
-						perror("ERROR: vtpctp can't change serial mode ");
+						perror("ERROR: RS_SEL can't change serial mode ");
 						ret = SYSTEM_CALL_ERROR;
 					}
 					fclose((FILE *)pFile);
@@ -195,8 +198,8 @@ int main(int argc, char **argv)
         }
     }
 
-	/* vtpctp ioctl not implemented */
-	if ( iPanelFound == 0 ) {
+	/* vtpctp, EC, CC100 V2 ioctl not implemented */
+	if ( iRSSelFound == 0 ) {
 	    if(SUCCESS == ret)
 	    {
 		    if(ioctl(serialFd, TIOCSRS485, &srs) < 0)

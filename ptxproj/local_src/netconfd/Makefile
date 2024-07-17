@@ -27,6 +27,8 @@ SHARED_CLANG_TIDY_CHECKS += -clang-diagnostic-c++98-c++11-compat
 SHARED_CLANG_TIDY_CHECKS += -clang-diagnostic-c++98-c++11-c++14-compat
 SHARED_CLANG_TIDY_CHECKS += -google-runtime-references # removed from the //Google C++ Style Guide//
 
+VALGRIND_FLAGS += --suppressions=$(PTXDIST_PLATFORMDIR)/sysroot-target/usr/share/glib-2.0/valgrind/glib.supp
+
 #######################################################################################################################
 # Optional package/ platform feature configuration
 

@@ -5,6 +5,7 @@ menuconfig PAM
 	default n
 	select FLEX
 	select GLIBC
+	select LIBNSL if PAM_PAM_UNIX
 	select LIBTIRPC if PAM_PAM_UNIX
 	prompt "pam"
 	help

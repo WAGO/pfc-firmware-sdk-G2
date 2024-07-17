@@ -142,7 +142,7 @@ menuconfig CONFIG_TOOLS
   select CT_CONFIG_TOOL_LIB_C
   select CT_CONFIG_TOOL_LIB_BASH
   select CT_CONFIG_TOOL_DEFINES
-  select SWCONFIG if CT_FEATURE_ETH_SWITCH_DSA
+  select SWCONFIG if CT_FEATURE_ETH_SWITCH_ADVANCED
   select CT_URLENCODE
   select WAGO_DBUS
   select EEPROM_XSECTION if (CDS3_RTS_PRODUCT_VTPCTP || CDS3_RTS_PRODUCT_CC100)
@@ -333,7 +333,7 @@ config CT_SET_DSA_MODE
 config CT_GET_SWITCH_SETTINGS
   bool
   default n
-  depends on CONFIG_TOOLS && CT_FEATURE_ETH_SWITCH_DSA
+  depends on CONFIG_TOOLS && CT_FEATURE_ETH_SWITCH_ADVANCED
   select CT_LIBCTNETWORK
   help
    Get advanced switch settings (security-related like broadcast protection, ingress rate limiting etc.)
@@ -341,7 +341,7 @@ config CT_GET_SWITCH_SETTINGS
 config CT_CONFIG_SWITCH
   bool
   default n
-  depends on CONFIG_TOOLS && CT_FEATURE_ETH_SWITCH_DSA
+  depends on CONFIG_TOOLS && CT_FEATURE_ETH_SWITCH_ADVANCED
   select CT_LIBCTNETWORK
   help
    Set advanced switch settings (security-related like broadcast protection, ingress rate limiting etc.)
@@ -387,6 +387,14 @@ config CT_HTTPS_CIPHER_SELECTION
   help
    Config tool to set https standard or strong cipher list and read
    status of current setting.
+
+config CT_ETH_PORT_LEDS
+  bool
+  default n
+  prompt "Configure Ethernet port LEDs"
+  depends on CONFIG_TOOLS
+  help
+    Configure Ethernet port LEDs
 
 #################################################################
 
@@ -1038,6 +1046,24 @@ config CT_CONFIG_TFTP
   help
    Change TFTP settings.
 
+config CT_CONFIG_DHCPD
+  bool
+  default n
+  select CONFIG_DNSMASQ
+#  depends on CONFIG_TOOLS
+  prompt "config_dhcpd"
+  help
+   Change DHCP service settings. Only possible if dnsmasq is selected.
+
+config CT_CONFIG_DNS_SERVICE
+  bool
+  default n
+  select CONFIG_DNSMASQ
+#  depends on CONFIG_TOOLS
+  prompt "config_dns_service"
+  help
+   Change DNS service settings. Only possible if dnsmasq is selected.
+
 config CT_CONFIG_IOCHECKPORT
   bool
   default n
@@ -1062,6 +1088,24 @@ config CT_GET_TFTP_CONFIG
   prompt "get_tftp_config"
   help
    Get TFTP settings.
+
+config CT_GET_DHCPD_CONFIG
+  bool
+  default n
+  depends on CONFIG_DNSMASQ
+  depends on CONFIG_TOOLS
+  prompt "get_dhcpd_config"
+  help
+   Get DHCP service settings.
+
+config CT_GET_DNS_SERVICE_CONFIG
+  bool
+  default n
+  depends on CONFIG_DNSMASQ
+  depends on CONFIG_TOOLS
+  prompt "get_dns_service_config"
+  help
+   Get DNS name service settings.
 
 config CT_GET_IOCHECKPORT_CONFIG
   bool

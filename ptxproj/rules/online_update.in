@@ -13,6 +13,7 @@ config ONLINE_UPDATE
 	select WRETAIN
 	select LIBCURL
 	select LIBCURL_TFTP
+	select OPENSSL
 	prompt "online_update"
 	help
 	  	A config tool that serves as a wrapper of the existing firmware update mechanism implementing a "one-shot" update

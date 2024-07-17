@@ -5,8 +5,7 @@
 #include <cstdint>
 #include <string>
 
-namespace netconf {
-namespace eth {
+namespace netconf::eth {
 
 
 enum class EthernetMauType
@@ -73,7 +72,6 @@ enum class Duplex {
   Full
 };
 
+}  // namespace netconf::eth
 
-}
-}
 

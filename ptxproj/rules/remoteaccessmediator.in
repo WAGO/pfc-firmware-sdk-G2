@@ -1,0 +1,23 @@
+## SECTION=wago_specific_tools
+
+config REMOTEACCESSMEDIATOR
+	bool
+	prompt "Remote Access Mediator"
+	select HOST_CMAKE
+	select BOOST 
+	select OPENSSL
+	select GLIBC
+	help
+	  Mediator for remotely accessing the PFC from the cloud
+
+if REMOTEACCESSMEDIATOR
+
+config REMOTEACCESSMEDIATOR_SKIP_TARGETINSTALL
+	bool "skip remoteaccessmediator targetinstall stage"
+	default y
+	help
+	  Skip remoteaccessmediator targetinstall stage in order to save memory
+	  inside the target device. The install stage will create the package
+	  files into $(PTXDIST_PLATFORMDIR)/packages.
+
+endif

@@ -59,11 +59,11 @@ fi
 
 case "$newWBMEnabled" in
 
-"YES")    (cd /etc/lighttpd && ln -sf wbm_enabled.conf wbm.conf)
+"YES")    (cd /etc/lighttpd/apps.confd && ln -sf wbm/wbm_enabled.conf wbm.conf)
           restartWebserver "$restartOption"
           ;;
 
-"NO")     (cd /etc/lighttpd && ln -sf wbm_disabled.conf wbm.conf)
+"NO")     (cd /etc/lighttpd/apps.confd && ln -sf wbm/wbm_disabled.conf wbm.conf)
           restartWebserver "$restartOption"
           ;;
 

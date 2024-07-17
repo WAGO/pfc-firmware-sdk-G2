@@ -416,13 +416,28 @@ fi
 
 # reboot ipc, if necessary
 if [ "$rebootFlag" = "1" ]; then
-  echo "Reboot..."
-  sudo /sbin/reboot
+
+    echo "Reboot..."
+    sudo /sbin/reboot
   
 # no reboot - restart codesys if necessary
 elif [ "$restartCodesys" = 1 ]; then
-  echo "Restart PLC runtime..."
-  /etc/init.d/runtime start > /dev/null 2> /dev/null
+    echo "Erase retain data..."
+    print_dbg "delete retain data before restart PLC runtime"
+    /usr/sbin/retain_data -d  &>/dev/null
+    if [[ $? -ne $SUCCESS ]]; then
+        report_error "error while deleting retain data"
+        status=$SHELL_ERROR
+        ReportError $status "(/usr/sbin/retain_data)"
+    fi
+        
+    echo "Restart PLC runtime..."
+    /etc/init.d/runtime start > /dev/null 2> /dev/null
+    if [[ $? -ne $SUCCESS ]]; then
+        report_error "error while restarting PLC runtime"
+        status=$SHELL_ERROR
+        ReportError $status "(etc/init.d/runtime start)"
+    fi
 fi
   
 exit $status

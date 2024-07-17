@@ -1,0 +1,5 @@
+source "generated/foo"
+source "generated/bar"
+source "generated/baz"
+source "generated/foobar"
+

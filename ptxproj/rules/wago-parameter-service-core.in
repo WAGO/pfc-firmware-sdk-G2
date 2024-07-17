@@ -6,7 +6,6 @@ menuconfig WAGO_PARAMETER_SERVICE_CORE
 	prompt "WAGO Parameter Service Core"
 	select HOST_CMAKE
 	select NLOHMANN_JSON
-	select WSTD
 	help
 	  WAGO Parameter Service common core library.
 

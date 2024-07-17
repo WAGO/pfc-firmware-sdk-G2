@@ -3,8 +3,21 @@
 config DALSHELL
 	bool "DalShell Runtime System."
 	default n
-	select SWCONFIG
+	select SWCONFIG if DALSHELL_FCT_PERIPHERAL_ETH_LED_PFCxxx
 	select LED_SERVER_2 
 	help
 		Builds and installs the dalshell.
 
+if DALSHELL
+
+menu "DalShell Settings"
+
+config DALSHELL_FCT_PERIPHERAL_ETH_LED_PFCxxx
+  bool "Add ethernet LED test PFC100/200"
+  default y
+  help
+		Add functional test for ethernet interface LEDs on PFC100/200
+
+endmenu
+
+endif

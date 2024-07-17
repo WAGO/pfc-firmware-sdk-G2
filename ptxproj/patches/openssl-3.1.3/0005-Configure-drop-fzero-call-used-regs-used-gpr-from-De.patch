@@ -1,0 +1,25 @@
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Date: Fri, 17 Feb 2023 15:00:13 +0100
+Subject: [PATCH] Configure: drop -fzero-call-used-regs=used-gpr from Debian
+ targets
+
+This option is only supported since gcc 11 so it cannot be used
+unconditionally.
+
+Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+---
+ Configurations/20-debian.conf | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Configurations/20-debian.conf b/Configurations/20-debian.conf
+index c6860ed4b7d7..607704906c62 100644
+--- a/Configurations/20-debian.conf
++++ b/Configurations/20-debian.conf
+@@ -1,6 +1,6 @@
+ my %targets = (
+ 	"debian" => {
+-		cflags => add("-Wa,--noexecstack -Wall -fzero-call-used-regs=used-gpr -DOPENSSL_TLS_SECURITY_LEVEL=2"),
++		cflags => add("-Wa,--noexecstack -Wall -DOPENSSL_TLS_SECURITY_LEVEL=2"),
+ 	},
+ 	"debian-alpha" => {
+ 		inherit_from => [ "linux-alpha-gcc", "debian" ],

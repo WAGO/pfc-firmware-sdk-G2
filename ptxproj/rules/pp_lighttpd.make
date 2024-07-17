@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_PP_LIGHTTPD) += pp_lighttpd
 #
 # Paths and names
 #
-PP_LIGHTTPD_VERSION        := 2.0.1
+PP_LIGHTTPD_VERSION        := 2.0.3
 PP_LIGHTTPD_MD5            :=
 PP_LIGHTTPD_BASE           := pp_lighttpd
 PP_LIGHTTPD                := pp_lighttpd-$(PP_LIGHTTPD_VERSION)

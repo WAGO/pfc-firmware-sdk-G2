@@ -1,0 +1,3 @@
+PTXCONF_FOO=y
+PTXCONF_BAR=y
+#PTXCONF_FOOBAR is not set

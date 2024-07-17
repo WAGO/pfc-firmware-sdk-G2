@@ -43,7 +43,7 @@ if PP_BACNET_SOURCE_DEV
 config PP_BACNET_SOURCE_DEV_BRANCH
 	string
 	prompt "Branch to be checked-out."
-	default "master"
+	default "main"
 	help
 	  Name of branch which should be checked out or empty for default.
 

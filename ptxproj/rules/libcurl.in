@@ -13,12 +13,13 @@ menuconfig LIBCURL
 	select CA_CERTIFICATES	if LIBCURL_SSL_CA_CERTIFICATES && RUNTIME
 	select C_ARES		if LIBCURL_C_ARES
 	help
-	curl is a command line tool for transferring files with URL syntax, supporting
-	FTP, FTPS, HTTP, HTTPS, SCP, SFTP, TFTP, TELNET, DICT, LDAP, LDAPS and FILE.
-	curl supports SSL certificates, HTTP POST, HTTP PUT, FTP uploading,
-	HTTP form based upload, proxies, cookies, user+password authentication
-	(Basic, Digest, NTLM, Negotiate, kerberos...), file transfer resume,
-	proxy tunneling and a busload of other useful tricks.
+	  curl is a command line tool for transferring files with URL syntax,
+	  supporting FTP, FTPS, HTTP, HTTPS, SCP, SFTP, TFTP, TELNET, DICT,
+	  LDAP, LDAPS and FILE.
+	  curl supports SSL certificates, HTTP POST, HTTP PUT, FTP uploading,
+	  HTTP form based upload, proxies, cookies, user+password authentication
+	  (Basic, Digest, NTLM, Negotiate, kerberos...), file transfer resume,
+	  proxy tunneling and a busload of other useful tricks.
 
 if LIBCURL
 
@@ -49,12 +50,12 @@ config LIBCURL_FILE
 config LIBCURL_SMTP
 	bool "smtp"
 	help
-	enable smtp support for sending emails
+	  enable smtp support for sending emails
 
 config LIBCURL_VERBOSE
 	bool "verbose messages"
 	help
-	enable verbose messages, helpful for error indication
+	  enable verbose messages, helpful for error indication
 
 config LIBCURL_SSL
 	bool "ssl"
@@ -116,5 +117,8 @@ config LIBCURL_CRYPTO_AUTH
 
 config LIBCURL_LIBSSH2
 	bool "scp/sftp (via libssh2)"
+
+config LIBCURL_MIME
+	bool "MIME support"
 
 endif

@@ -57,12 +57,14 @@ backupData()
   # exec 2>/dev/null
   case "${modeLabel}" in
     codesys)
-      TAR_OPTIONS="-C /home --exclude=./user/bacnet/cert/* ./"
+      cp /etc/codesys3.d/CODESYSControl_User.cfg /home/codesys/CODESYSControl_User.cfg 2>/dev/null ||:
+      TAR_OPTIONS="-C /home --exclude=./user/bacnet/cert/* --exclude=./docker --exclude=./wago-docker ./"
       if [[ "enabled" == "$(/etc/config-tools/get_runtime_config homedir-on-sdcard)" ]]; then
         # application is on sd card
-        TAR_OPTIONS="--exclude=./codesys_root -C /home --exclude=./user/bacnet/cert/* ./ -C /media ./sd/. --transform=s,./sd,./codesys_root,"
+        TAR_OPTIONS="--exclude=./codesys_root -C /home --exclude=./user/bacnet/cert/* --exclude=./docker --exclude=./wago-docker ./ -C /media ./sd/. --transform=s,\\./sd,./codesys_root,"
       fi
       tar -cpf - ${TAR_OPTIONS}
+      rm -f /home/codesys/CODESYSControl_User.cfg 2>/dev/null ||:
       ;;
     rootfs)
       IGNORED_FILE_LIST=/tmp/ignored_file_list.txt

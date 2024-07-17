@@ -9,6 +9,7 @@
         <interface state="off" if="br3"/>
         <interface state="off" if="WAN"/>
         <interface state="off" if="VPN"/>
+        <interface state="off" if="usb0"/>
       </interfaces>
       <rules>
         <rule state="on" proto="udp" src_port="67" dst_port="68"/>

@@ -1,0 +1,86 @@
+Checking installed packages in comparison to the reference (stage 1) build...
+
+Only in default FW                                                 Only in BSP
+                                                 
+bash 3.2.48
+                                                 bash 3.2.57
+busybox 1.20.2
+                                                 busybox 1.23.1
+                                                 bzip2 1.0.6
+                                                 ca-certificates 2016.06.27
+cds3-cmpopcua 0.1.0
+cds3-iodrvcanl2 0.0.1
+cds3-iodrvmodbuss 0.1.0
+                                                 cds3-iodrvmodbuss 0.1.1
+                                                 cds3-oslayer branches.rts.upgrade.3.5.9.2
+cds3-oslayer tags.1.4.0
+codesys3 3.5.8.1
+                                                 codesys3 3.5.9.1
+dropbear 2015.67
+                                                 dropbear 2016.74
+ethtool 3.0
+                                                 ethtool 3.18
+flex 2.5.35
+iecssl 1.0.1
+                                                 iecssl 1.0.2
+less 443
+                                                 less 451
+libcurl 7.26.0
+                                                 libcurl 7.51.0
+                                                 libgcrypt 1.7.3
+libgmp 4.2.4
+                                                 libgmp 6.0.0a
+                                                 libgpg-error 1.24
+libkmod 10
+                                                 libkmod 21
+liblzo 2.03
+                                                 liblzo 2.09
+libmbs 0.4.0
+                                                 libmbs 0.5.0
+libmodbusmanager 0.3.0
+                                                 libmodbusmanager 0.3.2
+libnet 1.1.4
+                                                 libnet 1.1.6
+libnl3 3.2.22
+                                                 libnl3 3.2.25
+libpcre 8.32
+                                                 libpcre 8.37
+libpng 1.2.50
+                                                 libpng 1.2.56
+libpthreadcgroup 0.0.1
+                                                 libssh2 1.8.0
+libxml2 2.7.7
+                                                 libxml2 2.9.4
+libxslt 1.1.26
+                                                 libxslt 1.1.29
+lighttpd 1.4.35
+                                                 lighttpd 1.4.39
+mdmd 0.1.1
+                                                 mdmd 0.1.3
+openssh 5.8p2
+                                                 openssh 7.3p1
+openssl 1.0.1j
+                                                 openssl 1.0.2j
+openvpn 2.3.4
+                                                 openvpn 2.3.7
+php5 5.3.27
+                                                 php5 5.6.27
+pureftpd 1.0.36
+                                                 pureftpd 1.0.43
+qcheck 1.0.0
+sed 4.2.1
+                                                 sed 4.2.2
+strongswan 5.1.3
+                                                 strongswan 5.3.5
+                                                 sudo 1.7.10p9
+sudo 1.7.2p6
+svnrevision 1.0
+tcpdump 4.5.1
+                                                 tcpdump 4.9.0
+unzip 5.52
+                                                 unzip 6.0
+                                                 wagocrypt 1.0
+xmlstarlet 1.3.1
+                                                 xmlstarlet 1.6.1
+                                                 xz 5.2.1
+===============================================================================================

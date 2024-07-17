@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WAGO_PARAMETER_SERVICE_WDA_OPENAPI) += wago-parameter-service
 #
 # Paths and names
 #
-WAGO_PARAMETER_SERVICE_WDA_OPENAPI_VERSION        := 1.0.0
+WAGO_PARAMETER_SERVICE_WDA_OPENAPI_VERSION        := 1.2.0
 WAGO_PARAMETER_SERVICE_WDA_OPENAPI                := wda-openapi-$(WAGO_PARAMETER_SERVICE_WDA_OPENAPI_VERSION)
 WAGO_PARAMETER_SERVICE_WDA_OPENAPI_URL            := $(call jfrog_template_to_url, WAGO_PARAMETER_SERVICE_WDA_OPENAPI)
 WAGO_PARAMETER_SERVICE_WDA_OPENAPI_SUFFIX         := $(suffix $(WAGO_PARAMETER_SERVICE_WDA_OPENAPI_URL))
@@ -120,7 +120,7 @@ $(STATEDIR)/wago-parameter-service-wda-openapi.targetinstall:
 	@$(call install_glob, wago-parameter-service-wda-openapi, 0, 0, -, $(WAGO_PARAMETER_SERVICE_WDA_OPENAPI_TARGET_DIR), *)
 
 	# add symlink to license file
-	@$(call install_link, wago-parameter-service-wda-openapi, /usr/share/licenses/wago.txt, $(WAGO_PARAMETER_SERVICE_WDA_OPENAPI_TARGET_DIR)/license.txt)
+	@$(call install_link, wago-parameter-service-wda-openapi, /usr/share/licenses/wago.txt, $(WAGO_PARAMETER_SERVICE_WDA_OPENAPI_TARGET_DIR)/wda.license.txt)
 
 	@$(call install_finish, wago-parameter-service-wda-openapi)
 	@$(call touch)

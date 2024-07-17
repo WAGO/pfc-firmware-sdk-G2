@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WBM_NG_PLUGIN_WDA) += wbm-ng-plugin-wda
 #
 # Paths and names
 #
-WBM_NG_PLUGIN_WDA_VERSION        := 1.0.2
+WBM_NG_PLUGIN_WDA_VERSION        := 1.0.3
 WBM_NG_PLUGIN_WDA                := wbm-wda-$(WBM_NG_PLUGIN_WDA_VERSION)
 WBM_NG_PLUGIN_WDA_URL            := $(call jfrog_template_to_url, WBM_NG_PLUGIN_WDA)
 WBM_NG_PLUGIN_WDA_SUFFIX         := $(suffix $(WBM_NG_PLUGIN_WDA_URL))

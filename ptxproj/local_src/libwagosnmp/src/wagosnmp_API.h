@@ -54,7 +54,7 @@ typedef enum {
   WAGOSNMP_RETURN_PARSE_OID_ERROR,
   WAGOSNMP_RETURN_TRANSCEIVE_ERROR,
   WAGOSNMP_RETURN_BAD_DATATYPE,
-  WAGOSNMP_RETURN_WARN_STR_VAL_TO_LONG,
+  WAGOSNMP_RETURN_WARN_STR_VAL_TOO_LONG,
   WAGOSNMP_RETURN_ERR_MALLOC,
   WAGOSNMP_RETURN_BAD_STR_VALUE,
   WAGOSNMP_RETURN_ERROR_UNINIT_DATA,
@@ -63,7 +63,7 @@ typedef enum {
   WAGOSNMP_RETURN_FB_ERROR,
   WAGOSNMP_RETURN_AUTH_ERR,
   WAGOSNMP_RETURN_PRIV_ERR,
-  WAGOSNMP_RETURN_ERROR_BUFFER_TO_SMALL,
+  WAGOSNMP_RETURN_ERROR_BUFFER_TOO_SMALL,
   WAGOSNMP_RETURN_ERROR_CONVERT,
   WAGOSNMP_RETURN_ERROR_BAD_ENGINE_ID,
   WAGOSNMP_RETURN_ERROR_INVALID_ENGINE_ID,
@@ -101,7 +101,7 @@ enum SnmpAuhtenticationProtocol {
 };
 
 typedef struct stWagoSnmpTlv {
-  char dummy[588];
+  char dummy[sizeof(netsnmp_variable_list)];
 } tWagoSnmpTlv;
 
 typedef enum eMsgType {
@@ -136,7 +136,7 @@ typedef struct {
   char *sPrivPass; /* VAR_INPUT */ /* Passphrase for the given encryption type and username */
   size_t szPrivPass;
   char *sInformOID; /*Inform OID used for adding an OID to an Inform*/
-  size_t *szInformOID;
+  size_t szInformOID;
   void *typDataOld;
 } tWagoSnmpTranceiver;
 
@@ -145,12 +145,13 @@ void libwagosnmp_Shutdown(void);
 tWagoSnmpReturnCode libwagosnmp_GetErrorString(tWagoSnmpReturnCode code, char *str, size_t szString);
 void libwagosnmp_TlvInit(tWagoSnmpTlv *stTlvData);
 void libwagosnmp_TlvDeinit(tWagoSnmpTlv *stTlvData);
+void libwagosnmp_CloneTlv(tWagoSnmpTlv* dst, tWagoSnmpTlv *src);
 tWagoSnmpDataType libwagosnmp_TlvGetType(tWagoSnmpTlv *stTlvData);
 tWagoSnmpReturnCode libwagosnmp_NullToTlv(tWagoSnmpTlv *stTlvData);
 tWagoSnmpReturnCode libwagosnmp_Int32ToTlv(int32_t input, tWagoSnmpDataType eType, tWagoSnmpTlv *stData);
 
 tWagoSnmpReturnCode libwagosnmp_Uint32ToTlv(uint32_t input, tWagoSnmpDataType eType, tWagoSnmpTlv *stData);
-tWagoSnmpReturnCode libwagosnmp_StrToTlv(char *str, tWagoSnmpDataType eType, tWagoSnmpTlv *stTlvData);
+tWagoSnmpReturnCode libwagosnmp_StrToTlv(const char *str, tWagoSnmpDataType eType, tWagoSnmpTlv *stTlvData);
 tWagoSnmpReturnCode libwagosnmp_TlvToInt32(tWagoSnmpTlv *stTlvData, int32_t *input);
 tWagoSnmpReturnCode libwagosnmp_TlvToUint32(tWagoSnmpTlv *stTlvData, uint32_t *input);
 tWagoSnmpReturnCode libwagosnmp_TlvToStr(tWagoSnmpTlv *stData, char *value, size_t szValue);

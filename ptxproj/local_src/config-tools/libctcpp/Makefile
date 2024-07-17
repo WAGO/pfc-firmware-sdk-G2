@@ -40,7 +40,7 @@ ifeq ($(DEBUG), 0)
 else
     OPTIMIZE = -O3 -g3 -gdwarf-4
 endif
-WARNINGS     = -Werror -Wall -Wextra -pedantic -Wshadow
+WARNINGS     = -Werror -Wall -Wextra -pedantic -Wshadow -Wno-error=deprecated-declarations
 
 INCLUDES    = -I./
 LIBRARIES   =

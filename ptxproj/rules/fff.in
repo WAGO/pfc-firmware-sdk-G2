@@ -1,0 +1,7 @@
+## SECTION=debug_tools
+
+config FFF
+	tristate
+	prompt "Fake Function Framework (fff)"
+	help
+	  fff is a micro-framework for creating fake C functions for tests.

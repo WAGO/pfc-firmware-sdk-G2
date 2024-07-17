@@ -6,15 +6,76 @@ config CODESYS3
 	select TYPELABEL
 	select LED_SERVER_META
 	select WAGO_PFC_DIAGNOSTIC
-	select CDS3_INCLUDES
 	select LIBPTHREADCGROUP if CDS3_RTS_CGROUPS_SUPPORT
 	select GOOGLETEST
 	select HOST_CT_BUILD
 	select OPENSSL
 	select WAGO_DBUS if CDS3_RTS_PRODUCT_VTPCTP
-	select PAM
 	help
 		Builds and installs the CODESYS v3 plc.
+
+if CODESYS3
+
+choice
+	prompt "Origin of Code"
+	default CODESYS3_SOURCE_ARTIFACTORY
+
+	config CODESYS3_SOURCE_ARTIFACTORY
+		bool
+		prompt "released / Artifactory"
+		help
+		  Use released version of source code, taken from Artifactory.
+
+	config CODESYS3_SOURCE_GIT
+		bool
+		prompt "development / Git"
+		help
+		  Instead of released version use source code directly checked-out from repository.
+		  Use only for development!
+
+	config CODESYS3_SOURCE_LOCAL
+		bool
+		prompt "development / LOCAL"
+		help
+		  Instead of released version use source code from local directory.
+		  Use only for development!
+
+endchoice
+
+if CODESYS3_SOURCE_ARTIFACTORY
+
+config CODESYS3_URL_TEMPLATE
+	string
+	depends on CODESYS3
+	prompt "URL template"
+	default "%ARTIFACTORY_BASE_URL%/codesys-generic-prod-local/wago/codesys3/wago_codesys3_%VERSION%.tgz"
+	help
+	  Encodes the desired artifact version. Can be configured to a specific version or to a latest compatible version of an artifact.
+
+endif
+
+if CODESYS3_SOURCE_GIT
+
+config CODESYS3_SOURCE_GIT_BRANCH
+	string
+	prompt "Branch to be checked-out"
+	default "master"
+	help
+	  Name of branch which should be checked out from wago codesys repository or empty for default.
+
+endif
+
+if CODESYS3_SOURCE_LOCAL
+
+config CODESYS3_SOURCE_LOCAL_PATH
+	string
+	prompt "Local path to codesys3 sources"
+	help
+	  Absolute path to the codesys3 sources.
+
+endif
+
+endif
 
 config CDS3_RTS_DEBUG
   bool "Complile with debug options"
@@ -128,13 +189,20 @@ config CDS3_SECURE_LOGIN_ENABLE
         default "1"
         help
              activate secure-login
+
 config CDS3_RTS_CGROUPS_SUPPORT
 	bool "Link libpthreadcgroups to intercept creation of threads"
 	default n
 	help
 		Adds pthread-create and friends overload-functions to syslayer, for handling threads in cgroups.
 
-
+config CDS3_IEC_CORE_SET
+    string
+    prompt "number of cpu cores"
+    default "{0,1,2,3}"
+    help
+        set the number of cpu cores 
+    depends on CDS3_RTS_FEATURE_MULTICORE
 
 endmenu
 

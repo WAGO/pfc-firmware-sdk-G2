@@ -1,0 +1,17 @@
+[[source]]
+url = "https://artifactory/api/pypi/aut-pypi-prod/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pylint = "*"
+pyflakes = "*"
+mypy = "*"
+black = "*"
+autopep8 = "*"
+unittest-xml-reporting = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3"

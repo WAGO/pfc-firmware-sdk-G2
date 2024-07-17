@@ -1,0 +1,17 @@
+--- libModbus-0.9.20/src/modbus-serial-slave.c	2024-04-08 15:46:30.565908307 +0200
++++ libModbus-0.9.20/src/modbus-serial-slave.c	2024-04-08 16:39:00.494588679 +0200
+@@ -35,6 +35,14 @@
+ 
+ #define LOG_SCOPE  ("MBS RTU")
+ 
++#if defined(__aarch64__) //Quick hack to identify PFC300
++#undef TIOCSMBRTU
++#undef TIOCSMBRTUADDR
++#undef TIOCSMBRTUTS
++#undef TIOCSMBRTUIFT
++#undef TIOCSMBRTUICT
++#endif
++
+ static void mb_log(struct mb_serial *mbs, unsigned long what, const char *fmt, ...)
+ {
+ 	va_list args;

@@ -1,0 +1,8 @@
+## SECTION=networking
+
+config MSTPD
+	bool
+	prompt "mstpd"
+	help
+	  Build and install mstdp. This service provides the spanning tree variants stp, rstp and mstp.
+	  

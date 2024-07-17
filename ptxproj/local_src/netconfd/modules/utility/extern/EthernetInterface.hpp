@@ -52,14 +52,14 @@ class EthernetInterface : public IEthernetInterface {
   void UpdateMtu();
 
   mutable ::std::mutex data_mutex_;
-  uint8_t mac_[6];
+  ::std::array<uint8_t, IFHWADDRLEN> mac_;
 
   ::std::string name_;
   ::std::uint32_t if_index_;
 
   ::ifreq ifreq_;
   Socket socket_;
-  ::std::size_t mtu_;
+  ::std::uint32_t mtu_;
 
   EthTool ethtool_;
   EthToolSettings ethtool_settings_r_;

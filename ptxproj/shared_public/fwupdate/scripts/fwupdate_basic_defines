@@ -49,7 +49,11 @@ readonly WAGO_FW_UPDATE_KEY_NOT_FOUND=83
 
 # FW-Update data access defines
 readonly WAGO_FW_UPDATE_SERVICE_LINK="S15_fwupdate_service"
-readonly WAGO_FW_UPDATE_PERSISTENCE_DIR="/settings"
+if [[ -d /settings ]]; then
+  readonly WAGO_FW_UPDATE_PERSISTENCE_DIR="/settings"
+else
+  readonly WAGO_FW_UPDATE_PERSISTENCE_DIR="/home/wago/settings"
+fi
 readonly WAGO_FW_UPDATE_PANIC_FILE="$WAGO_FW_UPDATE_PERSISTENCE_DIR/fwupdate_panic"
 readonly WAGO_FW_UPDATE_DATA="$WAGO_FW_UPDATE_PERSISTENCE_DIR/fwupdate_data"
 readonly WAGO_FW_UPDATE_LISTENER_SCRIPT_DIR="$WAGO_FW_UPDATE_PERSISTENCE_DIR/fwupdate_listener_scripts"

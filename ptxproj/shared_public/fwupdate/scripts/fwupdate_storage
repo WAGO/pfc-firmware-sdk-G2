@@ -36,7 +36,7 @@ readonly LOWER_ASCII="abcdefghijklmnopqrstuvwxyz"
 readonly KEY_REGEX="^[${UPPER_ASCII}${LOWER_ASCII}][_${UPPER_ASCII}${LOWER_ASCII}0-9]{0,254}$"
 
 # Storage defines
-readonly STORAGE_FILE="/settings/fwupdate_storage"
+readonly STORAGE_FILE="$WAGO_FW_UPDATE_PERSISTENCE_DIR/fwupdate_storage"
 readonly STORAGE_DATA_LOCK="/var/lock/fwupdate_storage.lock"
 readonly STORAGE_DATA_LOCK_FD=202 # Filedescriptor number to use for lock file
 readonly AVAILABLE_CAPACITY_KEY="available_capacity"

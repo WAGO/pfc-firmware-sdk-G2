@@ -14,7 +14,7 @@
 PACKAGES-$(PTXCONF_WAGO_AUTOMOUNT) += wago-automount
 
 WAGO_AUTOMOUNT_VERSION  := 1.0.0
-WAGO_AUTOMOUNT_SRCDIR   := $(PTXDIST_WORKSPACE)/local_src/wago-automount
+WAGO_AUTOMOUNT_SRC_DIR   := $(PTXDIST_WORKSPACE)/local_src/wago-automount
 WAGO_AUTOMOUNT_DIR      := $(BUILDDIR)/wago-automount
 
 # ----------------------------------------------------------------------------
@@ -31,7 +31,7 @@ $(STATEDIR)/wago-automount.get:
 
 $(STATEDIR)/wago-automount.extract:
 	@$(call targetinfo)
-	@cp -r $(WAGO_AUTOMOUNT_SRCDIR) $(BUILDDIR)/
+	@cp -r $(WAGO_AUTOMOUNT_SRC_DIR) $(BUILDDIR)/
 	@$(call touch)
 
 # ----------------------------------------------------------------------------

@@ -1,0 +1,25 @@
+Remove known internal infrastructure files...
+rm -fv @PWD@/resources/sample_workspace_pre_cleanup/wproject @PWD@/resources/sample_workspace_pre_cleanup/.project @PWD@/resources/sample_workspace_pre_cleanup/.gitignore @PWD@/resources/sample_workspace_pre_cleanup/.revisionInfo @PWD@/resources/sample_workspace_pre_cleanup/verify_jenkins_config.sh
+rm -fv @PWD@/resources/sample_workspace_pre_cleanup/a.jenkinsfile @PWD@/resources/sample_workspace_pre_cleanup/b.jenkinsfile @PWD@/resources/sample_workspace_pre_cleanup/v.jenkinsfile
+rm -rvf @PWD@/resources/sample_workspace_pre_cleanup/jenkins
+Remove inactive platforms...
+Removing ./resources/sample_workspace_pre_cleanup/myproj/projectroot.*...
+rm -rf ./resources/sample_workspace_pre_cleanup/myproj/projectroot.*
+Remove wago_intern...
+rm -rf ./resources/bsp/wago_intern ./resources/sample_workspace_pre_cleanup/myproj/wago_intern
+Remove inactive configurations in ./resources/sample_workspace_pre_cleanup/myproj/configs/myplatform...
+rm -fv ./resources/sample_workspace_pre_cleanup/myproj/configs/myplatform/ptxconfig.unused.0
+rm -fv ./resources/sample_workspace_pre_cleanup/myproj/configs/myplatform/ptxconfig.unused.1
+rm -fv ./resources/sample_workspace_pre_cleanup/myproj/configs/myplatform/ptxconfig.unused.2
+rm -fv ./resources/sample_workspace_pre_cleanup/myproj/configs/myplatform/ptxconfig.unused.3
+rm -fv ./resources/sample_workspace_pre_cleanup/myproj/configs/myplatform/ptxconfig.unused.4
+rm -fv ./resources/sample_workspace_pre_cleanup/myproj/configs/myplatform/platformconfig.unused.0
+rm -fv ./resources/sample_workspace_pre_cleanup/myproj/configs/myplatform/platformconfig.unused.1
+rm -fv ./resources/sample_workspace_pre_cleanup/myproj/configs/myplatform/platformconfig.unused.2
+rm -fv ./resources/sample_workspace_pre_cleanup/myproj/configs/myplatform/platformconfig.unused.3
+rm -fv ./resources/sample_workspace_pre_cleanup/myproj/configs/myplatform/platformconfig.unused.4
+Rename active FW workspace to 'ptxproj' and remove inactive ones...
+rm -f ./resources/sample_workspace_pre_cleanup/ptxproj
+mv ./resources/sample_workspace_pre_cleanup/myproj ./resources/sample_workspace_pre_cleanup/ptxproj
+rm -rfv ./resources/sample_workspace_pre_cleanup/ptxproj.2011.03.0
+rm -rfv ./resources/sample_workspace_pre_cleanup/ptxproj.2013.03.0-cm

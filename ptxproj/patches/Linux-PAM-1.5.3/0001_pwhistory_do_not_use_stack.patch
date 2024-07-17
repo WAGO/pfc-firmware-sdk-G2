@@ -1,0 +1,57 @@
+From: Winkelmann <fabian.winkelmann@wago.com>
+Date: Fri, 29 Sep 2023 09:49:56 +0200
+Subject: [PATCH] Move struct from stack to heap
+
+---
+ modules/pam_pwhistory/opasswd.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
+
+diff --git a/modules/pam_pwhistory/opasswd.c b/modules/pam_pwhistory/opasswd.c
+index 859b3da47356..b5a0c8e3f85a 100644
+--- a/modules/pam_pwhistory/opasswd.c
++++ b/modules/pam_pwhistory/opasswd.c
+@@ -67,6 +67,7 @@
+ #include <security/pam_modutil.h>
+ #include <security/pam_ext.h>
+ #endif
++#include <security/_pam_macros.h> // x_strdup
+ #include <security/pam_modules.h>
+ #include "pam_inline.h"
+ 
+@@ -127,20 +128,28 @@ parse_entry (char *line, opwd *data)
+ static int
+ compare_password(const char *newpass, const char *oldpass)
+ {
+-  char *outval;
+-#ifdef HAVE_CRYPT_R
+-  struct crypt_data output;
+   int retval;
+-
+-  output.initialized = 0;
+-
+-  outval = crypt_r (newpass, oldpass, &output);
++  char *outval = NULL;
++#ifdef HAVE_CRYPT_R
++  struct crypt_data *output;
++
++  output = calloc(1, sizeof(*output));
++  if(output != NULL)
++  {
++    outval = x_strdup(crypt_r (newpass, oldpass, output));
++    memset(output, '\0', sizeof(*output));
++    free(output);
++  }
+ #else
+-  outval = crypt (newpass, oldpass);
++  outval = x_strdup(crypt (newpass, oldpass));
+ #endif
+ 
+   retval = outval != NULL && strcmp(outval, oldpass) == 0;
+   pam_overwrite_string(outval);
++
++  if(outval)
++    free(outval);
++
+   return retval;
+ }
+ 

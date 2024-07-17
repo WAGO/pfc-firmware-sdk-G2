@@ -93,6 +93,12 @@ IsNetworkSettingsV2()
   IsMinTargetVersion 3 3 0
 }
 
+IsSwitchConfigV2()
+{
+    switch_config_tool=/etc/config-tools/get_switch_config
+    [[ -x $switch_config_tool ]]
+}
+
 # list of the parameters which configuration should be saved
 # one line with 3 parts for each parameter, parts seperated by ';'
 # 1. part: name of parameter to identify it in backup file
@@ -104,6 +110,15 @@ configParam=()
 if ! IsNetworkSettingsV2 ; then
   configParam+=(
     "dsa-mode;                $NETWORK_CONFIG --get --dsa-mode --quiet;                         $NETWORK_CONFIG --dsa-mode --quiet --set "
+  )
+fi
+
+if ! IsSwitchConfigV2 ; then
+  configParam+=(
+  "switch-port-mirror;        /etc/config-tools/get_switch_settings port-mirror;                /etc/config-tools/config_switch --port-mirror="
+  "switch-bcast-protect;      /etc/config-tools/get_switch_settings bcast-protect;              /etc/config-tools/config_switch --bcast-protect="
+  "switch-rate-limit;         /etc/config-tools/get_switch_settings rate-limit;                 /etc/config-tools/config_switch --rate-limit="
+
   )
 fi
 
@@ -123,10 +138,6 @@ configParam+=(
 
   "codesys-version;           /etc/config-tools/get_runtime_config running-version;             /etc/config-tools/config_runtime --wait force-new-version=yes runtime-version="
   "codesys-homedir-sdcard;    /etc/config-tools/get_runtime_config homedir-on-sdcard;           /etc/config-tools/config_runtime homedir-on-sdcard="
-
-  "switch-port-mirror;        /etc/config-tools/get_switch_settings port-mirror;                /etc/config-tools/config_switch --port-mirror="
-  "switch-bcast-protect;      /etc/config-tools/get_switch_settings bcast-protect;              /etc/config-tools/config_switch --bcast-protect="
-  "switch-rate-limit;         /etc/config-tools/get_switch_settings rate-limit;                 /etc/config-tools/config_switch --rate-limit="
 
   "ntp-port;                  /etc/config-tools/get_ntp_config port;                            /etc/config-tools/config_sntp port="
   "ntp-timeserver;            /etc/config-tools/get_ntp_config time-server-1;                   /etc/config-tools/config_sntp time-server-1="

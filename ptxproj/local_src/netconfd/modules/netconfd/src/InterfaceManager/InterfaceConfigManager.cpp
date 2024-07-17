@@ -165,7 +165,6 @@ Status InterfaceConfigManager::ApplyPortConfig(InterfaceConfig const &cfg) {
     return Status { StatusCode::SET_INTERFACE, cfg.interface_.GetName() };
   }
   return Status { StatusCode::OK };
-
 }
 
 Status InterfaceConfigManager::ApplyPortConfigs(InterfaceConfigs &port_configs) {

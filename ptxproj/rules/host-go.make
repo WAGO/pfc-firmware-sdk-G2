@@ -14,8 +14,8 @@ HOST_PACKAGES-$(PTXCONF_HOST_GO) += host-go
 #
 # Paths and names
 #
-HOST_GO_VERSION	:= 1.18.7
-HOST_GO_MD5	:= bd9d033092e024ce59d9d283ab071ff4
+HOST_GO_VERSION	:= 1.21.8
+HOST_GO_MD5	:= a3e6cd4ed28d6b25572d30bc011d5ef1
 HOST_GO		:= go$(HOST_GO_VERSION)
 HOST_GO_PLATFORM	:= linux-amd64
 HOST_GO_SUFFIX	:= tar.gz
@@ -24,6 +24,12 @@ HOST_GO_SOURCE	:= $(SRCDIR)/$(HOST_GO).$(HOST_GO_PLATFORM).$(HOST_GO_SUFFIX)
 HOST_GO_DIR	:= $(HOST_BUILDDIR)/$(HOST_GO)
 HOST_GO_INSTALL_DIR := $(PTXDIST_SYSROOT_HOST)/usr/local/go
 HOST_GO_BIN_DIR := $(HOST_GO_INSTALL_DIR)/bin
+
+ifeq ($(PTXCONF_ARCH_STRING), arm64)
+	GO_ARCH:=GOARCH=arm64
+else 
+	GO_ARCH:=GOARCH=arm GOARM=7
+endif
 
 # ----------------------------------------------------------------------------
 # Get

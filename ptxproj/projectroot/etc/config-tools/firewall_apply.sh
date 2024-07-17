@@ -59,6 +59,13 @@ firewall_get_service_state()
         fi
         ;;
 
+    dhcpd)
+        running=$(/etc/config-tools/get_dhcpd_config --json | tr -d " '\"\t\n\r\v" | grep -e 'dhcpdState:enabled')
+        if [[ "x" != "x${running}" ]] ; then
+            active=1
+        fi
+        ;;
+
     dnp3)
         running=$(/etc/config-tools/get_telecontrol_state service=dnp3)
         if [[ "enabled" == "$running" ]] ; then
@@ -80,7 +87,14 @@ firewall_get_service_state()
         fi
         ;;
 
-     ftp)
+    dns)
+        running=$(/etc/config-tools/get_dns_service_config -g dns-state)
+        if [[ "enabled" == "$running" ]] ; then
+            active=1
+        fi
+        ;;
+
+    ftp)
         running=$(/etc/config-tools/config_ssl ftp-status)
         if [[ "enabled" == "$running" ]] ; then
             active=1
@@ -151,16 +165,30 @@ firewall_get_service_state()
         ;;
 
     opcua)
-        if [[ "true" == "$(/etc/config-tools/config_opcua -g enabled -o)" ]]; then
+        if [[ "true" == "$(/etc/config-tools/config_opcua -g enabled -o)" ]] ; then
             active=1
         fi
         ;;
 
-    bacnet)
+    bacnetip | bacnetsc)
         if [[ -x "/etc/config-tools/bacnet_config" ]]; then
             running=$(/etc/config-tools/bacnet_config -g config-state)
             if [[ "true" == "$running" ]] ; then
-                active=1
+                mode=$(/etc/config-tools/bacnet_config -g bacnet-mode)
+                case "$1" in
+                    bacnetip)
+                        if [ "ip" == "$mode" ] || [ "both" == "$mode" ] ; then
+                            active=1
+                        fi
+                        ;;
+                    bacnetsc)
+                        if [ "sc" == "$mode" ] || [ "both" == "$mode" ] ; then
+                            active=1
+                        fi
+                        ;;
+                    *)
+                        ;;
+                esac
             fi
         fi
         ;;

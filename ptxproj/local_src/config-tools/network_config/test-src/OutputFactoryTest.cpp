@@ -4,14 +4,6 @@
 #include <string>
 #include <typeinfo>
 
-
-namespace std { // NOLINT
-  // provide PrintTo function for GTest so we get some readable assert-failure output for type_info mismatch
-inline void PrintTo(const type_info &bar, std::ostream *os) {
-  *os << bar.name();
-}
-}
-
 namespace network_config {
 
 using namespace ::std::string_literals;

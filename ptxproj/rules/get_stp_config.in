@@ -1,0 +1,12 @@
+## SECTION=wago_specific_config
+
+config GET_STP_CONFIG
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select NLOHMANN_JSON
+	select LIBCONFIGSTP
+	select NETCONFD
+	prompt "get_stp_config"
+	help
+	  config tool to read the stp configuration files.

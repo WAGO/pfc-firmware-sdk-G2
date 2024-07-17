@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WBM_NG_PLUGIN_STATUSLED) += wbm-ng-plugin-statusled
 #
 # Paths and names
 #
-WBM_NG_PLUGIN_STATUSLED_VERSION        := 1.1.1
+WBM_NG_PLUGIN_STATUSLED_VERSION        := 1.1.4
 WBM_NG_PLUGIN_STATUSLED                := wbm-statusled-$(WBM_NG_PLUGIN_STATUSLED_VERSION)
 WBM_NG_PLUGIN_STATUSLED_URL            := $(call jfrog_template_to_url, WBM_NG_PLUGIN_STATUSLED)
 WBM_NG_PLUGIN_STATUSLED_SUFFIX         := $(suffix $(WBM_NG_PLUGIN_STATUSLED_URL))

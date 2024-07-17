@@ -2,7 +2,7 @@
 
 set -e
 
-TOOLCHAIN_PATH="/opt/gcc-Toolchain-2022.08/LINARO.Toolchain-2022.08/arm-linux-gnueabihf/bin/"
+TOOLCHAIN_PATH="/opt/gcc-Toolchain-2022.08-wago.1/LINARO.Toolchain-2022.08-wago.1/arm-linux-gnueabihf/bin/"
 
 print_usage() {
     cat << EOF

@@ -17,7 +17,7 @@ PACKAGES-$(PTXCONF_DRM) += drm
 # Paths and names
 #
 DRM                 := drm
-DRM_VERSION         := 1.1.3
+DRM_VERSION         := 1.1.4
 DRM_URL             := file://$(PTXDIST_WORKSPACE)/wago_intern/$(DRM)
 DRM_BUILDCONFIG     := Release
 DRM_SRC_DIR         := $(PTXDIST_WORKSPACE)/wago_intern/$(DRM)

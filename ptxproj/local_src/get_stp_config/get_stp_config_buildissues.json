@@ -1,0 +1,492 @@
+{
+  "_class": "io.jenkins.plugins.analysis.core.restapi.ReportApi",
+  "issues": [
+    {
+      "fileName": "local_src/get_stp_config/src/stp-config-output/utils.hpp",
+      "lineStart": "10",
+      "columnStart": "6",
+      "category": "Warning:readability-inconsistent-declaration-parameter-name",
+      "severity": "NORMAL",
+      "message": "function 'wago::stp::get_stp_config::remove_eth_prefix_from_ports' has a definition with different parameter names [readability-inconsistent-declaration-parameter-name]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "local_src/get_stp_config/src/stp-config-output/utils.hpp",
+      "lineStart": "11",
+      "columnStart": "6",
+      "category": "Warning:readability-inconsistent-declaration-parameter-name",
+      "severity": "NORMAL",
+      "message": "function 'wago::stp::get_stp_config::remove_eth_prefix_from_ports' has a definition with different parameter names [readability-inconsistent-declaration-parameter-name]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "45",
+      "columnStart": "1",
+      "category": "Warning:readability-redundant-string-init",
+      "severity": "NORMAL",
+      "message": "redundant string initialization [readability-redundant-string-init]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "46",
+      "columnStart": "23",
+      "category": "Warning:clang-diagnostic-sign-compare",
+      "severity": "NORMAL",
+      "message": "comparison of integers of different signs: 'std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::size_type' (aka 'unsigned int') and 'const int' [clang-diagnostic-sign-compare]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "local_src/get_stp_config/test-src/version_validation_test.cpp",
+      "lineStart": "34",
+      "columnStart": "1",
+      "category": "Warning:clang-diagnostic-deprecated-declarations",
+      "severity": "NORMAL",
+      "message": "'InstantiateTestCase_P_IsDeprecated' is deprecated: INSTANTIATE_TEST_CASE_P is deprecated, please use INSTANTIATE_TEST_SUITE_P [clang-diagnostic-deprecated-declarations]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/src/stp-config-output/stp_config_output.cpp",
+      "lineStart": "33",
+      "columnStart": "6",
+      "category": "Warning:missing-declarations",
+      "severity": "NORMAL",
+      "message": "no previous declaration for ‘void wago::stp::lib::to_json(json&, const wago::stp::lib::stp_port_config&)’ [-Wmissing-declarations]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/src/stp-config-output/stp_config_output.cpp",
+      "lineStart": "43",
+      "columnStart": "6",
+      "category": "Warning:missing-declarations",
+      "severity": "NORMAL",
+      "message": "no previous declaration for ‘void wago::stp::lib::to_json(json&, const wago::stp::lib::stp_port_info&)’ [-Wmissing-declarations]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/src/stp-config-output/stp_config_output.cpp",
+      "lineStart": "56",
+      "columnStart": "6",
+      "category": "Warning:missing-declarations",
+      "severity": "NORMAL",
+      "message": "no previous declaration for ‘void wago::stp::lib::to_json(json&, const wago::stp::lib::stp_config&)’ [-Wmissing-declarations]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/src/stp-config-output/stp_config_output.cpp",
+      "lineStart": "69",
+      "columnStart": "6",
+      "category": "Warning:missing-declarations",
+      "severity": "NORMAL",
+      "message": "no previous declaration for ‘void wago::stp::lib::to_json(json&, const wago::stp::lib::stp_info&)’ [-Wmissing-declarations]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "46",
+      "columnStart": "23",
+      "category": "Warning:sign-compare",
+      "severity": "NORMAL",
+      "message": "comparison of integer expressions of different signedness: ‘std::__cxx11::basic_string<char>::size_type’ {aka ‘unsigned int’} and ‘const int’ [-Wsign-compare]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "52",
+      "columnStart": "6",
+      "category": "Warning:missing-declarations",
+      "severity": "NORMAL",
+      "message": "no previous declaration for ‘void nlohmann::PrintTo(const json&, std::ostream*)’ [-Wmissing-declarations]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "59",
+      "columnStart": "15",
+      "category": "Warning:missing-declarations",
+      "severity": "NORMAL",
+      "message": "no previous declaration for ‘std::string wago::stp::lib::bool_to_string(bool)’ [-Wmissing-declarations]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "63",
+      "columnStart": "15",
+      "category": "Warning:missing-declarations",
+      "severity": "NORMAL",
+      "message": "no previous declaration for ‘std::string wago::stp::lib::protocol_to_string(wago::stp::lib::protocol_version)’ [-Wmissing-declarations]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "67",
+      "columnStart": "6",
+      "category": "Warning:missing-declarations",
+      "severity": "NORMAL",
+      "message": "no previous declaration for ‘void wago::stp::lib::PrintTo(const wago::stp::lib::stp_port_config&, std::ostream*)’ [-Wmissing-declarations]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "68",
+      "columnStart": "54",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "in call to ‘std::string std::__cxx11::to_string(int)’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "68",
+      "columnStart": "54",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint16_t’ {aka ‘short unsigned int’} chooses ‘int’ over ‘long int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "68",
+      "columnStart": "54",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint16_t’ {aka ‘short unsigned int’} chooses ‘int’ over ‘long unsigned int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "68",
+      "columnStart": "54",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint16_t’ {aka ‘short unsigned int’} chooses ‘int’ over ‘unsigned int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "68",
+      "columnStart": "97",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "in call to ‘std::string std::__cxx11::to_string(int)’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "68",
+      "columnStart": "97",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint16_t’ {aka ‘short unsigned int’} chooses ‘int’ over ‘long int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "68",
+      "columnStart": "97",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint16_t’ {aka ‘short unsigned int’} chooses ‘int’ over ‘long unsigned int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "68",
+      "columnStart": "97",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint16_t’ {aka ‘short unsigned int’} chooses ‘int’ over ‘unsigned int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "73",
+      "columnStart": "6",
+      "category": "Warning:missing-declarations",
+      "severity": "NORMAL",
+      "message": "no previous declaration for ‘void wago::stp::lib::PrintTo(const wago::stp::lib::stp_config&, std::ostream*)’ [-Wmissing-declarations]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "74",
+      "columnStart": "31",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "in call to ‘std::string std::__cxx11::to_string(int)’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "74",
+      "columnStart": "31",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint8_t’ {aka ‘unsigned char’} chooses ‘int’ over ‘long int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "74",
+      "columnStart": "31",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint8_t’ {aka ‘unsigned char’} chooses ‘int’ over ‘long unsigned int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "74",
+      "columnStart": "31",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint8_t’ {aka ‘unsigned char’} chooses ‘int’ over ‘unsigned int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "75",
+      "columnStart": "96",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "in call to ‘std::string std::__cxx11::to_string(int)’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "75",
+      "columnStart": "96",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint16_t’ {aka ‘short unsigned int’} chooses ‘int’ over ‘long int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "75",
+      "columnStart": "96",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint16_t’ {aka ‘short unsigned int’} chooses ‘int’ over ‘long unsigned int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "75",
+      "columnStart": "96",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint16_t’ {aka ‘short unsigned int’} chooses ‘int’ over ‘unsigned int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "76",
+      "columnStart": "24",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "in call to ‘std::string std::__cxx11::to_string(int)’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "76",
+      "columnStart": "24",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint8_t’ {aka ‘unsigned char’} chooses ‘int’ over ‘long int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "76",
+      "columnStart": "24",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint8_t’ {aka ‘unsigned char’} chooses ‘int’ over ‘long unsigned int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "76",
+      "columnStart": "24",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint8_t’ {aka ‘unsigned char’} chooses ‘int’ over ‘unsigned int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "76",
+      "columnStart": "66",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "in call to ‘std::string std::__cxx11::to_string(int)’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "76",
+      "columnStart": "66",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint8_t’ {aka ‘unsigned char’} chooses ‘int’ over ‘long int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "76",
+      "columnStart": "66",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint8_t’ {aka ‘unsigned char’} chooses ‘int’ over ‘long unsigned int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "76",
+      "columnStart": "66",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint8_t’ {aka ‘unsigned char’} chooses ‘int’ over ‘unsigned int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "77",
+      "columnStart": "24",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "in call to ‘std::string std::__cxx11::to_string(int)’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "77",
+      "columnStart": "24",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint8_t’ {aka ‘unsigned char’} chooses ‘int’ over ‘long int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "77",
+      "columnStart": "24",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint8_t’ {aka ‘unsigned char’} chooses ‘int’ over ‘long unsigned int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/get_stp_config_test.cpp",
+      "lineStart": "77",
+      "columnStart": "24",
+      "category": "Warning:sign-promo",
+      "severity": "NORMAL",
+      "message": "passing ‘uint8_t’ {aka ‘unsigned char’} chooses ‘int’ over ‘unsigned int’ [-Wsign-promo]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/get_stp_config/test-src/network_config/network_config_fake.cpp",
+      "lineStart": "10",
+      "columnStart": "8",
+      "category": "Warning:missing-declarations",
+      "severity": "NORMAL",
+      "message": "no previous declaration for ‘wago::stp::lib::status wago::stp::network_config::get_bridge_interfaces(const string&, std::vector<std::__cxx11::basic_string<char> >&)’ [-Wmissing-declarations]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/netconf/BaseTypes.hpp",
+      "lineStart": "125",
+      "columnStart": "60",
+      "category": "Warning:modernize-pass-by-value",
+      "severity": "NORMAL",
+      "message": "pass by value and use std::move [modernize-pass-by-value]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/netconf/BaseTypes.hpp",
+      "lineStart": "130",
+      "columnStart": "25",
+      "category": "Warning:performance-unnecessary-value-param",
+      "severity": "NORMAL",
+      "message": "parameter 'dhcp_client_id' is passed by value and only copied once; consider moving it to avoid unnecessary copies [performance-unnecessary-value-param]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/netconf/BaseTypes.hpp",
+      "lineStart": "163",
+      "columnStart": "10",
+      "category": "Warning:clang-diagnostic-c++98-c++11-compat",
+      "severity": "NORMAL",
+      "message": "variable declaration in a constexpr function is incompatible with C++ standards before C++14 [clang-diagnostic-c++98-c++11-compat]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/netconf/BaseTypes.hpp",
+      "lineStart": "164",
+      "columnStart": "5",
+      "category": "Warning:clang-diagnostic-c++98-c++11-compat",
+      "severity": "NORMAL",
+      "message": "use of this statement in a constexpr function is incompatible with C++ standards before C++14 [clang-diagnostic-c++98-c++11-compat]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/netconf/BaseTypes.hpp",
+      "lineStart": "176",
+      "columnStart": "10",
+      "category": "Warning:clang-diagnostic-c++98-c++11-compat",
+      "severity": "NORMAL",
+      "message": "variable declaration in a constexpr function is incompatible with C++ standards before C++14 [clang-diagnostic-c++98-c++11-compat]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/netconf/BaseTypes.hpp",
+      "lineStart": "177",
+      "columnStart": "5",
+      "category": "Warning:clang-diagnostic-c++98-c++11-compat",
+      "severity": "NORMAL",
+      "message": "use of this statement in a constexpr function is incompatible with C++ standards before C++14 [clang-diagnostic-c++98-c++11-compat]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/netconf/DeviceType.hpp",
+      "lineStart": "37",
+      "columnStart": "8",
+      "category": "Warning:clang-diagnostic-c++98-c++11-compat",
+      "severity": "NORMAL",
+      "message": "variable declaration in a constexpr function is incompatible with C++ standards before C++14 [clang-diagnostic-c++98-c++11-compat]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/netconf/DeviceType.hpp",
+      "lineStart": "38",
+      "columnStart": "3",
+      "category": "Warning:clang-diagnostic-c++98-c++11-compat",
+      "severity": "NORMAL",
+      "message": "use of this statement in a constexpr function is incompatible with C++ standards before C++14 [clang-diagnostic-c++98-c++11-compat]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/netconf/MacAddress.hpp",
+      "lineStart": "16",
+      "columnStart": "15",
+      "category": "Warning:clang-diagnostic-c++98-c++11-compat",
+      "severity": "NORMAL",
+      "message": "variable declaration in a constexpr constructor is incompatible with C++ standards before C++14 [clang-diagnostic-c++98-c++11-compat]",
+      "moduleName": "get_stp_config-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/netconf/MacAddress.hpp",
+      "lineStart": "16",
+      "columnStart": "5",
+      "category": "Warning:clang-diagnostic-c++98-c++11-compat",
+      "severity": "NORMAL",
+      "message": "use of this statement in a constexpr constructor is incompatible with C++ standards before C++14 [clang-diagnostic-c++98-c++11-compat]",
+      "moduleName": "get_stp_config-tests"
+    }
+  ],
+  "size": 54
+}

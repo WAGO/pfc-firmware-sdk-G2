@@ -14,10 +14,12 @@ config LIBBACNETSTACK
 	select SQLITE
 	select LIBBACNETCONFIG
 	select LIBCTCALLHELPER
+	select LIBCURL
 	select DAL
 	select LIBWAGODRM
 	select LIBXML2
 	select CDS3_INCLUDES
+	select CODESYS3
 	prompt "BACnet Stack"
 	help
 	  Build the BACnet stack as a static library. This software component is the BACnet communication stack.
@@ -48,7 +50,7 @@ if LIBBACNETSTACK_SOURCE_DEV
 config LIBBACNETSTACK_SOURCE_DEV_BRANCH
 	string
 	prompt "Branch to be checked-out."
-	default "master"
+	default "main"
 	help
 	  Name of branch which should be checked out or empty for default.
 

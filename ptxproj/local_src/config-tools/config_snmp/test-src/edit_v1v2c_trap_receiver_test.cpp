@@ -1,7 +1,6 @@
 // Copyright (c) 2022 WAGO GmbH & Co. KG
 // SPDX-License-Identifier: MPL-2.0
 
-#include <gmock/gmock-generated-matchers.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 

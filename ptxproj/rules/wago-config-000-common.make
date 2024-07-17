@@ -17,7 +17,7 @@ PACKAGES-$(PTXCONF_CONFIG_TOOLS) += config-tools
 #
 # Paths and names
 #
-CONFIG_TOOLS_VERSION 	      := 2.0.0
+CONFIG_TOOLS_VERSION 	      := 2.0.2
 CONFIG_TOOLS		            := config-tools
 CONFIG_TOOLS_URL            := file://$(PTXDIST_WORKSPACE)/local_src/$(CONFIG_TOOLS)
 CONFIG_TOOLS_DIR	          := $(BUILDDIR)/$(CONFIG_TOOLS)
@@ -53,9 +53,9 @@ ifdef PTXCONF_INITMETHOD_INITNG
 CT_CFLAGS +=-D__HAVE_INITMETHOD_SYSV
 endif
 
-ifdef PTXCONF_CT_FEATURE_ETH_SWITCH_DSA
+ifdef PTXCONF_CT_FEATURE_ETH_SWITCH_ADVANCED
 # also triggers libctnetwork.so to be linked against libswconfig.so
-CT_CFLAGS += -D__ENABLE_DSA
+CT_CFLAGS += -D__ENABLE_SWCONFIG
 endif
 
 ifdef PTXCONF_CT_FEATURE_TYPELABEL_SUPPORT
@@ -419,14 +419,6 @@ endif
 
 ifdef PTXCONF_CT_CONFIG_TOOL_LIB_BASH
 	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/config_tool_lib);
-
-ifdef PTXCONF_BUSYBOX_FEATURE_PASSWD_WEAK_CHECK
-	@$(call install_replace, config-tools, /etc/config-tools/config_tool_lib, @PASSWORD_WEAKCHECK@, "check_passwd");
-	@$(call install_replace, config-tools, /etc/config-tools/config_tool_lib, @PASSWORD_MINLEN@, $(PTXCONF_BUSYBOX_PASSWORD_MINLEN));
-else
-	@$(call install_replace, config-tools, /etc/config-tools/config_tool_lib, @PASSWORD_WEAKCHECK@, "/usr/bin/true");
-	@$(call install_replace, config-tools, /etc/config-tools/config_tool_lib, @PASSWORD_MINLEN@, 0);
-endif # PTXCONF_BUSYBOX_FEATURE_PASSWD_WEAK_CHECK
 endif # PTXCONF_CT_CONFIG_TOOL_LIB_BASH
 
 ifdef PTXCONF_CT_CONFIG_TOOL_DEFINES
@@ -558,6 +550,14 @@ ifdef PTXCONF_CT_CONFIG_TFTP
 	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/config_tftp);
 endif
 
+ifdef PTXCONF_CT_CONFIG_DHCPD
+	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/config_dhcpd)
+endif
+
+ifdef PTXCONF_CT_CONFIG_DNS_SERVICE
+	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/config_dns_service)
+endif
+
 ifdef PTXCONF_CT_CONFIG_IOCHECKPORT
 	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/config_iocheckport)
 endif
@@ -568,6 +568,18 @@ endif
 
 ifdef PTXCONF_CT_GET_TFTP_CONFIG
 	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/get_tftp_config);
+endif
+
+ifdef PTXCONF_CT_GET_DHCPD_CONFIG
+	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/get_dhcpd_config)
+endif
+
+ifdef PTXCONF_CT_GET_DNS_SERVICE_CONFIG
+	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/get_dns_service_config)
+endif
+
+ifdef PTXCONF_CT_ETH_PORT_LEDS
+	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/config_eth_leds)
 endif
 
 ifdef PTXCONF_CT_GET_IOCHECKPORT_CONFIG
@@ -749,6 +761,8 @@ endif
 ifdef PTXCONF_CT_LIBCTNETWORK
 	@$(call install_alternative, config-tools, 0, 0, 0644, /etc/config-tools/events/README);
 	@$(call install_copy, config-tools, 0, 0, 0755, /etc/config-tools/events/codesys/);
+	@$(call install_copy, config-tools, 0, 0, 0755, /etc/config-tools/events/dhcp/);
+	@$(call install_copy, config-tools, 0, 0, 0755, /etc/config-tools/events/dns/);
 	@$(call install_copy, config-tools, 0, 0, 0755, /etc/config-tools/events/modbus/);
 	@$(call install_copy, config-tools, 0, 0, 0755, /etc/config-tools/events/snmp/);
 	@$(call install_copy, config-tools, 0, 0, 0755, /etc/config-tools/events/ssh/);

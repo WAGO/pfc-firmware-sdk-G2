@@ -205,11 +205,11 @@
   protected: \
     x() = default; \
     x(x const &) = default; \
-    x(x&&) = default; \
+    x(x&&) noexcept = default; \
     x& operator=(const x&) = default; \
-    x& operator=(x&&) = default; \
+    x& operator=(x&&) noexcept = default; \
   public: \
-    virtual ~x() = default; \
+    virtual ~x() noexcept = default; \
   private:
 #else // C++ < 201103
 #define WC_INTERFACE_CLASS(x) \
@@ -223,6 +223,33 @@
 #endif // C++ >= 201103 / C++ < 201103
 #else // !C++
 #define WC_INTERFACE_CLASS(x)
+#endif // C++ / !C++
+
+/// \def WC_INTERFACE_IMPL_CLASS(x)
+/// Helper macro to explicitly create copy, assign, move, move assign, constructor and virtual destructor for an 
+/// interface implementing class.
+//lint -estring(961, WC_INTERFACE_IMPL_CLASS) to disable Rule 19.7 it is necessary to disable all 961 messages,
+//                                            function-like macro defined
+#ifdef __cplusplus // C++
+#if (__cplusplus >= 201103L) // C++ >= 201103
+#define WC_INTERFACE_IMPL_CLASS(x) \
+    x(x const &) = default; \
+    x(x&&) noexcept = default; \
+    x& operator=(const x&) = default; \
+    x& operator=(x&&) noexcept = default; \
+  public: \
+    ~x() noexcept override = default; \
+  private:
+#else // C++ < 201103
+#define WC_INTERFACE_IMPL_CLASS(x) \
+    x(x const &) {}; \
+    x& operator=(const x&) {}; \
+  public: \
+    virtual ~x() {}; \
+  private:
+#endif // C++ >= 201103 / C++ < 201103
+#else // !C++
+#define WC_INTERFACE_IMPL_CLASS(x)
 #endif // C++ / !C++
 
 /// \def WC_DISBALE_CLASS_COPY_ASSIGN_AND_MOVE_ASSIGN(x)

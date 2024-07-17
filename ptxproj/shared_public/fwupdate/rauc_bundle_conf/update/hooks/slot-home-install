@@ -18,6 +18,7 @@
 #-----------------------------------------------------------------------------#
 
 
+
 # Load needed firmware functionality
 if [ ! -f "$WAGO_ST_DIR/${BOARD_ID}_defines" ]; then
     echo "Missing dependency ${BOARD_ID}_defines"
@@ -45,6 +46,10 @@ source "$WAGO_ST_DIR/${BOARD_ID}_copy_data_emmc_extensions.sh"
 function hook_routine
 {
     local result=0
+
+    if [ "${BOARD_ID}" = "pfc300" ]; then
+        exit 0
+    fi
 
     if [[ "$($WAGO_CT_DIR/get_filesystem_data active-partition-medium)" == "internal-flash-emmc" ]]; then
         fwupdate_report_info "Start home migration hook"

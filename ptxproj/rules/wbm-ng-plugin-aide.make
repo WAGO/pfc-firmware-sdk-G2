@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WBM_NG_PLUGIN_AIDE) += wbm-ng-plugin-aide
 #
 # Paths and names
 #
-WBM_NG_PLUGIN_AIDE_VERSION        := 1.1.1
+WBM_NG_PLUGIN_AIDE_VERSION        := 1.1.2
 WBM_NG_PLUGIN_AIDE                := wbm-aide-$(WBM_NG_PLUGIN_AIDE_VERSION)
 WBM_NG_PLUGIN_AIDE_URL            := $(call jfrog_template_to_url, WBM_NG_PLUGIN_AIDE)
 WBM_NG_PLUGIN_AIDE_SUFFIX         := $(suffix $(WBM_NG_PLUGIN_AIDE_URL))

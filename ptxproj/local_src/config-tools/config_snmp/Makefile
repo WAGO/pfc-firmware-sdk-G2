@@ -84,8 +84,8 @@ libsnmp-config.a_CLANG_TIDY_CHECKS += -clang-diagnostic-c++98-c++11-c++14-compat
 #######################################################################################################################
 # Settings for build target alltests.elf
 
-alltests.elf_LIBS             += snmp-config gmock_main gmock
-alltests.elf_STATICALLYLINKED += snmp-config gmock_main gmock
+alltests.elf_LIBS             += snmp-config gmock_main gmock gtest
+alltests.elf_STATICALLYLINKED += snmp-config gmock_main gmock gtest
 alltests.elf_PKG_CONFIGS      += $(libsnmp-config.a_PKG_CONFIGS)
 alltests.elf_DISABLEDWARNINGS +=
 alltests.elf_PREREQUISITES    += $(call local_prerequisites,alltests.elf)

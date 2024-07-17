@@ -36,7 +36,7 @@ DOCKER_USERLAND_PROXY_GO_ENV:= \
 	PKG_CONFIG=$(CROSS_PKG_CONFIG) \
 	GOPATH=$(DOCKER_USERLAND_PROXY_DIR) \
 	GO111MODULE=auto \
-	GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=0
+	GOOS=linux CGO_ENABLED=0
 
 DOCKER_USERLAND_PROXY_GO_PACKAGE := github.com/libnetwork/cmd/proxy
 
@@ -69,7 +69,7 @@ $(STATEDIR)/docker-userland-proxy.compile:
 	@$(call targetinfo)
 	@PATH=$(CROSS_PATH):$(HOST_GO_BIN_DIR) ; \
 		cd $(DOCKER_USERLAND_PROXY_DIR) &&  \
-			$(DOCKER_USERLAND_PROXY_GO_ENV) go build \
+			$(DOCKER_USERLAND_PROXY_GO_ENV) $(GO_ARCH) go build \
 				-o docker-proxy \
 				$(DOCKER_USERLAND_PROXY_BUILDMODE) \
 				$(DOCKER_USERLAND_PROXY_LDFLAGS) \

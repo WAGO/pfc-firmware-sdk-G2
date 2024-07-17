@@ -13,6 +13,8 @@ in the event directory.
 
 The following directories
 
+/etc/config-tools/events/dhcp           - dhcpd demon
+/etc/config-tools/events/dns            - dns demon
 /etc/config-tools/events/snmp           - snmp demon
 /etc/config-tools/events/ssh            - ssh demon
 /etc/config-tools/events/ssl            - lighttpd and pureftp demons

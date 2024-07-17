@@ -228,8 +228,8 @@ void AddInfoToDbus(DBusMessageIter * iter,tLedNr ledNr,tLedInfo * ledInfo,uint32
 
   dbus_message_iter_append_basic  (iter,COM_TYPE_STRING,&pNameString);
   dbus_message_iter_append_basic  (iter,COM_TYPE_INT32,&ledInfo->state);
-  dbus_message_iter_append_basic  (iter,COM_TYPE_UINT32,&(ledInfo->setTime.tv_sec));
-  dbus_message_iter_append_basic  (iter,COM_TYPE_UINT32,&(ledInfo->setTime.tv_usec));
+  dbus_message_iter_append_basic  (iter,COM_TYPE_TIME_T,&(ledInfo->setTime.tv_sec));
+  dbus_message_iter_append_basic  (iter,COM_TYPE_TIME_T,&(ledInfo->setTime.tv_usec));
 
   AppendToDbusByState(iter,ledInfo);
 
@@ -641,19 +641,18 @@ void IdHandler(com_tConnection * con, com_tComMessage * msg, log_tEventId id, tL
   tIdInfo idInfo;
   tLedReturnCode result;
 
-
   idInfo.id = id;
   idInfo.info = NULL;
   idInfo.refCount = 0;
 
-  com_MSG_GetParams(con, msg,  COM_TYPE_INT32,   &setTime.tv_sec,
-                               COM_TYPE_INT32,   &setTime.tv_usec,
+  com_MSG_GetParams(con, msg,  COM_TYPE_TIME_T,  &setTime.tv_sec,
+                               COM_TYPE_TIME_T,  &setTime.tv_usec,
                                COM_TYPE_STRING,  &dummyname,
                                COM_TYPE_BOOLEAN, &set,
                                COM_TYPE_INVALID);
 
-
   SetArgsFromMessage(event,msg);
+
 
   idInfo.info = _GetIdInfoFromMessage(msg);
 

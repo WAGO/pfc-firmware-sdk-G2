@@ -1,3 +1,0 @@
-# This patch disbales the compiler flag -Werror set in CMakeLists.txt of Azure SDK
-0001-do-not-handle-build-warning-as-build-error.patch
-0002-fix_issue537_hmac_mismatching_function_prototype.patch

@@ -1,0 +1,32 @@
+ok /setenv/
+
+# match line starting with ‘error ‘, case-insensitive
+error /(?i)^error\s/
+error /(?i)^(\[.*\]\s)?[\w\/].*:\d+:.*error:\s/
+#error /(?i)error\s\d+$/
+error /(?i)\/state\/.*error\s\d+$/
+error /(?i)recipe for target .*platform-.* failed$/
+# Jenkins java exceptions
+error /^java\.lang\..*Exception/
+# PTXdist
+error /Error: install_file failed/
+error /error: cannot select/
+# Docker
+error /(?i): Error response from daemon: No such container: /
+# Jenkins time-out
+error /Terminated$/
+error /Sending interrupt signal to process/
+
+# list of warnings here
+#warning /[Ww]arning/
+#warning /WARNING/
+warning /(?i)recipe for target '.*' failed$/
+
+# creates an access link to lines in the report containing ‘SUCCESS’
+#info /SUCCESS/
+error /Waiting for unfinished jobs/
+
+# section for grouping errors and warnings
+# creates a quick access link.
+#start /INFO/
+start /target:/

@@ -139,10 +139,16 @@ $(STATEDIR)/fwupdate.targetinstall:
 	@$(call install_copy, fwupdate, 0, 0, 0700, $(WAGO_FWUPDATE_DIR)/scripts/fwupdate_storage, /usr/sbin/fwupdate_storage)
 	@$(call install_copy, fwupdate, 0, 0, 0700, $(WAGO_FWUPDATE_DIR)/scripts/fwupdate_service, /etc/init.d/fwupdate_service)
 	@$(call install_link, fwupdate, ../init.d/fwupdate_service, /etc/rc.d/disabled/S15_fwupdate_service)
-	
+
+ifeq ($(PTXCONF_PLATFORM), wago-pfc300)
+	@$(call install_copy, fwupdate, 0, 0, 0755, /home/wago/log)
+	@$(call install_copy, fwupdate, 0, 0, 0755, /home/wago/settings)
+endif
+
+ifdef PTXCONF_BAREBOX
 	@$(call install_alternative, fwupdate, 0, 0, 0755, \
 		/usr/sbin/barebox-state_failsafe.sh)
-
+endif
 
 	@$(call install_finish, fwupdate)
 

@@ -11,6 +11,7 @@ using testing::SetArgReferee;
 using testing::Return;
 using testing::_;
 using testing::SaveArg;
+using testing::DoAll;
 
 using netconf::api::MakeBridgeConfig;
 using netconf::api::BridgeConfig;

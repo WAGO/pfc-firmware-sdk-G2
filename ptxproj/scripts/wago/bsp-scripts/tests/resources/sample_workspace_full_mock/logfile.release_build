@@ -1,0 +1,1 @@
+patchin: quilt: apply 'ptxproj.2013.03.0/patches/foo-1.0.0/series'

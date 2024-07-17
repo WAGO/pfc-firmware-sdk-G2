@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WBM_NG_PLUGIN_DOCKER) += wbm-ng-plugin-docker
 #
 # Paths and names
 #
-WBM_NG_PLUGIN_DOCKER_VERSION        := 1.1.0
+WBM_NG_PLUGIN_DOCKER_VERSION        := 1.1.1
 WBM_NG_PLUGIN_DOCKER                := wbm-docker-$(WBM_NG_PLUGIN_DOCKER_VERSION)
 WBM_NG_PLUGIN_DOCKER_URL            := $(call jfrog_template_to_url, WBM_NG_PLUGIN_DOCKER)
 WBM_NG_PLUGIN_DOCKER_SUFFIX         := $(suffix $(WBM_NG_PLUGIN_DOCKER_URL))

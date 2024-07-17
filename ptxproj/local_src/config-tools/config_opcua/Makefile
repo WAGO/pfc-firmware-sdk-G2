@@ -82,8 +82,8 @@ libopcua-config.a_LDFLAGS          += $(call pkg_config_ldflags,$(libopcua-confi
 #######################################################################################################################
 # Settings for build target alltests.elf
 
-alltests.elf_LIBS             += opcua-config gmock_main gmock
-alltests.elf_STATICALLYLINKED += opcua-config gmock_main gmock
+alltests.elf_LIBS             += opcua-config gmock_main gmock gtest
+alltests.elf_STATICALLYLINKED += opcua-config gmock_main gmock gtest
 alltests.elf_PKG_CONFIGS      += $(libopcua-config.a_PKG_CONFIGS)
 alltests.elf_DISABLEDWARNINGS +=
 alltests.elf_PREREQUISITES    += $(call local_prerequisites,alltests.elf)

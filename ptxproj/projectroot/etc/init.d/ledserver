@@ -29,9 +29,9 @@ createXmlLink()
     elif [ "${ORDER:0:5}" == "751-9" ]
     then
       PRODUCT="CC100"
-    elif [ "${ORDER:0:3}" == "768" ]
+    elif [ "${ORDER:4:2}" == "83" ]
     then
-      PRODUCT="PFC200-ADV"
+      PRODUCT="PFC300"
     elif [ "${ORDER:4:2}" == "82" ]
     then
         # default

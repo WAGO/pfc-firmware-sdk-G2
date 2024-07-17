@@ -1,0 +1,63 @@
+## SECTION=wago_specific_device_bacnet
+
+config BACNETNATIVE
+  bool
+  default n
+  depends on BACNET
+  select DAL
+  select HOST_CT_BUILD
+  select LIBFFI
+  select DBUS_GLIB
+  select GLIB
+  select LIBLIBLOADER
+  prompt "BACnet native application"
+  help
+    Build a BACnet native application.
+
+
+if BACNETNATIVE
+
+choice
+        prompt "Origin of Code"
+        default BACNETNATIVE_SOURCE_RELEASED
+
+        config BACNETNATIVE_SOURCE_RELEASED
+                bool
+                prompt "released / Artifactory"
+                help
+                  Use released version of source code, taken from Artifactory.
+
+        config BACNETNATIVE_SOURCE_DEV
+                bool
+                prompt "development / Git"
+                help
+                  Instead of released version use source code directly checked-out from repository.
+                  Use only for development!
+
+endchoice
+
+if BACNETNATIVE_SOURCE_DEV
+
+config BACNETNATIVE_SOURCE_DEV_BRANCH
+	string
+	prompt "Branch to be checked-out."
+	default "main"
+	help
+	  Name of branch which should be checked out or empty for default.
+
+endif
+
+if BACNETNATIVE_SOURCE_RELEASED
+
+config BACNETNATIVE_URL_TEMPLATE
+	string
+    depends on BACNETNATIVE
+	prompt "URL template"
+	default "%ARTIFACTORY_BASE_URL%/pl_controller-generic-prod-local/wago_intern/bacnetnative/releases/bacnetnative-Source/bacnetnative-Source-%VERSION%.tgz"
+	help
+	  Encodes the desired artifact version. Can be configured to a specific version or to a latest compatible version of an artifact.
+	  See Confluence for further details.
+
+endif
+
+endif

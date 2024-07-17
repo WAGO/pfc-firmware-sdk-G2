@@ -26,7 +26,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-
 #define LOG_ID_NAME_FORMAT    "ID%.8X"
 #define LOG_ID_NAME_PREALLOC  "ID00000000"
 
@@ -93,8 +92,8 @@ void log_EVENT_LogIdParam(    log_tEventId           id,
 
   dbus_message_iter_init_append (message, &iter);
 
-  dbus_message_iter_append_basic (&iter, DBUS_TYPE_INT32, &(tv.tv_sec));
-  dbus_message_iter_append_basic (&iter, DBUS_TYPE_INT32, &(tv.tv_usec));
+  dbus_message_iter_append_basic (&iter, COM_TYPE_TIME_T, &(tv.tv_sec));
+  dbus_message_iter_append_basic (&iter, COM_TYPE_TIME_T, &(tv.tv_usec));
   dbus_message_iter_append_basic (&iter, DBUS_TYPE_STRING, &(programName));
   dbus_message_iter_append_basic (&iter, DBUS_TYPE_BOOLEAN, &(dbSet));
   if(first_arg_type != LOG_TYPE_INVALID)
@@ -341,8 +340,8 @@ int led_GetLedStateWithId(   const char       * ledName,
                          COM_TYPE_UINT16, var1,
                          COM_TYPE_UINT16, var2,
                          COM_TYPE_UINT32, id,
-                         COM_TYPE_UINT32, &timestamp->tv_sec,
-                         COM_TYPE_UINT32, &timestamp->tv_usec,
+                         COM_TYPE_TIME_T, &timestamp->tv_sec,
+                         COM_TYPE_TIME_T, &timestamp->tv_usec,
                          COM_TYPE_INVALID);
   return ret;
 }
@@ -501,8 +500,8 @@ int led_GetLedStateWithIdInfo(   const char       * ledName,
                          COM_TYPE_UINT16, var1,
                          COM_TYPE_UINT16, var2,
                          COM_TYPE_UINT32, &id->id,
-                         COM_TYPE_UINT32, &timestamp->tv_sec,
-                         COM_TYPE_UINT32, &timestamp->tv_usec,
+                         COM_TYPE_TIME_T, &timestamp->tv_sec,
+                         COM_TYPE_TIME_T, &timestamp->tv_usec,
                          COM_TYPE_INVALID);
   lastmsg = (DBusMessage *)com_GEN_GetDBusVar(&diagnosticConnection, DBUSVAR_LAST_REPLY);
   _GetIdCtrlInfo(lastmsg, id);
@@ -580,8 +579,8 @@ int led_GetLedStatus(const char * led_name,
                          COM_TYPE_INVALID,
                          COM_TYPE_STRING,  &ledName,
                          COM_TYPE_INT32,   &status->state,
-                         COM_TYPE_UINT32,   &status->timestamp.tv_sec,
-                         COM_TYPE_UINT32,   &status->timestamp.tv_usec,
+                         COM_TYPE_TIME_T,   &status->timestamp.tv_sec,
+                         COM_TYPE_TIME_T,   &status->timestamp.tv_usec,
                          COM_TYPE_INVALID);
   if(!ret)
   {

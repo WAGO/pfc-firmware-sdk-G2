@@ -1,0 +1,2490 @@
+{
+  "_class": "io.jenkins.plugins.analysis.core.restapi.ReportApi",
+  "issues": [
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "145",
+      "columnStart": "22",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'log_level' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "146",
+      "columnStart": "22",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'message' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "169",
+      "columnStart": "29",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'log_level' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "170",
+      "columnStart": "29",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'message' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "187",
+      "columnStart": "36",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'log_level' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "188",
+      "columnStart": "36",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'format' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "189",
+      "columnStart": "56",
+      "category": "Warning:clang-diagnostic-ignored-attributes",
+      "severity": "NORMAL",
+      "message": "'format' attribute argument not supported: gnu_printf [clang-diagnostic-ignored-attributes]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "206",
+      "columnStart": "37",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'log_level' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "207",
+      "columnStart": "37",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'format' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "208",
+      "columnStart": "37",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'args' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "208",
+      "columnStart": "77",
+      "category": "Warning:clang-diagnostic-ignored-attributes",
+      "severity": "NORMAL",
+      "message": "'format' attribute argument not supported: gnu_printf [clang-diagnostic-ignored-attributes]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "236",
+      "columnStart": "38",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'file' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "237",
+      "columnStart": "38",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'function' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "238",
+      "columnStart": "38",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'line' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "239",
+      "columnStart": "38",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'log_level' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "240",
+      "columnStart": "38",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'message' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "271",
+      "columnStart": "45",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'file' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "272",
+      "columnStart": "45",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'function' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "273",
+      "columnStart": "45",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'line' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "274",
+      "columnStart": "45",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'log_level' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "275",
+      "columnStart": "45",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'format' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "276",
+      "columnStart": "65",
+      "category": "Warning:clang-diagnostic-ignored-attributes",
+      "severity": "NORMAL",
+      "message": "'format' attribute argument not supported: gnu_printf [clang-diagnostic-ignored-attributes]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "308",
+      "columnStart": "46",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'file' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "309",
+      "columnStart": "46",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'function' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "310",
+      "columnStart": "46",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'line' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "311",
+      "columnStart": "46",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'log_level' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "312",
+      "columnStart": "46",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'format' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "313",
+      "columnStart": "46",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'args' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "313",
+      "columnStart": "86",
+      "category": "Warning:clang-diagnostic-ignored-attributes",
+      "severity": "NORMAL",
+      "message": "'format' attribute argument not supported: gnu_printf [clang-diagnostic-ignored-attributes]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "364",
+      "columnStart": "21",
+      "category": "Warning:modernize-use-nullptr",
+      "severity": "NORMAL",
+      "message": "use nullptr [modernize-use-nullptr]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "364",
+      "columnStart": "27",
+      "category": "Warning:modernize-use-nullptr",
+      "severity": "NORMAL",
+      "message": "use nullptr [modernize-use-nullptr]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "367",
+      "columnStart": "22",
+      "category": "Warning:cert-dcl50-cpp",
+      "severity": "NORMAL",
+      "message": "do not define a C-style variadic function; consider using a function parameter pack or currying instead [cert-dcl50-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "381",
+      "columnStart": "29",
+      "category": "Warning:modernize-use-nullptr",
+      "severity": "NORMAL",
+      "message": "use nullptr [modernize-use-nullptr]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "381",
+      "columnStart": "35",
+      "category": "Warning:modernize-use-nullptr",
+      "severity": "NORMAL",
+      "message": "use nullptr [modernize-use-nullptr]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "393",
+      "columnStart": "22",
+      "category": "Warning:cert-dcl50-cpp",
+      "severity": "NORMAL",
+      "message": "do not define a C-style variadic function; consider using a function parameter pack or currying instead [cert-dcl50-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "417",
+      "columnStart": "54",
+      "category": "Warning:modernize-use-nullptr",
+      "severity": "NORMAL",
+      "message": "use nullptr [modernize-use-nullptr]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "420",
+      "columnStart": "30",
+      "category": "Warning:modernize-use-nullptr",
+      "severity": "NORMAL",
+      "message": "use nullptr [modernize-use-nullptr]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "429",
+      "columnStart": "19",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "429",
+      "columnStart": "31",
+      "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
+      "severity": "NORMAL",
+      "message": "do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "430",
+      "columnStart": "27",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "438",
+      "columnStart": "19",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "438",
+      "columnStart": "35",
+      "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
+      "severity": "NORMAL",
+      "message": "do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "439",
+      "columnStart": "31",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "442",
+      "columnStart": "43",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "445",
+      "columnStart": "17",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "447",
+      "columnStart": "25",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "451",
+      "columnStart": "42",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/log.h",
+      "lineStart": "461",
+      "columnStart": "34",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "208",
+      "columnStart": "7",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "209",
+      "columnStart": "5",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "210",
+      "columnStart": "18",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "210",
+      "columnStart": "5",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "237",
+      "columnStart": "7",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "238",
+      "columnStart": "5",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "239",
+      "columnStart": "18",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "239",
+      "columnStart": "5",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "263",
+      "columnStart": "5",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "264",
+      "columnStart": "3",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "265",
+      "columnStart": "16",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "265",
+      "columnStart": "3",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "284",
+      "columnStart": "5",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "285",
+      "columnStart": "3",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "304",
+      "columnStart": "3",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "322",
+      "columnStart": "5",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "323",
+      "columnStart": "16",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "323",
+      "columnStart": "3",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/inc/wc/structuring.h",
+      "lineStart": "338",
+      "columnStart": "5",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/c-modules/test_ExportMod.h",
+      "lineStart": "37",
+      "columnStart": "38",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'someNumber' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/c-modules/test_ExportMod.h",
+      "lineStart": "38",
+      "columnStart": "27",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'someNumber' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/c-modules/test_StructuringMod.c",
+      "lineStart": "40",
+      "columnStart": "21",
+      "category": "Warning:clang-diagnostic-unneeded-internal-declaration",
+      "severity": "NORMAL",
+      "message": "variable 'arDoubles' is not needed and will not be emitted [clang-diagnostic-unneeded-internal-declaration]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/c-modules/test_StructuringMod.h",
+      "lineStart": "43",
+      "columnStart": "38",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'value' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/cpp-modules/test_ExportMod.hpp",
+      "lineStart": "35",
+      "columnStart": "33",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'someNumber' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/cpp-modules/test_ExportMod.hpp",
+      "lineStart": "42",
+      "columnStart": "38",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'someNumber' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/cpp-modules/test_ExportMod.hpp",
+      "lineStart": "43",
+      "columnStart": "27",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'someNumber' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/cpp-modules/test_ExportMod.hpp",
+      "lineStart": "46",
+      "columnStart": "23",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'someNumber' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/cpp-modules/test_StructuringMod.cc",
+      "lineStart": "115",
+      "columnStart": "12",
+      "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
+      "severity": "NORMAL",
+      "message": "do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/cpp-modules/test_StructuringMod.cc",
+      "lineStart": "121",
+      "columnStart": "10",
+      "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
+      "severity": "NORMAL",
+      "message": "do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/cpp-modules/test_StructuringMod.cc",
+      "lineStart": "135",
+      "columnStart": "10",
+      "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
+      "severity": "NORMAL",
+      "message": "do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/cpp-modules/test_StructuringMod.cc",
+      "lineStart": "135",
+      "columnStart": "10",
+      "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
+      "severity": "NORMAL",
+      "message": "do not use C-style cast to convert between unrelated types [cppcoreguidelines-pro-type-cstyle-cast]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/cpp-modules/test_StructuringMod.cc",
+      "lineStart": "150",
+      "columnStart": "10",
+      "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
+      "severity": "NORMAL",
+      "message": "do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/cpp-modules/test_StructuringMod.cc",
+      "lineStart": "150",
+      "columnStart": "10",
+      "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
+      "severity": "NORMAL",
+      "message": "do not use C-style cast to convert between unrelated types [cppcoreguidelines-pro-type-cstyle-cast]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/cpp-modules/test_StructuringMod.cc",
+      "lineStart": "40",
+      "columnStart": "21",
+      "category": "Warning:clang-diagnostic-unneeded-internal-declaration",
+      "severity": "NORMAL",
+      "message": "variable 'arDoubles' is not needed and will not be emitted [clang-diagnostic-unneeded-internal-declaration]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/cpp-modules/test_StructuringMod.hpp",
+      "lineStart": "43",
+      "columnStart": "40",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'value' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "103",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "103",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "109",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "109",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "112",
+      "columnStart": "3",
+      "category": "Warning:cppcoreguidelines-avoid-goto",
+      "severity": "NORMAL",
+      "message": "avoid using 'goto' for flow control [cppcoreguidelines-avoid-goto]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "117",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "117",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "123",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "123",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "126",
+      "columnStart": "3",
+      "category": "Warning:cppcoreguidelines-avoid-goto",
+      "severity": "NORMAL",
+      "message": "avoid using 'goto' for flow control [cppcoreguidelines-avoid-goto]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "131",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "131",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "139",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "139",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "143",
+      "columnStart": "3",
+      "category": "Warning:cppcoreguidelines-avoid-goto",
+      "severity": "NORMAL",
+      "message": "avoid using 'goto' for flow control [cppcoreguidelines-avoid-goto]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "149",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "149",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "155",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "155",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "158",
+      "columnStart": "3",
+      "category": "Warning:cppcoreguidelines-avoid-goto",
+      "severity": "NORMAL",
+      "message": "avoid using 'goto' for flow control [cppcoreguidelines-avoid-goto]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "60",
+      "columnStart": "19",
+      "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
+      "severity": "NORMAL",
+      "message": "do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "62",
+      "columnStart": "19",
+      "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
+      "severity": "NORMAL",
+      "message": "do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "67",
+      "columnStart": "29",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "67",
+      "columnStart": "29",
+      "category": "Warning:misc-static-assert",
+      "severity": "NORMAL",
+      "message": "found assert() that could be replaced by static_assert() [misc-static-assert]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "67",
+      "columnStart": "3",
+      "category": "Warning:cppcoreguidelines-avoid-goto",
+      "severity": "NORMAL",
+      "message": "avoid using 'goto' for flow control [cppcoreguidelines-avoid-goto]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "71",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "71",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "77",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "77",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "80",
+      "columnStart": "3",
+      "category": "Warning:cppcoreguidelines-avoid-goto",
+      "severity": "NORMAL",
+      "message": "avoid using 'goto' for flow control [cppcoreguidelines-avoid-goto]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "85",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "85",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "93",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "93",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Assertion.cc",
+      "lineStart": "97",
+      "columnStart": "3",
+      "category": "Warning:cppcoreguidelines-avoid-goto",
+      "severity": "NORMAL",
+      "message": "avoid using 'goto' for flow control [cppcoreguidelines-avoid-goto]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Export.cc",
+      "lineStart": "44",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Export.cc",
+      "lineStart": "44",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Export.cc",
+      "lineStart": "50",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Export.cc",
+      "lineStart": "50",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Export.cc",
+      "lineStart": "56",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Export.cc",
+      "lineStart": "56",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Export.cc",
+      "lineStart": "63",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Export.cc",
+      "lineStart": "63",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Export.cc",
+      "lineStart": "70",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Export.cc",
+      "lineStart": "70",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "102",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "102",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "109",
+      "columnStart": "21",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "111",
+      "columnStart": "20",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "115",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "115",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "122",
+      "columnStart": "21",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "124",
+      "columnStart": "16",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "124",
+      "columnStart": "25",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "128",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "128",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "135",
+      "columnStart": "21",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "137",
+      "columnStart": "20",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "141",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "141",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "148",
+      "columnStart": "21",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "150",
+      "columnStart": "16",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "150",
+      "columnStart": "25",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "154",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "154",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "161",
+      "columnStart": "21",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "163",
+      "columnStart": "20",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "167",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "167",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "174",
+      "columnStart": "49",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "178",
+      "columnStart": "36",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "178",
+      "columnStart": "67",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "178",
+      "columnStart": "83",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "180",
+      "columnStart": "25",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "184",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "184",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "191",
+      "columnStart": "49",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "194",
+      "columnStart": "29",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "199",
+      "columnStart": "55",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "199",
+      "columnStart": "71",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "201",
+      "columnStart": "22",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "202",
+      "columnStart": "22",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "203",
+      "columnStart": "22",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "204",
+      "columnStart": "22",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "46",
+      "columnStart": "20",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'used_message' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "55",
+      "columnStart": "11",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "64",
+      "columnStart": "7",
+      "category": "Warning:cppcoreguidelines-special-member-functions",
+      "severity": "NORMAL",
+      "message": "class 'Log_Fixture' defines a non-default destructor but does not define a copy constructor, a copy assignment operator, a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "67",
+      "columnStart": "5",
+      "category": "Warning:modernize-use-equals-default",
+      "severity": "NORMAL",
+      "message": "use '= default' to define a trivial default constructor [modernize-use-equals-default]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "68",
+      "columnStart": "13",
+      "category": "Warning:modernize-use-equals-default",
+      "severity": "NORMAL",
+      "message": "use '= default' to define a trivial destructor [modernize-use-equals-default]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "68",
+      "columnStart": "13",
+      "category": "Warning:modernize-use-override",
+      "severity": "NORMAL",
+      "message": "prefer using 'override' or (rarely) 'final' instead of 'virtual' [modernize-use-override]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "76",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "76",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "83",
+      "columnStart": "21",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "85",
+      "columnStart": "20",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "89",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "89",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "96",
+      "columnStart": "21",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Log.cc",
+      "lineStart": "98",
+      "columnStart": "20",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Preprocessing.cc",
+      "lineStart": "45",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Preprocessing.cc",
+      "lineStart": "45",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Preprocessing.cc",
+      "lineStart": "52",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Preprocessing.cc",
+      "lineStart": "52",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Preprocessing.cc",
+      "lineStart": "59",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Preprocessing.cc",
+      "lineStart": "59",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Preprocessing.cc",
+      "lineStart": "65",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Preprocessing.cc",
+      "lineStart": "65",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Preprocessing.cc",
+      "lineStart": "71",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Preprocessing.cc",
+      "lineStart": "71",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Preprocessing.cc",
+      "lineStart": "78",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Preprocessing.cc",
+      "lineStart": "78",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Preprocessing.cc",
+      "lineStart": "85",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Preprocessing.cc",
+      "lineStart": "85",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Preprocessing.cc",
+      "lineStart": "91",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Preprocessing.cc",
+      "lineStart": "91",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StdIncludes.cc",
+      "lineStart": "44",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StdIncludes.cc",
+      "lineStart": "44",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StdIncludes.cc",
+      "lineStart": "51",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StdIncludes.cc",
+      "lineStart": "51",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StdIncludes.cc",
+      "lineStart": "57",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StdIncludes.cc",
+      "lineStart": "57",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StdIncludes.cc",
+      "lineStart": "64",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StdIncludes.cc",
+      "lineStart": "64",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StdIncludes.cc",
+      "lineStart": "71",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StdIncludes.cc",
+      "lineStart": "71",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StdIncludes.cc",
+      "lineStart": "77",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StdIncludes.cc",
+      "lineStart": "77",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "100",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "100",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "107",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "107",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "113",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "113",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "119",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "119",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "125",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "125",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "128",
+      "columnStart": "37",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "128",
+      "columnStart": "74",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "132",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "132",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "138",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "138",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "44",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "44",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "50",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "50",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "57",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "57",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "63",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "63",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "69",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "69",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "75",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "75",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "78",
+      "columnStart": "35",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "78",
+      "columnStart": "70",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "82",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "82",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "88",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "88",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "94",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_Structuring.cc",
+      "lineStart": "94",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "124",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "124",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "138",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "138",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "149",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "149",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "160",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "160",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "171",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "171",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "182",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "182",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "193",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "193",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "31",
+      "columnStart": "32",
+      "category": "Warning:clang-diagnostic-extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ';' inside a class [clang-diagnostic-extra-semi]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "41",
+      "columnStart": "45",
+      "category": "Warning:clang-diagnostic-extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ';' inside a class [clang-diagnostic-extra-semi]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "50",
+      "columnStart": "7",
+      "category": "Warning:cppcoreguidelines-special-member-functions",
+      "severity": "NORMAL",
+      "message": "class 'with_disabled_move' defines a copy constructor, a copy assignment operator and a move constructor but does not define a destructor or a move assignment operator [cppcoreguidelines-special-member-functions]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "56",
+      "columnStart": "44",
+      "category": "Warning:clang-diagnostic-extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ';' after member function definition [clang-diagnostic-extra-semi]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "59",
+      "columnStart": "7",
+      "category": "Warning:cppcoreguidelines-special-member-functions",
+      "severity": "NORMAL",
+      "message": "class 'with_disabled_move_assign' defines a copy constructor, a copy assignment operator, a move constructor and a move assignment operator but does not define a destructor [cppcoreguidelines-special-member-functions]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "65",
+      "columnStart": "58",
+      "category": "Warning:clang-diagnostic-extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ';' after member function definition [clang-diagnostic-extra-semi]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "68",
+      "columnStart": "7",
+      "category": "Warning:cppcoreguidelines-special-member-functions",
+      "severity": "NORMAL",
+      "message": "class 'with_disabled_copy_assign' defines a copy constructor, a copy assignment operator, a move constructor and a move assignment operator but does not define a destructor [cppcoreguidelines-special-member-functions]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "72",
+      "columnStart": "62",
+      "category": "Warning:clang-diagnostic-extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ';' after member function definition [clang-diagnostic-extra-semi]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "77",
+      "columnStart": "7",
+      "category": "Warning:cppcoreguidelines-special-member-functions",
+      "severity": "NORMAL",
+      "message": "class 'with_disabled_copy_assign_move' defines a copy constructor, a copy assignment operator, a move constructor and a move assignment operator but does not define a destructor [cppcoreguidelines-special-member-functions]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "81",
+      "columnStart": "72",
+      "category": "Warning:clang-diagnostic-extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ';' after member function definition [clang-diagnostic-extra-semi]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "85",
+      "columnStart": "7",
+      "category": "Warning:cppcoreguidelines-special-member-functions",
+      "severity": "NORMAL",
+      "message": "class 'with_disabled_copy_assign_move_assign' defines a copy constructor, a copy assignment operator, a move constructor and a move assignment operator but does not define a destructor [cppcoreguidelines-special-member-functions]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "89",
+      "columnStart": "86",
+      "category": "Warning:clang-diagnostic-extra-semi",
+      "severity": "NORMAL",
+      "message": "extra ';' after member function definition [clang-diagnostic-extra-semi]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "95",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "95",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/common-header/inc/wc/std_includes.h",
+      "lineStart": "34",
+      "columnStart": "1",
+      "category": "Warning:google-global-names-in-headers",
+      "severity": "NORMAL",
+      "message": "using declarations in the global namespace in headers are prohibited [google-global-names-in-headers]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/common-header/inc/wc/std_includes.h",
+      "lineStart": "35",
+      "columnStart": "1",
+      "category": "Warning:google-global-names-in-headers",
+      "severity": "NORMAL",
+      "message": "using declarations in the global namespace in headers are prohibited [google-global-names-in-headers]",
+      "moduleName": "libcommonheader-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/common-header/test-src/test_StructuringClass.cc",
+      "lineStart": "39",
+      "columnStart": "7",
+      "category": "Warning:ctor-dtor-privacy",
+      "severity": "NORMAL",
+      "message": "‘class impl_of_interface’ only defines private constructors and has no friends [-Wctor-dtor-privacy]",
+      "moduleName": "libcommonheader-tests"
+    }
+  ],
+  "size": 276
+}

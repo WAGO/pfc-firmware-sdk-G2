@@ -3072,7 +3072,7 @@
       </rststr>
   </event>
 </eventclass>
-<eventclass class_range="x0014" name="BACNET_IP">
+<eventclass class_range="x0014" name="BACNET">
   <event id="x0001" name="_BT_OFF">
     <led name="BT" default="yes" state="STATIC_OFF">
     </led>
@@ -3706,6 +3706,44 @@
     <string>
         <en>Modem Firmware Update - Error</en>
         <de>Modem Firmware Update - Fehler</de>
+      </string>
+    
+  </event>
+</eventclass>
+<eventclass class_range="x0017" name="SERIAL">
+  <event id="x0001" name="TRM_OFF">
+    <led name="TRM" state="STATIC_OFF">
+    </led>
+    <string>
+      	<en>Termination Resistor and Bias Network disabled</en>
+      	<de>Abschlusswiderstand und Bias Netzwerk deaktiviert</de>
+      </string>
+    
+  </event>
+  <event id="x0002" name="TERMINATION_RESISTOR_ON">
+    <led name="TRM" state="STATIC_GRN">
+    </led>
+    <string>
+      	<en>Termination Resistor enabled</en>
+      	<de>Abschlusswiderstand aktiviert</de>
+      </string>
+    
+  </event>
+  <event id="x0003" name="BIAS_NETWORK_ON">
+    <led name="TRM" state="STATIC_GRN">
+    </led>
+    <string>
+        <en>Bias Network enabled</en>
+        <de>Bias Netzwerk aktiviert</de>
+      </string>
+    
+  </event>
+  <event id="x0004" name="TERMINATION_RESISTOR_BIAS_NETWORK_ON">
+    <led name="TRM" state="STATIC_GRN">
+    </led>
+    <string>
+        <en>Termination Resistor and Bias Network enabled</en>
+        <de>Ablusswiderstand und Bias Netzwerk aktiviert</de>
       </string>
     
   </event>

@@ -1,0 +1,1113 @@
+{
+  "_class": "io.jenkins.plugins.analysis.core.restapi.ReportApi",
+  "issues": [
+    {
+      "fileName": "local_src/libwagosnmp/src/agent.c",
+      "lineStart": "121",
+      "columnStart": "115",
+      "category": "Warning:clang-diagnostic-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion loses integer precision: 'uint16_t' (aka 'unsigned short') to 'u_char' (aka 'unsigned char') [clang-diagnostic-conversion]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/agent.c",
+      "lineStart": "124",
+      "columnStart": "84",
+      "category": "Warning:clang-diagnostic-sign-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion changes signedness: 'size_t' (aka 'unsigned int') to 'int' [clang-diagnostic-sign-conversion]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/agent.c",
+      "lineStart": "145",
+      "columnStart": "63",
+      "category": "Warning:clang-diagnostic-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion loses integer precision: 'uint16_t' (aka 'unsigned short') to 'u_char' (aka 'unsigned char') [clang-diagnostic-conversion]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/agent.c",
+      "lineStart": "311",
+      "columnStart": "43",
+      "category": "Warning:clang-diagnostic-incompatible-pointer-types",
+      "severity": "NORMAL",
+      "message": "incompatible pointer types passing 'void *(void)' to parameter of type 'void *(*)(void *)' [clang-diagnostic-incompatible-pointer-types]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/agent.c",
+      "lineStart": "311",
+      "columnStart": "69",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/agent.c",
+      "lineStart": "429",
+      "columnStart": "7",
+      "category": "Warning:readability-else-after-return",
+      "severity": "NORMAL",
+      "message": "do not use 'else' after 'return' [readability-else-after-return]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/agent.c",
+      "lineStart": "488",
+      "columnStart": "44",
+      "category": "Warning:clang-diagnostic-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion loses integer precision: 'size_t' (aka 'unsigned int') to 'uint16_t' (aka 'unsigned short') [clang-diagnostic-conversion]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/agent.c",
+      "lineStart": "492",
+      "columnStart": "30",
+      "category": "Warning:clang-diagnostic-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion loses integer precision: 'size_t' (aka 'unsigned int') to 'uint16_t' (aka 'unsigned short') [clang-diagnostic-conversion]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/internal.c",
+      "lineStart": "316",
+      "columnStart": "5",
+      "category": "Warning:readability-else-after-return",
+      "severity": "NORMAL",
+      "message": "do not use 'else' after 'return' [readability-else-after-return]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/internal.c",
+      "lineStart": "367",
+      "columnStart": "5",
+      "category": "Warning:google-readability-todo",
+      "severity": "NORMAL",
+      "message": "missing username/bug in TODO [google-readability-todo]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/internal.c",
+      "lineStart": "412",
+      "columnStart": "35",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/internal.c",
+      "lineStart": "51",
+      "columnStart": "5",
+      "category": "Warning:readability-else-after-return",
+      "severity": "NORMAL",
+      "message": "do not use 'else' after 'return' [readability-else-after-return]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/internal.c",
+      "lineStart": "550",
+      "columnStart": "16",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/internal.c",
+      "lineStart": "594",
+      "columnStart": "36",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/internal.c",
+      "lineStart": "781",
+      "columnStart": "31",
+      "category": "Warning:clang-diagnostic-missing-braces",
+      "severity": "NORMAL",
+      "message": "suggest braces around initialization of subobject [clang-diagnostic-missing-braces]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "240",
+      "columnStart": "16",
+      "category": "Warning:cert-err34-c",
+      "severity": "NORMAL",
+      "message": "'sscanf' used to convert a string to an unsigned integer value, but function will not report conversion errors; consider using 'strtoul' instead [cert-err34-c]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "385",
+      "columnStart": "35",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "40",
+      "columnStart": "13",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "565",
+      "columnStart": "3",
+      "category": "Warning:google-readability-todo",
+      "severity": "NORMAL",
+      "message": "missing username/bug in TODO [google-readability-todo]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "610",
+      "columnStart": "30",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "611",
+      "columnStart": "29",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "612",
+      "columnStart": "24",
+      "category": "Warning:clang-diagnostic-sign-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion changes signedness: 'long' to 'u_int' (aka 'unsigned int') [clang-diagnostic-sign-conversion]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "654",
+      "columnStart": "14",
+      "category": "Warning:clang-diagnostic-sign-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion changes signedness: 'int' to 'tWagoSnmpReturnCode' [clang-diagnostic-sign-conversion]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/wagosnmp_API.h",
+      "lineStart": "116",
+      "columnStart": "3",
+      "category": "Warning:google-runtime-int",
+      "severity": "NORMAL",
+      "message": "consider replacing 'long' with 'int32' [google-runtime-int]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/wagosnmp_API.h",
+      "lineStart": "151",
+      "columnStart": "21",
+      "category": "Warning:readability-inconsistent-declaration-parameter-name",
+      "severity": "NORMAL",
+      "message": "function 'libwagosnmp_Int32ToTlv' has a definition with different parameter names [readability-inconsistent-declaration-parameter-name]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/wagosnmp_API.h",
+      "lineStart": "153",
+      "columnStart": "21",
+      "category": "Warning:readability-inconsistent-declaration-parameter-name",
+      "severity": "NORMAL",
+      "message": "function 'libwagosnmp_Uint32ToTlv' has a definition with different parameter names [readability-inconsistent-declaration-parameter-name]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/wagosnmp_API.h",
+      "lineStart": "157",
+      "columnStart": "21",
+      "category": "Warning:readability-inconsistent-declaration-parameter-name",
+      "severity": "NORMAL",
+      "message": "function 'libwagosnmp_TlvToStr' has a definition with different parameter names [readability-inconsistent-declaration-parameter-name]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/wagosnmp_API.h",
+      "lineStart": "159",
+      "columnStart": "21",
+      "category": "Warning:readability-inconsistent-declaration-parameter-name",
+      "severity": "NORMAL",
+      "message": "function 'libwagosnmp_SendTrap' has a definition with different parameter names [readability-inconsistent-declaration-parameter-name]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/wagosnmp_API.h",
+      "lineStart": "29",
+      "columnStart": "10",
+      "category": "Warning:modernize-deprecated-headers",
+      "severity": "NORMAL",
+      "message": "inclusion of deprecated C++ header 'stdint.h'; consider using 'cstdint' instead [modernize-deprecated-headers]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/wagosnmp_API.h",
+      "lineStart": "30",
+      "columnStart": "10",
+      "category": "Warning:modernize-deprecated-headers",
+      "severity": "NORMAL",
+      "message": "inclusion of deprecated C++ header 'stdlib.h'; consider using 'cstdlib' instead [modernize-deprecated-headers]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "132",
+      "columnStart": "101",
+      "category": "Warning:google-runtime-int",
+      "severity": "NORMAL",
+      "message": "consider replacing 'long' with 'int32' [google-runtime-int]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "44",
+      "columnStart": "47",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "62",
+      "columnStart": "7",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "64",
+      "columnStart": "34",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "64",
+      "columnStart": "7",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "91",
+      "columnStart": "3",
+      "category": "Warning:google-runtime-int",
+      "severity": "NORMAL",
+      "message": "consider replacing 'long' with 'int32' [google-runtime-int]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "92",
+      "columnStart": "3",
+      "category": "Warning:google-runtime-int",
+      "severity": "NORMAL",
+      "message": "consider replacing 'long' with 'int32' [google-runtime-int]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "109",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "109",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "140",
+      "columnStart": "7",
+      "category": "Warning:cppcoreguidelines-pro-type-member-init",
+      "severity": "NORMAL",
+      "message": "constructor does not initialize these fields: transceiver, session [cppcoreguidelines-pro-type-member-init]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "147",
+      "columnStart": "30",
+      "category": "Warning:cppcoreguidelines-pro-type-const-cast",
+      "severity": "NORMAL",
+      "message": "do not use const_cast [cppcoreguidelines-pro-type-const-cast]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "148",
+      "columnStart": "30",
+      "category": "Warning:cppcoreguidelines-pro-type-const-cast",
+      "severity": "NORMAL",
+      "message": "do not use const_cast [cppcoreguidelines-pro-type-const-cast]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "154",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'gtest_registering_dummy_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "154",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'TestMetaFactoryBase<testing::internal::ParameterizedTestSuiteInfo<SetAuthPrivTestFixture>::ParamType> *' (aka 'TestMetaFactoryBase<SecAuthParams> *') with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "154",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-special-member-functions",
+      "severity": "NORMAL",
+      "message": "class 'SetAuthPrivTestFixture_ShouldInitializeSessionSecAuthFields_Test' defines a copy constructor and a copy assignment operator but does not define a destructor, a move constructor or a move assignment operator [cppcoreguidelines-special-member-functions]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "173",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'gtest_SecAuthTestSetAuthPrivTestFixture_dummy_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "173",
+      "columnStart": "1",
+      "category": "Warning:clang-diagnostic-deprecated-declarations",
+      "severity": "NORMAL",
+      "message": "'InstantiateTestCase_P_IsDeprecated' is deprecated: INSTANTIATE_TEST_CASE_P is deprecated, please use INSTANTIATE_TEST_SUITE_P [clang-diagnostic-deprecated-declarations]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "55",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "55",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "56",
+      "columnStart": "49",
+      "category": "Warning:clang-diagnostic-format",
+      "severity": "NORMAL",
+      "message": "format specifies type 'unsigned long' but the argument has type 'unsigned int' [clang-diagnostic-format]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "57",
+      "columnStart": "40",
+      "category": "Warning:clang-diagnostic-format",
+      "severity": "NORMAL",
+      "message": "format specifies type 'unsigned long' but the argument has type 'unsigned int' [clang-diagnostic-format]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "61",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "61",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "65",
+      "columnStart": "82",
+      "category": "Warning:modernize-use-nullptr",
+      "severity": "NORMAL",
+      "message": "use nullptr [modernize-use-nullptr]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "70",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "70",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "82",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "82",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "89",
+      "columnStart": "3",
+      "category": "Warning:cppcoreguidelines-avoid-goto",
+      "severity": "NORMAL",
+      "message": "avoid using 'goto' for flow control [cppcoreguidelines-avoid-goto]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "94",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "94",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test_get.cpp",
+      "lineStart": "38",
+      "columnStart": "1",
+      "category": "Warning:google-build-using-namespace",
+      "severity": "NORMAL",
+      "message": "do not use namespace using-directives; use using-declarations instead [google-build-using-namespace]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test_get.cpp",
+      "lineStart": "48",
+      "columnStart": "20",
+      "category": "Warning:cppcoreguidelines-pro-type-const-cast",
+      "severity": "NORMAL",
+      "message": "do not use const_cast [cppcoreguidelines-pro-type-const-cast]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test_get.cpp",
+      "lineStart": "50",
+      "columnStart": "25",
+      "category": "Warning:cppcoreguidelines-pro-type-const-cast",
+      "severity": "NORMAL",
+      "message": "do not use const_cast [cppcoreguidelines-pro-type-const-cast]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test_get.cpp",
+      "lineStart": "52",
+      "columnStart": "19",
+      "category": "Warning:cppcoreguidelines-pro-type-const-cast",
+      "severity": "NORMAL",
+      "message": "do not use const_cast [cppcoreguidelines-pro-type-const-cast]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test_get.cpp",
+      "lineStart": "54",
+      "columnStart": "25",
+      "category": "Warning:cppcoreguidelines-pro-type-const-cast",
+      "severity": "NORMAL",
+      "message": "do not use const_cast [cppcoreguidelines-pro-type-const-cast]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test_get.cpp",
+      "lineStart": "59",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test_get.cpp",
+      "lineStart": "59",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test_send_inform.cpp",
+      "lineStart": "38",
+      "columnStart": "1",
+      "category": "Warning:google-build-using-namespace",
+      "severity": "NORMAL",
+      "message": "do not use namespace using-directives; use using-declarations instead [google-build-using-namespace]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test_send_inform.cpp",
+      "lineStart": "48",
+      "columnStart": "20",
+      "category": "Warning:cppcoreguidelines-pro-type-const-cast",
+      "severity": "NORMAL",
+      "message": "do not use const_cast [cppcoreguidelines-pro-type-const-cast]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test_send_inform.cpp",
+      "lineStart": "50",
+      "columnStart": "25",
+      "category": "Warning:cppcoreguidelines-pro-type-const-cast",
+      "severity": "NORMAL",
+      "message": "do not use const_cast [cppcoreguidelines-pro-type-const-cast]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test_send_inform.cpp",
+      "lineStart": "52",
+      "columnStart": "19",
+      "category": "Warning:cppcoreguidelines-pro-type-const-cast",
+      "severity": "NORMAL",
+      "message": "do not use const_cast [cppcoreguidelines-pro-type-const-cast]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test_send_inform.cpp",
+      "lineStart": "54",
+      "columnStart": "25",
+      "category": "Warning:cppcoreguidelines-pro-type-const-cast",
+      "severity": "NORMAL",
+      "message": "do not use const_cast [cppcoreguidelines-pro-type-const-cast]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test_send_inform.cpp",
+      "lineStart": "59",
+      "columnStart": "1",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'test_info_' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "local_src/libwagosnmp/test-src/test_send_inform.cpp",
+      "lineStart": "59",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "initializing non-owner argument of type 'internal::TestFactoryBase *' with a newly created 'gsl::owner<>' [cppcoreguidelines-owning-memory]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "121",
+      "columnStart": "114",
+      "category": "Warning:conversion",
+      "severity": "NORMAL",
+      "message": "conversion from ‘uint16_t’ {aka ‘short unsigned int’} to ‘u_char’ {aka ‘unsigned char’} may change value [-Wconversion]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "124",
+      "columnStart": "82",
+      "category": "Warning:sign-conversion",
+      "severity": "NORMAL",
+      "message": "conversion to ‘int’ from ‘size_t’ {aka ‘unsigned int’} may change the sign of the result [-Wsign-conversion]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "145",
+      "columnStart": "61",
+      "category": "Warning:conversion",
+      "severity": "NORMAL",
+      "message": "conversion from ‘uint16_t’ {aka ‘short unsigned int’} to ‘u_char’ {aka ‘unsigned char’} may change value [-Wconversion]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "218",
+      "columnStart": "31",
+      "category": "Warning:address-of-packed-member",
+      "severity": "NORMAL",
+      "message": "taking address of packed member of ‘struct <anonymous>’ may result in an unaligned pointer value [-Waddress-of-packed-member]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "228",
+      "columnStart": "19",
+      "category": "Warning:analyzer-too-complex",
+      "severity": "NORMAL",
+      "message": "analysis bailed out early (1431 'after-snode' enodes; 4832 enodes) [-Wanalyzer-too-complex]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "294",
+      "columnStart": "31",
+      "category": "Warning:address-of-packed-member",
+      "severity": "NORMAL",
+      "message": "taking address of packed member of ‘struct <anonymous>’ may result in an unaligned pointer value [-Waddress-of-packed-member]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "311",
+      "columnStart": "43",
+      "category": "Warning:incompatible-pointer-types",
+      "severity": "NORMAL",
+      "message": "passing argument 3 of ‘pthread_create’ from incompatible pointer type [-Wincompatible-pointer-types]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "448",
+      "columnStart": "17",
+      "category": "Warning:analyzer-too-complex",
+      "severity": "NORMAL",
+      "message": "terminating analysis for this program point: callstring: [(SN: 188 -> SN: 161 in _ServerMain), (SN: 47 -> SN: 183 in _RegisterOID)] before (SN: 44 stmt: 0):  if (pAct_6 != 0B)EN: 3088-3089, EN: 3133, EN: 3137, EN: 3176, EN: 3228, EN: 3328-3329 [-Wanalyzer-too-complex]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "448",
+      "columnStart": "17",
+      "category": "Warning:analyzer-too-complex",
+      "severity": "NORMAL",
+      "message": "terminating analysis for this program point: callstring: [(SN: 203 -> SN: 174 in _ServerMain), (SN: 55 -> SN: 198 in _RegisterOID)] before (SN: 52 stmt: 0):  if (pAct_6 != 0B)EN: 3653-3654, EN: 3702, EN: 3706, EN: 3749, EN: 3807, EN: 3924-3925 [-Wanalyzer-too-complex]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "449",
+      "columnStart": "55",
+      "category": "Warning:address-of-packed-member",
+      "severity": "NORMAL",
+      "message": "taking address of packed member of ‘struct <anonymous>’ may result in an unaligned pointer value [-Waddress-of-packed-member]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "470",
+      "columnStart": "15",
+      "category": "Warning:analyzer-too-complex",
+      "severity": "NORMAL",
+      "message": "terminating analysis for this program point: callstring: [(SN: 34 -> SN: 8 in AGENT_CreateNewOidObject)] before (SN: 28 stmt: 0):  if (pAct_7 != 0B)EN: 220-221, EN: 257, EN: 261, EN: 295, EN: 299, EN: 352, EN: 356 [-Wanalyzer-too-complex]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "470",
+      "columnStart": "15",
+      "category": "Warning:analyzer-too-complex",
+      "severity": "NORMAL",
+      "message": "terminating analysis for this program point: callstring: [(SN: 41 -> SN: 14 in AGENT_CreateNewOidObject)] before (SN: 35 stmt: 0):  if (pAct_7 != 0B)EN: 278-279, EN: 318, EN: 322, EN: 359, EN: 363, EN: 421, EN: 425 [-Wanalyzer-too-complex]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "470",
+      "columnStart": "15",
+      "category": "Warning:analyzer-too-complex",
+      "severity": "NORMAL",
+      "message": "terminating analysis for this program point: callstring: [] before (SN: 28 stmt: 0):  if (pAct_7 != 0B)EN: 808-809, EN: 845, EN: 849, EN: 883, EN: 887, EN: 940, EN: 944 [-Wanalyzer-too-complex]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "470",
+      "columnStart": "15",
+      "category": "Warning:analyzer-too-complex",
+      "severity": "NORMAL",
+      "message": "terminating analysis for this program point: callstring: [] before (SN: 35 stmt: 0):  if (pAct_7 != 0B)EN: 946-947, EN: 986, EN: 990, EN: 1027, EN: 1031, EN: 1089, EN: 1093 [-Wanalyzer-too-complex]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "488",
+      "columnStart": "36",
+      "category": "Warning:conversion",
+      "severity": "NORMAL",
+      "message": "conversion from ‘size_t’ {aka ‘unsigned int’} to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "492",
+      "columnStart": "30",
+      "category": "Warning:conversion",
+      "severity": "NORMAL",
+      "message": "conversion from ‘size_t’ {aka ‘unsigned int’} to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/agent.c",
+      "lineStart": "75",
+      "columnStart": "1",
+      "category": "Warning:analyzer-too-complex",
+      "severity": "NORMAL",
+      "message": "analysis bailed out early (1351 'after-snode' enodes; 3945 enodes) [-Wanalyzer-too-complex]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "129",
+      "columnStart": "35",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "141",
+      "columnStart": "35",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "158",
+      "columnStart": "35",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "180",
+      "columnStart": "35",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "289",
+      "columnStart": "35",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "307",
+      "columnStart": "35",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "326",
+      "columnStart": "35",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "400",
+      "columnStart": "35",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "464",
+      "columnStart": "35",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "501",
+      "columnStart": "15",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "515",
+      "columnStart": "35",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "536",
+      "columnStart": "35",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "612",
+      "columnStart": "24",
+      "category": "Warning:sign-conversion",
+      "severity": "NORMAL",
+      "message": "conversion to ‘u_int’ {aka ‘unsigned int’} from ‘long int’ may change the sign of the result [-Wsign-conversion]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "631",
+      "columnStart": "35",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "662",
+      "columnStart": "35",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "693",
+      "columnStart": "35",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/libwagosnmp.c",
+      "lineStart": "93",
+      "columnStart": "35",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "108",
+      "columnStart": "16",
+      "category": "Warning:packed",
+      "severity": "NORMAL",
+      "message": "packed attribute causes inefficient alignment for ‘._anon_145’ [-Wpacked]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "108",
+      "columnStart": "16",
+      "category": "Warning:packed",
+      "severity": "NORMAL",
+      "message": "packed attribute causes inefficient alignment for ‘._anon_173’ [-Wpacked]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "109",
+      "columnStart": "10",
+      "category": "Warning:attributes",
+      "severity": "NORMAL",
+      "message": "packed attribute causes inefficient alignment for ‘<unnamed struct>::oidShmSize’ [-Wattributes]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "109",
+      "columnStart": "10",
+      "category": "Warning:attributes",
+      "severity": "NORMAL",
+      "message": "packed attribute causes inefficient alignment for ‘oidShmSize’ [-Wattributes]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "110",
+      "columnStart": "10",
+      "category": "Warning:attributes",
+      "severity": "NORMAL",
+      "message": "packed attribute causes inefficient alignment for ‘<unnamed struct>::oidCount’ [-Wattributes]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "110",
+      "columnStart": "10",
+      "category": "Warning:attributes",
+      "severity": "NORMAL",
+      "message": "packed attribute causes inefficient alignment for ‘oidCount’ [-Wattributes]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "112",
+      "columnStart": "1",
+      "category": "Warning:packed",
+      "severity": "NORMAL",
+      "message": "packed attribute causes inefficient alignment [-Wpacked]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "44",
+      "columnStart": "22",
+      "category": "Warning:cast-align",
+      "severity": "NORMAL",
+      "message": "cast increases required alignment of target type [-Wcast-align]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "98",
+      "columnStart": "12",
+      "category": "Warning:attributes",
+      "severity": "NORMAL",
+      "message": "packed attribute causes inefficient alignment for ‘<unnamed struct>::index’ [-Wattributes]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "98",
+      "columnStart": "12",
+      "category": "Warning:attributes",
+      "severity": "NORMAL",
+      "message": "packed attribute causes inefficient alignment for ‘index’ [-Wattributes]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "99",
+      "columnStart": "10",
+      "category": "Warning:attributes",
+      "severity": "NORMAL",
+      "message": "packed attribute causes inefficient alignment for ‘<unnamed struct>::objLen’ [-Wattributes]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/src/wagosnmp_internal.h",
+      "lineStart": "99",
+      "columnStart": "10",
+      "category": "Warning:attributes",
+      "severity": "NORMAL",
+      "message": "packed attribute causes inefficient alignment for ‘objLen’ [-Wattributes]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "56",
+      "columnStart": "43",
+      "category": "Warning:format=",
+      "severity": "NORMAL",
+      "message": "format ‘%lu’ expects argument of type ‘long unsigned int’, but argument 2 has type ‘unsigned int’ [-Wformat=]",
+      "moduleName": "libwagosnmp-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/libwagosnmp/test-src/test.cpp",
+      "lineStart": "57",
+      "columnStart": "34",
+      "category": "Warning:format=",
+      "severity": "NORMAL",
+      "message": "format ‘%lu’ expects argument of type ‘long unsigned int’, but argument 2 has type ‘unsigned int’ [-Wformat=]",
+      "moduleName": "libwagosnmp-tests"
+    }
+  ],
+  "size": 123
+}

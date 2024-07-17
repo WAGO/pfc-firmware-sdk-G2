@@ -1,0 +1,78 @@
+{
+  "_class": "io.jenkins.plugins.analysis.core.restapi.ReportApi",
+  "issues": [
+    {
+      "fileName": "local_src/config-tools/libnet/ct_libnet.h",
+      "lineStart": "10",
+      "columnStart": "10",
+      "category": "Warning:modernize-deprecated-headers",
+      "severity": "NORMAL",
+      "message": "inclusion of deprecated C++ header 'stddef.h'; consider using 'cstddef' instead [modernize-deprecated-headers]",
+      "moduleName": "config_dnsmasq-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/libnet/ct_libnet.h",
+      "lineStart": "168",
+      "columnStart": "36",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'value' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "config_dnsmasq-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/libnet/ct_libnet.h",
+      "lineStart": "168",
+      "columnStart": "56",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'valueLen' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "config_dnsmasq-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/libnet/ct_libnet.h",
+      "lineStart": "30",
+      "columnStart": "1",
+      "category": "Warning:google-readability-todo",
+      "severity": "NORMAL",
+      "message": "missing username/bug in TODO [google-readability-todo]",
+      "moduleName": "config_dnsmasq-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/libnet/ct_xml.h",
+      "lineStart": "11",
+      "columnStart": "10",
+      "category": "Warning:modernize-deprecated-headers",
+      "severity": "NORMAL",
+      "message": "including 'stdbool.h' has no effect in C++; consider removing it [modernize-deprecated-headers]",
+      "moduleName": "config_dnsmasq-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/libnet/ct_xml.h",
+      "lineStart": "27",
+      "columnStart": "43",
+      "category": "Warning:readability-avoid-const-params-in-decls",
+      "severity": "NORMAL",
+      "message": "parameter 'fHasKey' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
+      "moduleName": "config_dnsmasq-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/config_dnsmasq/src/config_dnsmasq/defines.hpp",
+      "lineStart": "58",
+      "columnStart": "26",
+      "category": "Warning:subobject-linkage",
+      "severity": "NORMAL",
+      "message": "‘prgconf’ has a field ‘prgconf::command’ whose type has no linkage [-Wsubobject-linkage]",
+      "moduleName": "config_dnsmasq-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/config_dnsmasq/src/config_dnsmasq/defines.hpp",
+      "lineStart": "58",
+      "columnStart": "26",
+      "category": "Warning:subobject-linkage",
+      "severity": "NORMAL",
+      "message": "‘prgconf’ has a field ‘prgconf::service_type’ whose type has no linkage [-Wsubobject-linkage]",
+      "moduleName": "config_dnsmasq-tests"
+    }
+  ],
+  "size": 8
+}

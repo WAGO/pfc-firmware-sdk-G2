@@ -33,8 +33,8 @@ namespace wago::get_snmp_data {
 
 template<class T>
 struct Result{
-  explicit Result(T value): value_{::std::move(value)}{};
-  explicit Result(eStatusCode status): status_{status}{};
+  explicit Result(T value): value_{::std::move(value)}{}
+  explicit Result(eStatusCode status): status_{status}{}
   T value_{};
   eStatusCode status_ = SUCCESS;
 };

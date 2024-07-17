@@ -105,6 +105,18 @@ Status GetInterfaceConfigs(InterfaceConfigs& config);
  */
 Status SetInterfaceConfigs(const InterfaceConfigs &config);
 
+/**
+ * Create InterfaceStatuses from a json string.
+ * @return InterfaceStatuses object.
+ */
+Status MakeInterfaceStatuses(const ::std::string &json_str, InterfaceStatuses& statuses);
+
+/**
+ * @brief Get the Interface Statuses object from the netconfd network configuration daemon.
+ *
+ * @param statuses
+ * @return Status
+ */
 Status GetInterfaceStatuses(InterfaceStatuses &statuses);
 
 /**

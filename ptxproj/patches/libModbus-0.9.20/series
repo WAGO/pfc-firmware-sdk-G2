@@ -18,3 +18,5 @@
 0018-modbus-udp-fix-thread-terminated-problem.patch
 0019-fix-modbus-build-for-e-desplay.patch
 0020-resolve-compiler-warnings.patch
+0021-fix-modbus-stacksize-for-64bit.patch
+0022-undef-modbusrtu-ioctls-for-pfc300.patch

@@ -14,8 +14,8 @@ PACKAGES-$(PTXCONF_ROOTLESSKIT) += rootlesskit
 #
 # Paths and names
 #
-ROOTLESSKIT_VERSION		:= 0.14.4
-ROOTLESSKIT_MD5				:= 2cb86f71c902d26931c392a49c3b21b6
+ROOTLESSKIT_VERSION		:= 2.0.2
+ROOTLESSKIT_MD5				:= 7923cbaa25e035447681920b7a81799c
 ROOTLESSKIT						:= rootlesskit-$(ROOTLESSKIT_VERSION)
 ROOTLESSKIT_SUFFIX		:= tar.gz
 ROOTLESSKIT_URL				:= https://github.com/rootless-containers/rootlesskit/archive/refs/tags/v$(ROOTLESSKIT_VERSION).$(ROOTLESSKIT_SUFFIX)
@@ -48,7 +48,7 @@ ROOTLESSKIT_GO_ENV:= \
 	CGO_LDFLAGS=$(CROSS_LDFLAGS) \
 	PKG_CONFIG=$(CROSS_PKG_CONFIG) \
 	GOPATH=$(ROOTLESSKIT_DIR)/go \
-	GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=1
+	GOOS=linux CGO_ENABLED=1
 
 $(STATEDIR)/rootlesskit.prepare:
 	@$(call targetinfo)
@@ -63,9 +63,12 @@ $(STATEDIR)/rootlesskit.prepare:
 
 $(STATEDIR)/rootlesskit.compile:
 	@$(call targetinfo)
+	@echo $(ROOTLESSKIT_GO_ARCHITECTURE)
+	@echo 
+	@echo $(ROOTLESSKIT_GO_ENV)
 	@PATH=$(CROSS_PATH):$(HOST_GO_BIN_DIR) ; \
 		cd $(ROOTLESSKIT_DIR) &&  \
-		$(ROOTLESSKIT_GO_ENV) make
+		$(ROOTLESSKIT_GO_ENV) $(GO_ARCH) make
 	@$(call touch)
 
 # ----------------------------------------------------------------------------

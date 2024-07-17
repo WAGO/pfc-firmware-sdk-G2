@@ -60,23 +60,14 @@ function getNTPServersFromDHCP()
     local all_entries=`getServerFromFile $NTPCLIENT_CONFIG`
     local static_entries=`getServerFromFile $NTP_STATIC_LIST`
 
+    for static_server in $static_entries; do
+        all_entries=( "${all_entries[@]/$static_server}" )
+    done
 
     local delim=''
     for server in $all_entries; do
-        local is_static=$FALSE
-        for static_server in ${static_entries}; do
-
-            if [[ "${server}" == "${static_server}" ]]; then
-                is_static=$TRUE
-                break
-            fi
-        done
-
-        if [[ "${is_static}" == "$FALSE" ]]; then
-            printf "${delim}${server}"
-            delim=" "
-
-        fi
+        printf "${delim}${server}"
+        delim=" "
     done
 }
 

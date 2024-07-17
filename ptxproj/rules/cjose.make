@@ -14,11 +14,11 @@ PACKAGES-$(PTXCONF_CJOSE) += cjose
 #
 # Paths and names
 #
-CJOSE_VERSION    	:= 0.6.1
-CJOSE_MD5		:= 7618e839ea0ecfa38355fa7f58391f88
+CJOSE_VERSION    	:= 0.6.2.2
+CJOSE_MD5		:= f0eb45d7fe058cc55898c67bb3b0cb8f
 CJOSE			:= cjose-$(CJOSE_VERSION)
 CJOSE_SUFFIX		:= tar.gz
-CJOSE_URL		:= https://github.com/cisco/cjose/archive/$(CJOSE_VERSION).$(CJOSE_SUFFIX)
+CJOSE_URL		:= https://github.com/OpenIDC/cjose/releases/download/v$(CJOSE_VERSION)/$(CJOSE).$(CJOSE_SUFFIX)
 CJOSE_SOURCE		:= $(SRCDIR)/$(CJOSE).$(CJOSE_SUFFIX)
 CJOSE_DIR		:= $(BUILDDIR)/$(CJOSE)
 CJOSE_LICENSE		:= MIT

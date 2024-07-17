@@ -13,16 +13,16 @@ PACKAGES-$(PTXCONF_NCURSES) += ncurses
 #
 # Paths and names
 #
-NCURSES_VERSION	:= 6.2
+NCURSES_VERSION	:= 6.5
 NCURSES_MAJOR	:= $(word 1,$(subst ., ,$(NCURSES_VERSION)))
-NCURSES_MD5	:= e812da327b1c2214ac1aed440ea3ae8d
+NCURSES_MD5	:= ac2d2629296f04c8537ca706b6977687
 NCURSES		:= ncurses-$(NCURSES_VERSION)
 NCURSES_SUFFIX	:= tar.gz
 NCURSES_URL	:= $(call ptx/mirror, GNU, ncurses/$(NCURSES).$(NCURSES_SUFFIX))
 NCURSES_SOURCE	:= $(SRCDIR)/$(NCURSES).$(NCURSES_SUFFIX)
 NCURSES_DIR	:= $(BUILDDIR)/$(NCURSES)
 NCURSES_LICENSE	:= MIT
-NCURSES_LICENSE_FILES := file://COPYING;md5=910e05334f7e0b7631da6b4ebb1e1aab
+NCURSES_LICENSE_FILES := file://COPYING;md5=6f988f251062aed08230b6bb20e591ce
 
 # ----------------------------------------------------------------------------
 # Prepare
@@ -44,6 +44,7 @@ NCURSES_AUTOCONF_SHARED = \
 	--without-cxx-binding \
 	--enable-db-install \
 	--without-manpages \
+	--$(call ptx/wow,$(1))-progs \
 	--without-tack \
 	--without-tests \
 	--with-curses-h \
@@ -69,17 +70,16 @@ NCURSES_AUTOCONF_SHARED = \
 	--$(call ptx/endis,PTXCONF_NCURSES_BIG_CORE)-big-core \
 	--disable-big-strings \
 	--$(call ptx/endis,PTXCONF_NCURSES_WIDE_CHAR)-widec \
+	--$(call ptx/endis,PTXCONF_NCURSES_WIDE_CHAR)-ext-colors \
 	$(GLOBAL_LARGE_FILE_OPTION) \
 	--enable-ext-funcs \
 	--enable-sp-funcs \
 	--disable-term-driver \
 	--enable-const \
-	--enable-ext-colors \
 	--disable-ext-mouse \
 	--disable-ext-putwin \
 	--disable-no-padding \
 	--disable-signed-char \
-	--disable-sigwinch \
 	--without-pthread \
 	--disable-reentrant \
 	--without-develop \

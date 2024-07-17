@@ -19,7 +19,7 @@ using namespace wago::opcua_config;
 namespace
 {
 
-const std::string cfg_file_path = "/etc/codesys3.d/CODESYSControl.cfg";
+const std::string cfg_file_path = "/etc/codesys3.d/CODESYSControl_User.cfg";
 
 const std::string opt_string_short = "hvorg::s:";
 const std::vector<option> opts_long

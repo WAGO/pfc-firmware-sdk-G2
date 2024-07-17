@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WAGO_OPTPARSING) += wago-optparsing
 #
 # Paths and names
 #
-WAGO_OPTPARSING_VERSION        := 1.0.0
+WAGO_OPTPARSING_VERSION        := 1.0.1
 WAGO_OPTPARSING_MD5            :=
 WAGO_OPTPARSING                := wago-optparsing
 WAGO_OPTPARSING_BUILDCONFIG    := Release

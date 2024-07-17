@@ -74,8 +74,8 @@ libutil_log.a_SOURCES          += $(SRC_DIR)/util_log.cpp
 
 #######################################################################################################################
 # Settings for build target alltests.elf
-alltests.elf_LIBS              += util_log gmock_main gmock boost_system boost_filesystem
-alltests.elf_STATICALLYLINKED  +=
+alltests.elf_LIBS              += util_log gmock_main gmock gtest boost_system boost_filesystem
+alltests.elf_STATICALLYLINKED  += gmock_main gmock gtest
 alltests.elf_PKG_CONFIGS       += $(libutil_log.a_PKG_CONFIGS)
 alltests.elf_DISABLEDWARNINGS  += $(SHARED_DISABLEDWARNINGS) 
 alltests.elf_PREREQUISITES     += $(call local_prerequisites,alltests.elf)

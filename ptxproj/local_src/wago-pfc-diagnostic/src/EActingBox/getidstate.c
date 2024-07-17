@@ -173,8 +173,8 @@ DBusHandlerResult MethodHandler (DBusConnection *connection,
      {
        dbSet = TRUE;
      }
-     dbus_message_iter_append_basic(&iter,DBUS_TYPE_INT32,(const void *) &idLog->timestamp.tv_sec);
-     dbus_message_iter_append_basic(&iter,DBUS_TYPE_INT32,(const void *) &idLog->timestamp.tv_usec);
+     dbus_message_iter_append_basic(&iter,COM_TYPE_TIME_T,(const void *) &idLog->timestamp.tv_sec);
+     dbus_message_iter_append_basic(&iter,COM_TYPE_TIME_T,(const void *) &idLog->timestamp.tv_usec);
      dbus_message_iter_append_basic(&iter,DBUS_TYPE_BOOLEAN,(const void *) &dbSet);
      if(idLog->variables != NULL)
      {

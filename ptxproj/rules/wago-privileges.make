@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WAGO_PRIVILEGES) += wago-privileges
 #
 # Paths and names
 #
-WAGO_PRIVILEGES_VERSION        := 1.0.0
+WAGO_PRIVILEGES_VERSION        := 1.0.1
 WAGO_PRIVILEGES_MD5            :=
 WAGO_PRIVILEGES                := wago-privileges
 WAGO_PRIVILEGES_BUILDCONFIG    := Release

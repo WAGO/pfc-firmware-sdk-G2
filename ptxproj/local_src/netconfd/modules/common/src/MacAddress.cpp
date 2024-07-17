@@ -3,7 +3,6 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/join.hpp>
-#include <exception>
 #include <gsl/gsl>
 #include <sstream>
 #include <vector>

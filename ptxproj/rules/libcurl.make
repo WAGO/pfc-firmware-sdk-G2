@@ -15,15 +15,15 @@ PACKAGES-$(PTXCONF_LIBCURL) += libcurl
 #
 # Paths and names
 #
-LIBCURL_VERSION	:= 8.0.1
-LIBCURL_MD5	:= f6c2fdeb30ad30234378a56c28350845
+LIBCURL_VERSION	:= 8.6.0
+LIBCURL_MD5	:= 8f28f7e08c91cc679a45fccf66184fbc
 LIBCURL		:= curl-$(LIBCURL_VERSION)
 LIBCURL_SUFFIX	:= tar.xz
 LIBCURL_URL	:= https://curl.se/download/$(LIBCURL).$(LIBCURL_SUFFIX)
 LIBCURL_SOURCE	:= $(SRCDIR)/$(LIBCURL).$(LIBCURL_SUFFIX)
 LIBCURL_DIR	:= $(BUILDDIR)/$(LIBCURL)
 LIBCURL_LICENSE	:= curl
-LIBCURL_LICENSE_FILES := file://COPYING;md5=190c514872597083303371684954f238
+LIBCURL_LICENSE_FILES := file://COPYING;md5=db8448a1e43eb2125f7740fc397db1f6
 
 # ----------------------------------------------------------------------------
 # Prepare
@@ -45,7 +45,6 @@ LIBCURL_CONF_OPT	:= \
 	--enable-rt \
 	--disable-ech \
 	--disable-code-coverage \
-	--disable-headers-api \
 	$(GLOBAL_LARGE_FILE_OPTION) \
 	--$(call ptx/endis, PTXCONF_LIBCURL_HTTP)-http \
 	--$(call ptx/endis, PTXCONF_LIBCURL_FTP)-ftp \
@@ -73,7 +72,12 @@ LIBCURL_CONF_OPT	:= \
 	--enable-pthreads \
 	--$(call ptx/endis, PTXCONF_LIBCURL_VERBOSE)-verbose \
 	--disable-sspi \
-	--$(call ptx/endis, PTXCONF_LIBCURL_CRYPTO_AUTH)-crypto-auth \
+	--enable-basic-auth \
+	--$(call ptx/endis, PTXCONF_LIBCURL_CRYPTO_AUTH)-bearer-auth \
+	--$(call ptx/endis, PTXCONF_LIBCURL_CRYPTO_AUTH)-digest-auth \
+	--$(call ptx/endis, PTXCONF_LIBCURL_CRYPTO_AUTH)-kerberos-auth \
+	--$(call ptx/endis, PTXCONF_LIBCURL_CRYPTO_AUTH)-negotiate-auth \
+	--$(call ptx/endis, PTXCONF_LIBCURL_CRYPTO_AUTH)-aws \
 	--$(call ptx/endis, PTXCONF_LIBCURL_CRYPTO_AUTH)-ntlm \
 	--disable-ntlm-wb \
 	--enable-tls-srp \
@@ -82,14 +86,18 @@ LIBCURL_CONF_OPT	:= \
 	--enable-socketpair \
 	--$(call ptx/endis, PTXCONF_LIBCURL_HTTP)-http-auth \
 	--disable-doh \
-	--disable-mime \
+	--$(call ptx/endis, PTXCONF_LIBCURL_MIME)-mime \
+	--enable-bindlocal \
+	--$(call ptx/endis, PTXCONF_LIBCURL_MIME)-form-api \
 	--enable-dateparse \
 	--enable-netrc \
 	--enable-progress-meter \
 	--disable-dnsshuffle \
 	--enable-get-easy-options \
 	--disable-alt-svc \
+	--disable-headers-api \
 	--enable-hsts \
+	--disable-websockets \
 	--without-schannel \
 	--without-secure-transport \
 	--without-amissl \
@@ -100,7 +108,6 @@ LIBCURL_CONF_OPT	:= \
 	--without-wolfssl \
 	--without-bearssl \
 	--without-rustls \
-	--without-nss \
 	--without-hyper \
 	--with-zlib=$(SYSROOT) \
 	--without-brotli \
@@ -121,9 +128,9 @@ LIBCURL_CONF_OPT	:= \
 	--without-libidn2 \
 	--without-nghttp2 \
 	--without-ngtcp2 \
-	--without-msh3 \
 	--without-nghttp3 \
 	--without-quiche \
+	--without-msh3 \
 	--without-zsh-functions-dir \
 	--without-fish-functions-dir
 

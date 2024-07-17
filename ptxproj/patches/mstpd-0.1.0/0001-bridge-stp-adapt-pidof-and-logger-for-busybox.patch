@@ -1,0 +1,50 @@
+From: Steffen Borcherding <steffen.borcherding@wago.com>
+Date: Thu, 13 Jul 2023 11:28:55 +0200
+Subject: [PATCH] bridge-stp: adapt pidof and logger for busybox
+
+---
+ bridge-stp.in | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
+
+diff --git a/bridge-stp.in b/bridge-stp.in
+index ea69d3d485fc..cdba76d79b8d 100755
+--- a/bridge-stp.in
++++ b/bridge-stp.in
+@@ -81,7 +81,7 @@ MSTPD_ARGS=''
+ # A space-separated list of bridges for which MSTP should be used in place of
+ # the kernel's STP implementation.  If empty, MSTP will be used for all bridges.
+ MSTP_BRIDGES=''
+-LOGGER='logger --tag bridge-stp --stderr'
++LOGGER='logger -t bridge-stp -s'
+ 
+ # Read the config.
+ if [ -e '@bridgestpconffile@' ]; then
+@@ -139,7 +139,7 @@ case "$action" in
+         fi
+ 
+         # Start mstpd if necessary.
+-        if ! pidof -c -s mstpd >/dev/null; then
++        if ! pidof mstpd >/dev/null; then
+             if [ "$MANAGE_MSTPD" != 'y' ]; then
+                 errmsg 'mstpd is not running'
+                 exit 3
+@@ -212,17 +212,12 @@ case "$action" in
+         done
+ 
+         # Kill mstpd, since no bridges are currently using it.
+-        kill $(pidof -c mstpd)
++        kill $(pidof mstpd)
+         ;;
+     restart|restart_config)
+         if [ "$action" = 'restart' ]; then
+             # Kill mstpd.
+-            pids="$(pidof -c mstpd)" ; Err=$?
+-            if [ $Err -eq 0 ]; then
+-                echo 'Stopping mstpd ...'
+-                kill $pids
+-            fi
+-
++	    killall mstpd	
+             # Start mstpd.
+             echo 'Starting mstpd ...'
+             "$mstpd" $MSTPD_ARGS || exit 3

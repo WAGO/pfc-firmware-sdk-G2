@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2018-2022 WAGO GmbH & Co. KG
+# Copyright (c) 2018-2023 WAGO GmbH & Co. KG
 
 #-----------------------------------------------------------------------------#
 # Script-name: settings_backup_vpn
@@ -12,6 +12,12 @@
 #
 # Author: WAGO GmbH
 #-----------------------------------------------------------------------------#
+
+
+IPSEC_SECRETS=/etc/ipsec.secrets
+IPSEC_CONF=/etc/ipsec.conf
+OPENVPN_CONF=/etc/openvpn/openvpn.conf
+
 
 backup_known_file()
 {
@@ -50,10 +56,14 @@ if [ "$operation" = "restore" ]; then
 	mkdir -p /etc/certificates
 	umask 0077
 	mkdir -p /etc/certificates/keys
-
-	rm /etc/openvpn/openvpn.conf
-	rm /etc/ipsec.conf
-	rm /etc/ipsec.secrets
+	
+	# replace the confidential content with random data to secure deleting
+	dd if=/dev/random of=$OPENVPN_CONF bs=1 count=$( du -b $OPENVPN_CONF | cut -f1 )
+	rm $OPENVPN_CONF	
+	dd if=/dev/random of=$IPSEC_CONF bs=1 count=$( du -b $IPSEC_CONF | cut -f1 )
+	rm $IPSEC_CONF
+	dd if=/dev/random of=$IPSEC_SECRETS bs=1 count=$( du -b $IPSEC_SECRETS | cut -f1 )
+	rm $IPSEC_SECRETS
 
 	while read l; do
 		k=${l%%=*}
@@ -67,7 +77,7 @@ if [ "$operation" = "restore" ]; then
 				;;
 			vpn-ovpn-conf)
 				umask 0037
-				base64 -d <<< "$v" >> /etc/openvpn/openvpn.conf
+				base64 -d <<< "$v" >> $OPENVPN_CONF
 				;;
 			vpn-ovpn-conf-name)
 				n="/etc/openvpn/${v//\/}"
@@ -81,11 +91,11 @@ if [ "$operation" = "restore" ]; then
 				;;
 			vpn-ipsec-conf)
 				umask 0027
-				base64 -d <<< "$v" >> /etc/ipsec.conf
+				base64 -d <<< "$v" >> $IPSEC_CONF
 				;;
 			vpn-ipsec-secrets)
 				umask 0077
-				base64 -d <<< "$v" >> /etc/ipsec.secrets
+				base64 -d <<< "$v" >> $IPSEC_SECRETS
 				;;
 			vpn-certificate-name)
 				n="/etc/certificates/"${v//\/}
@@ -141,13 +151,13 @@ elif [ "$operation" = "backup" ]; then
 
 	echo -n "vpn-ovpn-enabled=";  echo $(/etc/config-tools/vpncfg ovpn --is-enabled)	
 	echo -n "vpn-ipsec-enabled="; echo $(/etc/config-tools/vpncfg ipsec --is-enabled)	
-	backup_known_file vpn-ovpn-conf     /etc/openvpn/openvpn.conf
-	backup_known_file vpn-ipsec-conf    /etc/ipsec.conf
-	backup_known_file vpn-ipsec-secrets /etc/ipsec.secrets
+	backup_known_file vpn-ovpn-conf     $OPENVPN_CONF
+	backup_known_file vpn-ipsec-conf    $IPSEC_CONF
+	backup_known_file vpn-ipsec-secrets $IPSEC_SECRETS
 		
 	for i in /etc/openvpn/* ; do
 		# openvpn.conf was already handled separately
-		[ "${i}" = "/etc/openvpn/openvpn.conf" ] && continue
+		[ "${i}" = "$OPENVPN_CONF" ] && continue
 		backup_arb_file 'vpn-ovpn-conf' "${i}"
 	done
 

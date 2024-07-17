@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WBM_NG_PLUGIN_IPK_UPLOADS) += wbm-ng-plugin-ipk-uploads
 #
 # Paths and names
 #
-WBM_NG_PLUGIN_IPK_UPLOADS_VERSION        := 2.0.0
+WBM_NG_PLUGIN_IPK_UPLOADS_VERSION        := 2.1.1
 WBM_NG_PLUGIN_IPK_UPLOADS                := wbm-ipk-uploads-$(WBM_NG_PLUGIN_IPK_UPLOADS_VERSION)
 WBM_NG_PLUGIN_IPK_UPLOADS_URL            := $(call jfrog_template_to_url, WBM_NG_PLUGIN_IPK_UPLOADS)
 WBM_NG_PLUGIN_IPK_UPLOADS_SUFFIX         := $(suffix $(WBM_NG_PLUGIN_IPK_UPLOADS_URL))

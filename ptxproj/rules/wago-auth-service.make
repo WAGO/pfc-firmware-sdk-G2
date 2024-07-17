@@ -24,7 +24,7 @@ PACKAGES-$(PTXCONF_WAGO_AUTH_SERVICE) += wago-auth-service
 #
 # Paths and names
 #
-WAGO_AUTH_SERVICE_VERSION        := 1.0.0
+WAGO_AUTH_SERVICE_VERSION        := 1.2.0
 WAGO_AUTH_SERVICE_MD5            :=
 WAGO_AUTH_SERVICE_BASE           := auth-service
 WAGO_AUTH_SERVICE                := wago-$(WAGO_AUTH_SERVICE_BASE)-$(WAGO_AUTH_SERVICE_VERSION)
@@ -127,7 +127,7 @@ ifdef PTXCONF_WAGO_AUTH_SERVICE_LIB
 endif
 
 ifdef PTXCONF_WAGO_AUTH_SERVICE_LIGHTTPD_INTEGRATION
-	@$(call install_alternative, wago-auth-service, 0, 0, 0600, /etc/lighttpd/fastcgi.confd/auth-service.conf)
+	@$(call install_alternative, wago-auth-service, 0, 0, 0600, /etc/lighttpd/apps.confd/auth_service.conf)
 endif
 
 ifdef PTXCONF_WAGO_AUTH_SERVICE_DAEMON
@@ -137,15 +137,18 @@ ifdef PTXCONF_WAGO_AUTH_SERVICE_DAEMON
 
 	# Install login web-page
 	@$(call install_copy, wago-auth-service, 0, 124, 0775,    /var/www/auth)
-	@$(call install_copy, wago-auth-service, 0, 124, 0660, -, /var/www/auth/login.html.template)
+	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/auth.js)
 	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/login.css)
+	@$(call install_copy, wago-auth-service, 0, 124, 0660, -, /var/www/auth/login.html.template)
 	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/login.js)
 	@$(call install_copy, wago-auth-service, 0, 124, 0775,    /var/www/auth/images)
 	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/images/favicon.ico)
 	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/images/spinner.gif)
 	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/images/wago-logo.svg)
 	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/images/warning.svg)
+	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/images/chevron-left.svg)
 	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/images/chevron-right.svg)
+	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/images/btn-close.svg)
 
 
 # busybox init
@@ -156,7 +159,7 @@ ifdef PTXCONF_WAGO_AUTH_SERVICE_DAEMON_STARTSCRIPT
 ifneq ($(call remove_quotes, $(PTXCONF_WAGO_AUTH_SERVICE_DAEMON_BBINIT_LINK)),)
 	@$(call install_link, wago-auth-service, \
 	  /etc/init.d/authd, \
-	  /etc/rc.d/disabled/$(PTXCONF_WAGO_AUTH_SERVICE_DAEMON_BBINIT_LINK))
+	  /etc/rc.d/$(PTXCONF_WAGO_AUTH_SERVICE_DAEMON_BBINIT_LINK))
 endif
 endif # PTXCONF_WAGO_AUTH_SERVICE_DAEMON_STARTSCRIPT
 endif # PTXCONF_INITMETHOD_BBINIT

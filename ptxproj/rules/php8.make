@@ -20,10 +20,10 @@ PACKAGES-$(PTXCONF_PHP8) += php8
 #
 # Paths and names
 #
-PHP8_BASE_VERSION  := 8.2.6
+PHP8_BASE_VERSION  := 8.2.18
 PHP8_VERSION       := $(PHP8_BASE_VERSION)+wago1
 PHP8_ARCHIVE_NAME  := php-$(PHP8_BASE_VERSION)
-PHP8_MD5           := 700aaa5ae7bfb4ac0186be6b4712e748
+PHP8_MD5           := dc3afc0addb388cf9caf380488b6a689
 PHP8               := php-$(PHP8_VERSION)
 PHP8_SUFFIX        := tar.xz
 PHP8_SOURCE        := $(SRCDIR)/$(PHP8_ARCHIVE_NAME).$(PHP8_SUFFIX)

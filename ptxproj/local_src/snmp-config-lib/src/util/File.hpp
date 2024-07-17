@@ -15,5 +15,6 @@ namespace wago::util {
 
 void WriteFile(const ::std::string &path, const ::std::string &data);
 ::std::string ReadFile(const ::std::string &path);
+void RemoveSnmpUser(const ::std::string &path);
 
 }  // namespace wago::util

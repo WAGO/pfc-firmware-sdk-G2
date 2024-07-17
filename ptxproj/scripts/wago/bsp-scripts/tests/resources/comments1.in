@@ -1,0 +1,10 @@
+contents
+contents
+contents
+
+menu "abc"
+# comment
+endmenu
+
+
+contents   

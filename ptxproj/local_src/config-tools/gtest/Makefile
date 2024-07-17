@@ -21,7 +21,7 @@ alltests.elf_STATICALLYLINKED += gmock_main gmock gtest
 alltests.elf_LIBS += $(alltests.elf_STATICALLYLINKED)
 alltests.elf_PREREQUISITES += $(call lib_buildtarget,$(alltests.elf_LIBS) $(alltests.elf_PKGCONFIGS_LIBS),alltests.elf)
 alltests.elf_SOURCES += $(SRC_DIR)/set_serial_mode_test.cpp
-alltests.elf_CXXFLAGS += $(call option_std,gnu++11)
+alltests.elf_CXXFLAGS += $(call option_std,gnu++14)
 srvunittests.elf_CCXXFLAGS += $(call pkg_config_cflags,$(alltests.elf_PKGCONFIGS_LIBS))
 alltests.elf_CPPFLAGS += $(call pkg_config_cppflags,$(alltests.elf_PKGCONFIGS_LIBS))
 

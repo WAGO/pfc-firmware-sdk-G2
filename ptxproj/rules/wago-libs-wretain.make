@@ -20,36 +20,26 @@ WRETAIN_MAJOR_VERSION := 1
 WRETAIN_MINOR_VERSION := 1
 WRETAIN_PATCH_VERSION := 0
 
-ifdef PTXCONF_WRETAIN_DEV
-WRETAIN_BUILD_ID      := -$(call remove_quotes,$(PTXCONF_WRETAIN_DEV_BRANCH))
-else
-WRETAIN_BUILD_ID      := -164863386071
-endif
-
 WRETAIN		          := wretain
 WRETAIN_SO_VERSION	  := $(WRETAIN_MAJOR_VERSION).$(WRETAIN_MINOR_VERSION).$(WRETAIN_PATCH_VERSION)
-WRETAIN_VERSION	      := $(WRETAIN_SO_VERSION)$(WRETAIN_BUILD_ID)
+WRETAIN_VERSION	      := $(WRETAIN_SO_VERSION)
 
-ifndef PTXCONF_WRETAIN_DEV
-WRETAIN_URL           := $(call jfrog_template_to_url, WRETAIN)
-else
 WRETAIN_URL		      := file://wago_intern/wretain
-endif
 WRETAIN_SUFFIX        := $(suffix $(WRETAIN_URL))
-WRETAIN_MD5            = $(shell [ -f $(WRETAIN_MD5_FILE) ] && cat $(WRETAIN_MD5_FILE))
-WRETAIN_MD5_FILE      := wago_intern/artifactory_sources/$(WRETAIN)$(WRETAIN_SUFFIX).md5
-WRETAIN_ARTIFACT       = $(call jfrog_get_filename,$(WRETAIN_URL))
-WRETAIN_ARCHIVE       := $(WRETAIN)-$(WRETAIN_VERSION)$(WRETAIN_SUFFIX)
-
-WRETAIN_GIT_URL	      := ssh://svtfs01007:22/tfs/ProductDevelopment/Linux-BSP/_git/wretain
+WRETAIN_MD5           :=
 
 WRETAIN_DIR		      := $(BUILDDIR)/$(WRETAIN)
+WRETAIN_SRC_DIR        := $(PTXDIST_WORKSPACE)/wago_intern/$(WRETAIN)
+
 WRETAIN_LICENSE	      := unknown
 
 
 WRETAIN_CMAKE_OPTS =
 ifdef PTXCONF_WRETAIN_BUILD_TESTING
 	WRETAIN_CMAKE_OPTS +=-DBUILD_TESTING=ON
+endif
+ifeq ($(PTXCONF_ARCH_STRING), arm64)
+	WRETAIN_CMAKE_OPTS +=-DUSE_BUILTIN_MEMSET=OFF
 endif
 
 
@@ -61,27 +51,9 @@ WRETAIN_PLATFORMCONFIGPACKAGEDIR := $(PTXDIST_PLATFORMCONFIGDIR)/packages
 # Get
 # ----------------------------------------------------------------------------
 
-ifdef PTXCONF_WRETAIN_DEV
-
-$(PTXDIST_WORKSPACE)/wago_intern/wretain:
-	{ cd $(PTXDIST_WORKSPACE)/wago_intern && git clone $(WRETAIN_GIT_URL); } \
-    || rm -fr $(PTXDIST_WORKSPACE)/wago_intern/wretain
-ifdef PTXCONF_WRETAIN_DEV_BRANCH
-	{ cd $(PTXDIST_WORKSPACE)/wago_intern/wretain && git checkout $(PTXCONF_WRETAIN_DEV_BRANCH); } \
-    || rm -fr $(PTXDIST_WORKSPACE)/wago_intern/wretain
-endif
-
-$(STATEDIR)/wretain.get: | $(PTXDIST_WORKSPACE)/wago_intern/wretain
-
-else
+ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 $(STATEDIR)/wretain.get:
 	@$(call targetinfo)
-
-ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
-	$(call ptx/in-path, PTXDIST_PATH, scripts/wago/artifactory.sh) fetch \
-    '$(WRETAIN_URL)' wago_intern/artifactory_sources/$(WRETAIN_ARCHIVE) '$(WRETAIN_MD5_FILE)'
-endif
-
 	@$(call touch)
 endif
 
@@ -89,19 +61,13 @@ endif
 # Extract
 # ----------------------------------------------------------------------------
 
-ifndef PTXCONF_WRETAIN_DEV
-
+ifdef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
 $(STATEDIR)/wretain.extract:
 	@$(call targetinfo)
-
-	@mkdir -p $(WRETAIN_DIR)
-ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
-	@tar xvzf wago_intern/artifactory_sources/$(WRETAIN_ARCHIVE) -C $(WRETAIN_DIR) --strip-components=1
-	@$(call patchin, WRETAIN)
-endif
+	@mkdir -p ${WRETAIN_DIR}
 	@$(call touch)
-
 endif
+
 
 # ----------------------------------------------------------------------------
 # Prepare

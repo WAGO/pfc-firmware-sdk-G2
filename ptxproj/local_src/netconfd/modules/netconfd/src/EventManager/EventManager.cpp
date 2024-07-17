@@ -162,14 +162,25 @@ void EventManager::RegisterNetworkInformation(IPersistenceProvider &persistence_
   return StringToCharVector(JsonConverter().ToJsonString(interface_config));
 }
 
+::std::vector<char> EventManager::GetInterfaceStatusesAsJson() {
+  InterfaceStatuses interface_statuses;
+  if (interface_information_ != nullptr) {
+    interface_statuses = interface_information_->GetCurrentPortStatuses();
+  }
+  return StringToCharVector(JsonConverter().ToJsonString(interface_statuses));
+}
+
 void EventManager::CallEventFolderSync() {
   auto bridge_config    = GetBridgeConfigAsJson();
   auto ip_config        = GetIPConfigAsJson();
   auto interface_config = GetInterfaceConfigAsJson();
+  auto interface_statuses = GetInterfaceStatusesAsJson();
+  
   gchar *argv[]         = {"/usr/bin/run-parts", "-a", "config", "/etc/config-tools/events/networking", nullptr};
   g_setenv("NETCONF_BRIDGE_CONFIG", &bridge_config[0], static_cast<gboolean>(true));
   g_setenv("NETCONF_IP_CONFIG", &ip_config[0], static_cast<gboolean>(true));
   g_setenv("NETCONF_INTERFACE_CONFIG", &interface_config[0], static_cast<gboolean>(true));
+  g_setenv("NETCONF_INTERFACE_STATUSES", &interface_statuses[0], static_cast<gboolean>(true));
   gint exit_status = 0;
   GError *error    = nullptr;
   if (g_spawn_sync(nullptr, static_cast<gchar **>(argv), nullptr, G_SPAWN_DEFAULT, nullptr, nullptr, nullptr, nullptr,

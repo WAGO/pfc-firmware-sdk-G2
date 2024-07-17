@@ -68,6 +68,9 @@ endif
 
 $(STATEDIR)/cds3-tscretainuio.prepare:
 	@$(call targetinfo)
+ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	$(MAKE) -C $(CDS3_TSCRETAINUIO_DIR) SYSROOT=$(PTXCONF_SYSROOT_TARGET) dep
+endif	
 	@$(call touch)
 
 

@@ -23,9 +23,9 @@ LIBLIBLOADER_URL		:=
 #LIBLIBLOADER_SOURCE		:= $(SRCDIR)/$(LIBLIBLOADER)
 LIBLIBLOADER_DIR		:= $(BUILDDIR)/$(LIBLIBLOADER)
 LIBLIBLOADER_LICENSE	:= unknown
-LIBLIBLOADER_XSOURCE		:= $(call ptx/in-path, PTXDIST_PATH, local_src/$(LIBLIBLOADER))
-ifeq ($(LIBLIBLOADER_XSOURCE),)
-LIBLIBLOADER_XSOURCE	:= $(PTXDIST_WORKSPACE)/local_src/$(LIBLIBLOADER)
+LIBLIBLOADER_SRC_DIR		:= $(call ptx/in-path, PTXDIST_PATH, local_src/$(LIBLIBLOADER))
+ifeq ($(LIBLIBLOADER_SRC_DIR),)
+LIBLIBLOADER_SRC_DIR	:= $(PTXDIST_WORKSPACE)/local_src/$(LIBLIBLOADER)
 endif
 
 # ----------------------------------------------------------------------------
@@ -47,7 +47,7 @@ $(STATEDIR)/liblibloader.extract:
 			--exclude=project/objs_test/ \
 			--exclude=lib \
 			--exclude=project/lib_test\
-			$(LIBLIBLOADER_XSOURCE) $(BUILDDIR)
+			$(LIBLIBLOADER_SRC_DIR) $(BUILDDIR)
 	@$(call touch)
 	
 
