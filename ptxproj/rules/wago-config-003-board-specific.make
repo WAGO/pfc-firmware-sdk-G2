@@ -88,7 +88,7 @@ $(STATEDIR)/ct-board-specific-extensions.install:
 # ----------------------------------------------------------------------------
 
 EXTENSION_SCRIPT_SUFFIXES := defines commons copy_data.sh copy_data_emmc_extensions.sh \
-                             switch_boot_partition.sh get_inactive_system_partition.sh config_rs232.sh \
+                             switch_boot_partition.sh get_inactive_system_partition.sh \
                              config_default_gateway.sh get_boot_project_location.sh config_network_switch_eeprom.sh
 
 $(STATEDIR)/ct-board-specific-extensions.targetinstall:
@@ -110,6 +110,12 @@ $(STATEDIR)/ct-board-specific-extensions.targetinstall:
 			$(CT_BOARD_SPECIFIC_EXTENSIONS_SCRIPT_DIR)/$(PTXCONF_CT_EXTENSION_PREFIX)_$$suffix, \
 			/usr/sbin/$(PTXCONF_CT_EXTENSION_PREFIX)_$$suffix); \
 	done
+
+ifdef PTXCONF_CT_CONFIG_RS232
+	@$(call install_copy, ct-board-specific-extensions, 0, 0, 0755, \
+		$(CT_BOARD_SPECIFIC_EXTENSIONS_SCRIPT_DIR)/$(PTXCONF_CT_EXTENSION_PREFIX)_config_rs232.sh, \
+		/usr/sbin/$(PTXCONF_CT_EXTENSION_PREFIX)_config_rs232.sh)
+endif
 
 ifdef PTXCONF_CT_FEATURE_UPDATE_BOOTLOADER_ON_TARGET
 	@$(call install_copy, ct-board-specific-extensions, 0, 0, 0755, \

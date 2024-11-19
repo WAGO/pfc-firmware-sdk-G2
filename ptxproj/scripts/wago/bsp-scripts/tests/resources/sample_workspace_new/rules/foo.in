@@ -1,4 +1,0 @@
-config FOO
-    default n
-    prompt "foo"
-    select BAR

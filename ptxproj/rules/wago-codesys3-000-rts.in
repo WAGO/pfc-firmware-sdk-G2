@@ -11,6 +11,7 @@ config CODESYS3
 	select HOST_CT_BUILD
 	select OPENSSL
 	select WAGO_DBUS if CDS3_RTS_PRODUCT_VTPCTP
+	select QT5 if CDS3_RTS_PRODUCT_VTPCTP
 	help
 		Builds and installs the CODESYS v3 plc.
 

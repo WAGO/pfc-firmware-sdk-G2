@@ -1,0 +1,393 @@
+From: Alexander Riedel <alexander.riedel@wago.com>
+Date: Mon, 29 Jul 2024 11:39:35 +0200
+Subject: [PATCH] add basic support for reading/writing decryption secrets
+
+---
+ Packet++/CMakeLists.txt            |   2 +
+ Packet++/header/DecryptionSecret.h | 122 +++++++++++++++++++++++++++++++++++
+ Packet++/src/DecryptionSecret.cpp  | 128 +++++++++++++++++++++++++++++++++++++
+ Pcap++/header/PcapFileDevice.h     |  15 +++++
+ Pcap++/src/PcapFileDevice.cpp      |  39 +++++++++++
+ 5 files changed, 306 insertions(+)
+ create mode 100644 Packet++/header/DecryptionSecret.h
+ create mode 100644 Packet++/src/DecryptionSecret.cpp
+
+diff --git a/Packet++/CMakeLists.txt b/Packet++/CMakeLists.txt
+index fc3fd96078e7..10e51541f4e3 100644
+--- a/Packet++/CMakeLists.txt
++++ b/Packet++/CMakeLists.txt
+@@ -4,6 +4,7 @@ add_library(
+   src/ArpLayer.cpp
+   src/BgpLayer.cpp
+   src/CotpLayer.cpp
++  src/DecryptionSecret.cpp
+   src/DhcpLayer.cpp
+   src/DhcpV6Layer.cpp
+   src/DnsLayer.cpp
+@@ -67,6 +68,7 @@ set(public_headers
+     header/ArpLayer.h
+     header/BgpLayer.h
+     header/CotpLayer.h
++    header/DecryptionSecret.h
+     header/DhcpLayer.h
+     header/DhcpV6Layer.h
+     header/DnsLayerEnums.h
+diff --git a/Packet++/header/DecryptionSecret.h b/Packet++/header/DecryptionSecret.h
+new file mode 100644
+index 000000000000..0a445290b32b
+--- /dev/null
++++ b/Packet++/header/DecryptionSecret.h
+@@ -0,0 +1,122 @@
++#ifndef PACKETPP_DECRYPTION_SECRET
++#define PACKETPP_DECRYPTION_SECRET
++
++#include <sstream>
++#include <string>
++#include <vector>
++
++/// @file
++
++/**
++ * \namespace pcpp
++ * \brief The main namespace for the PcapPlusPlus lib
++ */
++namespace pcpp
++{
++
++	enum class DecryptionSecretType : uint32_t
++	{
++		SSH_KEY_LOG       = 0x5353484b,
++		TLS_KEY_LOG       = 0x544c534b,
++		OPC_UA_KEY_LOG    = 0x55414b4c,
++		WIREGUARD_KEY_LOG = 0x57474b4c,
++		ZIGBEE_NWK_KEY    = 0x5a4e574b,
++		ZIGBEE_APS_KEY    = 0x5a415053
++	};
++
++	/**
++	 * @class Packet
++	 * This class represents a decryption secret block.
++	 */
++	class DecryptionSecret
++	{
++	private:
++		uint8_t * rawData = nullptr;
++		uint32_t rawDataLength = 0;
++		DecryptionSecretType secretsType;
++
++		void copyFromOther(const DecryptionSecret & other);
++
++	public:
++
++		/**
++		 * A constructor for creating a new secret.
++		 * @param[in] type The secret type
++		 * @param[in] length The secret length in bytes
++		 * @param[in] bytes The secret data as raw bytes, gets copied into an internal buffer
++		 */
++		explicit DecryptionSecret(DecryptionSecretType type, uint32_t length, uint8_t * bytes);
++
++		/**
++		 * A destructor for this class. Frees all held data.
++		 */
++		virtual ~DecryptionSecret();
++
++		/**
++		 * A copy constructor for this class. This copy constructor copies all the raw data.
++		 * @param[in] other The instance to copy from
++		 */
++		DecryptionSecret(const DecryptionSecret & other);
++
++		DecryptionSecret & operator=(const DecryptionSecret & other);
++		bool operator==(const DecryptionSecret& rhs) const;
++		bool operator<(const DecryptionSecret& rhs) const;
++
++    /**
++		 * Get the secret type.
++		 */
++    DecryptionSecretType getType() const;
++
++    /**
++		 * Get the content length.
++		 */
++    uint32_t getLength() const;
++
++    /**
++		 * Get the secret content.
++		 */
++    uint8_t * getData() const;
++
++		/**
++     * Serialise to string.
++		 */
++		std::string toString() const;
++	}; // class Packet
++} // namespace pcpp
++
++inline std::ostream& operator<<(std::ostream& os, const pcpp::DecryptionSecret& secret)
++{
++	os << secret.toString();
++	return os;
++}
++
++inline std::ostream& operator<<(std::ostream& os, const pcpp::DecryptionSecretType& type)
++{
++	switch (type)
++	{
++	case pcpp::DecryptionSecretType::SSH_KEY_LOG:
++		os << "SSH";
++		break;
++	case pcpp::DecryptionSecretType::TLS_KEY_LOG:
++		os << "TLS";
++		break;
++	case pcpp::DecryptionSecretType::OPC_UA_KEY_LOG:
++		os << "OPC_UA";
++		break;
++	case pcpp::DecryptionSecretType::WIREGUARD_KEY_LOG:
++		os << "WIREGUARD";
++		break;
++	case pcpp::DecryptionSecretType::ZIGBEE_NWK_KEY:
++		os << "ZIGBEE_APS";
++		break;
++	case pcpp::DecryptionSecretType::ZIGBEE_APS_KEY:
++		os << "ZIGBEE_APS";
++		break;
++
++	default:
++		break;
++	}
++	return os;
++}
++
++#endif /* PACKETPP_DECRYPTION_SECRET */
+diff --git a/Packet++/src/DecryptionSecret.cpp b/Packet++/src/DecryptionSecret.cpp
+new file mode 100644
+index 000000000000..da5d81355f0b
+--- /dev/null
++++ b/Packet++/src/DecryptionSecret.cpp
+@@ -0,0 +1,128 @@
++#define LOG_MODULE PacketLogModuleDecryptionSecret
++
++#include "DecryptionSecret.h"
++#include <algorithm>
++#include <cstring>
++#ifdef _MSC_VER
++#include <time.h>
++#include "SystemUtils.h"
++#endif
++
++
++namespace pcpp
++{
++void DecryptionSecret::copyFromOther(const DecryptionSecret & other)
++{
++	secretsType = other.secretsType;
++	rawDataLength = other.rawDataLength;
++	if (rawDataLength > 0 && other.rawData != nullptr)
++	{
++		rawData = (uint8_t*)calloc(rawDataLength, sizeof(uint8_t));
++		std::memcpy(rawData, other.rawData, rawDataLength);
++	}
++}
++
++
++DecryptionSecret::DecryptionSecret(DecryptionSecretType type, uint32_t length, uint8_t * bytes)
++{
++	secretsType = type;
++	rawDataLength = length;
++	if (rawDataLength > 0 && bytes != nullptr)
++	{
++		rawData = (uint8_t*)calloc(rawDataLength, sizeof(uint8_t));
++		std::memcpy(rawData, bytes, rawDataLength);
++	}
++}
++
++DecryptionSecret::~DecryptionSecret()
++{
++	free(rawData);
++}
++
++DecryptionSecret::DecryptionSecret(const DecryptionSecret & other)
++{
++	copyFromOther(other);
++}
++
++DecryptionSecret & DecryptionSecret::operator=(const DecryptionSecret & other)
++{
++	if (this != &other)
++	{
++		free(rawData);
++		copyFromOther(other);
++	}
++
++	return *this;
++}
++
++bool DecryptionSecret::operator==(const DecryptionSecret & rhs) const
++{
++	bool isSameData = false;
++	if (rawDataLength == rhs.rawDataLength)
++	{
++		isSameData = true;
++		for (size_t ii = 0; ii < rawDataLength; ii++)
++		{
++			if (rawData[ii] != rhs.rawData[ii])
++			{
++				isSameData = false;
++				break;
++			}
++		}
++	}
++
++	return secretsType == rhs.secretsType && rawDataLength == rhs.rawDataLength && isSameData;
++}
++
++bool DecryptionSecret::operator<(const DecryptionSecret & rhs) const
++{
++	bool isDataLess = false;
++	if (rawDataLength == rhs.rawDataLength)
++	{
++		std::lexicographical_compare(rawData, rawData + rawDataLength, rhs.rawData, rhs.rawData + rhs.rawDataLength);
++	}
++
++	return secretsType < rhs.secretsType && rawDataLength < rhs.rawDataLength && isDataLess;
++}
++
++DecryptionSecretType DecryptionSecret::getType() const
++{
++	return secretsType;
++}
++
++uint32_t DecryptionSecret::getLength() const
++{
++	return rawDataLength;
++}
++
++uint8_t * DecryptionSecret::getData() const
++{
++	return rawData;
++}
++
++std::string DecryptionSecret::toString() const
++{
++	std::ostringstream oss;
++	oss << "{" << std::hex << secretsType << std::dec;
++	oss << ", " << rawDataLength;
++	oss << ", ";
++
++	if (rawData != nullptr)
++	{
++		oss << "\"";
++		bool shorten = rawDataLength > 10;
++		size_t printLen = shorten ? 10 : rawDataLength;
++		for (size_t ii = 0; ii < printLen; ii++)
++		{
++			oss << rawData[ii];
++		}
++		if (shorten)
++		{
++			oss << "...\"";
++		}
++	}
++	oss << "}";
++	return oss.str();
++}
++
++} // namespace pcpp
+diff --git a/Pcap++/header/PcapFileDevice.h b/Pcap++/header/PcapFileDevice.h
+index fdad0a4c4583..f3eda20be8a2 100644
+--- a/Pcap++/header/PcapFileDevice.h
++++ b/Pcap++/header/PcapFileDevice.h
+@@ -1,6 +1,7 @@
+ #ifndef PCAPPP_FILE_DEVICE
+ #define PCAPPP_FILE_DEVICE
+ 
++#include "DecryptionSecret.h"
+ #include "PcapDevice.h"
+ #include "RawPacket.h"
+ #include <fstream>
+@@ -298,6 +299,13 @@ namespace pcpp
+ 		 */
+ 		std::string getCaptureFileComment() const;
+ 
++		/**
++		 * Get any contained decryption secrets.
++		 * @param[out] secrets A reference for an empty vector where the secrets will be written
++		 * @return True if a secret was read successfully
++		 */
++		bool getDecryptionSecrets(std::vector<DecryptionSecret> & secrets);
++
+ 		/**
+ 		 * The pcap-ng format allows storing a user-defined comment for every packet (besides the comment per-file). This method reads
+ 		 * the next packet and the comment attached to it (if such comment exists), and returns them both
+@@ -516,6 +524,13 @@ namespace pcpp
+ 		 */
+ 		bool open(const std::string& os, const std::string& hardware, const std::string& captureApp, const std::string& fileComment);
+ 
++		/**
++		 * Writy given decryption secrets to the file.
++		 * @param[in] secrets A reference for an empty vector where the secrets will be written
++		 * @return True if all secrets were written successfully
++		 */
++		bool writeDecryptionSecrets(const std::vector<DecryptionSecret> & secrets);
++
+ 		/**
+ 		 * The pcap-ng format allows adding a user-defined comment for each stored packet. This method writes a RawPacket to the file and
+ 		 * adds a comment to it. Before using this method please verify the file is opened using open(). This method won't change the
+diff --git a/Pcap++/src/PcapFileDevice.cpp b/Pcap++/src/PcapFileDevice.cpp
+index f894ee82923b..aec536b06755 100644
+--- a/Pcap++/src/PcapFileDevice.cpp
++++ b/Pcap++/src/PcapFileDevice.cpp
+@@ -498,6 +498,28 @@ std::string PcapNgFileReaderDevice::getCaptureFileComment() const
+ 	return std::string(res, len);
+ }
+ 
++bool PcapNgFileReaderDevice::getDecryptionSecrets(std::vector<DecryptionSecret> & secrets)
++{
++	const light_decryption_secret* raw_secrets = nullptr;
++	size_t secret_count = 0;
++	int result = light_get_decryption_secrets((light_pcapng_t*)m_LightPcapNg, &raw_secrets, &secret_count);
++	if (!result)
++	{
++		return false;
++	}
++
++	for (size_t ii = 0; ii < secret_count; ii++)
++	{
++		light_decryption_secret raw_secret = raw_secrets[ii];
++		DecryptionSecretType type = static_cast<DecryptionSecretType>(raw_secret.type);
++		DecryptionSecret secret = DecryptionSecret(type, raw_secret.length, raw_secret.data);
++		secrets.emplace_back(secret);
++	}
++
++	light_free_decryption_secrets(&raw_secrets, secret_count);
++	return true;
++}
++
+ 
+ // ~~~~~~~~~~~~~~~~~~~~~~~~~
+ // IFileWriterDevice members
+@@ -776,6 +798,23 @@ bool PcapNgFileWriterDevice::open(const std::string& os, const std::string& hard
+ 	return true;
+ }
+ 
++bool PcapNgFileWriterDevice::writeDecryptionSecrets(const std::vector<DecryptionSecret> & secrets)
++{
++	size_t secret_count = secrets.size();
++	light_decryption_secret * raw_secrets = (light_decryption_secret*)calloc(secret_count, sizeof(light_decryption_secret));
++	for (size_t ii = 0; ii < secret_count; ii++)
++	{
++		raw_secrets[ii].type = static_cast<std::underlying_type<DecryptionSecretType>::type>(secrets[ii].getType());
++		raw_secrets[ii].length = secrets[ii].getLength();
++		raw_secrets[ii].data = secrets[ii].getData();
++	}
++
++	light_write_decryption_secrets((light_pcapng_t*)m_LightPcapNg, raw_secrets, secret_count);
++
++	free(raw_secrets); // just free array, inner data ptr still owned by secrets vector
++	return true;
++}
++
+ bool PcapNgFileWriterDevice::writePacket(RawPacket const& packet, const std::string& comment)
+ {
+ 	if (m_LightPcapNg == nullptr)

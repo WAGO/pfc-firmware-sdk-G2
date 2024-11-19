@@ -24,7 +24,7 @@ LAZY_PACKAGES-$(PTXCONF_WDAPHPDEMO) +=wdaphpdemo
 #
 # Paths and names
 #
-WDAPHPDEMO_VERSION  := 1.0.0
+WDAPHPDEMO_VERSION  := 1.1.0
 WDAPHPDEMO_MD5      :=
 WDAPHPDEMO          := wdaphpdemo
 WDAPHPDEMO_LICENSE  := MIT

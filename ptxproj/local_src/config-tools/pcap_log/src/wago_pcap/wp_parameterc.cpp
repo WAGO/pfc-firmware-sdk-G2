@@ -149,7 +149,7 @@ namespace wp {
       for(auto const & dir_entry : std::filesystem::directory_iterator(dir)) {
         if(std::filesystem::is_regular_file(dir_entry) &&
            (!std::filesystem::is_empty(dir_entry)) &&
-           (dir_entry.path().extension() == ".pcapng" || include_all_files)) {
+           (dir_entry.path().extension() == ".pcapng" || dir_entry.path().extension() == ".pcap" || include_all_files)) {
           file_paths.insert(dir_entry.path());
         }
       }
@@ -301,7 +301,7 @@ namespace wp {
     {
       return;
     }
-    
+
     for (const auto & entry : std::filesystem::directory_iterator(dir))
     {
       std::filesystem::remove_all(entry.path());

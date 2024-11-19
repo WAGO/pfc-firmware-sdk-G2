@@ -165,7 +165,7 @@ void EventManager::RegisterNetworkInformation(IPersistenceProvider &persistence_
 ::std::vector<char> EventManager::GetInterfaceStatusesAsJson() {
   InterfaceStatuses interface_statuses;
   if (interface_information_ != nullptr) {
-    interface_statuses = interface_information_->GetCurrentPortStatuses();
+    interface_information_->GetCurrentPortStatuses(interface_statuses);
   }
   return StringToCharVector(JsonConverter().ToJsonString(interface_statuses));
 }
@@ -175,7 +175,7 @@ void EventManager::CallEventFolderSync() {
   auto ip_config        = GetIPConfigAsJson();
   auto interface_config = GetInterfaceConfigAsJson();
   auto interface_statuses = GetInterfaceStatusesAsJson();
-  
+
   gchar *argv[]         = {"/usr/bin/run-parts", "-a", "config", "/etc/config-tools/events/networking", nullptr};
   g_setenv("NETCONF_BRIDGE_CONFIG", &bridge_config[0], static_cast<gboolean>(true));
   g_setenv("NETCONF_IP_CONFIG", &ip_config[0], static_cast<gboolean>(true));

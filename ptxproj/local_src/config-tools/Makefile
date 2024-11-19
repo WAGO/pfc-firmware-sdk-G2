@@ -66,7 +66,7 @@ NEWNET :=  set_network_interfaces get_actual_eth_config get_eth_config config_et
 SPECIAL := get_filesystem_data get_rts_info
 
 # Complete list of all config-tools
-MAIN_LIST := wdialog show_video_mode crypt config_linux_user get_coupler_details get_rts3scfg_value get_user get_touchscreen_config get_dns_server get_clock_data get_port_state calculate_broadcast print_program_output get_device_data string_encode get_uimage_size get_typelabel_value get_run_stop_switch_value get_possible_runtimes modbus_config urlencode set_serial_mode get_rs485_settings ${NEWNET}
+MAIN_LIST := wdialog show_video_mode crypt config_linux_user get_coupler_details get_rts3scfg_value get_user get_touchscreen_config get_dns_server get_clock_data get_port_state calculate_broadcast print_program_output get_device_data string_encode get_uimage_size get_typelabel_value get_run_stop_switch_value get_possible_runtimes modbus_config urlencode get_rs485_settings ${NEWNET}
 
 # Config tools build in their own subdirectories with their own makefiles
 SUBDIRS := firewall vpncfg

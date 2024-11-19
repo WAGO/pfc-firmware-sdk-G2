@@ -1,0 +1,30 @@
+From be937e86de392c493a562fdae4a7ef57c1186599 Mon Sep 17 00:00:00 2001
+From: Thomas Paul <thomas.paul@wago.com>
+Date: Mon, 10 Oct 2022 11:17:02 +0200
+Subject: [PATCH] Added catch of NULL pointer to avoid a "Segmentation Fault"
+
+---
+ lib/roles/http/client/client-http.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/lib/roles/http/client/client-http.c b/lib/roles/http/client/client-http.c
+index 221f394..5e65599 100755
+--- a/lib/roles/http/client/client-http.c
++++ b/lib/roles/http/client/client-http.c
+@@ -1273,6 +1273,13 @@ lws_generate_client_handshake(struct lws *wsi, char *pkt)
+ 		if (!wsi->client_pipeline)
+ 			p += lws_snprintf(p, 64, "connection: close\x0d\x0a");
+ 	}
++	//#ifdef WAGO_SPECIFIC
++	//Added catch of NULL pointer. Can happened, when lws_generate_client_ws_handshake returned a NULL pointer in error case
++	  if(NULL == p)
++	  {
++	    return NULL;
++	  }
++	//#endif
+
+ 	/* give userland a chance to append, eg, cookies */
+
+--
+2.25.1
+

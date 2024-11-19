@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Browser Favorites</title>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="css/main.css"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="header"><div id="headertext">Browser Favorites</div>{{#wbm}}<div id="wbm-button"><a href="{{url}}">{{text}}</a></div>{{/wbm}}</div>
+    <div class="content">
+      <ul id="plcselection" class="list">
+      {{#entries}}
+        <li><a data-vkb="{{vkb}}" href="{{url}}" {{#default}}class="selected"{{/default}} >{{text}}</a></li>
+      {{/entries}}
+      </ul>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

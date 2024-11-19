@@ -3,7 +3,7 @@
   "issues": [
     {
       "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
-      "lineStart": "116",
+      "lineStart": "120",
       "columnStart": "10",
       "category": "Warning:readability-implicit-bool-conversion",
       "severity": "NORMAL",
@@ -12,7 +12,16 @@
     },
     {
       "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
-      "lineStart": "248",
+      "lineStart": "225",
+      "columnStart": "79",
+      "category": "Warning:google-runtime-references",
+      "severity": "NORMAL",
+      "message": "non-const reference parameter 'pcapngFiles', make it const or use a pointer [google-runtime-references]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
+      "lineStart": "329",
       "columnStart": "7",
       "category": "Warning:readability-container-size-empty",
       "severity": "NORMAL",
@@ -21,7 +30,7 @@
     },
     {
       "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
-      "lineStart": "265",
+      "lineStart": "346",
       "columnStart": "9",
       "category": "Warning:cert-env33-c",
       "severity": "NORMAL",
@@ -30,7 +39,7 @@
     },
     {
       "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
-      "lineStart": "336",
+      "lineStart": "417",
       "columnStart": "22",
       "category": "Warning:readability-implicit-bool-conversion",
       "severity": "NORMAL",
@@ -39,7 +48,7 @@
     },
     {
       "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
-      "lineStart": "336",
+      "lineStart": "417",
       "columnStart": "28",
       "category": "Warning:readability-implicit-bool-conversion",
       "severity": "NORMAL",
@@ -48,7 +57,7 @@
     },
     {
       "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
-      "lineStart": "419",
+      "lineStart": "500",
       "columnStart": "31",
       "category": "Warning:readability-redundant-string-init",
       "severity": "NORMAL",
@@ -57,7 +66,7 @@
     },
     {
       "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
-      "lineStart": "420",
+      "lineStart": "501",
       "columnStart": "31",
       "category": "Warning:readability-redundant-string-init",
       "severity": "NORMAL",
@@ -66,11 +75,101 @@
     },
     {
       "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
-      "lineStart": "421",
+      "lineStart": "502",
       "columnStart": "32",
       "category": "Warning:readability-redundant-string-init",
       "severity": "NORMAL",
       "message": "redundant string initialization [readability-redundant-string-init]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/pcap_log_main/pcap_log.cpp",
+      "lineStart": "504",
+      "columnStart": "31",
+      "category": "Warning:readability-redundant-string-init",
+      "severity": "NORMAL",
+      "message": "redundant string initialization [readability-redundant-string-init]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_debug.cpp",
+      "lineStart": "49",
+      "columnStart": "13",
+      "category": "Warning:cert-dcl50-cpp",
+      "severity": "NORMAL",
+      "message": "do not define a C-style variadic function; consider using a function parameter pack or currying instead [cert-dcl50-cpp]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_debug.hpp",
+      "lineStart": "43",
+      "columnStart": "25",
+      "category": "Warning:clang-diagnostic-format-security",
+      "severity": "NORMAL",
+      "message": "format string is not a string literal (potentially insecure) [clang-diagnostic-format-security]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_edit.cpp",
+      "lineStart": "144",
+      "columnStart": "22",
+      "category": "Warning:cppcoreguidelines-pro-type-static-cast-downcast",
+      "severity": "NORMAL",
+      "message": "do not use static_cast to downcast from a base to a derived class; use dynamic_cast instead [cppcoreguidelines-pro-type-static-cast-downcast]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_edit.cpp",
+      "lineStart": "167",
+      "columnStart": "3",
+      "category": "Warning:cppcoreguidelines-owning-memory",
+      "severity": "NORMAL",
+      "message": "deleting a pointer through a type that is not marked 'gsl::owner<>'; consider using a smart pointer instead [cppcoreguidelines-owning-memory]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_edit.cpp",
+      "lineStart": "176",
+      "columnStart": "12",
+      "category": "Warning:readability-container-size-empty",
+      "severity": "NORMAL",
+      "message": "the 'empty' method should be used to check for emptiness instead of comparing to an empty object [readability-container-size-empty]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_edit.cpp",
+      "lineStart": "58",
+      "columnStart": "3",
+      "category": "Warning:google-readability-todo",
+      "severity": "NORMAL",
+      "message": "missing username/bug in TODO [google-readability-todo]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_edit.cpp",
+      "lineStart": "81",
+      "columnStart": "21",
+      "category": "Warning:cppcoreguidelines-pro-type-reinterpret-cast",
+      "severity": "NORMAL",
+      "message": "do not use reinterpret_cast [cppcoreguidelines-pro-type-reinterpret-cast]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_edit.cpp",
+      "lineStart": "81",
+      "columnStart": "3",
+      "category": "Warning:modernize-use-auto",
+      "severity": "NORMAL",
+      "message": "use auto when initializing with a cast to avoid duplicating the type name [modernize-use-auto]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_edit.cpp",
+      "lineStart": "99",
+      "columnStart": "7",
+      "category": "Warning:readability-container-size-empty",
+      "severity": "NORMAL",
+      "message": "the 'empty' method should be used to check for emptiness instead of comparing to an empty object [readability-container-size-empty]",
       "moduleName": "pcap_log-tests"
     },
     {
@@ -93,25 +192,25 @@
     },
     {
       "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_util.cpp",
-      "lineStart": "108",
+      "lineStart": "129",
       "columnStart": "20",
-      "category": "Warning:clang-diagnostic-format-security",
+      "category": "Warning:readability-redundant-string-cstr",
       "severity": "NORMAL",
-      "message": "format string is not a string literal (potentially insecure) [clang-diagnostic-format-security]",
+      "message": "redundant call to 'c_str' [readability-redundant-string-cstr]",
       "moduleName": "pcap_log-tests"
     },
     {
       "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_util.cpp",
-      "lineStart": "116",
+      "lineStart": "137",
       "columnStart": "16",
-      "category": "Warning:clang-diagnostic-format-security",
+      "category": "Warning:readability-redundant-string-cstr",
       "severity": "NORMAL",
-      "message": "format string is not a string literal (potentially insecure) [clang-diagnostic-format-security]",
+      "message": "redundant call to 'c_str' [readability-redundant-string-cstr]",
       "moduleName": "pcap_log-tests"
     },
     {
       "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_util.cpp",
-      "lineStart": "138",
+      "lineStart": "159",
       "columnStart": "3",
       "category": "Warning:cppcoreguidelines-pro-type-member-init",
       "severity": "NORMAL",
@@ -120,11 +219,47 @@
     },
     {
       "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_util.cpp",
-      "lineStart": "139",
+      "lineStart": "160",
       "columnStart": "3",
       "category": "Warning:cppcoreguidelines-pro-type-member-init",
       "severity": "NORMAL",
       "message": "uninitialized record type: 'dir_parent_stat' [cppcoreguidelines-pro-type-member-init]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_util.cpp",
+      "lineStart": "235",
+      "columnStart": "32",
+      "category": "Warning:google-readability-casting",
+      "severity": "NORMAL",
+      "message": "C-style casts are discouraged; use static_cast [google-readability-casting]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/pcap_log/src/wago_pcap/wp_util.cpp",
+      "lineStart": "53",
+      "columnStart": "33",
+      "category": "Warning:cert-err58-cpp",
+      "severity": "NORMAL",
+      "message": "initialization of 'allowed_extensions' with static storage duration may throw an exception that cannot be caught [cert-err58-cpp]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/pcap_log/src/wago_pcap/wp_edit.hpp",
+      "lineStart": "41",
+      "columnStart": "96",
+      "category": "Warning:google-runtime-references",
+      "severity": "NORMAL",
+      "message": "non-const reference parameter 'type', make it const or use a pointer [google-runtime-references]",
+      "moduleName": "pcap_log-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/pcap_log/src/wago_pcap/wp_edit.hpp",
+      "lineStart": "46",
+      "columnStart": "30",
+      "category": "Warning:google-runtime-references",
+      "severity": "NORMAL",
+      "message": "non-const reference parameter 'parsed', make it const or use a pointer [google-runtime-references]",
       "moduleName": "pcap_log-tests"
     },
     {
@@ -138,13 +273,13 @@
     },
     {
       "fileName": "pfc/ptxproj/local_src/config-tools/pcap_log/src/wago_pcap/wp_util.hpp",
-      "lineStart": "34",
-      "columnStart": "67",
+      "lineStart": "35",
+      "columnStart": "43",
       "category": "Warning:google-runtime-references",
       "severity": "NORMAL",
       "message": "non-const reference parameter 'path', make it const or use a pointer [google-runtime-references]",
       "moduleName": "pcap_log-tests"
     }
   ],
-  "size": 16
+  "size": 31
 }

@@ -1,0 +1,29 @@
+From: unknown author <unknown.author@example.com>
+Date: Thu, 22 Aug 2024 09:03:48 +0200
+Subject: [PATCH] 0001-always-append-to-logfile
+
+---
+ src/openvpn/options.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/src/openvpn/options.c b/src/openvpn/options.c
+index 9d33dadcdbe6..f146428c22ba 100644
+--- a/src/openvpn/options.c
++++ b/src/openvpn/options.c
+@@ -6436,7 +6436,15 @@ add_option(struct options *options,
+     {
+         VERIFY_PERMISSION(OPT_P_GENERAL);
+         options->log = true;
+-        redirect_stdout_stderr(p[1], false);
++
++        // To make openvpn compatible with
++        // logrotate's copytruncate option,
++        // the log file has to be always
++        // appended to rather than truncated.
++        // Effectively, "log" configuration
++        // option is mapped to "log-append"
++        // here.
++        redirect_stdout_stderr(p[1], true);
+     }
+     else if (streq(p[0], "suppress-timestamps") && !p[1])
+     {

@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_MDMD_NG) += mdmd-ng
 #
 # Paths and names
 #
-MDMD_NG_VERSION        := 0.15.8
+MDMD_NG_VERSION        := 0.15.9
 MDMD_NG_MD5            := 
 MDMD_NG                := mdmd-ng
 MDMD_NG_URL            := file://$(PTXDIST_WORKSPACE)/wago_intern/mdmd-ng
@@ -183,7 +183,7 @@ endif
 	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /etc/specific/features/wireless-mobile-EC25)
 	@$(call install_copy, mdmd-ng, 0, 0, 0640, -, /usr/lib/udev/rules.d/77-gobinet-usb.rules)
 	
-	@$(call install_link, mdmd-ng, /etc/init.d/mdmd-ng, /etc/rc.d/S95_mdmd-ng)
+	@$(call install_link, mdmd-ng, /etc/init.d/mdmd-ng, /etc/rc.d/S71_mdmd-ng)
 
 # Install sudoers.d file
 	@$(call install_copy, mdmd-ng, 0, 0, 0444, -, /etc/sudoers.d/config_mdmd-ng)

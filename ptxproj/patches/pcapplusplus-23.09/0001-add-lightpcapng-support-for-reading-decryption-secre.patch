@@ -1,0 +1,179 @@
+From: Alexander Riedel <alexander.riedel@wago.com>
+Date: Fri, 19 Jul 2024 11:03:10 +0200
+Subject: [PATCH] add lightpcapng support for reading decryption secrets blocks
+
+---
+ .../LightPcapNg/LightPcapNg/include/light_pcapng.h | 19 +++++--
+ .../LightPcapNg/include/light_pcapng_ext.h         | 12 ++++
+ .../LightPcapNg/include/light_special.h            |  6 ++
+ .../LightPcapNg/LightPcapNg/src/light_pcapng_ext.c | 66 ++++++++++++++++++++++
+ 4 files changed, 99 insertions(+), 4 deletions(-)
+
+diff --git a/3rdParty/LightPcapNg/LightPcapNg/include/light_pcapng.h b/3rdParty/LightPcapNg/LightPcapNg/include/light_pcapng.h
+index 9ffedd3955c8..3f2a1cad3398 100644
+--- a/3rdParty/LightPcapNg/LightPcapNg/include/light_pcapng.h
++++ b/3rdParty/LightPcapNg/LightPcapNg/include/light_pcapng.h
+@@ -32,10 +32,11 @@ extern "C" {
+ #include "light_types.h"
+ #include "light_platform.h"
+ 
+-#define LIGHT_SECTION_HEADER_BLOCK  0x0A0D0D0A
+-#define LIGHT_INTERFACE_BLOCK       0x00000001
+-#define LIGHT_ENHANCED_PACKET_BLOCK 0x00000006
+-#define LIGHT_SIMPLE_PACKET_BLOCK   0x00000003
++#define LIGHT_SECTION_HEADER_BLOCK     0x0A0D0D0A
++#define LIGHT_INTERFACE_BLOCK          0x00000001
++#define LIGHT_DECRYPTION_SECRETS_BLOCK 0x0000000A
++#define LIGHT_ENHANCED_PACKET_BLOCK    0x00000006
++#define LIGHT_SIMPLE_PACKET_BLOCK      0x00000003
+ 
+ #define LIGHT_CUSTOM_DATA_BLOCK     0xB16B00B5
+ #define LIGHT_UNKNOWN_DATA_BLOCK    0xDEADBEEF
+@@ -52,6 +53,16 @@ extern "C" {
+ #define LIGHT_CUSTOM_OPTION_ADDRESS_INFO   0xADD4
+ #define LIGHT_CUSTOM_OPTION_FEATURE_U64    0x0064
+ 
++// Decryption secret types
++typedef enum {
++	LIGHT_SECRET_SSH_KEY_LOG						= 0x5353484b,
++  LIGHT_SECRET_TYPE_TLS_KEY_LOG       = 0x544c534b,
++  LIGHT_SECRET_TYPE_OPC_UA_KEY_LOG    = 0x55414b4c,
++  LIGHT_SECRET_TYPE_WIREGUARD_KEY_LOG = 0x57474b4c,
++  LIGHT_SECRET_TYPE_ZIGBEE_NWK_KEY    = 0x5a4e574b,
++  LIGHT_SECRET_TYPE_ZIGBEE_APS_KEY    = 0x5a415053
++} light_secret_type;
++
+ #define BYTE_ORDER_MAGIC            0x1A2B3C4D
+ 
+ #define LIGHT_KEY_REJECTED          0xFFFFFFFF
+diff --git a/3rdParty/LightPcapNg/LightPcapNg/include/light_pcapng_ext.h b/3rdParty/LightPcapNg/LightPcapNg/include/light_pcapng_ext.h
+index 6d8b2b1fa657..21c9a703ae70 100644
+--- a/3rdParty/LightPcapNg/LightPcapNg/include/light_pcapng_ext.h
++++ b/3rdParty/LightPcapNg/LightPcapNg/include/light_pcapng_ext.h
+@@ -44,6 +44,7 @@ extern "C" {
+ #endif
+ 
+ #define MAX_SUPPORTED_INTERFACE_BLOCKS 32
++#define MAX_SUPPORTED_SECRETS_BLOCKS 32
+ 
+ struct _light_pcapng_t;
+ typedef struct _light_pcapng_t light_pcapng_t;
+@@ -58,6 +59,12 @@ typedef struct _light_packet_header {
+ 	uint16_t comment_length;
+ } light_packet_header;
+ 
++typedef struct _light_decryption_secret {
++  uint32_t type;
++  uint32_t length;
++  uint8_t* data;
++} light_decryption_secret;
++
+ typedef struct _light_pcapng_file_info {
+ 	uint16_t major_version;
+ 	uint16_t minor_version;
+@@ -91,6 +98,11 @@ void light_free_file_info(light_pcapng_file_info *info);
+ 
+ light_pcapng_file_info *light_pcang_get_file_info(light_pcapng_t *pcapng);
+ 
++/// Note: secret_data need to be freed again with light_free_decryption_secrets
++int light_get_decryption_secrets(light_pcapng_t *pcapng, const light_decryption_secret **secret_data, size_t *count);
++
++void light_free_decryption_secrets(const light_decryption_secret **secret_data, size_t count);
++
+ int light_get_next_packet(light_pcapng_t *pcapng, light_packet_header *packet_header, const uint8_t **packet_data);
+ 
+ void light_write_packet(light_pcapng_t *pcapng, const light_packet_header *packet_header, const uint8_t *packet_data);
+diff --git a/3rdParty/LightPcapNg/LightPcapNg/include/light_special.h b/3rdParty/LightPcapNg/LightPcapNg/include/light_special.h
+index a5055f73edc7..5b9bf1c523d1 100644
+--- a/3rdParty/LightPcapNg/LightPcapNg/include/light_special.h
++++ b/3rdParty/LightPcapNg/LightPcapNg/include/light_special.h
+@@ -48,6 +48,12 @@ struct _light_interface_description_block {
+ 	uint32_t snapshot_length;
+ };
+ 
++struct _light_decryption_secrets_block {
++  uint32_t secrets_type;
++  uint32_t secrets_length;
++  uint32_t secrets_data[0];
++};
++
+ struct _light_enhanced_packet_block {
+ 	uint32_t interface_id;
+ 	uint32_t timestamp_high, timestamp_low;
+diff --git a/3rdParty/LightPcapNg/LightPcapNg/src/light_pcapng_ext.c b/3rdParty/LightPcapNg/LightPcapNg/src/light_pcapng_ext.c
+index af8a382db767..c696dc3edfef 100644
+--- a/3rdParty/LightPcapNg/LightPcapNg/src/light_pcapng_ext.c
++++ b/3rdParty/LightPcapNg/LightPcapNg/src/light_pcapng_ext.c
+@@ -374,6 +374,72 @@ light_pcapng_file_info *light_pcang_get_file_info(light_pcapng_t *pcapng)
+ 	return pcapng->file_info;
+ }
+ 
++int light_get_decryption_secrets(light_pcapng_t *pcapng, const light_decryption_secret **secret_data, size_t *count)
++{
++  DCHECK_NULLP(pcapng, return 0);
++
++  *secret_data = (light_decryption_secret*)calloc(MAX_SUPPORTED_SECRETS_BLOCKS, sizeof(light_decryption_secret));
++  *count = 0;
++
++  //Bookmark our current location
++  light_file_pos_t currentPos = light_get_pos(pcapng->file);
++  //Search from the beginning
++  light_set_pos(pcapng->file, 0);
++
++  light_read_record(pcapng->file, &pcapng->pcapng);
++  while (pcapng->pcapng != NULL && *count < MAX_SUPPORTED_SECRETS_BLOCKS)
++  {
++    light_read_record(pcapng->file, &pcapng->pcapng);
++    uint32_t type = LIGHT_UNKNOWN_DATA_BLOCK;
++    light_get_block_info(pcapng->pcapng, LIGHT_INFO_TYPE, &type, NULL);
++
++    if (type == LIGHT_DECRYPTION_SECRETS_BLOCK)
++    {
++      struct _light_decryption_secrets_block* dsb = NULL;
++      light_get_block_info(pcapng->pcapng, LIGHT_INFO_BODY, &dsb, NULL);
++			if (dsb == NULL)
++			{
++				continue;
++			}
++
++			light_decryption_secret* secret = &(*secret_data)[*count];
++			secret->type = dsb->secrets_type;
++			secret->length = dsb->secrets_length;
++			secret->data = (uint8_t*)calloc(secret->length, sizeof(uint8_t));
++			memcpy(secret->data, (uint8_t*)dsb->secrets_data, secret->length);
++
++			(*count)++;
++    }
++  }
++
++  //Should be at and of file now, if not something broke!!!
++  if (!light_eof(pcapng->file))
++  {
++    light_pcapng_release(pcapng->pcapng);
++    return 0;
++  }
++  //Ok got to end of file so reset back to bookmark
++  light_set_pos(pcapng->file, currentPos);
++  light_pcapng_release(pcapng->pcapng);
++
++	return 1;
++}
++
++void light_free_decryption_secrets(const light_decryption_secret **secret_data, size_t count)
++{
++	for (size_t ii = 0; ii < count; ii++)
++	{
++		light_decryption_secret* secret = &(*secret_data)[ii];
++		if (secret->data != NULL)
++		{
++			free(secret->data);
++		}
++	}
++
++	free(*secret_data);
++	*secret_data = NULL;
++}
++
+ int light_get_next_packet(light_pcapng_t *pcapng, light_packet_header *packet_header, const uint8_t **packet_data)
+ {
+ 	uint32_t type = LIGHT_UNKNOWN_DATA_BLOCK;

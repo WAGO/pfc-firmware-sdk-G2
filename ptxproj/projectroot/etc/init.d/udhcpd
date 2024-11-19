@@ -17,6 +17,13 @@ DAEMON=/usr/sbin/udhcpd
 CONF=/var/run/udhcpd/udhcpd.conf
 NAME=udhcpd
 
+fire_dhcp_event ()
+{
+  event="$1"
+
+  [ -d /etc/config-tools/events/dhcp/ ] && run-parts -a "${event}" /etc/config-tools/events/dhcp/ >/dev/null 2>&1
+}
+
 [ -x $DAEMON ] || exit 0
 
 [ -f $CONF ] || exit 0
@@ -26,6 +33,7 @@ case "$1" in
     printf "Starting %s: " "$NAME"
     start-stop-daemon --background --start --pidfile $PIDFILE --make-pidfile -x $DAEMON -- -f $CONF
     RETVAL=$?
+    fire_dhcp_event 'start'
     echo
     [ $RETVAL -eq 0 ]
     ;;
@@ -33,6 +41,7 @@ case "$1" in
     printf "Stopping %s: " "$NAME"
     start-stop-daemon --oknodo --stop --pidfile $PIDFILE -x $DAEMON
     RETVAL=$?
+    fire_dhcp_event 'stop'
     echo
     [ $RETVAL -eq 0 ]
     ;;

@@ -26,6 +26,7 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
     echo "or     get_runtime_config cfg-version=1|2|3 webserver-state"
     echo "or     get_runtime_config cfg-version=1|2|3 authentication"
     echo "or     get_runtime_config cfg-version=1|2|3 serial-programming"
+    echo "or     get_runtime_config cfg-version=1|3 webserver-authentication"
     echo "or     get_runtime_config service-state"
     echo "or     get_runtime_config comm-port>"
     echo 
@@ -168,6 +169,15 @@ case $1 in
     serial-programming)
         arg_assert ${CONFIG_VERSION:-0} "1 2 3" "Missing or wrong argument cfg-version"
         result=$(getrtval $CONFIG_VERSION "SERIAL_PROGRAMMING")
+        ;;
+    webserver-authentication)
+        arg_assert ${CONFIG_VERSION:-0} "1 3" "Missing or wrong argument cfg-version"
+        val=$(chplcconfig -g -s CmpWebServerHandlerV3 -k CallVisuServicesDirectly -o)
+        if [ "$val" = "0" ]; then
+            result="enabled"
+        else
+            result="disabled"
+        fi
         ;;
     service-state)
         result=$(getrtval 2 "SERVICE_DISABLED")

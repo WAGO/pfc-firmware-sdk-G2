@@ -515,3 +515,11 @@ config CDS3_CMPWSSERVER
     select HOST_PYTHON3_JSMIN
     help
         CmpWSServer for websockets (currently elrest)
+        
+config CDS3_TSCIODRVCC100WDX
+    bool "cds3-tsciodrvcc100wdx"
+    default n
+    select CDS3_INCLUDES
+    select CODESYS3
+    help
+        IoDrv for CC100 based on WDx (currently elrest)

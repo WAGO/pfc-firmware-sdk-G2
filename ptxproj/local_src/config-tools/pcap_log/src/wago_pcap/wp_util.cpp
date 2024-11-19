@@ -25,14 +25,19 @@
 #include <sstream>
 #include <filesystem>
 #include <curl/curl.h>
+#include <grp.h>
 #include <sys/mount.h>
 #include <sys/stat.h>
+#include <unistd.h>
+#include <unordered_set>
 
 //------------------------------------------------------------------------------
 // defines; structure, enumeration and type definitions
 //------------------------------------------------------------------------------
 #define ALLOWED_FILE_PARENT_DIR "/var/tmp/"
-#define ALLOWED_FILE_EXTENSION ".log"
+#define ALLOWED_FILE_EXTENSION_LOG ".log"
+#define ALLOWED_FILE_EXTENSION_PCAP ".pcap"
+#define ALLOWED_FILE_EXTENSION_PCAPNG ".pcapng"
 
 //------------------------------------------------------------------------------
 // function prototypes
@@ -45,6 +50,11 @@
 //------------------------------------------------------------------------------
 // variables' and constants' definitions
 //------------------------------------------------------------------------------
+std::unordered_set<std::string> allowed_extensions = {
+  ALLOWED_FILE_EXTENSION_LOG,
+  ALLOWED_FILE_EXTENSION_PCAP,
+  ALLOWED_FILE_EXTENSION_PCAPNG
+};
 
 //------------------------------------------------------------------------------
 // function implementation
@@ -68,26 +78,37 @@ std::string UrlStringToString(std::string const& urlStr)
   return result;
 }
 
-bool check_allowed_and_canonicalise_extra_file_path(std::string & path)
+bool ends_with(const std::string & str, const std::string & suffix)
+{
+  return str.size() >= suffix.size() && str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
+}
+
+bool canonicalise_file_path(std::string & path)
 {
   try
   {
     std::filesystem::path file_path = std::filesystem::canonical(path);
     path = file_path.string();
-
-    if (path.compare(0, std::string(ALLOWED_FILE_PARENT_DIR).length(), ALLOWED_FILE_PARENT_DIR) == 0)
-    {
-      // starts with parent dir: ok
-      if (file_path.extension() == ALLOWED_FILE_EXTENSION)
-      {
-        // ends with extension: ok
-        return true;
-      }
-    }
+    return true;
   }
-  catch (std::filesystem::filesystem_error &)
+  catch (const std::filesystem::filesystem_error &)
   {
-    // path does not exist
+    Debug_Printf("Path \"%s\" not found.\n", path.c_str());
+  }
+
+  return false;
+}
+
+bool check_allowed_extra_file_path(const std::string & path)
+{
+  if (path.compare(0, std::string(ALLOWED_FILE_PARENT_DIR).length(), ALLOWED_FILE_PARENT_DIR) == 0)
+  {
+    // starts with parent dir: ok
+    if (allowed_extensions.find(std::filesystem::path(path).extension()) != allowed_extensions.end())
+    {
+      // ends with extension: ok
+      return true;
+    }
   }
 
   return false;
@@ -172,6 +193,49 @@ std::uintmax_t get_avail_mem()
   }
 
   return 0;
+}
+
+std::uintmax_t get_free_space_left(const std::string & path)
+{
+  try
+  {
+    auto space_info = std::filesystem::space(path);
+    return space_info.available;
+  }
+  catch(const std::filesystem::filesystem_error &)
+  {
+  }
+
+  return 0;
+}
+
+std::uintmax_t get_file_size(const std::string & path)
+{
+  try
+  {
+    return std::filesystem::file_size(path);
+  }
+  catch(const std::filesystem::filesystem_error &)
+  {
+  }
+
+  return 0;
+}
+
+std::filesystem::perms get_allowed_permissions()
+{
+  return std::filesystem::perms::owner_read | std::filesystem::perms::owner_write | std::filesystem::perms::group_read;
+}
+
+bool set_owner_group_webserver(const std::string & path)
+{
+  group * grp = getgrnam("www");
+  if (grp != nullptr)
+  {
+    return chown(path.c_str(), (uid_t)-1, grp->gr_gid) == 0;
+  }
+
+  return false;
 }
 
 //---- End of source file ------------------------------------------------------

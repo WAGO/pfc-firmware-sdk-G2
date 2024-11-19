@@ -17,7 +17,7 @@ PACKAGES-$(PTXCONF_PP_BACNET) += pp_bacnet
 # Paths and names
 #
 PP_BACNET                := pp_bacnet
-PP_BACNET_VERSION        := 1.2.0
+PP_BACNET_VERSION        := 1.3.0
 PP_BACNET_FOLDER         := pp_bacnet_git
 
 ifdef PTXCONF_LIBBACNETCONFIG_SOURCE_DEV
@@ -31,7 +31,12 @@ ifdef PTXCONF_PP_BACNET_SOURCE_RELEASED
 PP_BACNET_URL               := $(call jfrog_template_to_url, PP_BACNET)
 PP_BACNET_ARCHIVE           := $(PP_BACNET)-$(PP_BACNET_VERSION)$(PP_BACNET_SUFFIX)
 else
+ifdef PTXCONF_PP_BACNET_ARTIFACTORY_DEV
+PP_BACNET_URL               := $(call jfrog_template_to_url, PP_BACNET_ARTIFACTORY_DEV)
+PP_BACNET_ARCHIVE           := $(PP_BACNET)-$(PP_BACNET_VERSION)$(PP_BACNET_SUFFIX)
+else
 PP_BACNET_URL               := file://$(PP_BACNET_SRC_DIR)
+endif
 endif
 
 PP_BACNET_SUFFIX            := $(suffix $(PP_BACNET_URL))
@@ -84,6 +89,18 @@ endif
 	@$(call touch)
 endif
 
+ifdef PTXCONF_PP_BACNET_ARTIFACTORY_DEV
+$(STATEDIR)/pp_bacnet.get:
+	@$(call targetinfo)
+
+ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	$(call ptx/in-path, PTXDIST_PATH, scripts/wago/artifactory.sh) fetch \
+    '$(PP_BACNET_URL)' wago_intern/artifactory_sources/$(PP_BACNET_ARCHIVE) '$(PP_BACNET_MD5_FILE)'
+endif
+
+	@$(call touch)
+endif
+
 # ----------------------------------------------------------------------------
 # Extract
 # ----------------------------------------------------------------------------
@@ -98,10 +115,16 @@ ifdef PTXCONF_PP_BACNET_SOURCE_RELEASED
 	@tar xvf wago_intern/artifactory_sources/$(PP_BACNET_ARCHIVE) -C $(PP_BACNET_DIR) --strip-components=1
 	@$(call patchin, PP_BACNET)
 endif
+ifdef PTXCONF_PP_BACNET_ARTIFACTORY_DEV
+	@mkdir -p $(PP_BACNET_DIR)
+	@tar xvf wago_intern/artifactory_sources/$(PP_BACNET_ARCHIVE) -C $(PP_BACNET_DIR) --strip-components=1
+	@$(call patchin, PP_BACNET)
+else
 ifndef PTXCONF_PP_BACNET_SOURCE_RELEASED
 	@if [ ! -L $(PP_BACNET_DIR) ]; then \
 	  ln -s $(PP_BACNET_SRC_DIR) $(PP_BACNET_DIR); \
 	fi
+endif
 endif
 endif
 	@$(call touch)

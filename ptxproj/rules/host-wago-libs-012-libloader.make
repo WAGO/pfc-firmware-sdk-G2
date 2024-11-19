@@ -23,9 +23,9 @@ HOSTLIBLOADER_URL		:=
 HOSTLIBLOADER_DIR		:= $(HOST_BUILDDIR)/$(HOSTLIBLOADER)
 HOSTLIBLOADER_LICENSE	:= unknown
 
-HOSTLIBLOADER_XSRC_DIR:=$(call ptx/in-path, PTXDIST_PATH, local_src/$(LIBLIBLOADER))
-ifeq ($(HOSTLIBLOADER_XSRC_DIR),)
-HOSTLIBLOADER_XSRC_DIR:=$(PTXDIST_WORKSPACE)/local_src/$(LIBLIBLOADER)
+HOSTLIBLOADER_SRC_DIR:=$(call ptx/in-path, PTXDIST_PATH, local_src/$(HOSTLIBLOADER))
+ifeq ($(HOSTLIBLOADER_SRC_DIR),)
+HOSTLIBLOADER_SRC_DIR:=$(PTXDIST_WORKSPACE)/local_src/$(HOSTLIBLOADER)
 endif
 
 # ----------------------------------------------------------------------------
@@ -47,7 +47,7 @@ $(STATEDIR)/hostlibloader.extract: $(STATEDIR)/autogen-tools
 			--exclude=project/objs_test/ \
 			--exclude=lib \
 			--exclude=project/lib_test\
-			$(HOSTLIBLOADER_XSRC_DIR) $(HOST_BUILDDIR)
+			$(HOSTLIBLOADER_SRC_DIR) $(HOST_BUILDDIR)
 	@$(call touch)
 	
 

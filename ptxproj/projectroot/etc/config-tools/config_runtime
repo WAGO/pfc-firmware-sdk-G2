@@ -71,6 +71,16 @@ cds3_webserverport()
     echo $port_no
 }
 
+# Convert enabled/disabled to corresponding value for codesys-key CallVisuServicesDirectly
+convert_webvisu_port_auth_to_configuration_value()
+{
+    if [ "$1" = "enabled" ]; then
+        echo 0
+    else
+        echo 1
+    fi
+}
+
 chplcconfig_wrapper()
 {
     local local_status
@@ -108,6 +118,11 @@ write_cds3config()
 
         V3_PORT_AUTH)
             chplcconfig_wrapper CmpUserMgr SecureLogin $parvalue
+	    ;;
+
+        V3_WEBSERVER_PORT_AUTH)
+            port_auth_val=$(convert_webvisu_port_auth_to_configuration_value $parvalue)
+            chplcconfig_wrapper CmpWebServerHandlerV3 CallVisuServicesDirectly $port_auth_val
     esac
 }
 
@@ -268,6 +283,7 @@ if [ "$1" = "-h" -o "$1" = "--help" ]; then
     echo "or     config_runtime [cfg-version=<cfg-version-value>] serial-programming=<serial-programming-value>"
     echo "or     config_runtime [cfg-version=<cfg-version-value>] service-state=<service-state-value>"
     echo "or     config_runtime [cfg-version=<cfg-version-value>] comm-port=<comm-port-value>"
+    echo "or     config_runtime [cfg-version=<cfg-version-value>] webserver-authentication=<authentication-value>"
     echo
     echo "-w|--wait                   on start of the runtime wait for termination of init script"
     echo "<runtime-version-value>     = 0 | 1 | 2 | 3   Run the requested PLC runtime or none if arg = 0."
@@ -311,6 +327,7 @@ NEW_SERVICE_DISABLED=$(GetParameterValue "service-state" $*)
 NEW_SERVICE_PORT_NO=$(GetParameterValue "comm-port" $*)
 CFG_VERSION=$(GetParameterValue "cfg-version" $*)
 RESTART_SERVER=$(GetParameterValue "restart-server" $*)
+NEW_WEBSERVER_PORT_AUTH=$(GetParameterValue "webserver-authentication" $*)
 
 # backward compatibility: convert old argument "boot-project" to new argument "homedir-on-sdcard" (WAT32108)
 NEW_BOOTPROJECT_LOCATION=$(GetParameterValue "boot-project" $*)
@@ -355,6 +372,13 @@ elif [ "$NEW_WEBSERVER_STATE" ]; then
     arg_assert "$NEW_WEBSERVER_STATE" "enabled disabled" "Invalid runtime webserver state"
     VARNAME="V${CONFIG_SET}_WEBSERVER_STATE"
     do_update $CONFIG_SET $VARNAME $NEW_WEBSERVER_STATE
+    status=$?
+
+elif [ "$NEW_WEBSERVER_PORT_AUTH" ]; then
+    arg_assert "$CONFIG_SET" "3" "Webserver port authentication only valid for CDSv3"
+    arg_assert "$NEW_WEBSERVER_PORT_AUTH" "enabled disabled" "Invalid webserver port authentication"
+    VARNAME="V${CONFIG_SET}_WEBSERVER_PORT_AUTH"
+    write_cds3config $VARNAME $NEW_WEBSERVER_PORT_AUTH
     status=$?
 
 elif [ "$NEW_PORT_AUTH" ]; then

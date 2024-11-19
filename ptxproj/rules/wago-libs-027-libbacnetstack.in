@@ -15,6 +15,7 @@ config LIBBACNETSTACK
 	select LIBBACNETCONFIG
 	select LIBCTCALLHELPER
 	select LIBCURL
+	select LIBWEBSOCKETS
 	select DAL
 	select LIBWAGODRM
 	select LIBXML2
@@ -35,6 +36,13 @@ choice
                 prompt "released / Artifactory"
                 help
                   Use released version of source code, taken from Artifactory.
+
+		config LIBBACNETSTACK_ARTIFACTORY_DEV
+				bool
+				prompt "unreleased / Artifactory"
+				help
+		  		  Use unreleased version of source code, taken from Artifactory.
+		  		  Use only for testing!
 
         config LIBBACNETSTACK_SOURCE_DEV
                 bool
@@ -66,6 +74,18 @@ config LIBBACNETSTACK_URL_TEMPLATE
 	help
 	  Encodes the desired artifact version. Can be configured to a specific version or to a latest compatible version of an artifact.
 	  See Confluence for further details.
+
+endif
+
+if LIBBACNETSTACK_ARTIFACTORY_DEV
+
+config LIBBACNETSTACK_ARTIFACTORY_DEV_URL_TEMPLATE
+	string
+	depends on LIBBACNETSTACK
+	prompt "URL template"
+	default "%ARTIFACTORY_BASE_URL%/artifactory/api/search/latestVersion?g=wago_intern%2FBACnet_Stack%2Fmain&a=BACnet_Stack-Source&repos=pl_controller-generic-dev-local&v=*"
+	help
+	  Searches for the current dev artifact.
 
 endif
 

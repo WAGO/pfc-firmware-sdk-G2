@@ -14,9 +14,9 @@ PACKAGES-$(PTXCONF_REDOC_UI) += redoc-ui
 #
 # Paths and names
 #
-REDOC_UI_VERSION       := 2.0.0
+REDOC_UI_VERSION       := 2.1.5
 REDOC_UI_VERSION_PTX   := $(shell echo -n $(REDOC_UI_VERSION) | sed s/-/~/g)
-REDOC_UI_MD5           := d666374c09ded4a3704519bc4ee15f7f
+REDOC_UI_MD5           := d81d2af1dc41d79a81f4e3761ba5e8d5
 REDOC_UI               := redoc-ui-$(REDOC_UI_VERSION)
 REDOC_UI_SUFFIX        := tgz
 REDOC_UI_URL           := https://registry.npmjs.org/redoc/-/redoc-$(REDOC_UI_VERSION).$(REDOC_UI_SUFFIX)

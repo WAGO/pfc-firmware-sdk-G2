@@ -31,11 +31,17 @@
 // function prototypes
 //------------------------------------------------------------------------------
 std::string UrlStringToString(std::string const& urlStr);
-bool check_allowed_and_canonicalise_extra_file_path(std::string & path);
+bool ends_with(const std::string & str, const std::string & suffix);
+bool canonicalise_file_path(std::string & path);
+bool check_allowed_extra_file_path(const std::string & path);
 
 bool create_tmpfs_mount(const std::filesystem::path & mount_path, std::uintmax_t size_bytes);
 bool is_mounted_dir(const std::filesystem::path & dir);
 std::uintmax_t get_avail_mem();
+std::uintmax_t get_free_space_left(const std::string & path);
+std::uintmax_t get_file_size(const std::string & path);
+std::filesystem::perms get_allowed_permissions();
+bool set_owner_group_webserver(const std::string & path);
 
 #ifdef __cplusplus
 extern "C"

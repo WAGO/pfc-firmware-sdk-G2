@@ -151,6 +151,7 @@ configParam+=(
   "rs232Owner;                /etc/config-tools/get_coupler_details RS232-owner;                /etc/config-tools/config_RS232 owner="
   "codesys-webserver-state;   /etc/config-tools/get_runtime_config cfg-version=2 webserver-state; /etc/config-tools/config_runtime cfg-version=2 webserver-state="
   "codesys3-webserver-state;  /etc/config-tools/get_runtime_config cfg-version=3 webserver-state; /etc/config-tools/config_runtime cfg-version=3 webserver-state="
+  "codesys3-webserver-authentication;  /etc/config-tools/get_runtime_config cfg-version=3 webserver-authentication; /etc/config-tools/config_runtime cfg-version=3 webserver-authentication="
   "ftp-state;                 /etc/config-tools/config_ssl ftp-status;                          /etc/config-tools/config_port port=ftp state="
   "ftps-state;                /etc/config-tools/config_ssl ftps-status;                         /etc/config-tools/config_port port=ftps state="
   "codesys-port-state;        /etc/config-tools/get_runtime_config service-state;               /etc/config-tools/config_runtime cfg-version=2 service-state="

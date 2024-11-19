@@ -18,7 +18,7 @@ class IInterfaceInformation {
   IInterfaceInformation& operator=(const IInterfaceInformation&&) = delete;
 
   virtual InterfaceConfigs const& GetPortConfigs() = 0;
-  virtual InterfaceStatuses GetCurrentPortStatuses() = 0;
+  virtual Status GetCurrentPortStatuses(InterfaceStatuses& itf_statuses) = 0;
   virtual InterfaceInformations GetInterfaceInformations() = 0;
 
 };

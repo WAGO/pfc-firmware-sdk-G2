@@ -23,7 +23,7 @@ class IIPManager {
   virtual Status ApplyDipConfiguration(const DipSwitchIpConfig &dip_switch_ip_config) = 0;
   virtual Status ApplyIpConfiguration(const IPConfigs &ip_configs, const DipSwitchIpConfig &dip_switch_ip_config) = 0;
 
-  virtual Status ValidateIPConfigs(const IPConfigs &configs) const = 0;
+  virtual Status ValidateIPConfigs(const IPConfigs &configs, const Interfaces &interfaces) const = 0;
   virtual IPConfigs GetIPConfigs() const = 0;
   virtual IPConfigs GetCurrentIPConfigs() const = 0;
 

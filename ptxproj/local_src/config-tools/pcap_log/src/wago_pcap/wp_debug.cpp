@@ -18,9 +18,13 @@
 // include files
 //------------------------------------------------------------------------------
 #include "wp_debug.hpp"
+#include "wp_util.hpp"
 
+#include <chrono>
 #include <cstdarg>  // va_xxx()
-#include <iostream> // vprintf()
+#include <fstream>
+#include <filesystem>
+#include <vector>
 
 //------------------------------------------------------------------------------
 // defines; structure, enumeration and type definitions
@@ -42,22 +46,41 @@ bool DebugPrintIsOn = false;
 //------------------------------------------------------------------------------
 // function implementation
 //------------------------------------------------------------------------------
-void Debug_Printf(const char * msg, ...) {
-  if (DebugPrintIsOn)
+std::string format(const char * fmt, ...)
+{
+  va_list args;
+  va_list args_copy;
+  va_copy(args_copy, args);
+  va_start(args, fmt);
+  int formatted_length = std::vsnprintf(nullptr, 0, fmt, args);
+  va_end(args);
+
+  if (formatted_length <= 0)
   {
-    va_list args;
-    va_start(args, msg);
-    vprintf(msg, args);
-    /*
-    FILE *fp = fopen("/root/pcap.log", "a");
-    if(NULL != fp)
-    {
-      vfprintf(fp, msg, args);
-      fclose(fp);
-    }
-    */
-    va_end(args);
+    return "";
   }
+
+  std::vector<char> formatted(static_cast<size_t>(formatted_length) + 1);
+  va_start(args_copy, fmt);
+  std::vsnprintf(&formatted[0], static_cast<size_t>(formatted_length) + 1, fmt, args_copy);
+  va_end(args_copy);
+
+  return { formatted.data(), formatted.size() };
+}
+
+void LogToFile(const std::string & file_path, const std::string & msg)
+{
+  auto now = std::chrono::system_clock::now();
+  auto datetime = std::chrono::system_clock::to_time_t(now);
+  bool file_exists = std::filesystem::exists(file_path);
+
+  std::ofstream ofs{file_path, std::ofstream::app};
+  if (!file_exists)
+  {
+    std::filesystem::permissions(file_path, get_allowed_permissions());
+  }
+
+  ofs << std::put_time(std::localtime(&datetime), "%F %T %Z") << ": " << msg;
 }
 
 void Debug_SetEnable() {

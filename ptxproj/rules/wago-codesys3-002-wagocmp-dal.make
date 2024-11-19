@@ -17,7 +17,7 @@ PACKAGES-$(PTXCONF_CDS3_IODRVDAL) += cds3-iodrvdal
 #
 # Paths and names
 #
-CDS3_IODRVDAL_VERSION       := 0.0.2
+CDS3_IODRVDAL_VERSION       := 1.0.0
 CDS3_IODRVDAL_MD5           :=
 CDS3_IODRVDAL               := IoDrvDal
 CDS3_IODRVDAL_BUILDCONFIG   := Release

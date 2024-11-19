@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_PCAP_LOG) += pcap_log
 #
 # Paths and names
 #
-PCAP_LOG_VERSION        := 1.0.0
+PCAP_LOG_VERSION        := 1.1.0
 PCAP_LOG_MD5            :=
 PCAP_LOG                := pcap_log
 PCAP_LOG_BUILDCONFIG    := Release
@@ -43,7 +43,7 @@ SCRIPT_DIR=$(PTXDIST_SYSROOT_HOST)/lib/ct-build
 $(PCAP_LOG_SRC_DIR):
 	@echo "Error: $@: directory not found!" >&2; exit 2
 
-$(STATEDIR)/pcap_log.extract:  | $(PCAP_LOG_SRC_DIR) 
+$(STATEDIR)/pcap_log.extract:  | $(PCAP_LOG_SRC_DIR)
 	@$(call targetinfo)
 	@mkdir -p $(PCAP_LOG_BUILDROOT_DIR)
 	@if [ ! -L $(PCAP_LOG_DIR) ]; then \
@@ -94,7 +94,7 @@ $(STATEDIR)/pcap_log.targetinstall:
 	@$(call install_fixup, pcap_log,AUTHOR,"WAGO GmbH \& Co. KG")
 	@$(call install_fixup, pcap_log,DESCRIPTION,missing)
 
-	@$(call install_copy, pcap_log, 0, 0, 0755, $(PCAP_LOG_BUILD_DIR)/pcap_log.elf, /etc/config-tools/pcap_log) 
+	@$(call install_copy, pcap_log, 0, 0, 0755, $(PCAP_LOG_BUILD_DIR)/pcap_log.elf, /etc/config-tools/pcap_log)
 	@$(call install_copy, pcap_log, 0, 0, 0444, $(PCAP_LOG_DIR)/etc/sudoers.d/pcap_log, /etc/sudoers.d/pcap_log)
 
 	@$(call install_finish, pcap_log)

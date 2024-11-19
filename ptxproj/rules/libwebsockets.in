@@ -1,0 +1,18 @@
+## SECTION=system_libraries
+
+menuconfig LIBWEBSOCKETS
+	tristate
+	select HOST_CMAKE
+	select ZLIB
+	select OPENSSL
+	prompt "libwebsockets                 "
+	help
+	  Libwebsockets is a lightweight pure C library built to use minimal CPU and memory resources, and provide fast throughput in both directions as client or server.
+
+if LIBWEBSOCKETS
+
+config LIBWEBSOCKETS_TESTS
+	bool
+	prompt "install test applications"
+
+endif

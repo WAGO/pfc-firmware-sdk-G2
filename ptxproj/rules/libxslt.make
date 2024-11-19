@@ -15,14 +15,13 @@ PACKAGES-$(PTXCONF_LIBXSLT) += libxslt
 #
 # Paths and names
 #
-LIBXSLT_VERSION	:= 1.1.36
-LIBXSLT_MD5	:= ecf54ae636780d7983dd664b852e3212
+LIBXSLT_VERSION	:= 1.1.40
+LIBXSLT_MD5	:= d9f936c2d94cbb229b504d48b2649376
 LIBXSLT		:= libxslt-$(LIBXSLT_VERSION)
 LIBXSLT_SUFFIX	:= tar.xz
 LIBXSLT_SOURCE	:= $(SRCDIR)/$(LIBXSLT).$(LIBXSLT_SUFFIX)
 LIBXSLT_DIR	:= $(BUILDDIR)/$(LIBXSLT)
 LIBXSLT_LICENSE	:= MIT
-# The file 'COPYING' is just a symlink on the file 'Copyright'
 LIBXSLT_LICENSE_FILES := \
 	file://Copyright;md5=0cd9a07afbeb24026c9b03aecfeba458
 
@@ -33,20 +32,20 @@ LIBXSLT_URL	:= \
 # Prepare
 # ----------------------------------------------------------------------------
 
-LIBXSLT_ENV	:= \
+LIBXSLT_CONF_ENV := \
 	$(CROSS_ENV) \
 	ac_cv_path_XML_CONFIG=xml2-config
 
 #
 # autoconf
 #
-LIBXSLT_AUTOCONF := \
+LIBXSLT_CONF_TOOL := autoconf
+LIBXSLT_CONF_OPT := \
 	 $(CROSS_AUTOCONF_USR) \
 	--disable-static \
 	--without-python \
 	--$(call ptx/wwo, PTXCONF_LIBXSLT_CRYPTO)-crypto \
 	--$(call ptx/wwo, PTXCONF_LIBXSLT_DEBUG)-debug \
-	--$(call ptx/wwo, PTXCONF_LIBXSLT_DEBUG)-mem-debug \
 	--$(call ptx/wwo, PTXCONF_LIBXSLT_DEBUG)-debugger \
 	--$(call ptx/wwo, PTXCONF_LIBXSLT_PROFILER)-profiler \
 	--$(call ptx/wwo, PTXCONF_LIBXSLT_PLUGINS)-plugins

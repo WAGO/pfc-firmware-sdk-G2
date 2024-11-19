@@ -213,4 +213,20 @@ void SortByInterface(IPConfigs &a) {
   std::sort(a.begin(), a.end(), interface_less);
 }
 
+bool hasValidIPSourceForDeviceType(const IPConfig &ip_config, const DeviceType &type) {
+  if(type == DeviceType::Bridge) {
+    return IPConfig::SourceIsAnyOf(ip_config, IPSource::NONE, IPSource::STATIC, IPSource::DHCP, IPSource::BOOTP, IPSource::EXTERNAL, IPSource::FIXIP);
+  }
+
+  if(type == DeviceType::Dummy) {
+    return IPConfig::SourceIsAnyOf(ip_config, IPSource::NONE, IPSource::STATIC);
+  }
+
+  if(type == DeviceType::Vlan) {
+    return IPConfig::SourceIsAnyOf(ip_config, IPSource::NONE, IPSource::STATIC, IPSource::DHCP);
+  }
+
+  return true;
+}
+
 } /* namespace netconf */

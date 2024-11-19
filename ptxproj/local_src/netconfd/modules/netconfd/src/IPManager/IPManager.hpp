@@ -50,7 +50,7 @@ class IPManager : public IIPManager, public INetDevEvents, public IIPLinks, publ
   Status ApplyDipConfiguration(const DipSwitchIpConfig &dip_switch_ip_config) override;
   Status ApplyIpConfiguration(const IPConfigs &ip_configs, const DipSwitchIpConfig &dip_switch_ip_config) override;
 
-  Status ValidateIPConfigs(const IPConfigs &configs) const override;
+  Status ValidateIPConfigs(const IPConfigs &configs, const Interfaces &interfaces) const override;
 
   IPConfigs GetIPConfigs() const override;
   IPConfigs GetCurrentIPConfigs() const override;

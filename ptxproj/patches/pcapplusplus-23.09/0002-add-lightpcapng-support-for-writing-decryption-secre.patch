@@ -1,0 +1,76 @@
+From: Alexander Riedel <alexander.riedel@wago.com>
+Date: Mon, 22 Jul 2024 11:21:50 +0200
+Subject: [PATCH] add lightpcapng support for writing decryption secret blocks
+
+---
+ .../LightPcapNg/include/light_pcapng_ext.h         |  2 +
+ .../LightPcapNg/LightPcapNg/src/light_pcapng_ext.c | 43 ++++++++++++++++++++++
+ 2 files changed, 45 insertions(+)
+
+diff --git a/3rdParty/LightPcapNg/LightPcapNg/include/light_pcapng_ext.h b/3rdParty/LightPcapNg/LightPcapNg/include/light_pcapng_ext.h
+index 21c9a703ae70..b842866cba68 100644
+--- a/3rdParty/LightPcapNg/LightPcapNg/include/light_pcapng_ext.h
++++ b/3rdParty/LightPcapNg/LightPcapNg/include/light_pcapng_ext.h
+@@ -101,6 +101,8 @@ light_pcapng_file_info *light_pcang_get_file_info(light_pcapng_t *pcapng);
+ /// Note: secret_data need to be freed again with light_free_decryption_secrets
+ int light_get_decryption_secrets(light_pcapng_t *pcapng, const light_decryption_secret **secret_data, size_t *count);
+ 
++void light_write_decryption_secrets(light_pcapng_t *pcapng, const light_decryption_secret *secret_data, size_t count);
++
+ void light_free_decryption_secrets(const light_decryption_secret **secret_data, size_t count);
+ 
+ int light_get_next_packet(light_pcapng_t *pcapng, light_packet_header *packet_header, const uint8_t **packet_data);
+diff --git a/3rdParty/LightPcapNg/LightPcapNg/src/light_pcapng_ext.c b/3rdParty/LightPcapNg/LightPcapNg/src/light_pcapng_ext.c
+index c696dc3edfef..113ab660212c 100644
+--- a/3rdParty/LightPcapNg/LightPcapNg/src/light_pcapng_ext.c
++++ b/3rdParty/LightPcapNg/LightPcapNg/src/light_pcapng_ext.c
+@@ -425,6 +425,49 @@ int light_get_decryption_secrets(light_pcapng_t *pcapng, const light_decryption_
+ 	return 1;
+ }
+ 
++void light_write_decryption_secrets(light_pcapng_t * pcapng, const light_decryption_secret * secret_data, size_t count)
++{
++	DCHECK_NULLP(pcapng, return);
++	DCHECK_ASSERT_EXP(__is_open_for_write(pcapng) == LIGHT_TRUE, "file not open for writing", return);
++	DCHECK_NULLP(secret_data, return);
++	if (count == 0)
++	{
++		return;
++	}
++
++	light_pcapng blocks_to_write = NULL;
++	light_pcapng block_to_write_next = NULL;
++	for (size_t ii = 0; ii < count; ii++)
++	{
++		size_t dsb_size = sizeof(struct _light_decryption_secrets_block) + secret_data[ii].length + 3 * sizeof(uint32_t);
++		PADD32(dsb_size, &dsb_size);
++		uint8_t *dsb_mem = calloc(1, dsb_size);
++
++		struct _light_decryption_secrets_block *dsb = (struct _light_decryption_secrets_block*)dsb_mem;
++		dsb->secrets_type = secret_data[ii].type;
++		dsb->secrets_length = secret_data[ii].length;
++		memcpy(dsb->secrets_data, secret_data[ii].data, secret_data[ii].length);
++
++		light_pcapng dsb_block_pcapng = light_alloc_block(LIGHT_DECRYPTION_SECRETS_BLOCK, (const uint32_t*)dsb_mem, dsb_size);
++		free(dsb_mem);
++
++		if (block_to_write_next != NULL)
++		{
++			light_add_block(block_to_write_next, dsb_block_pcapng);
++			block_to_write_next = dsb_block_pcapng;
++		}
++		else
++		{
++			blocks_to_write = dsb_block_pcapng;
++			block_to_write_next = blocks_to_write;
++		}
++	}
++
++	light_pcapng_to_file_stream(blocks_to_write, pcapng->file);
++
++	light_pcapng_release(blocks_to_write);
++}
++
+ void light_free_decryption_secrets(const light_decryption_secret **secret_data, size_t count)
+ {
+ 	for (size_t ii = 0; ii < count; ii++)

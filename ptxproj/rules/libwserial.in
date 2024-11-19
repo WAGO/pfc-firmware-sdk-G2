@@ -10,6 +10,7 @@ menuconfig LIBWSERIAL
 	select HOST_CT_BUILD
 	select GOOGLETEST
 	select NLOHMANN_JSON
+	select LIBGPIOD if LIBWSERIAL_PFC300
 	prompt "libwserial"
 	help
 	  Library for controlling serial port

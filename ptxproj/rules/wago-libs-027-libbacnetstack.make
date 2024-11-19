@@ -21,14 +21,20 @@ LIBBACNETSTACK_FOLDER            := libbacnetstack_git
  
 ifdef PTXCONF_LIBBACNETSTACK_SOURCE_DEV
 LIBBACNETSTACK_REVISION          := 25
-LIBBACNETSTACK_SO_VERSION        := 3.2.1
+LIBBACNETSTACK_SO_VERSION        := 3.3.5
 LIBBACNETSTACK_GIT_URL           := git@svgithub01001.wago.local:BU-Automation/bacnet-ptxdist-libbacnetstack.git
 LIBBACNETSTACK_ENVIRON           := DEVELOP
 endif
 
 ifdef PTXCONF_LIBBACNETSTACK_SOURCE_RELEASED
 LIBBACNETSTACK_REVISION          := 25
-LIBBACNETSTACK_SO_VERSION        := 3.2.1
+LIBBACNETSTACK_SO_VERSION        := 3.3.5
+LIBBACNETSTACK_ENVIRON           := RELEASE
+endif
+
+ifdef PTXCONF_LIBBACNETSTACK_ARTIFACTORY_DEV
+LIBBACNETSTACK_REVISION          := 25
+LIBBACNETSTACK_SO_VERSION        := 3.3.5
 LIBBACNETSTACK_ENVIRON           := RELEASE
 endif
 
@@ -41,13 +47,20 @@ LIBBACNETSTACK_ENV_VENDOR        := WAGO
 ifdef PTXCONF_LIBBACNETSTACK_SOURCE_RELEASED
 LIBBACNETSTACK_URL               := $(call jfrog_template_to_url, LIBBACNETSTACK)
 else
+ifdef PTXCONF_LIBBACNETSTACK_ARTIFACTORY_DEV
+LIBBACNETSTACK_URL               := $(call jfrog_template_to_url, LIBBACNETSTACK_ARTIFACTORY_DEV)
+else
 LIBBACNETSTACK_URL               := file://$(LIBBACNETSTACK_REL_PATH)
+endif
 endif
 LIBBACNETSTACK_SUFFIX            := $(suffix $(LIBBACNETSTACK_URL))
 LIBBACNETSTACK_MD5                = $(shell [ -f $(LIBBACNETSTACK_MD5_FILE) ] && cat $(LIBBACNETSTACK_MD5_FILE))
 LIBBACNETSTACK_MD5_FILE          := wago_intern/artifactory_sources/$(LIBBACNETSTACK)$(LIBBACNETSTACK_SUFFIX).md5
 LIBBACNETSTACK_ARTIFACT           = $(call jfrog_get_filename,$(LIBBACNETSTACK_URL))
 ifdef PTXCONF_LIBBACNETSTACK_SOURCE_RELEASED
+LIBBACNETSTACK_ARCHIVE           := $(LIBBACNETSTACK)-$(LIBBACNETSTACK_VERSION)$(LIBBACNETSTACK_SUFFIX)
+endif
+ifdef PTXCONF_LIBBACNETSTACK_ARTIFACTORY_DEV
 LIBBACNETSTACK_ARCHIVE           := $(LIBBACNETSTACK)-$(LIBBACNETSTACK_VERSION)$(LIBBACNETSTACK_SUFFIX)
 endif
 
@@ -104,6 +117,18 @@ endif
 	@$(call touch)
 endif
 
+ifdef PTXCONF_LIBBACNETSTACK_ARTIFACTORY_DEV
+$(STATEDIR)/libbacnetstack.get:
+	@$(call targetinfo)
+
+ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	$(call ptx/in-path, PTXDIST_PATH, scripts/wago/artifactory.sh) fetch \
+    '$(LIBBACNETSTACK_URL)' wago_intern/artifactory_sources/$(LIBBACNETSTACK_ARCHIVE) '$(LIBBACNETSTACK_MD5_FILE)'
+endif
+
+	@$(call touch)
+endif
+
 # ----------------------------------------------------------------------------
 # Extract
 # ----------------------------------------------------------------------------
@@ -117,10 +142,16 @@ ifdef PTXCONF_LIBBACNETSTACK_SOURCE_RELEASED
 	@tar xvf wago_intern/artifactory_sources/$(LIBBACNETSTACK_ARCHIVE) -C $(LIBBACNETSTACK_DIR) --strip-components=1
 	@$(call patchin, LIBBACNETSTACK)
 endif
+ifdef PTXCONF_LIBBACNETSTACK_ARTIFACTORY_DEV
+	@mkdir -p $(LIBBACNETSTACK_DIR)
+	@tar xvf wago_intern/artifactory_sources/$(LIBBACNETSTACK_ARCHIVE) -C $(LIBBACNETSTACK_DIR) --strip-components=1
+	@$(call patchin, LIBBACNETSTACK)
+else
 ifndef PTXCONF_LIBBACNETSTACK_SOURCE_RELEASED
 	@if [ ! -L $(LIBBACNETSTACK_DIR) ]; then \
 		ln -s $(LIBBACNETSTACK_SRC_DIR) $(LIBBACNETSTACK_DIR); \
 	fi
+endif
 endif
 endif
 #	@cd $(LIBBACNETSTACK_SRC_DIR)/source/bacnet_stack/wss && $(LIBBACNETSTACK_SRC_DIR)/source/bacnet_stack/wss/makebuild.sh

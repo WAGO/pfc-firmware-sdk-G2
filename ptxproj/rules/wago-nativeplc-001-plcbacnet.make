@@ -19,7 +19,7 @@ PACKAGES-$(PTXCONF_BACNETNATIVE) += bacnetnative
 BACNETNATIVE                   := bacnetnative
 BACNETNATIVE_FOLDER            := bacnetnative_git
 
-BACNETNATIVE_VERSION           := 1.0.2
+BACNETNATIVE_VERSION           := 1.1.0
 BACNETNATIVE_ELF_VERSION       := $(BACNETNATIVE_VERSION)
 BACNETNATIVE_REL_PATH          := wago_intern/device/bacnet/$(BACNETNATIVE_FOLDER)
 BACNETNATIVE_SRC_DIR           := $(PTXDIST_WORKSPACE)/$(BACNETNATIVE_REL_PATH)
@@ -32,6 +32,9 @@ endif
 ifdef PTXCONF_BACNETNATIVE_SOURCE_RELEASED
 BACNETNATIVE_URL               := $(call jfrog_template_to_url, BACNETNATIVE)
 endif
+ifdef PTXCONF_BACNETNATIVE_ARTIFACTORY_DEV
+BACNETNATIVE_URL               := $(call jfrog_template_to_url, BACNETNATIVE_ARTIFACTORY_DEV)
+endif
 
 
 BACNETNATIVE_SUFFIX            := $(suffix $(BACNETNATIVE_URL))
@@ -39,6 +42,9 @@ BACNETNATIVE_MD5                = $(shell [ -f $(BACNETNATIVE_MD5_FILE) ] && cat
 BACNETNATIVE_MD5_FILE          := wago_intern/artifactory_sources/$(BACNETNATIVE)$(BACNETNATIVE_SUFFIX).md5
 BACNETNATIVE_ARTIFACT           = $(call jfrog_get_filename,$(BACNETNATIVE_URL))
 ifdef PTXCONF_BACNETNATIVE_SOURCE_RELEASED
+BACNETNATIVE_ARCHIVE           := $(BACNETNATIVE)-$(BACNETNATIVE_VERSION)$(BACNETNATIVE_SUFFIX)
+endif
+ifdef PTXCONF_BACNETNATIVE_ARTIFACTORY_DEV
 BACNETNATIVE_ARCHIVE           := $(BACNETNATIVE)-$(BACNETNATIVE_VERSION)$(BACNETNATIVE_SUFFIX)
 endif
 
@@ -95,6 +101,18 @@ endif
 	@$(call touch)
 endif
 
+ifdef PTXCONF_BACNETNATIVE_ARTIFACTORY_DEV
+$(STATEDIR)/bacnetnative.get:
+	@$(call targetinfo)
+
+ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	$(call ptx/in-path, PTXDIST_PATH, scripts/wago/artifactory.sh) fetch \
+    '$(BACNETNATIVE_URL)' wago_intern/artifactory_sources/$(BACNETNATIVE_ARCHIVE) '$(BACNETNATIVE_MD5_FILE)'
+endif
+
+	@$(call touch)
+endif
+
 # ----------------------------------------------------------------------------
 # Extract
 # ----------------------------------------------------------------------------
@@ -108,10 +126,16 @@ ifdef PTXCONF_BACNETNATIVE_SOURCE_RELEASED
 	@tar xvf wago_intern/artifactory_sources/$(BACNETNATIVE_ARCHIVE) -C $(BACNETNATIVE_DIR) --strip-components=1
 	@$(call patchin, BACNETNATIVE)
 endif
+ifdef PTXCONF_BACNETNATIVE_ARTIFACTORY_DEV
+	@mkdir -p $(BACNETNATIVE_DIR)
+	@tar xvf wago_intern/artifactory_sources/$(BACNETNATIVE_ARCHIVE) -C $(BACNETNATIVE_DIR) --strip-components=1
+	@$(call patchin, BACNETNATIVE)
+else
 ifndef PTXCONF_BACNETNATIVE_SOURCE_RELEASED
 	@if [ ! -L $(BACNETNATIVE_DIR) ]; then \
 	  	ln -s $(BACNETNATIVE_SRC_DIR) $(BACNETNATIVE_DIR); \
 	fi
+endif
 endif
 endif
 	@$(call touch)

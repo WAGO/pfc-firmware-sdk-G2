@@ -1,7 +1,7 @@
 ## SECTION=shell_and_console
 config HTOP
 	tristate
-	select HOST_SYSTEM_PYTHON
+	select HOST_SYSTEM_PYTHON3
 	select LIBC_M
 	select GCCLIBS_GCC_S
 	select NCURSES

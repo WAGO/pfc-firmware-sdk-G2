@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WBM_NG) += wbm-ng
 #
 # Paths and names
 #
-WBM_NG_VERSION        := 3.4.0
+WBM_NG_VERSION        := 3.4.2
 WBM_NG                := wbm-pfc-$(WBM_NG_VERSION)
 WBM_NG_URL            := $(call jfrog_template_to_url, WBM_NG)
 WBM_NG_SUFFIX         := $(suffix $(WBM_NG_URL))
@@ -114,6 +114,13 @@ $(STATEDIR)/wbm-ng.targetinstall:
 	@$(call install_copy, wbm-ng, 0, 0, 0750, $(PTXDIST_WORKSPACE)/projectroot/etc/config-tools/get_wbm, /etc/config-tools/get_wbm);
 	@$(call install_copy, wbm-ng, 0, 0, 0750, $(PTXDIST_WORKSPACE)/projectroot/etc/config-tools/config_wbm, /etc/config-tools/config_wbm);
 	@$(call install_copy, wbm-ng, 0, 0, 0750, $(PTXDIST_WORKSPACE)/projectroot/etc/config-tools/backup-restore/backup_wbm, /etc/config-tools/backup-restore/backup_wbm);
+
+	# register oauth client and resource server
+	@$(call install_copy,        wbm-ng, 0, 124, 0770, /etc/authd)
+	@$(call install_copy,        wbm-ng, 0, 124, 0770, /etc/authd/clients)
+	@$(call install_copy,        wbm-ng, 0, 124, 0770, /etc/authd/resource_servers)
+	@$(call install_alternative, wbm-ng, 0, 124, 0660, /etc/authd/clients/wbm.conf)
+	@$(call install_alternative, wbm-ng, 0, 124, 0660, /etc/authd/resource_servers/wbm.conf)
 
 	@$(call install_finish, wbm-ng)
 	@$(call touch)

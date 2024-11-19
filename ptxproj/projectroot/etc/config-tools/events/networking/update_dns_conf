@@ -4,7 +4,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2018-2022 WAGO GmbH & Co. KG
+# Copyright (c) 2018-2024 WAGO GmbH & Co. KG
 
 #-----------------------------------------------------------------------------#
 # Script-name: update_dns_conf
@@ -45,10 +45,10 @@ getEntryWithDelimiter() {
     local DELIMITER="$2"
     local SEARCH_PARAM="$3"
     local RETURN=""
-    local ENTRY=$(grep $SEARCH_PARAM "$FILENAME")
+    local ENTRY; ENTRY=$(grep "$SEARCH_PARAM" "$FILENAME")
 
     if [ -n "$DELIMITER" ]; then
-        while IFS=$DELIMITER read -r f1 f2; do
+        while IFS=$DELIMITER read -r _ f2; do
             RETURN="$RETURN $f2"
         done <<<"$ENTRY"
     else
@@ -115,7 +115,7 @@ getList() {
     #Read dynamic files
     DYNAMIC_FILE_LIST=$(ls $DHCP_TEMPLATE* 2>/dev/null)
     for file in $DYNAMIC_FILE_LIST; do
-        STORAGE_ARRAY[$index]=$(getEntryWithDelimiter $file $DELIMITER "DNS_SERVER_")
+        STORAGE_ARRAY[$index]=$(getEntryWithDelimiter "$file" $DELIMITER "DNS_SERVER_")
         index=$((index + 1))
     done
 
@@ -125,7 +125,7 @@ getList() {
     # Generate the sorted list
     list=$(generateList STORAGE_ARRAY[@] $index $SORTING_ALGO)
 
-    if [ "$?" -gt 0 ]; then
+    if [ $? -gt 0 ]; then
         echo "ERROR: $list"
         exit 1
     fi
@@ -135,9 +135,11 @@ getList() {
 }
 
 buildServerList() {
-    local entries=$(getList)
-    # clear old list by removing every line that contains "nameserver" entry. Avoids leftovers from previous settings/restore
-    sed -i "/^nameserver/d" $RESOLV_CONF
+    local entries; entries=$(getList)
+    # Clear old list by removing every line that contains a "nameserver" entry. Avoids leftovers from previous settings/restore
+    # If the device is running as DNS server, the nameserver entry 127.0.0.1 is added to resolv.conf. This entry
+    # will not be removed.
+    sed -i "/^nameserver 127.0.0.1/!{/^nameserver/d;}" $RESOLV_CONF
     if [ -n "$entries" ]; then
         for entry in $entries; do
             echo "nameserver $entry" >>$RESOLV_CONF
@@ -148,7 +150,7 @@ buildServerList() {
 # Only do a dryrun and print out the list of servers in the correct order
 if [ "$1" == "--dry" ]; then
     entries=$(getList)
-    echo $entries
+    echo "$entries"
     exit 0
 fi
 

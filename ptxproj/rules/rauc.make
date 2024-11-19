@@ -112,12 +112,21 @@ ifeq ($(PTXCONF_PLATFORM), wago-pfc200-pnc)
 	@$(call install_link, rauc, system.conf.pfcv3, /etc/rauc/system.conf.pfc200pnc)
 endif
 
+ifeq ($(PTXCONF_PLATFORM), wago-wp400)
+	@$(call install_alternative, rauc, 0, 0, 0644, /etc/rauc/system.conf.WP400)
+	@$(call install_replace, rauc, /etc/rauc/system.conf.WP400, \
+		@RAUC_BUNDLE_COMPATIBLE@, \
+		$(PTXCONF_RAUC_COMPATIBLE))
+	@$(call install_link, rauc, system.conf.WP400, /etc/rauc/system.conf.wp400)
+endif
+
 ifeq ($(PTXCONF_PLATFORM), vtp-ctp)
 	@$(call install_alternative, rauc, 0, 0, 0644, /etc/rauc/system.conf.TP600)
 	@$(call install_replace, rauc, /etc/rauc/system.conf.TP600, \
 		@RAUC_BUNDLE_COMPATIBLE@, \
 		$(PTXCONF_RAUC_COMPATIBLE))
 	@$(call install_link, rauc, system.conf.TP600, /etc/rauc/system.conf.tp600)
+
 	@$(call install_alternative, rauc, 0, 0, 0644, /etc/rauc/system.conf.EC752)
 	@$(call install_replace, rauc, /etc/rauc/system.conf.EC752, \
 		@RAUC_BUNDLE_COMPATIBLE@, \
@@ -125,7 +134,7 @@ ifeq ($(PTXCONF_PLATFORM), vtp-ctp)
 	@$(call install_link, rauc, system.conf.EC752, /etc/rauc/system.conf.ec752)
 endif
 
-ifeq ($(PTXCONF_PLATFORM), cc100)
+ifeq ($(PTXCONF_PLATFORM), $(filter $(PTXCONF_PLATFORM),cc100 cc100-hardened))
 	@$(call install_alternative, rauc, 0, 0, 0644, /etc/rauc/system.conf.CC100)
 	@$(call install_replace, rauc, /etc/rauc/system.conf.CC100, \
 		@RAUC_BUNDLE_COMPATIBLE@, \

@@ -17,7 +17,7 @@ PACKAGES-$(PTXCONF_CONFIG_TOOLS) += config-tools
 #
 # Paths and names
 #
-CONFIG_TOOLS_VERSION 	      := 2.0.2
+CONFIG_TOOLS_VERSION 	      := 2.0.3
 CONFIG_TOOLS		            := config-tools
 CONFIG_TOOLS_URL            := file://$(PTXDIST_WORKSPACE)/local_src/$(CONFIG_TOOLS)
 CONFIG_TOOLS_DIR	          := $(BUILDDIR)/$(CONFIG_TOOLS)
@@ -208,9 +208,6 @@ endif
 ifdef PTXCONF_CT_GET_RS485_SETTINGS
 	CT_MAKE_ARGS+=get_rs485_settings
 endif
-ifdef PTXCONF_CT_SET_SERIAL_MODE
-	CT_MAKE_ARGS+=set_serial_mode
-endif
 
 ifdef PTXCONF_CT_VPNCFG
 	CT_MAKE_ARGS+=vpncfg
@@ -291,7 +288,6 @@ $(STATEDIR)/config-tools.targetinstall:
 	@$(call install_fixup,config-tools,AUTHOR,"WAGO")
 	@$(call install_fixup,config-tools,DESCRIPTION,missing)
 
-	@$(call install_copy, config-tools, 0, 0, 0755, /etc/config-tools/post_netconfig.d)
 	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/codesys_after_download_hook);
 
 #### Install shell-script based functions.
@@ -544,6 +540,7 @@ endif
 
 ifdef PTXCONF_CT_CONFIG_SSH
 	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/config_ssh);
+	@$(call install_replace, config-tools, /etc/config-tools/config_ssh, @DROPBEAR_BBINIT_LINK@, $(PTXCONF_DROPBEAR_BBINIT_LINK))
 endif
 
 ifdef PTXCONF_CT_CONFIG_TFTP
@@ -564,6 +561,7 @@ endif
 
 ifdef PTXCONF_CT_GET_SSH_CONFIG
 	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/get_ssh_config);
+	@$(call install_replace, config-tools, /etc/config-tools/get_ssh_config, @DROPBEAR_BBINIT_LINK@, $(PTXCONF_DROPBEAR_BBINIT_LINK))
 endif
 
 ifdef PTXCONF_CT_GET_TFTP_CONFIG
@@ -820,9 +818,6 @@ ifdef PTXCONF_CT_IPDATACHECK
 endif
 ifdef PTXCONF_CT_GET_RS485_SETTINGS
 	@$(call install_copy, config-tools, 0, 0, 0750, $(CONFIG_TOOLS_DIR)/get_rs485_settings, /etc/config-tools/get_rs485_settings);
-endif
-ifdef PTXCONF_CT_SET_SERIAL_MODE
-	@$(call install_copy, config-tools, 0, 0, 0750, $(CONFIG_TOOLS_DIR)/set_serial_mode, /etc/config-tools/set_serial_mode);
 endif
 ifdef PTXCONF_CT_WWAN_INTERFACE
 	@$(call install_alternative, config-tools, 0, 0, 0750, /etc/config-tools/config_wwan);

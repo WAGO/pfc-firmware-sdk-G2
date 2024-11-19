@@ -19,6 +19,8 @@
 //------------------------------------------------------------------------------
 // include files
 //------------------------------------------------------------------------------
+#include <iostream>
+#include <string>
 
 //------------------------------------------------------------------------------
 // defines; structure, enumeration and type definitions
@@ -27,19 +29,29 @@
 //------------------------------------------------------------------------------
 // function prototypes
 //------------------------------------------------------------------------------
-#ifdef __cplusplus
-extern "C"
-{
-#endif // __cplusplus
+std::string format(const char * fmt, ...) __attribute__ ((format (printf, 1, 2)));
+void LogToFile(const std::string & file_path, const std::string & msg);
 
-void Debug_Printf(const char * msg, ...) __attribute__ ((format (printf, 1, 2)));
 void Debug_SetEnable();
 void Debug_SetDisable();
 bool Debug_GetState();
 
-#ifdef __cplusplus
-} // extern "C"
-#endif // __cplusplus
+template<typename ...Args> void Debug_Printf(const std::string & msg, Args... args)
+{
+  if (Debug_GetState())
+  {
+    std::cout << format(msg.c_str(), args...);
+  }
+}
+
+template<typename ...Args> void Debug_PrintAndLogToFile(
+  const std::string & file_path,
+  const std::string & msg,
+  Args... args)
+{
+  Debug_Printf(msg, args...);
+  LogToFile(file_path, format(msg.c_str(), args...));
+}
 
 //------------------------------------------------------------------------------
 // macros

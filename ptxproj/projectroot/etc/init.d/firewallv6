@@ -30,7 +30,7 @@ enable_firewall ()
         exit 1
     fi
 
-    $IP6TABLES_RESTORE "$IP6_BASE_RULES"
+    $IP6TABLES_RESTORE --wait=5 "$IP6_BASE_RULES"
 }
 
 disable_firewall ()
@@ -42,7 +42,7 @@ disable_firewall ()
         exit 1
     fi
 
-    $IP6TABLES_RESTORE "$IP6_DISABLED_RULES"
+    $IP6TABLES_RESTORE --wait=5 "$IP6_DISABLED_RULES"
 }
 
 case $1 in

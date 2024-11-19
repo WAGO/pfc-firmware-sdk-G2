@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_WBM_NG_PLUGIN_SNMP) += wbm-ng-plugin-snmp
 #
 # Paths and names
 #
-WBM_NG_PLUGIN_SNMP_VERSION        := 1.3.3
+WBM_NG_PLUGIN_SNMP_VERSION        := 1.3.4
 WBM_NG_PLUGIN_SNMP                := wbm-snmp-$(WBM_NG_PLUGIN_SNMP_VERSION)
 WBM_NG_PLUGIN_SNMP_URL            := $(call jfrog_template_to_url, WBM_NG_PLUGIN_SNMP)
 WBM_NG_PLUGIN_SNMP_SUFFIX         := $(suffix $(WBM_NG_PLUGIN_SNMP_URL))

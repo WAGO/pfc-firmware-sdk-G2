@@ -12,7 +12,7 @@ config SSSD
 	select KRB5
 	select PAM
 	select OPENLDAP
-	select LIBPCRE2
+	select PCRE2
 	select C_ARES
 	select JANSSON
 	select GLIB

@@ -26,14 +26,22 @@
 
 namespace configdnsmasq {
 
-void netcfg_read_settings(ip_configuration &data, std::vector<std::string> &legal_ports, const prgconf_t &prgconf,
-                          bool debugmode);
+enum program_arguments_provisioning { COMPLETELY_PROVIDED, PARTIALLY_PROVIDED, NOT_PROVIDED };
+
+struct network_config {
+  napi::BridgeConfig bridge_config_;
+  napi::IPConfigs ip_configs_;
+  napi::InterfaceConfigs interface_configs_;
+  netconf::InterfaceStatuses interface_statuses_;
+};
+
+program_arguments_provisioning is_network_config_provided_via_program_arguments(const prgconf_t& prgconf);
+void read_network_config(ip_configuration &data, std::vector<std::string> &legal_ports, const prgconf_t &prgconf,
+                         bool debugmode);
 
 void generate_legal_ports(const napi::InterfaceConfigs &interface_configs, ::std::vector<::std::string> &legal_ports);
-void parse_config_parameter(ip_configuration &ipConfig, std::vector<std::string> &legal_ports, bool debugmode,
-                            const napi::BridgeConfig& bridge_config, const napi::IPConfigs& ip_configs,
-                            const napi::InterfaceConfigs& interface_configs,
-                            const netconf::InterfaceStatuses& interface_statuses);
+void parse_config_parameter(configdnsmasq::ip_configuration& ipConfig, std::vector<std::string>& legal_ports,
+                            bool debugmode, const network_config& config);
 
 }  // namespace configdnsmasq
 

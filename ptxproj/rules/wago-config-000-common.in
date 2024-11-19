@@ -609,14 +609,6 @@ config CT_GET_RS485_SETTINGS
   help
    get the RS485Settings
 
-config CT_SET_SERIAL_MODE
-  bool
-  default n
-  depends on CONFIG_TOOLS
-  prompt "set_serial_mode"
-  help
-   Switch TTY2 between RS232 and RS485.
-
 config CT_CONFIG_SERVICE_INTERFACE
   bool
   default n
@@ -1167,6 +1159,7 @@ config CT_PBDP_CONFIG
   bool
   default n
   depends on CONFIG_TOOLS
+  depends on LIBDPS
   prompt "pbdp_config"
   help
    Change Profibus settings (currently only permission to change slave station address).
@@ -1283,9 +1276,10 @@ config CT_TIME_FORMAT
   help
    "Text file /etc/config-tools/TIME_FORMAT. Time format (12/24H) is stored here."
 
-config CT_RS232_OWNER
+config CT_RS232_OWNER 
   bool
   default y
+  prompt "RS232 owner file"
   help
    "Text file /etc/config-tools/RS232_OWNER. COM port's current owner is stored here."
 

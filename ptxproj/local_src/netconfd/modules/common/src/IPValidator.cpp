@@ -9,7 +9,9 @@
 #include <boost/system/error_code.hpp>
 #include <boost/asio.hpp>
 #include <boost/asio/ip/network_v4.hpp>
+#include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <sstream>
 
 namespace netconf {
 using namespace std::literals;
@@ -187,7 +189,28 @@ void CheckInterfaceIsIncludedSeveralTimes(const IPConfigs &ip_configs, Status &s
     }
     checked_interfaces.emplace_back(ip_config.interface_);
   }
+}
 
+void CheckIPSourceForDeviceType(const IPConfigs &ip_configs, const Interfaces &interfaces, Status &status) {
+  
+  ::std::vector<::std::string> interface_names_of_invalid_ip_sources;
+
+  for(const auto &itf : interfaces) {
+
+    auto ip_config = ::std::find_if(ip_configs.begin(), ip_configs.end(), [&](const IPConfig &cfg) {
+      return cfg.interface_ == itf.GetName();
+    });
+
+    if(ip_config != ip_configs.end() && !hasValidIPSourceForDeviceType(*ip_config, itf.GetType())) {
+      interface_names_of_invalid_ip_sources.push_back(ip_config->interface_);
+    }
+  }
+
+  if(!interface_names_of_invalid_ip_sources.empty()) {
+    ::std::stringstream ss;
+    ss << boost::algorithm::join(interface_names_of_invalid_ip_sources, ", ");
+    status.Set(StatusCode::IP_CONFIG_SOURCE, ss.str());
+  }
 }
 
 void AppendIfNotOk(Status &status, const char *text) {
@@ -197,20 +220,24 @@ void AppendIfNotOk(Status &status, const char *text) {
 }
 }
 
-Status IPValidator::ValidateIPConfigs(const IPConfigs &ip_configs) {
+Status IPValidator::ValidateIPConfigs(const IPConfigs &ip_configs, const Interfaces &interfaces) {
 
   Status status;
   CheckInterfaceIsIncludedSeveralTimes(ip_configs, status);
 
-  IPConfigs configs = FilterValidStaticIPConfigs(ip_configs);
   if (status.IsOk()) {
-    CheckIPAddressFormat(configs, status);
+    CheckIPSourceForDeviceType(ip_configs, interfaces, status);
+  }
+
+  IPConfigs static_configs = FilterValidStaticIPConfigs(ip_configs);
+  if (status.IsOk()) {
+    CheckIPAddressFormat(static_configs, status);
   }
   if (status.IsOk()) {
-    CheckIPAddressExistMoreOften(configs, status);
+    CheckIPAddressExistMoreOften(static_configs, status);
   }
   if (status.IsOk()) {
-    CheckOverlappingNetwork(configs, status);
+    CheckOverlappingNetwork(static_configs, status);
   }
   if (status.IsOk()) {
     CheckDHCPClientIDLength(ip_configs, status);
@@ -239,6 +266,7 @@ Status IPValidator::ValidateExistenceAndAccess(const IPConfigs &ip_configs,
   return status;
 
 }
+
 Status IPValidator::ValidateCombinabilityOfIPConfigs(const IPConfigs &lhs_ip_configs, const IPConfigs &rhs_ip_configs) {
 
   Status status;
@@ -279,7 +307,11 @@ Status IPValidator::Validate(IPConfigs candidate, IPConfigs current,
   SortByInterface(current);
   current = GetIpConfigsDifferenceByInterface(current, candidate);
 
-  Status status = IPValidator::ValidateIPConfigs(candidate);
+  Interfaces interfaces;
+  ::std::transform(interface_information.begin(), interface_information.end(), back_inserter(interfaces),
+    [&](const InterfaceInformation ii){return ii.GetInterface();});
+
+  Status status = IPValidator::ValidateIPConfigs(candidate, interfaces);
   AppendIfNotOk(status, "candidate itself");
 
   if (status.IsOk()) {

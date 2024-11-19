@@ -3,8 +3,6 @@
 # Copyright (C) 2007 by Robert Schwebel
 #               2010 by Marc Kleine-Budde <mkl@pengutronix.de>
 #
-# See CREDITS for details about who has contributed to this project.
-#
 # For further information about the PTXdist project and license conditions
 # see the README file.
 #
@@ -17,14 +15,16 @@ PACKAGES-$(PTXCONF_HTOP) += htop
 #
 # Paths and names
 #
-HTOP_VERSION	:= 2.2.0
-HTOP_MD5	:= 0d816b6beed31edc75babcfbf863ffa8
-HTOP		:= htop-$(HTOP_VERSION)
-HTOP_SUFFIX	:= tar.gz
-HTOP_URL	:= http://hisham.hm/htop/releases/$(HTOP_VERSION)/$(HTOP).$(HTOP_SUFFIX)
-HTOP_SOURCE	:= $(SRCDIR)/$(HTOP).$(HTOP_SUFFIX)
-HTOP_DIR	:= $(BUILDDIR)/$(HTOP)
-HTOP_LICENSE	:= GPL-2.0-only
+HTOP_VERSION		:= 3.0.1
+HTOP_MD5		:= c09908bacb5e22454715547aed88c3af
+HTOP			:= htop-$(HTOP_VERSION)
+HTOP_SUFFIX		:= tar.gz
+HTOP_URL		:= https://github.com/htop-dev/htop/archive/$(HTOP_VERSION).$(HTOP_SUFFIX)
+HTOP_SOURCE		:= $(SRCDIR)/$(HTOP).$(HTOP_SUFFIX)
+HTOP_DIR		:= $(BUILDDIR)/$(HTOP)
+HTOP_LICENSE		:= GPL-2.0-only
+HTOP_LICENSE_FILES	:= \
+	file://COPYING;md5=4099d367cd5e59b6d4fc1ee33accb891
 
 # ----------------------------------------------------------------------------
 # Prepare
@@ -39,7 +39,6 @@ HTOP_CONF_ENV	:= \
 HTOP_CONF_TOOL	:= autoconf
 HTOP_CONF_OPT	:= \
 	$(CROSS_AUTOCONF_USR) \
-	--enable-proc \
 	--disable-openvz \
 	--enable-cgroup \
 	--disable-vserver \

@@ -4,6 +4,7 @@ menuconfig OPENVPN
 	tristate
 	prompt "openvpn                       "
 	select OPENSSL
+	select LIBCAP_NG
 	select LIBLZO			if OPENVPN_LZO
 	select SYSTEMD			if OPENVPN_SYSTEMD
 	select IPTABLES			if OPENVPN_INSTALL_SAMPLE_CONFIGS && RUNTIME
@@ -13,6 +14,7 @@ menuconfig OPENVPN
 	select BUSYBOX_FEATURE_IP_ROUTE	if BUSYBOX_IP && RUNTIME
 	select IPROUTE2			if !BUSYBOX_IP && RUNTIME
 	select IPROUTE2_IP		if !BUSYBOX_IP && RUNTIME
+	select PERL			if OPENVPN_INSTALL_SAMPLE_SCRIPTS_PERL && RUNTIME
 	help
 	  virtual private network daemon
 
@@ -67,5 +69,14 @@ config OPENVPN_INSTALL_SAMPLE_SCRIPTS
 	prompt "Install sample scripts"
 	help
 	  Install sample scripts into /usr/share/openvpn/sample-scripts.
+
+if OPENVPN_INSTALL_SAMPLE_SCRIPTS
+
+config OPENVPN_INSTALL_SAMPLE_SCRIPTS_PERL
+	bool
+	depends on STAGING
+	prompt "Install perl sample scripts"
+
+endif
 
 endif

@@ -110,7 +110,7 @@ ifdef PTXCONF_CT_CONFIG_LINUX_USER
 endif
 
 ifdef PTXCONF_CT_RESERVED_AREA
-ifneq ($(PTXCONF_PLATFORM), wago-pfc300)
+ifneq ($(PTXCONF_PLATFORM), $(filter $(PTXCONF_PLATFORM),wago-pfc300 wago-wp400))
 	@$(call install_copy, modular-config-tools, 0, 0, 0750, $(MODULAR_CONFIG_TOOLS_BUILD_DIR)/reserved_area.elf, /etc/config-tools/reserved_area)
 endif
 endif

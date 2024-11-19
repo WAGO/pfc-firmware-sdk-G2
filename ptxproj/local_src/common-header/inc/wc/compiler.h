@@ -123,13 +123,20 @@
 #endif
 
 
-//------------------------------------------------------------------------------
-// variables' and constants' definitions
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
-// function implementation
-//------------------------------------------------------------------------------
+/// \def CLANG_PREREQ(ma, mi)
+/// Macro to test if we're using a specific version of clang or later.
+//lint -estring(961, CLANG_PREREQ) to disable Rule 19.7 it is necessary to disable all 961 messages,
+//                                 function-like macro defined
+#if defined(__clang__)
+#define CLANG_PREREQ(ma, mi) \
+  (   (__clang_major__ > (ma)) \
+   || (   (__clang_major__ == (ma)) \
+       && (   (__clang_minor__ > (mi)) \
+           || ((__clang_minor__ == (mi)) && (__clang_patchlevel__ > 0)))))
+#else
+// We don't use false while expression is used within preprocessor condition-statements
+#define CLANG_PREREQ(ma, mi) (0 == 1)
+#endif
 
 
 #endif /* INC_WC_COMPILER_H_ */

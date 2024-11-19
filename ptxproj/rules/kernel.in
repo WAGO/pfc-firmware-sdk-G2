@@ -11,6 +11,7 @@ menuconfig KERNEL
 	select HOST_SYSTEM_BC
 	select HOST_OPENSSL		if KERNEL_OPENSSL
 	select HOST_LIBELF		if KERNEL_LIBELF
+	select FIRMWARE_IMX		if KERNEL_IMX_FIRMWARE
 	prompt "Linux kernel                  "
 
 
@@ -279,6 +280,18 @@ config KERNEL_GCC_PLUGINS
 	  to ensure that the compiler check always fails. This keeps the
 	  kernel config stable.
 	  Enable this option when the kernel gcc plugins are used.
+
+config KERNEL_IMX_FIRMWARE
+	prompt "build imx firmware for kernel"
+	bool
+	help
+	  select i.MX firmware used for kernel build
+
+config FIRMWARE_IMX
+	bool
+	prompt "build firmware-imx"
+	help
+	  NXP IMX firmware used for kernel and bootloader build
 
 config KERNEL_CONFIG_BASE_VERSION
 	prompt "use base version in the kernelconfig"

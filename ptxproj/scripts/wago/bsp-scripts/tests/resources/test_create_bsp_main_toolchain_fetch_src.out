@@ -1,4 +1,0 @@
-Fetching toolchain sources...
-ptxdist export_src ./export --force
-rm -rf ./export
-mv @SCRIPT_DIR@/toolchain-src @SCRIPT_DIR@/OSELAS.Bla-4711

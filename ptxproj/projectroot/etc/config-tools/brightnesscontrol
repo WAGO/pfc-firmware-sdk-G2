@@ -1,0 +1,124 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2021-2022 WAGO GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
+# Script:   brightnesscontrol
+#
+# Brief:    starting up brightnesscontrol
+#
+# Author:   W. Rückl: elrest Automationssysteme GmbH
+#
+#-----------------------------------------------------------------------------#
+
+
+# brightness_control (screensaverqt) needs DISPLAY environment
+. /etc/profile 2>&1 > /dev/null
+
+USESUDO=""
+PID_FILE="/var/run/brightness_control.pid"
+
+
+if [ $EUID != 0 ]; then
+  USESUDO="sudo"
+fi
+
+PID=""
+
+function wait4start
+{
+  local COUNTER=0
+  PID=$(pidof brightness_control)
+  while [ -z "$PID" ]; do
+    #echo "wait for start, $PID"
+    #not running
+    ((COUNTER++))
+
+    #sleep 50 ms
+    usleep 50000
+
+    if [ $COUNTER -gt 50 ]; then
+      echo "Timeout waiting for starting brightness_control"
+      break;
+    fi
+    PID=$(pidof brightness_control)
+  done
+
+}
+
+function wait4stop
+{
+  local COUNTER=0
+  PID=$(pidof brightness_control)
+  while [ ! -z "$PID" ]; do
+    #echo "wait for stop, $PID"
+    #not running
+    ((COUNTER++))
+
+    #sleep 50 ms
+    usleep 50000
+
+    if [ $COUNTER -gt 50 ]; then
+      #echo "Timeout waiting for stopping brightness_control"
+      break;
+    fi
+    PID=$(pidof brightness_control)
+  done
+
+}
+
+function stop {
+   $USESUDO killall -9 screensaverqt > /dev/null 2>&1
+   $USESUDO killall -9 brightness_control > /dev/null 2>&1
+   wait4stop
+}
+
+
+function start {
+   PID=$(pidof brightness_control)
+   if [ -z "$PID" ]; then
+      $USESUDO rm -f "$PID_FILE"
+      #echo  "starting brightness_control"
+      $USESUDO /usr/bin/brightness_control &
+      wait4start
+      #echo "done"
+   else
+      echo "brightness_control is already running, PID=$PID"
+   fi
+}
+
+function restart {
+  stop
+  start
+}
+
+
+function status {
+   PID=$(pidof brightness_control)
+   if [ -z $PID ]; then
+      echo "brightness_control is not running."
+   else
+      echo "brightness_control is running, PID=$PID"
+   fi
+}
+
+case "$1" in
+   start)
+      start
+   ;;
+   stop)
+      stop
+   ;;
+   restart)
+      restart
+   ;;
+   status)
+      status
+   ;;
+   *)
+      echo "usage: $0 {start|stop|restart|status}"
+esac

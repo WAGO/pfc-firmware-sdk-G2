@@ -1,0 +1,87 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------#
+# Script-name: start_screensaver
+#
+# starting screensaver f.e. preview call from WBM
+#
+# Author: Wolfgang Rückl,  elrest GmbH
+#-----------------------------------------------------------------------------#
+
+# load general definitions and functions
+if [ ! -f "/etc/config-tools/config_tool_lib" ]; then
+  echo "config_tool_lib missing"
+  exit 255
+fi
+export DISPLAY=:0.0
+
+. /etc/config-tools/config_tool_lib
+
+PIDSCREENSAVER=`pidof screensaverqt`
+if [ ! -z $PIDSCREENSAVER ]; then
+  #echo "PIDSCREENSAVER=$PIDSCREENSAVER"
+  killall -9 screensaverqt
+  sleep 1
+fi
+
+#state-value: enabled | disabled
+#mode-value:  backlight | theme
+#theme-value: number of the theme ID (1=image 2=time 3=text)
+#image-value: complete image filepath (jpg, png, bmp)
+#text-value:  text to be shown
+#time-value:  time in seconds
+
+MODE=`getconfvalue /etc/specific/screen.conf mode`
+
+#echo "MODE=$MODE"
+
+if [ $MODE = "backlight" ]; then
+
+  #stop brightness_control
+  /etc/config-tools/brightnesscontrol stop > /dev/null 2>&1
+
+  file="/usr/bin/screensaverqt 0"
+  onvalue=`/usr/bin/setup_display g`
+  offvalue=`getconfvalue /etc/specific/backlight.conf backlightoff`
+  
+  #echo "onvalue=$onvalue"
+  #echo "offvalue=$offvalue"   
+  
+  #turn backlight off
+  /usr/bin/setup_display $offvalue
+  
+  #startscreensaver
+  $file
+  status=$?
+  
+  #turn backlight on
+  /usr/bin/setup_display $onvalue
+  
+  #start brightness_control
+  /etc/config-tools/brightnesscontrol start > /dev/null 2>&1
+  
+else
+  THEME=`getconfvalue /etc/specific/screen.conf theme`
+  
+  #echo "THEME=$THEME"
+  
+  if [ $THEME == 1 ]; then
+    IMAGE=`getconfvalue /etc/specific/screen.conf image`
+    #echo "IMAGE=$IMAGE"
+    file="`/usr/bin/screensaverqt $THEME $IMAGE`"
+  elif [ $THEME == 2 ]; then
+    file="/usr/bin/screensaverqt $THEME"
+  elif [ $THEME == 3 ]; then
+    TEXT=`getconfvalue /etc/specific/screen.conf text`
+    #echo "TEXT=$TEXT"
+    file="`/usr/bin/screensaverqt $THEME \"$TEXT\"`"
+  else
+    file="/usr/bin/screensaverqt 0"
+  fi
+
+  $file
+  status=$?  
+fi
+
+
+exit $status
+

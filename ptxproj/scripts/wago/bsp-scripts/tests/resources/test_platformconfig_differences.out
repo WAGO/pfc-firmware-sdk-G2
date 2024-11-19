@@ -1,8 +1,0 @@
-Checking platform configuration in comparison to the reference (stage 1) build...
-
-Only in default FW                                                 Only in BSP
-                                                 
-PTXCONF_IMAGE_BOOT_DOWNGRADE=y
-PTXCONF_IMAGE_FIRMWARE_IMAGE_TAR=y
-PTXCONF_IMAGE_SD_DOWNGRADE=y
-===============================================================================================

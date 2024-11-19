@@ -1,3 +1,0 @@
-config FOOBAR
-    default n
-    prompt "foobar"

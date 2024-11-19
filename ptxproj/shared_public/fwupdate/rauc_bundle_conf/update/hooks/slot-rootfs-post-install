@@ -41,17 +41,6 @@ function hook_routine
     "${DATE_CMD}" > "${RAUC_SLOT_MOUNT_POINT}${WAGO_FW_UPDATE_INCOMPLETE_MARKER}"
     "${DATE_CMD}" > "${RAUC_SLOT_MOUNT_POINT}${WAGO_FW_UPDATE_FIRST_BOOT_MARKER}"
 
-    # Call update hook if present
-    if [ -e "$WAGO_FW_UPDATE_HOOK" ]; then
-        fwupdate_report_info "Found update hook to call: \"$WAGO_FW_UPDATE_HOOK\""
-        chmod a+x "$WAGO_FW_UPDATE_HOOK"
-        "$WAGO_FW_UPDATE_HOOK"
-        local HOOK_RESULT=$?
-        if [[ $HOOK_RESULT -ne 0 ]]; then
-            fwupdate_report_warning "Update hook failed on call: \"$WAGO_FW_UPDATE_HOOK\" (exit code $HOOK_RESULT)"
-        fi
-    fi
-
     local skip_settings="false"
     skip_settings=$(fwupdate_get_skip_settings_flag)
     if [[ $skip_settings == "true" ]]; then

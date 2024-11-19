@@ -99,7 +99,6 @@ $(STATEDIR)/config_dnsmasq.targetinstall:
 	# Does not install /etc/dnsmasq.conf because dnsmasq packet has already installed or will install our config file.
 	@$(call install_copy,        config_dnsmasq, 0, 0, 0750, /etc/dnsmasq.d)
 	@$(call install_alternative, config_dnsmasq, 0, 0, 0644, /etc/dnsmasq.d/dnsmasq_default.conf)
-	@$(call install_alternative, config_dnsmasq, 0, 0, 0750, /etc/config-tools/post_netconfig.d/30_dnsmasq)
 	@$(call install_alternative, config_dnsmasq, 0, 0, 0644, /etc/specific/network-services.xml)
 	@$(call install_alternative, config_dnsmasq, 0, 0, 0700, /etc/config-tools/events/dns/addLocalhostToResolvConf)
 

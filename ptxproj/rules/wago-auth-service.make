@@ -24,7 +24,7 @@ PACKAGES-$(PTXCONF_WAGO_AUTH_SERVICE) += wago-auth-service
 #
 # Paths and names
 #
-WAGO_AUTH_SERVICE_VERSION        := 1.2.0
+WAGO_AUTH_SERVICE_VERSION        := 1.4.0
 WAGO_AUTH_SERVICE_MD5            :=
 WAGO_AUTH_SERVICE_BASE           := auth-service
 WAGO_AUTH_SERVICE                := wago-$(WAGO_AUTH_SERVICE_BASE)-$(WAGO_AUTH_SERVICE_VERSION)
@@ -134,18 +134,23 @@ ifdef PTXCONF_WAGO_AUTH_SERVICE_DAEMON
 	@$(call install_copy, wago-auth-service, 0,   0, 0750, -, /usr/sbin/authd)
 	@$(call install_copy, wago-auth-service, 0, 124, 0770,    /etc/authd)
 	@$(call install_copy, wago-auth-service, 0, 124, 0660, -, /etc/authd/authd.conf)
+	@$(call install_copy, wago-auth-service, 0, 124, 0770,    /etc/authd/clients)
+	@$(call install_copy, wago-auth-service, 0, 124, 0770,    /etc/authd/resource_servers)
 
 	# Install login web-page
 	@$(call install_copy, wago-auth-service, 0, 124, 0775,    /var/www/auth)
 	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/auth.js)
-	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/login.css)
+	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/auth.css)
 	@$(call install_copy, wago-auth-service, 0, 124, 0660, -, /var/www/auth/login.html.template)
 	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/login.js)
+	@$(call install_copy, wago-auth-service, 0, 124, 0660, -, /var/www/auth/password_change.html.template)
+	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/password_change.js)
 	@$(call install_copy, wago-auth-service, 0, 124, 0775,    /var/www/auth/images)
 	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/images/favicon.ico)
 	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/images/spinner.gif)
 	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/images/wago-logo.svg)
 	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/images/warning.svg)
+	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/images/info.svg)
 	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/images/chevron-left.svg)
 	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/images/chevron-right.svg)
 	@$(call install_copy, wago-auth-service, 0, 124, 0664, -, /var/www/auth/images/btn-close.svg)

@@ -25,6 +25,10 @@
 
 #define _config_tool_lib_h_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "ct_error_handling.h"
 
 // boolean
@@ -32,7 +36,14 @@
 //#define FALSE                            0
 
 #include <stdint.h>
+
+#ifdef __cplusplus
+}
+#endif
 #include <glib.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 
 // query ids for RunUdevQuery function
@@ -217,5 +228,9 @@ int  ctlib_IpaddrToInt(char const * szIpAddr,
 #define TYPELABEL_WAGONR          "WAGONR"
 #define TYPELABEL_MARKING         "MARKING"
 #define TYPELABEL_MAC             "MAC"
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

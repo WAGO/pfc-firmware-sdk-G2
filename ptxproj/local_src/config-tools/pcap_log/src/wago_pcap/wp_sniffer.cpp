@@ -65,6 +65,10 @@ void PcapSniffer::OpenDump(const std::filesystem::path & path) {
     {
       throw std::invalid_argument(pcap_geterr(pHandle));
     }
+
+    // dump gets created with default permissions, fix them
+    std::filesystem::permissions(path, get_allowed_permissions());
+    set_owner_group_webserver(path);
   }
 }
 

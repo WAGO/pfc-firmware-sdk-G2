@@ -5,6 +5,7 @@ config PCAP_LOG
 	select HOST_CT_BUILD
 	select GOOGLETEST
 	select LIBPCAP
+	select PCAPPLUSPLUS
 	select LIBCURL
 	select NLOHMANN_JSON
 	select NETCONFD

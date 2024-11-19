@@ -67,6 +67,18 @@ void RemoveVlanInterfacesWithInvalidLink(Interfaces &interfaces, INetDevManager 
   interfaces.erase(::std::remove_if(interfaces.begin(), interfaces.end(), linkDoesNotExist), interfaces.end());
 }
 
+void ResetInvalidIPSource(IPConfigs &ip_configs, const Interfaces &interfaces) {
+  for(const auto& itf : interfaces) {
+    auto ip_config = GetIpConfigByInterface(ip_configs, itf);
+
+    if(ip_config != ip_configs.end() && !hasValidIPSourceForDeviceType(*ip_config, itf.GetType())) {
+      LogWarning("Found invalid IP source " + IPSourceToString(ip_config->source_) + " for interface: " 
+        + ip_config->interface_ + ". Changing IP source to None.");
+      
+      ip_config->source_ = IPSource::NONE;
+    }
+  }
+}
 
 }  // namespace
 
@@ -131,13 +143,14 @@ void NetworkConfigBrain::Start(StartWithPortstate startwithportstate) {
   ip_addressable_interfaces.insert(ip_addressable_interfaces.end(), bridges.begin(), bridges.end());
 
   FilterRequiredIpConfigs(ip_configs, ip_addressable_interfaces);
+  ResetInvalidIPSource(ip_configs, ip_addressable_interfaces);
   RemoveUnnecessaryIPParameter(ip_configs);
 
   if (ip_configs.empty()) {
     LogWarning("Start: No IP config left on startup!");
   }
 
-  status = ip_manager_.ValidateIPConfigs(ip_configs);
+  status = ip_manager_.ValidateIPConfigs(ip_configs, ip_addressable_interfaces);
   if (status.IsNotOk()) {
     LogWarning("Start: IP validation failed. Reset IP configuration.");
     ResetIpConfigsToDefault(ip_configs);
@@ -172,18 +185,6 @@ void NetworkConfigBrain::Start(StartWithPortstate startwithportstate) {
 
   if (status.IsNotOk()) {
     LogError("Start: " + status.ToString());
-  }
-}
-
-void NetworkConfigBrain::GetValidIpConfigsSubset(const IPConfigs &configs, IPConfigs &subset) {
-  subset.clear();
-  for (const auto &config : configs) {
-    subset.push_back(config);
-    Status status = ip_manager_.ValidateIPConfigs(subset);
-    if (status.IsNotOk()) {
-      // Remove element that leads to an invalid configuration.
-      subset.pop_back();
-    }
   }
 }
 
@@ -416,11 +417,12 @@ Status NetworkConfigBrain::ContainOnlyInterfacesOfTypePort(const InterfaceConfig
 }
 
 ::std::string NetworkConfigBrain::GetInterfaceStatuses(::std::string &config) const {
-  auto itf_statuses = interface_config_manager_.GetCurrentPortStatuses();
+  InterfaceStatuses itf_statuses;
+  Status s = interface_config_manager_.GetCurrentPortStatuses(itf_statuses);
 
   config = jc.ToJsonString(itf_statuses);
 
-  return jc.ToJsonString(Status{});
+  return jc.ToJsonString(s);
 }
 
 ::std::string NetworkConfigBrain::GetAllIPConfigs(::std::string &config) const {
@@ -501,11 +503,14 @@ Status NetworkConfigBrain::ContainOnlyInterfacesOfTypePort(const InterfaceConfig
       LogError("Failed to restore bridge configuration from file:"s + file_path);
     }
 
-    auto current_interfaces = netdev_manager_.GetInterfacesByDeviceType(VirtualInterfaceDeviceTypes());
-    status = ConfigureInterfaces(interfaces, current_interfaces);
+    auto current_virtual_interfaces = netdev_manager_.GetInterfacesByDeviceType(VirtualInterfaceDeviceTypes());
+    status = ConfigureInterfaces(interfaces, current_virtual_interfaces);
     if(status.IsNotOk()){
       LogError("Failed to restore interface configuration from file:"s + file_path);
     }
+
+    current_virtual_interfaces = netdev_manager_.GetInterfacesByDeviceType(VirtualInterfaceDeviceTypes());
+    ResetInvalidIPSource(ip_configs, current_virtual_interfaces);
 
     /* Clean out ip configs that are not available,
      * the restore data might contain unnecessary ip data from former netconfd releases. */
@@ -514,7 +519,7 @@ Status NetworkConfigBrain::ContainOnlyInterfacesOfTypePort(const InterfaceConfig
                              bridge_information_.GetBridgeAssignedInterfaces());
     status = ip_manager_.ApplyIpConfiguration(ip_configs, dip_switch_ip_config);
     if (status.IsNotOk()) {
-      LogError("Failed to restore ip configuration configuration from file:"s + file_path);
+      LogError("Failed to restore ip configuration from file:"s + file_path);
     }
 
     // Try rollback if status is not ok

@@ -15,8 +15,8 @@ PACKAGES-$(PTXCONF_WPA_SUPPLICANT) += wpa_supplicant
 # Paths and names
 #
 WPA_SUPPLICANT_NAME	:= wpa_supplicant
-WPA_SUPPLICANT_VERSION	:= 2.10
-WPA_SUPPLICANT_MD5	:= d26797fcb002898d4ee989179346e1cc
+WPA_SUPPLICANT_VERSION	:= 2.11
+WPA_SUPPLICANT_MD5	:= 72a4a00eddb7a499a58113c3361ab094
 WPA_SUPPLICANT		:= $(WPA_SUPPLICANT_NAME)-$(WPA_SUPPLICANT_VERSION)
 WPA_SUPPLICANT_SUFFIX	:= tar.gz
 WPA_SUPPLICANT_URL	:= https://w1.fi/releases/$(WPA_SUPPLICANT).$(WPA_SUPPLICANT_SUFFIX)
@@ -24,13 +24,7 @@ WPA_SUPPLICANT_SOURCE	:= $(SRCDIR)/$(WPA_SUPPLICANT).$(WPA_SUPPLICANT_SUFFIX)
 WPA_SUPPLICANT_DIR	:= $(BUILDDIR)/$(WPA_SUPPLICANT)
 WPA_SUPPLICANT_SUBDIR	:= $(WPA_SUPPLICANT_NAME)
 # Use '=' to delay $(shell ...) calls until this is needed
-# ptxdist update: ptx/get_alternative has been renamed to ptx/get-alternative.
-# FIXME PTXDIST_UPDATE
-ifeq ($(PTXCONF_CONFIGFILE_VERSION), "2020.08.0")
-WPA_SUPPLICANT_CONFIG	 = $(call ptx/get-alternative, config/wpasupplicant, defconfig)
-else
-WPA_SUPPLICANT_CONFIG	 = $(call ptx/get_alternative, config/wpasupplicant, defconfig)
-endif
+WPA_SUPPLICANT_CONFIG		= $(call ptx/get-alternative, config/wpasupplicant, defconfig)
 WPA_SUPPLICANT_DOTCONFIG	:= $(BUILDDIR)/$(WPA_SUPPLICANT)/$(WPA_SUPPLICANT_SUBDIR)/.config
 WPA_SUPPLICANT_LICENSE		:= GPL-2.0-only
 WPA_SUPPLICANT_LICENSE_FILES	:= file://README;md5=e3d2f6c2948991e37c1ca4960de84747
@@ -39,16 +33,14 @@ WPA_SUPPLICANT_LICENSE_FILES	:= file://README;md5=e3d2f6c2948991e37c1ca4960de847
 # Prepare
 # ----------------------------------------------------------------------------
 
+#
+# make
+#
 WPA_SUPPLICANT_PATH	:= PATH=$(CROSS_PATH)
 WPA_SUPPLICANT_MAKE_ENV	:= \
 	$(CROSS_ENV) \
 	LIBDIR=/usr/lib \
 	BINDIR=/usr/sbin
-
-#
-# autoconf
-#
-WPA_SUPPLICANT_AUTOCONF := $(CROSS_AUTOCONF_USR)
 
 $(STATEDIR)/wpa_supplicant.prepare:
 	@$(call targetinfo)

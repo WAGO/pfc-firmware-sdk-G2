@@ -173,8 +173,8 @@ IPConfigs IPManager::GetCurrentIPConfigs() const {
   return ip_configs;
 }
 
-Status IPManager::ValidateIPConfigs(const IPConfigs &configs) const {
-  return IPValidator::ValidateIPConfigs(configs);
+Status IPManager::ValidateIPConfigs(const IPConfigs &configs, const Interfaces &interfaces) const {
+  return IPValidator::ValidateIPConfigs(configs, interfaces);
 }
 
 void IPManager::OnNetDevCreated(NetDevPtr netdev) {

@@ -1,0 +1,26 @@
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Date: Wed, 7 Jun 2023 11:42:46 +0200
+Subject: [PATCH] HACK: don't fail if lrelease is missing
+
+PTXdist does not currently build lrelease for Qt6 so this is always
+missing. It's not needed in most cases, so just ignore it.
+
+Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+---
+ mesonbuild/modules/qt.py | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/mesonbuild/modules/qt.py b/mesonbuild/modules/qt.py
+index 7effa1f58401..c16d8c603ce7 100644
+--- a/mesonbuild/modules/qt.py
++++ b/mesonbuild/modules/qt.py
+@@ -271,6 +271,9 @@ class QtBaseModule(ExtensionModule):
+         self._detect_tools(state, method, required=False)
+         for tool in self.tools.values():
+             if not tool.found():
++                if tool.name == 'lrelease':
++                    mlog.warning('Ignoring missing lrelease')
++                    continue
+                 if required:
+                     raise MesonException('Qt tools not found')
+                 return False

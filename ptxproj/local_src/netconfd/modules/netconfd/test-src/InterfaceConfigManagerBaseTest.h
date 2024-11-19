@@ -32,7 +32,7 @@ class InterfaceConfigManagerBaseTest {
     ~FakeEthernetInterface() override {
       upper_.EthernetInterfaceDeleted(this);
     }
-    void UpdateConfig() override {}
+    Status UpdateConfig() override { return {}; }
     ::std::string const& GetName() const { return name_;}
     MacAddress GetMac() const override { return MacAddress{mac};}
     bool GetAutonegSupport() const override { return true;}
@@ -47,7 +47,7 @@ class InterfaceConfigManagerBaseTest {
     ::std::uint32_t GetMTU() const override {return 1500;}
     uint32_t GetSpeed() const override {return speed_;}
     eth::Duplex GetDuplex() const override {return duplex_;}
-    void Commit() override {committed_ = true;}
+    Status Commit() override {committed_ = true; return {}; }
     void SetAutoneg(eth::Autoneg autoneg) override {autoneg_ = autoneg;}
     void SetState(eth::DeviceState state) override {state_ = state;}
     void SetSpeed(::std::uint32_t speed) override {speed_ = speed;}

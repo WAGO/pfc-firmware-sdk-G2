@@ -56,6 +56,7 @@ SHARED_DISABLEDWARNINGS += unused-function#missing-prototypes missing-declaratio
 
 SHARED_CFLAGS += $(call option_std,gnu99)
 SHARED_CFLAGS	+= -D_GNU_SOURCE
+SHARED_CXXFLAGS += $(call option_std,gnu++17)
 
 libcgroupcpuload.so_VERSION           = $(LIBCGROUPCPULOAD_VERSION)
 
@@ -125,6 +126,7 @@ alltests_test.elf_SOURCES          += $(call fglob_r,$(PROJECT_ROOT)/test-src/un
 alltests_test.elf_SOURCES          += $(SRC_DIR)/cgroupcpuload/cgroupcpuload.c
 alltests_test.elf_CPPFLAGS         += -I$(PTXCONF_SYSROOT_HOST)/usr/include
 alltests_test.elf_CPPFLAGS         += -I$(PROJECT_ROOT)/test-src/unit-tests
+alltests_test.elf_CPPFLAGS         += -I $(SRC_DIR)/cgroupcpuload/
 alltests_test.elf_CPPFLAGS         += $(call pkg_config_cppflags,$(alltests_test.elf_PKG_CONFIGS))
 alltests_test.elf_CCXXFLAGS        += $(SHARED_CCXXFLAGS)
 alltests_test.elf_CCXXFLAGS        += $(call option_disable_warning,$(alltests_test.elf_DISABLEDWARNINGS))

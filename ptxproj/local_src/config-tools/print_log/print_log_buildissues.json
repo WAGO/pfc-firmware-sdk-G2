@@ -39,6 +39,15 @@
     },
     {
       "fileName": "local_src/config-tools/print_log/test-src/test_main.cpp",
+      "lineStart": "43",
+      "columnStart": "14",
+      "category": "Warning:clang-diagnostic-deprecated-declarations",
+      "severity": "NORMAL",
+      "message": "'g_spawn_check_exit_status' is deprecated: Use 'g_spawn_check_wait_status' instead [clang-diagnostic-deprecated-declarations]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/print_log/test-src/test_main.cpp",
       "lineStart": "45",
       "columnStart": "6",
       "category": "Warning:clang-diagnostic-extra-semi",
@@ -120,6 +129,15 @@
     },
     {
       "fileName": "pfc/ptxproj/local_src/config-tools/print_log/test-src/test_main.cpp",
+      "lineStart": "43",
+      "columnStart": "39",
+      "category": "Warning:deprecated-declarations",
+      "severity": "NORMAL",
+      "message": "‘gboolean g_spawn_check_exit_status(gint, GError**)’ is deprecated: Use 'g_spawn_check_wait_status' instead [-Wdeprecated-declarations]",
+      "moduleName": "print_log-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/config-tools/print_log/test-src/test_main.cpp",
       "lineStart": "45",
       "columnStart": "6",
       "category": "Warning:extra-semi",
@@ -164,5 +182,5 @@
       "moduleName": "print_log-tests"
     }
   ],
-  "size": 18
+  "size": 20
 }

@@ -1,0 +1,17 @@
+## SECTION=networking
+
+menuconfig PCAPPLUSPLUS
+	tristate
+	select HOST_CMAKE
+	select LIBPCAP
+	prompt "pcapplusplus"
+	help
+	  PcapPlusPlus is a multiplatform C++ library for capturing, parsing and crafting of network packets.
+
+if PCAPPLUSPLUS
+
+config PCAPPLUSPLUS_EXAMPLES
+	bool
+	prompt "install example applications"
+
+endif

@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+daemon='/usr/sbin/fapolicyd'
+pid_file='/run/fapolicyd.pid'
+
+start ()
+{
+  start-stop-daemon -S -p "${pid_file}" -x "${daemon}" -b
+}
+
+stop ()
+{
+  start-stop-daemon -K -p "${pid_file}" -x "${daemon}"
+}
+
+restart ()
+{
+  stop
+  start
+}
+
+log_action ()
+{
+  echo "${1} fapolicyd..."
+}
+
+case "${1}" in
+
+  start)
+    log_action 'Starting'
+    start || echo "failed"
+    ;;
+
+  stop)
+    log_action 'Stopping'
+    stop || echo "failed"
+    ;;
+
+  restart)
+    log_action 'Restarting'
+    restart || echo "failed"
+    ;;
+
+  status)
+    if [ -e "${pid_file}" ]; then
+      echo "fapolicyd running"
+    else
+      echo "fapolicyd not running"
+    fi
+    ;;
+
+  *)
+    echo "Usage: ${0} {start|stop|restart|status}"
+    exit 1
+    ;;
+
+esac

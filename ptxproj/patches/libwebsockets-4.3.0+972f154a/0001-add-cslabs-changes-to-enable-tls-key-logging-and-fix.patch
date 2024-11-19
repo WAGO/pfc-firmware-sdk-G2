@@ -1,0 +1,490 @@
+From 39f582daae6a8986e1f30806d4d65f72c9b21640 Mon Sep 17 00:00:00 2001
+From: Alexander Riedel <alexander.riedel@wago.com>
+Date: Mon, 12 Feb 2024 12:21:20 +0100
+Subject: [PATCH 1/2] add cslabs changes to enable tls key logging and fix ipv6
+
+---
+ include/libwebsockets/lws-callbacks.h     |  5 +++
+ include/libwebsockets/lws-context-vhost.h |  1 +
+ include/libwebsockets/lws-ws-state.h      |  7 ++++
+ lib/core-net/network.c                    | 20 +++++++++--
+ lib/core-net/private-lib-core-net.h       |  4 +--
+ lib/core/logs.c                           |  2 --
+ lib/plat/unix/unix-sockets.c              |  8 ++---
+ lib/plat/windows/windows-service.c        |  5 +--
+ lib/roles/http/client/client-http.c       |  4 ++-
+ lib/roles/http/server/server.c            | 15 +++++----
+ lib/roles/ws/client-parser-ws.c           |  8 ++---
+ lib/roles/ws/ops-ws.c                     |  6 ++++
+ lib/tls/openssl/openssl-client.c          | 39 +++++++++++++++++++++
+ lib/tls/openssl/openssl-server.c          | 41 ++++++++++++++++++++++-
+ lib/tls/openssl/openssl-ssl.c             | 15 +++++++++
+ 15 files changed, 155 insertions(+), 25 deletions(-)
+
+diff --git a/include/libwebsockets/lws-callbacks.h b/include/libwebsockets/lws-callbacks.h
+index 62848fa..18e3f3a 100755
+--- a/include/libwebsockets/lws-callbacks.h
++++ b/include/libwebsockets/lws-callbacks.h
+@@ -176,6 +176,11 @@ enum lws_callback_reasons {
+ 	 * struct lws_ssl_info containing information about the
+ 	 * event*/
+ 
++	LWS_CALLBACK_SSL_KEYLOG_INFO  = 68,
++	/**< SSL connections only.  in is a pointer to a
++	 * line containing security key information used to decrypt encrypted *
++   * data logged during this session with external tools like wireshark */
++
+ 	/* ---------------------------------------------------------------------
+ 	 * ----- Callbacks related to Client TLS -----
+ 	 */
+diff --git a/include/libwebsockets/lws-context-vhost.h b/include/libwebsockets/lws-context-vhost.h
+index b3de140..8c94360 100755
+--- a/include/libwebsockets/lws-context-vhost.h
++++ b/include/libwebsockets/lws-context-vhost.h
+@@ -242,6 +242,7 @@
+ #define LWS_SERVER_OPTION_DISABLE_TLS_SESSION_CACHE		 (1ll << 39)
+ 	/**< (VHOST) Disallow use of client tls caching (on by default) */
+ 
++#define LWS_SERVER_OPTION_SUPPORT_NO_HTTP_V2_UPGRADE	 (1ll << 40)
+ 
+ 	/****** add new things just above ---^ ******/
+ 
+diff --git a/include/libwebsockets/lws-ws-state.h b/include/libwebsockets/lws-ws-state.h
+index d21c2a7..3561c32 100755
+--- a/include/libwebsockets/lws-ws-state.h
++++ b/include/libwebsockets/lws-ws-state.h
+@@ -53,6 +53,13 @@ lws_is_final_fragment(struct lws *wsi);
+ LWS_VISIBLE LWS_EXTERN int
+ lws_is_first_fragment(struct lws *wsi);
+ 
++/**
++ * lws_get_opcode() - access the opcode of ws frame
++ * \param wsi: lws connection
++ */
++LWS_VISIBLE LWS_EXTERN unsigned char
++lws_get_opcode(struct lws *wsi);
++
+ /**
+  * lws_get_reserved_bits() - access reserved bits of ws frame
+  * \param wsi: lws connection
+diff --git a/lib/core-net/network.c b/lib/core-net/network.c
+index 6c15530..eda0434 100755
+--- a/lib/core-net/network.c
++++ b/lib/core-net/network.c
+@@ -274,8 +274,7 @@ lws_socket_bind(struct lws_vhost *vhost, struct lws *wsi,
+ 						   iface);
+ 				return m;
+ 			}
+-			serv_addr6.sin6_scope_id = (unsigned int)htonl((uint32_t)
+-					lws_get_addr_scope(wsi, iface));
++			serv_addr6.sin6_scope_id = (unsigned int)lws_get_addr_scope(wsi, iface);
+ 		}
+ 
+ 		serv_addr6.sin6_port = (uint16_t)htons((uint16_t)port);
+@@ -504,6 +503,7 @@ lws_get_addr_scope(struct lws *wsi, const char *ifname_or_ipaddr)
+ {
+ 	unsigned long scope;
+ 	char ip[NI_MAXHOST];
++	char *pszC;
+ 	unsigned int i;
+ #if !defined(WIN32)
+ 	struct ifaddrs *addrs, *addr;
+@@ -516,8 +516,18 @@ lws_get_addr_scope(struct lws *wsi, const char *ifname_or_ipaddr)
+ 	DWORD ret;
+ #endif
+ 
++  /* Check if user already provided one */
++  pszC = strrchr(ifname_or_ipaddr, '%');
++  if(pszC && isdigit(pszC[1]))
++  {
++    pszC++;
++    scope = atoi(pszC);
++  	if (scope > 0)
++  		return scope;
++  }
++
+ 	/*
+-	 * First see if we can look the string up as a network interface name...
++	 * Next see if we can look the string up as a network interface name...
+ 	 * windows vista+ also has this
+ 	 */
+ 
+@@ -657,6 +667,7 @@ lws_parse_numeric_address(const char *ads, uint8_t *result, size_t max_len)
+ 	struct lws_tokenize ts;
+ 	uint8_t *orig = result, temp[16];
+ 	int sects = 0, ipv6 = !!strchr(ads, ':'), skip_point = -1, dm = 0;
++	const char *percent = strrchr(ads, '%');
+ 	char t[5];
+ 	size_t n;
+ 	long u;
+@@ -664,6 +675,9 @@ lws_parse_numeric_address(const char *ads, uint8_t *result, size_t max_len)
+ 	lws_tokenize_init(&ts, ads, LWS_TOKENIZE_F_NO_INTEGERS |
+ 				    LWS_TOKENIZE_F_MINUS_NONTERM);
+ 	ts.len = strlen(ads);
++	if(percent)
++		ts.len -= strlen(percent);
++
+ 	if (!ipv6 && ts.len < 7)
+ 		return -1;
+ 
+diff --git a/lib/core-net/private-lib-core-net.h b/lib/core-net/private-lib-core-net.h
+index 2d3f73a..d15b895 100755
+--- a/lib/core-net/private-lib-core-net.h
++++ b/lib/core-net/private-lib-core-net.h
+@@ -1498,8 +1498,8 @@ int
+ sanity_assert_no_sockfd_traces(const struct lws_context *context,
+ 			       lws_sockfd_type sfd);
+ #else
+-static inline int sanity_assert_no_wsi_traces(const struct lws_context *context, struct lws *wsi) { (void)context; (void)wsi; return 0; }
+-static inline int sanity_assert_no_sockfd_traces(const struct lws_context *context, lws_sockfd_type sfd) { (void)context; (void)sfd; return 0; }
++static int sanity_assert_no_wsi_traces(const struct lws_context *context, struct lws *wsi) { (void)context; (void)wsi; return 0; }
++static int sanity_assert_no_sockfd_traces(const struct lws_context *context, lws_sockfd_type sfd) { (void)context; (void)sfd; return 0; }
+ #endif
+ 
+ 
+diff --git a/lib/core/logs.c b/lib/core/logs.c
+index a13c841..b4ed075 100755
+--- a/lib/core/logs.c
++++ b/lib/core/logs.c
+@@ -167,13 +167,11 @@ __lws_lc_untag(struct lws_context *context, lws_lifecycle_t *lc)
+ 
+ 	if (!lc->gutag[0]) { /* we never tagged this object... */
+ 		lwsl_cx_err(context, "%s never tagged", lc->gutag);
+-		assert(0);
+ 		return;
+ 	}
+ 
+ 	if (!lc->list.owner) { /* we already untagged this object... */
+ 		lwsl_cx_err(context, "%s untagged twice", lc->gutag);
+-		assert(0);
+ 		return;
+ 	}
+ 
+diff --git a/lib/plat/unix/unix-sockets.c b/lib/plat/unix/unix-sockets.c
+index 3efe08e..4047006 100755
+--- a/lib/plat/unix/unix-sockets.c
++++ b/lib/plat/unix/unix-sockets.c
+@@ -160,11 +160,11 @@ lws_plat_set_socket_options(struct lws_vhost *vhost, int fd, int unix_skt)
+ 
+ #if defined(SO_BINDTODEVICE)
+ 	if (!unix_skt && vhost->bind_iface && vhost->iface) {
++		struct ifreq if_bind;
+ 		lwsl_info("binding listen skt to %s using SO_BINDTODEVICE\n", vhost->iface);
+-		if (setsockopt(fd, SOL_SOCKET, SO_BINDTODEVICE, vhost->iface,
+-				(socklen_t)strlen(vhost->iface)) < 0) {
+-			lwsl_warn("Failed to bind to device %s\n", vhost->iface);
+-			return 1;
++		strncpy(if_bind.ifr_name, vhost->iface, IFNAMSIZ);
++		if (setsockopt(fd, SOL_SOCKET, SO_BINDTODEVICE, &if_bind,	sizeof(if_bind)) < 0) {
++			lwsl_warn("Failed to bind to device %s (errno %d)\n", vhost->iface, LWS_ERRNO);
+ 		}
+ 	}
+ #endif
+diff --git a/lib/plat/windows/windows-service.c b/lib/plat/windows/windows-service.c
+index a64501d..76c3285 100755
+--- a/lib/plat/windows/windows-service.c
++++ b/lib/plat/windows/windows-service.c
+@@ -65,6 +65,7 @@ _lws_plat_service_tsi(struct lws_context *context, int timeout_ms, int tsi)
+ 	struct lws *wsi;
+ 	unsigned int i;
+ 	int n;
++	int d;
+ 
+ 	/* stay dead once we are dead */
+ 	if (context == NULL)
+@@ -117,7 +118,7 @@ _lws_plat_service_tsi(struct lws_context *context, int timeout_ms, int tsi)
+ 		timeout_us = 0;
+ 
+ 		/* if something closed, retry this slot */
+-		if (n)
++		if (n && timeout_ms)
+ 			i--;
+ 	}
+ 
+@@ -157,7 +158,7 @@ _lws_plat_service_tsi(struct lws_context *context, int timeout_ms, int tsi)
+ //	lwsl_notice("%s: in %dms, count %d\n", __func__, (int)(timeout_us / 1000), pt->fds_count);
+ //	for (n = 0; n < (int)pt->fds_count; n++)
+ //		lwsl_notice("%s: fd %d ev 0x%x POLLIN %d, POLLOUT %d\n", __func__, (int)pt->fds[n].fd, (int)pt->fds[n].events, POLLIN, POLLOUT);
+-	int d = WSAPoll((WSAPOLLFD *)&pt->fds[0], pt->fds_count, (int)(timeout_us / LWS_US_PER_MS));
++	d = WSAPoll((WSAPOLLFD *)&pt->fds[0], pt->fds_count, (int)(timeout_us / LWS_US_PER_MS));
+ 	if (d < 0) {
+ 		lwsl_err("%s: WSAPoll failed: count %d, err %d: %d\n", __func__, pt->fds_count, d, WSAGetLastError());
+ 		return 0;
+diff --git a/lib/roles/http/client/client-http.c b/lib/roles/http/client/client-http.c
+index 221f394..810044a 100755
+--- a/lib/roles/http/client/client-http.c
++++ b/lib/roles/http/client/client-http.c
+@@ -718,7 +718,7 @@ lws_client_interpret_server_handshake(struct lws *wsi)
+ 		    && !wsi->client_bound_sspc
+ #endif
+ 		   ) {
+-	
++
+ 			lws_ss_handle_t *h = (lws_ss_handle_t *)lws_get_opaque_user_data(wsi);
+ 
+ 			if (h)
+@@ -1267,6 +1267,8 @@ lws_generate_client_handshake(struct lws *wsi, char *pkt)
+ 	//	if (!wsi->client_pipeline)
+ 	//		conn1 = "close, ";
+ 		p = lws_generate_client_ws_handshake(wsi, p, conn1);
++		if (p == NULL)
++			return NULL;
+ 	} else
+ #endif
+ 	{
+diff --git a/lib/roles/http/server/server.c b/lib/roles/http/server/server.c
+index 150eeec..39aa059 100755
+--- a/lib/roles/http/server/server.c
++++ b/lib/roles/http/server/server.c
+@@ -288,7 +288,7 @@ done_list:
+ 		 * here despite we earlier confirmed it.
+ 		 */
+ 		if (is < 0) {
+-			lwsl_info("%s: lws_socket_bind says %d\n", __func__, is);
++			lwsl_info("%s: lws_socket_bind says %d (errno %d)\n", __func__, is, LWS_ERRNO);
+ 			compatible_close(sockfd);
+ 			if (a->vhost->iface)
+ 				goto deal;
+@@ -316,7 +316,7 @@ done_list:
+ 			wsi->unix_skt = 1;
+ 			a->vhost->listen_port = is;
+ 
+-			lwsl_debug("%s: lws_socket_bind says %d\n", __func__, is);
++			lwsl_debug("%s: socket %d af %d bound to port %d\n", __func__, sockfd, wsi->af, is);
+ 		}
+ 
+ 		wsi->desc.sockfd = sockfd;
+@@ -2369,10 +2369,13 @@ raw_transition:
+ #endif
+ 			}
+ #if defined(LWS_WITH_HTTP2)
+-			if (!strcasecmp(up, "h2c")) {
+-				lws_metrics_tag_wsi_add(wsi, "upg", "h2c");
+-				lwsl_info("Upgrade to h2c\n");
+-				goto upgrade_h2c;
++			if ((wsi->a.vhost->options &
++	         LWS_SERVER_OPTION_SUPPORT_NO_HTTP_V2_UPGRADE) == 0) {
++				if (!strcasecmp(up, "h2c")) {
++					lws_metrics_tag_wsi_add(wsi, "upg", "h2c");
++					lwsl_info("Upgrade to h2c\n");
++					goto upgrade_h2c;
++				}
+ 			}
+ #endif
+ 		}
+diff --git a/lib/roles/ws/client-parser-ws.c b/lib/roles/ws/client-parser-ws.c
+index 09e681f..d19c0dd 100755
+--- a/lib/roles/ws/client-parser-ws.c
++++ b/lib/roles/ws/client-parser-ws.c
+@@ -474,8 +474,8 @@ ping_drop:
+ 
+ 		case LWSWSOPC_PONG:
+ 			lwsl_wsi_info(wsi, "Received pong");
+-			lwsl_hexdump_wsi_debug(wsi, &wsi->ws->rx_ubuf[LWS_PRE],
+-				     wsi->ws->rx_ubuf_head);
++			//lwsl_hexdump_wsi_debug(wsi, &wsi->ws->rx_ubuf[LWS_PRE],
++			//	     wsi->ws->rx_ubuf_head);
+ 
+ 			lws_validity_confirmed(wsi);
+ 			/* issue it */
+@@ -592,8 +592,8 @@ drain_extension:
+ 						(uint8_t *)"partial utf8", 12);
+ utf8_fail:
+ 					lwsl_wsi_info(wsi, "utf8 error");
+-					lwsl_hexdump_wsi_info(wsi, pmdrx.eb_out.token,
+-							  (unsigned int)pmdrx.eb_out.len);
++					//lwsl_hexdump_wsi_info(wsi, pmdrx.eb_out.token,
++					//		  (unsigned int)pmdrx.eb_out.len);
+ 
+ 					return -1;
+ 				}
+diff --git a/lib/roles/ws/ops-ws.c b/lib/roles/ws/ops-ws.c
+index 37fbd34..2b0a9b5 100755
+--- a/lib/roles/ws/ops-ws.c
++++ b/lib/roles/ws/ops-ws.c
+@@ -887,6 +887,12 @@ lws_is_first_fragment(struct lws *wsi)
+ 	return wsi->ws->first_fragment;
+ }
+ 
++unsigned char
++lws_get_opcode(struct lws *wsi)
++{
++	return wsi->ws->opcode;
++}
++
+ unsigned char
+ lws_get_reserved_bits(struct lws *wsi)
+ {
+diff --git a/lib/tls/openssl/openssl-client.c b/lib/tls/openssl/openssl-client.c
+index d8c56c5..167967c 100755
+--- a/lib/tls/openssl/openssl-client.c
++++ b/lib/tls/openssl/openssl-client.c
+@@ -40,6 +40,7 @@
+  */
+ 
+ int lws_openssl_describe_cipher(struct lws *wsi);
++void lws_ssl_keylog_callback(const SSL *ssl, const char *line);
+ 
+ extern int openssl_websocket_private_data_index,
+     openssl_SSL_CTX_private_data_index;
+@@ -86,6 +87,14 @@ lws_tls_jit_trust_got_cert_cb(void *got_opaque, const uint8_t *der,
+ #endif
+ #endif
+ 
++#if (OPENSSL_VERSION_NUMBER >= 0x10101000)
++static void
++lws_ssl_client_keylog_callback(const SSL *ssl, const char *line)
++{
++  lws_ssl_keylog_callback(ssl, line);
++}
++#endif
++
+ static int
+ OpenSSL_client_verify_callback(int preverify_ok, X509_STORE_CTX *x509_ctx)
+ {
+@@ -230,6 +239,16 @@ OpenSSL_client_verify_callback(int preverify_ok, X509_STORE_CTX *x509_ctx)
+ }
+ #endif
+ 
++//#define ENABLE_SSL_TRACE
++#ifdef ENABLE_SSL_TRACE
++static long lws_ssl_client_bio_trace_callback(BIO *bio, int cmd, const char *argp, int argi,
++                         long argl, long ret)
++{
++  lwsl_info("%s", argp);
++  return ret;
++}
++#endif
++
+ int
+ lws_ssl_client_bio_create(struct lws *wsi)
+ {
+@@ -286,6 +305,26 @@ lws_ssl_client_bio_create(struct lws *wsi)
+ 		return -1;
+ 	}
+ 
++#ifdef ENABLE_SSL_TRACE
++  {
++    BIO *bio;
++#ifdef __LINUX__
++    bio = BIO_new_file("/dev/nul","w");
++#else
++    bio = BIO_new_file(".\NUL","w");
++#endif
++
++    BIO_set_callback(bio, lws_ssl_client_bio_trace_callback);
++
++    SSL_set_msg_callback(wsi->tls.ssl, SSL_trace);
++    SSL_set_msg_callback_arg(wsi->tls.ssl, bio);
++  }
++#endif
++
++#if (OPENSSL_VERSION_NUMBER >= 0x10101000)
++  SSL_CTX_set_keylog_callback(wsi->a.vhost->tls.ssl_client_ctx, lws_ssl_client_keylog_callback);
++#endif
++
+ #if defined(LWS_WITH_TLS_SESSIONS)
+ 	if (!(wsi->a.vhost->options & LWS_SERVER_OPTION_DISABLE_TLS_SESSION_CACHE))
+ 		lws_tls_reuse_session(wsi);
+diff --git a/lib/tls/openssl/openssl-server.c b/lib/tls/openssl/openssl-server.c
+index 94e8846..446d39d 100755
+--- a/lib/tls/openssl/openssl-server.c
++++ b/lib/tls/openssl/openssl-server.c
+@@ -33,6 +33,15 @@ extern int openssl_websocket_private_data_index,
+ 	   openssl_SSL_CTX_private_data_index;
+ 
+ int lws_openssl_describe_cipher(struct lws *wsi);
++void lws_ssl_keylog_callback(const SSL *ssl, const char *line);
++
++#if (OPENSSL_VERSION_NUMBER >= 0x10101000)
++static void
++lws_ssl_server_keylog_callback(const SSL *ssl, const char *line)
++{
++  lws_ssl_keylog_callback(ssl, line);
++}
++#endif
+ 
+ static int
+ OpenSSL_verify_callback(int preverify_ok, X509_STORE_CTX *x509_ctx)
+@@ -628,6 +637,16 @@ lws_tls_server_vhost_backend_init(const struct lws_context_creation_info *info,
+ 					 info->server_ssl_private_key_mem_len);
+ }
+ 
++//#define ENABLE_SSL_TRACE
++#ifdef ENABLE_SSL_TRACE
++static long lws_tls_server_bio_trace_callback(BIO *bio, int cmd, const char *argp, int argi,
++                         long argl, long ret)
++{
++  lwsl_info("%s", argp);
++  return ret;
++}
++#endif
++
+ int
+ lws_tls_server_new_nonblocking(struct lws *wsi, lws_sockfd_type accept_fd)
+ {
+@@ -646,6 +665,26 @@ lws_tls_server_new_nonblocking(struct lws *wsi, lws_sockfd_type accept_fd)
+ 		return 1;
+ 	}
+ 
++#ifdef ENABLE_SSL_TRACE
++  {
++    BIO *bio;
++#ifdef __LINUX__
++    bio = BIO_new_file("/dev/nul","w");
++#else
++    bio = BIO_new_file(".\NUL","w");
++#endif
++
++    BIO_set_callback(bio, lws_tls_server_bio_trace_callback);
++
++    SSL_set_msg_callback(wsi->tls.ssl, SSL_trace);
++    SSL_set_msg_callback_arg(wsi->tls.ssl, bio);
++  }
++#endif
++
++#if (OPENSSL_VERSION_NUMBER >= 0x10101000)
++  SSL_CTX_set_keylog_callback(wsi->a.vhost->tls.ssl_ctx, lws_ssl_server_keylog_callback);
++#endif
++
+ 	SSL_set_ex_data(wsi->tls.ssl, openssl_websocket_private_data_index, wsi);
+ 	SSL_set_fd(wsi->tls.ssl, (int)(lws_intptr_t)accept_fd);
+ 
+@@ -679,7 +718,7 @@ lws_tls_server_new_nonblocking(struct lws *wsi, lws_sockfd_type accept_fd)
+ 	return 0;
+ }
+ 
+-int
++enum lws_ssl_capable_status
+ lws_tls_server_abort_connection(struct lws *wsi)
+ {
+ 	if (wsi->tls.use_ssl)
+diff --git a/lib/tls/openssl/openssl-ssl.c b/lib/tls/openssl/openssl-ssl.c
+index cf4d2b8..359e31d 100755
+--- a/lib/tls/openssl/openssl-ssl.c
++++ b/lib/tls/openssl/openssl-ssl.c
+@@ -436,6 +436,21 @@ lws_ssl_info_callback(const SSL *ssl, int where, int ret)
+ 		lws_set_timeout(wsi, PENDING_TIMEOUT_KILLED_BY_SSL_INFO, -1);
+ }
+ 
++void
++lws_ssl_keylog_callback(const SSL *ssl, const char *line)
++{
++  struct lws *wsi;
++  int ret = 0;
++
++  wsi = SSL_get_ex_data(ssl, openssl_websocket_private_data_index);
++  if(wsi == NULL || wsi->a.protocol == NULL || wsi->a.protocol->callback == NULL)
++    return;
++
++  if((ret = user_callback_handle_rxflow(wsi->a.protocol->callback,
++					wsi, LWS_CALLBACK_SSL_KEYLOG_INFO,
++					wsi->user_space, (void*)line, (size_t)ret)) != 0)
++    ret = -1;
++}
+ 
+ int
+ lws_ssl_close(struct lws *wsi)
+-- 
+2.25.1
+

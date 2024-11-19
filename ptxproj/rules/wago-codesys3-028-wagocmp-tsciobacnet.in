@@ -23,6 +23,13 @@ choice
 		prompt "released / Artifactory"
 		help
 		  Use released version of source code, taken from Artifactory.
+		  
+	config CDS3_TSCIOBACNET_ARTIFACTORY_DEV
+		bool
+		prompt "unreleased / Artifactory"
+		help
+		  Use unreleased version of source code, taken from Artifactory.
+		  Use only for testing!
 
 	config CDS3_TSCIOBACNET_SOURCE_DEV
 		bool
@@ -54,6 +61,18 @@ config CDS3_TSCIOBACNET_URL_TEMPLATE
 	help
 	  Encodes the desired artifact version. Can be configured to a specific version or to a latest compatible version of an artifact.
 	  See Confluence for further details.
+
+endif
+
+if CDS3_TSCIOBACNET_ARTIFACTORY_DEV
+
+config CDS3_TSCIOBACNET_ARTIFACTORY_DEV_URL_TEMPLATE
+	string
+	depends on CDS3_TSCIOBACNET
+	prompt "URL template"
+	default "%ARTIFACTORY_BASE_URL%/artifactory/api/search/latestVersion?g=wago_intern%2FTscIoBacnet%2Fmain&a=TscIoBacnet-Source&repos=pl_controller-generic-dev-local&v=*"
+	help
+	  Searches for the current dev artifact.
 
 endif
 

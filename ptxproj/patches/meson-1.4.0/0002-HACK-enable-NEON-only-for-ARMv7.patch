@@ -1,0 +1,25 @@
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Date: Tue, 1 Oct 2019 22:30:59 +0200
+Subject: [PATCH] HACK: enable NEON only for ARMv7
+
+NEON detection is broken, so just skip it for anything that is not ARMv7.
+
+Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+---
+ mesonbuild/modules/simd.py | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/mesonbuild/modules/simd.py b/mesonbuild/modules/simd.py
+index bfdc0c2dfc2d..5b9de7a3fd96 100644
+--- a/mesonbuild/modules/simd.py
++++ b/mesonbuild/modules/simd.py
+@@ -84,6 +84,9 @@ class SimdModule(ExtensionModule):
+                 continue
+ 
+             compile_args = compiler.get_instruction_set_args(iset)
++            cpu = state.environment.machines.host.cpu
++            if iset == 'neon' and not cpu.startswith('armv7'):
++                compile_args = None
+             if compile_args is None:
+                 mlog.log(f'Compiler supports {iset}:', mlog.red('NO'))
+                 continue

@@ -53,10 +53,19 @@ else ifeq ($(PLATFORM),wago-pfcXXX-hardened)
 FIRMWARE_PLATFORM ?= PFC-G2-Linux-hardened
 else ifeq ($(PLATFORM),vtp-ctp)
 FIRMWARE_PLATFORM ?= TP-Linux
+else ifeq ($(PLATFORM),wago-wp400)
+FIRMWARE_PLATFORM ?= WP400-Linux
 else ifeq ($(PLATFORM),wago-pfc300)
 FIRMWARE_PLATFORM ?= PFC-300-Linux
 else ifeq ($(PLATFORM),cc100)
 FIRMWARE_PLATFORM ?= CC100-Linux
+fsbl := stm32mp1-tf-a-stm32mp151-cc100.stm32
+DIST_TARGETS += $(OUT_DIR)/$(fsbl)
+$(OUT_DIR)/$(fsbl): $(IMAGE_DIR)/$(fsbl) | $(OUT_DIR)
+	@echo "Create cc100 fsbl $(fsbl) by copy: $<"
+	cp $< $@
+else ifeq ($(PLATFORM),cc100-hardened)
+FIRMWARE_PLATFORM ?= CC100-Linux-hardened
 fsbl := stm32mp1-tf-a-stm32mp151-cc100.stm32
 DIST_TARGETS += $(OUT_DIR)/$(fsbl)
 $(OUT_DIR)/$(fsbl): $(IMAGE_DIR)/$(fsbl) | $(OUT_DIR)
@@ -140,6 +149,7 @@ SBOM = $(OUT_DIR)/sbom.txt
 
 # Select default dist targets
 DIST_TARGETS += $(OUT_DIR)/root.tgz
+DIST_TARGETS += $(OUT_DIR)/root.ext2
 DIST_TARGETS += $(GENIMAGE_CONFIGS)
 DIST_TARGETS ?=
 DIST_TARGETS += $(FW_DESC_FILES)
@@ -252,6 +262,10 @@ $(OUT_DIR)/%.config: $(IMAGE_DIR)/%.config | $(OUT_DIR)
 
 $(OUT_DIR)/root.tgz: $(IMAGE_DIR)/root.tgz | $(OUT_DIR)
 	@echo "Create versioned root.tgz and image configs by copy: $<"
+	cp $< $@
+
+$(OUT_DIR)/root.ext2: $(IMAGE_DIR)/root.ext2 | $(OUT_DIR)
+	@echo "Create versioned root.ext2 and image configs by copy: $<"
 	cp $< $@
 
 $(IMAGES_ARCHIVE): $(OUT_DIR)/ptxdist.images.stage | $(OUT_DIR)

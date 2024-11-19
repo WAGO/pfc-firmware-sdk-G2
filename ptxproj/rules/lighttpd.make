@@ -20,15 +20,15 @@ PACKAGES-$(PTXCONF_LIGHTTPD) += lighttpd
 #
 # Paths and names
 #
-LIGHTTPD_BASE_VERSION  := 1.4.70
-LIGHTTPD_WAGO_VERSION  := wago8
+LIGHTTPD_BASE_VERSION  := 1.4.76
+LIGHTTPD_WAGO_VERSION  := wago1
 LIGHTTPD_VERSION       := $(LIGHTTPD_BASE_VERSION)+$(LIGHTTPD_WAGO_VERSION)
 LIGHTTPD_ARCHIVE_NAME  := lighttpd-$(LIGHTTPD_BASE_VERSION)
 LIGHTTPD               := lighttpd-$(LIGHTTPD_VERSION)
 LIGHTTPD_SUFFIX        := tar.xz
 LIGHTTPD_URL           := https://download.lighttpd.net/lighttpd/releases-1.4.x/$(LIGHTTPD_ARCHIVE_NAME).$(LIGHTTPD_SUFFIX)
 LIGHTTPD_SOURCE        := $(SRCDIR)/$(LIGHTTPD_ARCHIVE_NAME).$(LIGHTTPD_SUFFIX)
-LIGHTTPD_MD5           := 2d06846ec1ac6d1ea96f132a6ebf3296
+LIGHTTPD_MD5           := f9018cda389b1aa6dae4c5f962c20825
 LIGHTTPD_DIR           := $(BUILDDIR)/$(LIGHTTPD)
 LIGHTTPD_LICENSE       := BSD-3-Clause AND BSD-2-Clause AND OML AND RSA-MD AND Apache-2.0
 LIGHTTPD_LICENSE_FILES := \
@@ -41,48 +41,40 @@ LIGHTTPD_LICENSE_FILES := \
 #
 # autoconf
 #
-LIGHTTPD_CONF_TOOL	:= autoconf
+LIGHTTPD_CONF_TOOL	:= meson
 LIGHTTPD_CONF_OPT	:= \
-	$(CROSS_AUTOCONF_USR) \
-	--libdir=/usr/lib/lighttpd \
-	--$(call ptx/endis, PTXCONF_GLOBAL_LARGE_FILE)-lfs \
-	$(GLOBAL_IPV6_OPTION) \
-	--disable-mmap \
-	--enable-extra-warnings \
-	--without-libev \
-	--without-mysql \
-	--without-pgsql \
-	--without-dbi \
-	--without-sasl \
-	--without-ldap \
-	--without-pam \
-	--$(call ptx/wwo, PTXCONF_LIGHTTPD_ATTR)-attr \
-	--without-valgrind \
-	--without-libunwind \
-	--without-krb5 \
-	--$(call ptx/wwo, PTXCONF_LIGHTTPD_OPENSSL)-openssl \
-	--without-wolfssl \
-	--$(call ptx/wwo, PTXCONF_LIGHTTPD_PCRE)-pcre \
-	--$(call ptx/wwo, PTXCONF_LIGHTTPD_ZLIB)-zlib \
-	--$(call ptx/wwo, PTXCONF_LIGHTTPD_BZ2LIB)-bzip2 \
-	--without-fam \
-	--$(call ptx/wwo, PTXCONF_LIGHTTPD_WEBDAV_PROPS)-webdav-props \
-	--$(call ptx/wwo, PTXCONF_LIGHTTPD_WEBDAV_PROPS)-libxml \
-	--$(call ptx/wwo, PTXCONF_LIGHTTPD_WEBDAV_PROPS)-sqlite \
-	--$(call ptx/wwo, PTXCONF_LIGHTTPD_WEBDAV_LOCKS)-webdav-locks \
-	--$(call ptx/wwo, PTXCONF_LIGHTTPD_WEBDAV_LOCKS)-uuid \
-	--without-maxminddb \
-	--$(call ptx/wwo, PTXCONF_LIGHTTPD_LUA)-lua
+	$(CROSS_MESON_USR) \
+	-D build_extra_warnings=true \
+	-D with_libev=disabled \
+	-D with_mysql=disabled \
+	-D with_pgsql=disabled \
+	-D with_dbi=disabled \
+	-D with_sasl=disabled \
+	-D with_ldap=disabled \
+	-D with_pam=disabled \
+	-D with_xattr=$(call ptx/truefalse, PTXCONF_LIGHTTPD_ATTR) \
+	-D with_libunwind=disabled \
+	-D with_krb5=disabled \
+	-D with_openssl=$(call ptx/truefalse,PTXCONF_LIGHTTPD_OPENSSL) \
+	-D with_wolfssl=false \
+	-D with_pcre=$(call ptx/ifdef,PTXCONF_LIGHTTPD_PCRE,pcre,disabled) \
+	-D with_pcre2=false \
+	-D with_zlib=$(call ptx/endis,PTXCONF_LIGHTTPD_ZLIB)d \
+	-D with_bzip=$(call ptx/endis,PTXCONF_LIGHTTPD_BZ2LIB)d \
+	-D with_fam=disabled \
+	-D with_webdav_props=$(call ptx/endis, PTXCONF_LIGHTTPD_WEBDAV_PROPS)d \
+	-D with_webdav_locks=$(call ptx/endis, PTXCONF_LIGHTTPD_WEBDAV_LOCKS)d \
+	-D with_maxminddb=disabled \
+  -D with_lua=$(call ptx/truefalse,PTXCONF_LIGHTTPD_LUA) \
+  -D with_brotli=disabled \
+	-D with_zstd=disabled
 
 # ----------------------------------------------------------------------------
 # Compile
 # ----------------------------------------------------------------------------
-
-lighttpd_compile: $(STATEDIR)/lighttpd.compile
-
 $(STATEDIR)/lighttpd.compile:
 	@$(call targetinfo)
-	$(LIGHTTPD_PATH) $(MAKE) -C $(LIGHTTPD_DIR)
+	@$(call world/compile, LIGHTTPD)
 
 ifdef PTXCONF_LIGHTTPD_HTTPS_GEN_CERT
 # Generate a long-lasting self-signed certificate for testing
@@ -135,7 +127,7 @@ LIGHTTPD_MODULES-y += $(call remove_quotes,$(PTXCONF_LIGHTTPD_MOD_EXTRA))
 LIGHTTPD_MODULE_STRING := $(subst $(space),$(comma),$(addsuffix \",$(addprefix \",$(LIGHTTPD_MODULES-y))))
 
 # add modules that are always loaded
-LIGHTTPD_MODULES_INSTALL := mod_indexfile mod_dirlisting mod_staticfile $(LIGHTTPD_MODULES-y)
+LIGHTTPD_MODULES_INSTALL := mod_h2 mod_indexfile mod_dirlisting mod_staticfile $(LIGHTTPD_MODULES-y)
 
 $(STATEDIR)/lighttpd.targetinstall:
 	@$(call targetinfo)

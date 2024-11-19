@@ -13,18 +13,25 @@
 enabled=$(/etc/config-tools/firewall firewall --is-enabled)
 [ "enabled" != "$enabled" ] && exit 0
 
-
 start()
 {
     # This check should be changed into a call of a tool directly
     # interpreting JSON. Otherwise it may be flawed if format changes.
     local NET_PARAMS=""
 
-    if [[ -n ${NETCONF_BRIDGE_CONFIG+x} && -n ${NETCONF_IP_CONFIG+x} && -n ${NETCONF_INTERFACE_CONFIG+x} ]]; then
-        NET_PARAMS="--bridge-config $NETCONF_BRIDGE_CONFIG --ip-config $NETCONF_IP_CONFIG --interface-config $NETCONF_INTERFACE_CONFIG"
+    if [[ -n ${NETCONF_BRIDGE_CONFIG+x} && -n ${NETCONF_IP_CONFIG+x} && -n ${NETCONF_INTERFACE_CONFIG+x} && -n ${NETCONF_INTERFACE_STATUSES+x} ]]; then
+        NET_PARAMS="--bridge-config $NETCONF_BRIDGE_CONFIG --ip-config $NETCONF_IP_CONFIG --interface-config $NETCONF_INTERFACE_CONFIG --interface-statuses $NETCONF_INTERFACE_STATUSES"
     fi
-    
+
     running=$(/etc/config-tools/get_dhcpd_config --json "$NET_PARAMS" | tr -d " '\"\t\n\r\v" | grep -i -e 'dhcpdState:enabled')
+
+    # detect if there is an usb0 interface, poor check
+    # for usb enabled devices, e.g. cc100 etc.
+    if [[ -h '/sys/class/net/usb0' ]]; then
+        # string must not be empty in case dhcp
+        # should be enabled/unlocked
+        running='running';
+    fi
 
     if [ "x" != "x${running}" ] ; then
         action="up"

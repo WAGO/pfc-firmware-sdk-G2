@@ -239,10 +239,11 @@ if [ "$operation" = "restore" ]; then
   # Create list of all backuped users
   list_account_data_backuped_users "$acc_backup_file"
 
+  # for every entry in current /etc/passwd do
   index_new=0
   while [ $index_new -lt ${#new_usernames[*]} ]
   do
-    # Search for given username in backuped config file
+    # Search for given username in backuped /etc/passwd
     user_found=false
     index_backuped=0
     while [ $index_backuped -lt ${#backuped_usernames[*]} ]
@@ -255,10 +256,10 @@ if [ "$operation" = "restore" ]; then
     done
 
     if [[ $user_found == false ]]; then
-        # Username is not present
-	      current_uid=${new_UIDs[$index_new]}
+        # Username is not present in backup, only in current /etc/passwd
+	    current_uid=${new_UIDs[$index_new]}
         current_username="${new_usernames[$index_new]}"
-        # Check whether the UID is already present
+        # Check whether the UID is present in backuped /etc/passwd
         check_UID_presence "$current_uid"
         if [[  $? == 0 ]]; then
             # UID not found, add user record
@@ -271,18 +272,37 @@ if [ "$operation" = "restore" ]; then
             report_error "UID '$current_uid' is already used by user '$current_username'" "$LOG_PREFIX"
             exit $CONFIG_DATA_ERROR
         fi
+    else
+        # user found
+        # check shadow for valid entries in either one of the files: the backup and the current
+        current_username="${new_usernames[$index_new]}"
+        entry_in_current_shadow="$(awk -F: -v user="$current_username" '$1==user{print}' /etc/shadow)"
+        entry_in_backup_shadow="$(awk -F: -v user="$current_username" '$1==user{print}' "$backup_dir_merged/shadow")"
+        # merged shadow is created as a copy of backup shadow 
+        # if there is no entry in either file, do nothing because the user is present but there is no means of authentication
+        # if both have an entry, take the backup = do nothing
+        # if backup has an entry but current not, take the backup = do nothing
+        # if backup hasn't an entry but current does, add an entry only if there is an x in the password field in backup passwd (indicating the combination of passwd and shadow is used)
+        if [[ -z $entry_in_backup_shadow ]] && [[ -n $entry_in_current_shadow ]]; then
+            if (grep -q "^$current_username:x:" "$backup_dir_merged/passwd"); then
+                echo $entry_in_current_shadow >> "$backup_dir_merged/shadow"
+            fi
+        fi
     fi
     index_new=$(( index_new+1 ))
   done
 
   # Check group by name in the backuped group config file
   
+  # add empty last line in merged group if not already there
   if [ -s "${backup_dir_merged}/group" -a "$(tail -c 1 "${backup_dir_merged}/group")" != '' ]; then
     echo '' >>"${backup_dir_merged}/group"
   fi
 
+  # for every line in current /etc/group do
   while read group_data
   do
+      # if the line is not empty
       if [[ -n "$group_data" ]]; then
         groupname="$(echo "$group_data" | cut -d: -f1)"
         gid=$(echo $group_data | cut -d: -f3)  
@@ -308,6 +328,7 @@ if [ "$operation" = "restore" ]; then
                 # identical group data, copy it to merged file
                 echo "$group_data" >> "$backup_dir_merged"/group_merged
             else    
+                # group found, line in current group and backuped group differs
                 list_group_members "$group_backup_file" "$groupname" 
                 # clean and list current group members
                 current_group_member=()

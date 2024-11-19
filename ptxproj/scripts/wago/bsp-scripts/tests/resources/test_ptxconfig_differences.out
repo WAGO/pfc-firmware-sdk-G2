@@ -1,7 +1,0 @@
-Checking platform configuration in comparison to the reference (stage 1) build...
-
-Only in default FW                                                 Only in BSP
-                                                 
-                                                 PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES=y
-PTXCONF_WAGO_TOOLS_BUILD_VERSION_RELEASE=y
-===============================================================================================

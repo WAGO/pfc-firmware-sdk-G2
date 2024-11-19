@@ -10101,7 +10101,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
-      "lineStart": "34",
+      "lineStart": "36",
       "columnStart": "14",
       "category": "Warning:readability-braces-around-statements",
       "severity": "NORMAL",
@@ -10110,7 +10110,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glist.h",
-      "lineStart": "161",
+      "lineStart": "163",
       "columnStart": "10",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10119,7 +10119,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1039",
+      "lineStart": "1349",
       "columnStart": "11",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10128,7 +10128,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1044",
+      "lineStart": "1354",
       "columnStart": "77",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10137,7 +10137,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1046",
+      "lineStart": "1356",
       "columnStart": "71",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10146,7 +10146,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1049",
+      "lineStart": "1359",
       "columnStart": "63",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10155,7 +10155,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1051",
+      "lineStart": "1361",
       "columnStart": "64",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10164,7 +10164,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1053",
+      "lineStart": "1363",
       "columnStart": "73",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10173,7 +10173,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1064",
+      "lineStart": "1374",
       "columnStart": "68",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10182,7 +10182,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1068",
+      "lineStart": "1378",
       "columnStart": "68",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10191,7 +10191,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1068",
+      "lineStart": "1378",
       "columnStart": "99",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10200,7 +10200,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmain.h",
-      "lineStart": "289",
+      "lineStart": "329",
       "columnStart": "36",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10209,8 +10209,8 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmem.h",
-      "lineStart": "214",
-      "columnStart": "43",
+      "lineStart": "247",
+      "columnStart": "45",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
       "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
@@ -10218,7 +10218,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmessages.h",
-      "lineStart": "282",
+      "lineStart": "298",
       "columnStart": "11",
       "category": "Warning:readability-avoid-const-params-in-decls",
       "severity": "NORMAL",
@@ -10227,7 +10227,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmessages.h",
-      "lineStart": "408",
+      "lineStart": "424",
       "columnStart": "10",
       "category": "Warning:readability-braces-around-statements",
       "severity": "NORMAL",
@@ -10235,8 +10235,17 @@
       "moduleName": "modular-config-tools-tests"
     },
     {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/grefcount.h",
+      "lineStart": "77",
+      "columnStart": "35",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro replacement list should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gslist.h",
-      "lineStart": "150",
+      "lineStart": "152",
       "columnStart": "10",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10244,8 +10253,80 @@
       "moduleName": "modular-config-tools-tests"
     },
     {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "311",
+      "columnStart": "43",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "492",
+      "columnStart": "72",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
-      "lineStart": "169",
+      "lineStart": "204",
+      "columnStart": "7",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "226",
+      "columnStart": "15",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "228",
+      "columnStart": "7",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "234",
+      "columnStart": "76",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "236",
+      "columnStart": "11",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "242",
+      "columnStart": "3",
+      "category": "Warning:readability-else-after-return",
+      "severity": "NORMAL",
+      "message": "do not use 'else' after 'return' [readability-else-after-return]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "242",
       "columnStart": "7",
       "category": "Warning:readability-braces-around-statements",
       "severity": "NORMAL",
@@ -10254,97 +10335,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "119",
-      "columnStart": "53",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "modular-config-tools-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "119",
-      "columnStart": "77",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "modular-config-tools-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "119",
-      "columnStart": "99",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "modular-config-tools-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "315",
-      "columnStart": "63",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "modular-config-tools-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "316",
-      "columnStart": "63",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "modular-config-tools-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "317",
-      "columnStart": "150",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "modular-config-tools-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "317",
-      "columnStart": "186",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "modular-config-tools-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "317",
-      "columnStart": "222",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "modular-config-tools-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "317",
-      "columnStart": "63",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "modular-config-tools-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "44",
-      "columnStart": "73",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "modular-config-tools-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "80",
+      "lineStart": "106",
       "columnStart": "67",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10353,8 +10344,107 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "81",
-      "columnStart": "57",
+      "lineStart": "107",
+      "columnStart": "69",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "107",
+      "columnStart": "89",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "223",
+      "columnStart": "53",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "223",
+      "columnStart": "77",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "223",
+      "columnStart": "99",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "437",
+      "columnStart": "63",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "438",
+      "columnStart": "63",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "439",
+      "columnStart": "150",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "439",
+      "columnStart": "186",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "439",
+      "columnStart": "222",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "439",
+      "columnStart": "63",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "modular-config-tools-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "48",
+      "columnStart": "73",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
       "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
@@ -10362,7 +10452,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gutils.h",
-      "lineStart": "385",
+      "lineStart": "378",
       "columnStart": "33",
       "category": "Warning:readability-braces-around-statements",
       "severity": "NORMAL",
@@ -10371,7 +10461,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gutils.h",
-      "lineStart": "390",
+      "lineStart": "383",
       "columnStart": "35",
       "category": "Warning:readability-braces-around-statements",
       "severity": "NORMAL",
@@ -10380,7 +10470,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gutils.h",
-      "lineStart": "400",
+      "lineStart": "393",
       "columnStart": "66",
       "category": "Warning:readability-braces-around-statements",
       "severity": "NORMAL",
@@ -10389,7 +10479,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gutils.h",
-      "lineStart": "405",
+      "lineStart": "398",
       "columnStart": "35",
       "category": "Warning:readability-braces-around-statements",
       "severity": "NORMAL",
@@ -10397,5 +10487,5 @@
       "moduleName": "modular-config-tools-tests"
     }
   ],
-  "size": 1155
+  "size": 1165
 }

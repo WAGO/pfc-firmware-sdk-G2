@@ -15,6 +15,9 @@
          filtering should stay disabled. -->
         <protocols state="off">
             <protocol eproto="0x8892"/>
+            <!-- Protocols used for telecontrol: -->
+            <protocol eproto="0x88b8"/>
+            <protocol eproto="0x8100"/>
         </protocols>
         <whitelist>
         </whitelist>

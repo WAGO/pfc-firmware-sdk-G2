@@ -2,23 +2,18 @@
 # wdaphpdemo post install script: add demo client to auth service config
 # WAGO GmbH & Co. KG
 
-AUTH_SERVICE_CONFIG_FILE=/etc/authd/authd.conf
+AUTH_SERVICE_CLIENT_CONFIG_FILE=/etc/authd/clients/wdaphpdemo.conf
 
 add_demo_client_to_auth_service_config()
 {
-	# add client to list of known clients
-	if grep '^clients\s*=' "$AUTH_SERVICE_CONFIG_FILE"; then
-		sed -ie '/^clients\s*=/s/$/;wdaphpdemo/' "$AUTH_SERVICE_CONFIG_FILE"
-	else
-		echo 'clients=wdaphpdemo' >> "$AUTH_SERVICE_CONFIG_FILE"
-	fi
+	# add client to folder of known clients
+	touch "$AUTH_SERVICE_CLIENT_CONFIG_FILE"
 
 	# add required client config lines
-	echo ''                                                      >> "$AUTH_SERVICE_CONFIG_FILE"
-	echo '# WDA PHP Demo Client'                                 >> "$AUTH_SERVICE_CONFIG_FILE"
-	echo 'clients.label.wdaphpdemo        = WDA PHP Demo Client' >> "$AUTH_SERVICE_CONFIG_FILE"
-	echo 'clients.grant_types.wdaphpdemo  = authorization_code'  >> "$AUTH_SERVICE_CONFIG_FILE"
-	echo 'clients.redirect_uri.wdaphpdemo = /demo-wda/index.php' >> "$AUTH_SERVICE_CONFIG_FILE"
+	echo '# WDA PHP Demo Client'              >> "$AUTH_SERVICE_CLIENT_CONFIG_FILE"
+	echo 'label        = WDA PHP Demo Client' >> "$AUTH_SERVICE_CLIENT_CONFIG_FILE"
+	echo 'grant_types  = authorization_code'  >> "$AUTH_SERVICE_CLIENT_CONFIG_FILE"
+	echo 'redirect_uri = /demo-wda/index.php' >> "$AUTH_SERVICE_CLIENT_CONFIG_FILE"
 
 	# restart auth service to load new config
 	/etc/init.d/authd restart

@@ -1,0 +1,41 @@
+From d51d5ff522244207467d34e7804885fef6acaef9 Mon Sep 17 00:00:00 2001
+From: Alexander Riedel <alexander.riedel@wago.com>
+Date: Mon, 12 Feb 2024 13:01:46 +0100
+Subject: [PATCH 2/2] fix cslabs patch warnings
+
+---
+ lib/core-net/network.c              | 2 +-
+ lib/core-net/private-lib-core-net.h | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/lib/core-net/network.c b/lib/core-net/network.c
+index eda0434..37ea79e 100755
+--- a/lib/core-net/network.c
++++ b/lib/core-net/network.c
+@@ -521,7 +521,7 @@ lws_get_addr_scope(struct lws *wsi, const char *ifname_or_ipaddr)
+   if(pszC && isdigit(pszC[1]))
+   {
+     pszC++;
+-    scope = atoi(pszC);
++    scope = strtoul(pszC, NULL, 0);
+   	if (scope > 0)
+   		return scope;
+   }
+diff --git a/lib/core-net/private-lib-core-net.h b/lib/core-net/private-lib-core-net.h
+index d15b895..2d3f73a 100755
+--- a/lib/core-net/private-lib-core-net.h
++++ b/lib/core-net/private-lib-core-net.h
+@@ -1498,8 +1498,8 @@ int
+ sanity_assert_no_sockfd_traces(const struct lws_context *context,
+ 			       lws_sockfd_type sfd);
+ #else
+-static int sanity_assert_no_wsi_traces(const struct lws_context *context, struct lws *wsi) { (void)context; (void)wsi; return 0; }
+-static int sanity_assert_no_sockfd_traces(const struct lws_context *context, lws_sockfd_type sfd) { (void)context; (void)sfd; return 0; }
++static inline int sanity_assert_no_wsi_traces(const struct lws_context *context, struct lws *wsi) { (void)context; (void)wsi; return 0; }
++static inline int sanity_assert_no_sockfd_traces(const struct lws_context *context, lws_sockfd_type sfd) { (void)context; (void)sfd; return 0; }
+ #endif
+ 
+ 
+-- 
+2.25.1
+

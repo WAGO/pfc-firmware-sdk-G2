@@ -21,6 +21,8 @@ namespace netconf {
 #define ETHER_TYPE_LEN 2
 #define ETH_HDRLEN (MAC_LEN + MAC_LEN + ETHER_TYPE_LEN)
 
+static uint32_t ARP_DELAY_US = (750*1000);
+
 struct __attribute__((packed)) ArpHeader {
   uint16_t htype;
   uint16_t ptype;
@@ -91,18 +93,38 @@ Status GratuitousArp::Send(const Address& ip_address, const NetDevPtr& bridge_ne
 }
 
 void GratuitousArp::SendGratuitousArpOnBridge(NetDevPtr bridge_netdev, Address address) const {
+  LogDebug("Sending gratis arp on " + bridge_netdev->GetName());
   if (bridge_netdev->GetDeviceType() == DeviceType::Bridge && address != ::std::string(ZeroIP)) {
-    Send(address, bridge_netdev, bridge_netdev);
+
+    usleep(ARP_DELAY_US);  // immediatly after change of link state it seams not possible to transmit data -> delay sending of arps
+    auto s = Send(address, bridge_netdev, bridge_netdev);
+
+    if (!s.IsOk()) {
+      LogWarning("Failed to send gratis arp on " + bridge_netdev->GetName());
+    }
+  } else {
+    LogDebug("arp not sent on bridge " + bridge_netdev->GetName());
   }
 }
 
 void GratuitousArp::SendGratuitousArpOnPort(NetDevPtr port_netdev, NetDevPtr bridge_netdev, Address address) const {
   ::std::string ze{ZeroIP};
+  LogDebug("Sending gratis arp on " + port_netdev->GetName());
   if (port_netdev->GetDeviceType() == DeviceType::Port && address != ze) {
     if (bridge_netdev) {
-      usleep(50 * 1000);  // TODO(SB): remove and retest with kernel 5.15
-      Send(address, bridge_netdev, port_netdev);
+      usleep(ARP_DELAY_US);  // immediatly after change of link state it seams not possible to transmit data -> delay sending of arps
+      auto s = Send(address, bridge_netdev, port_netdev);
+
+      if (!s.IsOk()) {
+        LogWarning(s.ToString());
+      }
+
+      LogDebug("Sent gratis arp on " + port_netdev->GetName());
+    } else {
+      LogDebug("(no bridge dev) Not sent gratis arp on " + port_netdev->GetName());
     }
+  } else {
+    LogDebug("arp not send on port " + port_netdev->GetName());
   }
 }
 

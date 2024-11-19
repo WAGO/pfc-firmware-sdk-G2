@@ -18,10 +18,10 @@ start()
 {
 	local NET_PARAMS=""
 
-    if [[ -n ${NETCONF_BRIDGE_CONFIG+x} && -n ${NETCONF_IP_CONFIG+x} && -n ${NETCONF_INTERFACE_CONFIG+x} ]]; then
-        NET_PARAMS="--bridge-config $NETCONF_BRIDGE_CONFIG --ip-config $NETCONF_IP_CONFIG --interface-config $NETCONF_INTERFACE_CONFIG"
+    if [[ -n ${NETCONF_BRIDGE_CONFIG+x} && -n ${NETCONF_IP_CONFIG+x} && -n ${NETCONF_INTERFACE_CONFIG+x} && -n ${NETCONF_INTERFACE_STATUSES+x} ]]; then
+        NET_PARAMS="--bridge-config $NETCONF_BRIDGE_CONFIG --ip-config $NETCONF_IP_CONFIG --interface-config $NETCONF_INTERFACE_CONFIG --interface-statuses $NETCONF_INTERFACE_STATUSES"
     fi
-		
+
     running=$(/etc/config-tools/get_dns_service_config -g dns-state "$NET_PARAMS")
 
     if [ "enabled" == "$running" ] ; then

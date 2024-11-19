@@ -1,0 +1,24 @@
+## SECTION=system_libraries
+
+menuconfig PCRE2
+	tristate
+	prompt "pcre2                         "
+	help
+	  New Perl Compatible Regular Expression Library
+
+if PCRE2
+
+config PCRE2_8
+	bool
+	prompt "enable 8 bit character support"
+	default y
+
+config PCRE2_16
+	bool
+	prompt "enable 16 bit character support"
+
+config PCRE2_32
+	bool
+	prompt "enable 32 bit character support"
+
+endif

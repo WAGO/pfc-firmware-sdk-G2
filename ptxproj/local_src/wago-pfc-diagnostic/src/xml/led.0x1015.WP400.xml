@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!-- LED configuration of pac200 product! -->
+<ledconfig>
+<led name="SYS" number="0" state="STATIC_GRN" id="000000C0" />
+<!-- <led name="RUN"  number="1" state="STATIC_OFF" id="00110001" /> -->
+</ledconfig>

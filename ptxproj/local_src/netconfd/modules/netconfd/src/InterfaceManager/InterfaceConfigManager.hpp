@@ -32,7 +32,7 @@ class InterfaceConfigManager : public IInterfaceInformation{
   void InitializePorts(InterfaceState initalPortState = InterfaceState::UNKNOWN);
   Status Configure(const InterfaceConfigs& port_configs);
   InterfaceConfigs const& GetPortConfigs() override;
-  InterfaceStatuses GetCurrentPortStatuses() override;
+  Status GetCurrentPortStatuses(InterfaceStatuses& itf_statuses) override;
   InterfaceInformations GetInterfaceInformations() override;
 
  private:

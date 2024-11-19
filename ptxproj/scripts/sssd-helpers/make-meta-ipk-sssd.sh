@@ -106,7 +106,7 @@ SSSD_REPO_NAME='sssd_repo'
 SSSD_REPO_FILE_NAME="${SSSD_REPO_NAME}_${SSSD_REPO_VERSION}_FW${FW_VERSION}.repo"
 
 # dependencies which are needed and already in right order!
-PACKAGES='attr acl ding-libs libbsd talloc tevent tdb ldb keyutils krb5 p11-kit samba cyrus-sasl libunistring libpcre2 c-ares sssd'
+PACKAGES='attr acl ding-libs libbsd talloc tevent tdb ldb keyutils krb5 p11-kit samba cyrus-sasl libunistring pcre2 c-ares sssd'
 
 # this is our working dir structure
 SSSD_META_IPK_BUILD_DIR="${SSSD_BUILD_DIR}/sssd-meta-ipk"

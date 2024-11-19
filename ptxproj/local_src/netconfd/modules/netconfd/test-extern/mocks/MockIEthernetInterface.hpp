@@ -18,9 +18,7 @@ namespace netconf {
 class MockIEthernetInterface : public IEthernetInterface {
  public:
   MOCK_METHOD0(UpdateConfig,
-      void());
-  MOCK_CONST_METHOD0(GetName,
-      const ::std::string&());
+      Status());
   MOCK_CONST_METHOD0(GetMac,
       MacAddress());
   MOCK_CONST_METHOD0(GetAutonegSupport,
@@ -44,7 +42,7 @@ class MockIEthernetInterface : public IEthernetInterface {
   MOCK_CONST_METHOD0(GetDuplex,
       eth::Duplex());
   MOCK_METHOD0(Commit,
-      void());
+      Status());
   MOCK_METHOD1(SetAutoneg,
       void(eth::Autoneg autoneg));
   MOCK_METHOD1(SetState,
@@ -57,4 +55,3 @@ class MockIEthernetInterface : public IEthernetInterface {
 
 }  // namespace netconf
 //---- End of header file ------------------------------------------------------
-

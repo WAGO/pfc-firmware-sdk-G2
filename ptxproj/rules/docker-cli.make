@@ -98,7 +98,7 @@ $(STATEDIR)/docker-cli.install:
 	@$(call targetinfo)
 	mkdir -p $(DOCKER_CLI_INSTALLDIR) && \
 	cp $(DOCKER_CLI_DIR)/build/docker-linux-arm-v7 $(DOCKER_CLI_INSTALLDIR)/ && \
-	ln -s docker-linux-arm-v7 $(DOCKER_CLI_INSTALLDIR)/docker
+	ln -sf docker-linux-arm-v7 $(DOCKER_CLI_INSTALLDIR)/docker
 	@$(call touch)
 
 # ----------------------------------------------------------------------------

@@ -508,7 +508,8 @@ finish_clean_runtime()
     KEEP_APP=$(fwupdate_get_keep_app_flag)
     fwupdate_report_info "keep runtime application: $KEEP_APP"
 
-    if [[ ! "$(/etc/config-tools/get_typelabel_value order)" == 750-83?? ]]; then
+    if [[ ! "$(/etc/config-tools/get_typelabel_value order)" == 750-83?? ]] \
+        && [[ ! "$(/etc/config-tools/get_typelabel_value order)" == 762-34?? ]]; then
         if [ "$KEEP_APP" == false ]; then
             # Runtime application will be incompatible, delete it
             finish_clean_runtime_home

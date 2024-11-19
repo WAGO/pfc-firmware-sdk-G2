@@ -81,9 +81,6 @@ class NetworkConfigBrain {
   void ResetIpConfigsToDefault(IPConfigs &configs);
   void ResetDIPSwitchIPConfigToDefault(DipSwitchIpConfig &config);
 
-  void GetValidIpConfigsSubset(const IPConfigs &configs, IPConfigs &subset);
-
-
   Status PersistIpConfiguration(const IPConfigs &config);
   JsonConverter jc;
   IBridgeManager &bridge_manager_;

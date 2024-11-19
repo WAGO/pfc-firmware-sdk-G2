@@ -30,6 +30,7 @@ IPConfigs& ComplementNetmasks(IPConfigs& ip_configs);
 ::std::string IPConfigToString(const IPConfig& config);
 
 void RemoveUnnecessaryIPParameter(IPConfigs &ip_configs);
+bool hasValidIPSourceForDeviceType(const IPConfig &ip_config, const DeviceType &type);
 
 /**
  * Increment the number representation of the given IP address string by the given increment value.

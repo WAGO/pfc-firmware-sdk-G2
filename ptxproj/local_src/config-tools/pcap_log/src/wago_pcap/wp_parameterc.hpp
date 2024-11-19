@@ -39,7 +39,7 @@ namespace wp {
   #define SUBFOLDER_PCAP "pcap/"
   #define PATH_CONFIG "/etc/pcap_log.conf"
   #define PATH_INFO "/var/run/pcap_log.info"
-  #define SAVEFILE_NAME "log.pcapng"
+  #define SAVEFILE_NAME "log.pcap"
 
   #define STORAGE_MEMORY_CARD "Memory Card"
   #define STORAGE_INTERNAL_FLASH "RAM Disk"

@@ -17,7 +17,7 @@ PACKAGES-$(PTXCONF_CDS3_TSCIOBACNET) += cds3-tsciobacnet
 #--- paths and names --------------------------------------------------------- 
 #
 CDS3_TSCIOBACNET                 := TscIoBacnet
-CDS3_TSCIOBACNET_SO_VERSION      := 2.1.0
+CDS3_TSCIOBACNET_SO_VERSION      := 2.2.0
 CDS3_TSCIOBACNET_FOLDER          := TscIoBacnet_git
 
 ifdef PTXCONF_CDS3_TSCIOBACNET_SOURCE_DEV
@@ -32,13 +32,20 @@ CDS3_TSCIOBACNET_ENV_VENDOR      := WAGO
 ifdef PTXCONF_CDS3_TSCIOBACNET_SOURCE_RELEASED
 CDS3_TSCIOBACNET_URL             := $(call jfrog_template_to_url, CDS3_TSCIOBACNET)
 else
+ifdef PTXCONF_CDS3_TSCIOBACNET_ARTIFACTORY_DEV
+CDS3_TSCIOBACNET_URL             := $(call jfrog_template_to_url, CDS3_TSCIOBACNET_ARTIFACTORY_DEV)
+else
 CDS3_TSCIOBACNET_URL             := file://$(CDS3_TSCIOBACNET_REL_PATH)
+endif
 endif
 CDS3_TSCIOBACNET_SUFFIX          := $(suffix $(CDS3_TSCIOBACNET_URL))
 CDS3_TSCIOBACNET_MD5              = $(shell [ -f $(CDS3_TSCIOBACNET_MD5_FILE) ] && cat $(CDS3_TSCIOBACNET_MD5_FILE))
 CDS3_TSCIOBACNET_MD5_FILE        := wago_intern/artifactory_sources/$(CDS3_TSCIOBACNET)$(CDS3_TSCIOBACNET_SUFFIX).md5
 CDS3_TSCIOBACNET_ARTIFACT         = $(call jfrog_get_filename,$(CDS3_TSCIOBACNET_URL))
 ifdef PTXCONF_CDS3_TSCIOBACNET_SOURCE_RELEASED
+CDS3_TSCIOBACNET_ARCHIVE         := $(CDS3_TSCIOBACNET)-$(CDS3_TSCIOBACNET_VERSION)$(CDS3_TSCIOBACNET_SUFFIX)
+endif
+ifdef PTXCONF_CDS3_TSCIOBACNET_ARTIFACTORY_DEV
 CDS3_TSCIOBACNET_ARCHIVE         := $(CDS3_TSCIOBACNET)-$(CDS3_TSCIOBACNET_VERSION)$(CDS3_TSCIOBACNET_SUFFIX)
 endif
 
@@ -93,6 +100,18 @@ endif
 	@$(call touch)
 endif
 
+ifdef PTXCONF_CDS3_TSCIOBACNET_ARTIFACTORY_DEV
+$(STATEDIR)/cds3-tsciobacnet.get:
+	@$(call targetinfo)
+
+ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	$(call ptx/in-path, PTXDIST_PATH, scripts/wago/artifactory.sh) fetch \
+    '$(CDS3_TSCIOBACNET_URL)' wago_intern/artifactory_sources/$(CDS3_TSCIOBACNET_ARCHIVE) '$(CDS3_TSCIOBACNET_MD5_FILE)'
+endif
+
+	@$(call touch)
+endif
+
 # ----------------------------------------------------------------------------
 # Extract
 # ----------------------------------------------------------------------------
@@ -106,7 +125,12 @@ ifdef PTXCONF_CDS3_TSCIOBACNET_SOURCE_RELEASED
 	@tar xvf wago_intern/artifactory_sources/$(CDS3_TSCIOBACNET_ARCHIVE) -C $(CDS3_TSCIOBACNET_DIR) --strip-components=1
 	@$(call patchin, CDS3_TSCIOBACNET)
 else
+ifdef PTXCONF_CDS3_TSCIOBACNET_ARTIFACTORY_DEV
+	@tar xvf wago_intern/artifactory_sources/$(CDS3_TSCIOBACNET_ARCHIVE) -C $(CDS3_TSCIOBACNET_DIR) --strip-components=1
+	@$(call patchin, CDS3_TSCIOBACNET)
+else
 	@mv $(CDS3_TSCIOBACNET_SRC_DIR)/* $(CDS3_TSCIOBACNET_DIR)
+endif
 endif
 endif
 	@$(call touch)

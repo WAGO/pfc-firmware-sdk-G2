@@ -1,3 +1,70 @@
+Firmware Release 04.06.01 (28) – CODESYS 3
+
+Engineering by CODESYS IDE V. 3.5 is supported
+Engineering by e!COCKPIT IDE is not supported
+CODESYS 2.3 is not supported
+
+Migration Guide – from e!COCKPIT to CODEYS V3.5:
+• https://techdocs.wago.com/Software/eCOCKPIT_Migration/en-US/index.html#index_content
+
+System:
+[NEW]   The login form of the Auth service displays configurable text with 
+        system usage information. This text is empty by default and must be set
+        up by the end customer and customized to their specific needs.
+        The configuration is possible via WDx.
+[NEW]   External authentication with OAuth2 for the WDX parameter service
+[FIXED] WAT-36957       Merge of /etc/shadow during firmware update via WUP
+[FIXED] SECURITY        CVE-2024-41970, CVE-2024-41974
+[FIXED] WAT-36824       VDE-2024-047: Improper Access Control
+[FIXED] WAT-36825       VDE-2024-047: Improper Access Control
+[FIXED] WAT-34176       IODrvDal: Enhanced watchdog to detect multiple
+                        short-term errors (can be disabled via config file).
+[FIXED] WAT-35335       Missing iptables bridge netfiltering for Docker
+[FIXED] WAT-35113       Error using Docker Swarm
+[FIXED] WAT-36872       Long waiting times during boot process if firewall and
+                        dhcp is activated
+[REMOVED]       Cloud Connectivity: IBM cloud specific functionality is removed
+[DEPRECATED]    Webserver module PHP-PAM will be removed in future versions
+[DEPRECATED]    The network feature rate limiting is deprecated and will be
+                removed in future versions
+[Note]  ADVICE  Code generation from WDA OpenAPI is possible via Postman
+
+Operating System:
+[FIXED] SECURITY        CVE-2024-34397, CVE-2024-34459, CVE-2024-6387,
+                        CVE-2024-37676
+[FIXED] WAT-36596       Update glib to v2.78.6
+[FIXED] WAT-36601       Update xmllint to 2.13.2
+[FIXED] WAT-36777       Update OpenSSH to v9.8 p1
+[FIXED] WAT-36787       Update htop to 3.0.1
+
+Runtime System:
+[NOTE]  ADVICE  PFC300: The behavior of the DAL watchdog may change on multicore
+                systems.
+                If a high-priority IEC task on a core displaces all other IEC
+                tasks on this core, the BUS is no longer driven into a defined
+                state via the watchdog, as the system and therefore other IEC
+                tasks on other cores can still be executed.
+                For controlled behavior, it is recommended to use the CODESYS
+                internal task watchdog.
+[FIXED] WAT-34361       Port authentication for the CODESYS WebVisu can be 
+                        switched off separately
+
+Fieldbus Interface & Protocols:
+[FIXED] WAT-36466       OPC UA Server: Denial of service after several link down
+                        for a specific time
+[FIXED] WAT-36203       OPC UA Server: Stop publishing if the system time is set
+                        backward
+[KNOWN] WAT-36971       Writing SNMPUser via WDA-API is only possible with
+                        Security Level "AuthPriv
+
+Web Based Management:
+[KNOWN] WAT-36520       Mass Storage - Format memory card: If one or more USB
+                        sticks are connected to the device, the memory card is
+                        not always formatted, but the last connected medium.
+                        Workaround: Remove USB stick(s).
+
+################################################################################
+
 Firmware Release 04.05.10 (27) – CODESYS 3
 
 Engineering by CODESYS IDE V. 3.5 is supported

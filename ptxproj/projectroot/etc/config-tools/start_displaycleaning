@@ -1,0 +1,28 @@
+#!/bin/bash
+#-----------------------------------------------------------------------------#
+# Script-name: start_displaycleaning
+#
+# starting touchscreen cleaning tool clear_screen
+#
+# Author: Wolfgang Rückl,  elrest GmbH
+#-----------------------------------------------------------------------------#
+
+# load general definitions and functions
+if [ ! -f "/etc/config-tools/config_tool_lib" ]; then
+  echo "config_tool_lib missing"
+  exit 255
+fi
+
+. /etc/config-tools/config_tool_lib
+
+file="/usr/bin/clear_screen"
+
+if [ -e $file ]; then
+export DISPLAY=:0.0
+$file
+status=$?
+else  
+status=$FILE_OPEN_ERROR
+fi
+
+exit $status

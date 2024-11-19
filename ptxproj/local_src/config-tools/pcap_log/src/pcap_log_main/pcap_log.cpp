@@ -23,6 +23,7 @@
 #include <csignal>
 #include <unistd.h>
 
+#include "wp_edit.hpp"
 #include "wp_parameterc.hpp"
 #include "wp_sniffer.hpp"
 #include "wp_debug.hpp"
@@ -53,7 +54,8 @@ enum class opt_actions
   archive_all = 1 << 6,
   archive = 1 << 7,
   test_filter = 1 << 8,
-  rm_logs = 1 << 9
+  rm_logs = 1 << 9,
+  inject_secrets = 1 << 10
 };
 
 //------------------------------------------------------------------------------
@@ -65,6 +67,7 @@ bool test(opt_actions action);
 
 static bool DoStop();
 static int DoStart();
+void tmp_pcpp();
 
 //------------------------------------------------------------------------------
 // macros
@@ -82,8 +85,9 @@ option longopts[] = {
    { "stop",        no_argument,        nullptr,   '0' },
    { "test",        optional_argument,  nullptr,   't' },
    { "archive",     required_argument,  nullptr,   'a' },
-   { "incfiles",    no_argument,        nullptr,   'f' },
+   { "incfiles",    optional_argument,  nullptr,   'f' },
    { "delete",      no_argument,        nullptr,   'r' },
+   { "inject",      required_argument,  nullptr,   'j' },
    // last line
    { nullptr,       0,                  nullptr,    0  }
 };
@@ -154,11 +158,17 @@ static void ShowHelp()
   std::cout << "     [--start]    -start service to capture packets \n";
   std::cout << "     [--stop]     -stop service to capture packets \n";
   std::cout << "  -t [--test]     -test if a filter expression compiles\n";
-  std::cout << "  -f [--incfiles] -include these files in the archive (see -a),\n";
+  std::cout << "  -f [--incfiles] -if used with -a: include these files in the archive,\n";
+  std::cout << "                   if used with -j: inject secrets into these files;\n";
   std::cout << "                   can be used multiple times,\n";
-  std::cout << "                   only allows .log files below /var/tmp\n";
+  std::cout << "                   only allows .log/.pcap/.pcapng files below /var/tmp;\n";
   std::cout << "  -a [--archive]  -create log archive to destination directory\n";
   std::cout << "  -r [--delete]   -remove all log files\n";
+  std::cout << "  -j [--inject]   -inject given secrets file into files given with -f,\n";
+  std::cout << "                   format: -j <type>,<file path>\n";
+  std::cout << "                   where <type> can be one of:\n";
+  std::cout << "                     - tls\n";
+  std::cout << "                   if no files are given with -f, all current logs will be used\n";
   std::cout << "\n";
 }
 
@@ -209,6 +219,77 @@ static void RemoveLogs()
   {
     config.cleanLogs(FOLDER_SD);
   }
+}
+
+//------------------------------------------------------------------------------
+static bool InjectSecrets(const std::string & arg, std::vector<std::string> & pcapngFiles)
+{
+  Debug_Printf("InjectSecrets(%s) \n", arg.c_str());
+
+  std::string arg_type;
+  std::string arg_path;
+  std::stringstream arg_stream{arg};
+
+  // expect format like "tls,/a/path.log"
+  if (!std::getline(arg_stream, arg_type, ',') || arg_type.empty())
+  {
+    Debug_Printf("Invalid argument formatting\n");
+    return false;
+  }
+  if (!std::getline(arg_stream, arg_path, ',') || arg_path.empty())
+  {
+    Debug_Printf("Invalid argument formatting\n");
+    return false;
+  }
+  if (!canonicalise_file_path(arg_path) || !check_allowed_extra_file_path(arg_path))
+  {
+    Debug_PrintAndLogToFile(INJECT_SECRETS_LOG_PATH, "No valid secrets log found at \"%s\".", arg_path.c_str());
+    return false;
+  }
+
+  pcpp::DecryptionSecretType secret_type;
+  if (!wp::SecretsHandler::parse_secrets_type(arg_type, secret_type))
+  {
+    Debug_Printf("Invalid secret type \"%s\"\n", arg_type.c_str());
+    return false;
+  }
+
+  std::vector<pcpp::DecryptionSecret> secrets;
+  pcpp::DecryptionSecret secret(secret_type, 0, nullptr);
+  if (!wp::SecretsHandler::parse_secrets_file(arg_path, secret_type, secret))
+  {
+    Debug_PrintAndLogToFile(INJECT_SECRETS_LOG_PATH, "Failed to parse secrets log file \"%s\".", arg_path.c_str());
+    return false;
+  }
+  secrets.emplace_back(secret);
+
+  // if no pcaps given, use any existing in capture dir
+  if (pcapngFiles.empty())
+  {
+    wp::Info info;
+    info.load();
+    info.updateOptions(true);
+    for (const auto & file : info.data.optDlPaths)
+    {
+      std::filesystem::path path{file};
+      if (path.extension() == ".pcap" || path.extension() == ".pcapng")
+      {
+        pcapngFiles.emplace_back(file);
+      }
+    }
+  }
+
+  bool result = true;
+  for (const auto & pcapngFile : pcapngFiles)
+  {
+    if (!wp::SecretsHandler::inject_secrets(secrets, pcapngFile))
+    {
+      Debug_Printf("Failed to inject secrets into \"%s\"\n", pcapngFile.c_str());
+      result = false;
+    }
+  }
+
+  return result;
 }
 
 //------------------------------------------------------------------------------
@@ -420,8 +501,9 @@ int main(int    argc,
   std::string filter_optarg = "";
   std::string archive_optarg = "";
   std::vector<std::string> archive_extra_files;
+  std::string inject_optarg = "";
 
-  while((oc = getopt_long(argc, argv, "drhic::t::f:a:", &longopts[0], &ocIndex)) != -1)
+  while((oc = getopt_long(argc, argv, "drhic::t::f:a:j:", &longopts[0], &ocIndex)) != -1)
   {
     Debug_Printf("case: -%c \n", oc);
     switch(oc)
@@ -433,7 +515,7 @@ int main(int    argc,
       case 'f':
         {
           std::string extra_path = optarg;
-          if (optarg != nullptr && check_allowed_and_canonicalise_extra_file_path(extra_path))
+          if (optarg != nullptr && canonicalise_file_path(extra_path) && check_allowed_extra_file_path(extra_path))
           {
             archive_extra_files.emplace_back(extra_path);
           }
@@ -475,6 +557,10 @@ int main(int    argc,
         break;
       case 'r':
         option_actions |= opt_actions::rm_logs;
+        break;
+      case 'j':
+        option_actions |= opt_actions::inject_secrets;
+        inject_optarg = optarg;
         break;
       // invalid options, missing option argument or show help
       case '?':
@@ -541,6 +627,19 @@ int main(int    argc,
     {
       Debug_Printf("Failed to start with code %d\n", start_result);
       result = start_result;
+    }
+  }
+
+  if (test(option_actions & opt_actions::inject_secrets))
+  {
+    if (wasRunningBefore)
+    {
+      usleep(100 * 1000); // wait 100ms to finish killing the pcap logger before accessing the files
+    }
+
+    if (!InjectSecrets(inject_optarg, archive_extra_files))
+    {
+      Debug_Printf("Could not inject secrets into at least one file.\n");
     }
   }
 

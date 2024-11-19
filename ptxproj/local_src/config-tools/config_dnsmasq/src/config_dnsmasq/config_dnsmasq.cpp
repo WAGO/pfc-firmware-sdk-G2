@@ -1697,7 +1697,7 @@ int run(int argc, char **argv) {
   ct_dnsmasq_assert_conf_not_compromised(prgconf.dnsmasq_conf);
   auto dnsmasq_session = ct_dnsmasq_start_session(prgconf.services_xml_path);
 
-  netcfg_read_settings(ip_config_data, legal_bridge_names, prgconf, debugmode);
+  read_network_config(ip_config_data, legal_bridge_names, prgconf, debugmode);
 
   if (!port.empty()) {
     erh_assert(is_legal_port_name(port, legal_bridge_names), INVALID_PARAMETER,

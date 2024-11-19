@@ -10,7 +10,8 @@ config ONLINE_UPDATE
 	select GOOGLETEST
 	select BOOST
 	select WAGO_SYSTEM
-	select WRETAIN
+	select WRETAIN if PLCLINUXRT
+	select WRETAIN if CODESYS3
 	select LIBCURL
 	select LIBCURL_TFTP
 	select OPENSSL

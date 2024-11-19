@@ -1,0 +1,76 @@
+#!/bin/bash
+
+#-----------------------------------------------------------------------------#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# This file is part of PTXdist package wago-custom-install.
+#
+# Copyright (c) 2021-2022 WAGO GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
+# Script:   settings_backup_wds
+#
+# Brief:    Save wds configuration settings to stdout or restore 
+#           them from stdin.
+#
+# Author:   MWW: WAGO GmbH & Co. KG
+# Author:   SD: WAGO GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+
+# load common backup/restore functions
+if [[ ! -f "/usr/sbin/settings_backup_lib" ]]; then
+    echo "settings_backup_lib missing"
+    exit 64
+fi
+
+# wds config 
+WDS_CONFIG_DIR="/etc/wds"
+WDS_CONFIG_TAR="/home/wds-config.tar"
+
+
+source /usr/sbin/settings_backup_lib
+
+RESULT=0
+OPERATION=${1:-}
+BACKUP_FILE=${2:-}
+#-------------------------------------------------------------
+# restore of settings
+#-------------------------------------------------------------
+if [[ "$OPERATION" = "--restore" ]]; then
+    
+    # read backup file from stdin
+    while IFS= read -r line; do
+        # get parameter key
+        key=${line%%=*}
+        # get parameter value
+        value=${line#*=}
+        if [[ "$key" = wds-conf ]]; then
+            base64 -d <<< "$value" >> "$WDS_CONFIG_TAR"
+        fi
+    done <"$BACKUP_FILE"
+    tar -xf "$WDS_CONFIG_TAR" -C /
+    rm "$WDS_CONFIG_TAR"
+#-------------------------------------------------------------
+# backup settings
+#-------------------------------------------------------------
+elif [[ "$OPERATION" = "--save" ]]; then
+    tar cf "$WDS_CONFIG_TAR" "$WDS_CONFIG_DIR"
+    BackupKnownFile wds-conf "$WDS_CONFIG_TAR" >> "$BACKUP_FILE"
+    rm "$WDS_CONFIG_TAR"
+    RESULT=$?
+elif [[ "$OPERATION" = "--param-count" ]]; then
+		echo 1
+		RESULT=$?
+else
+    echo
+    echo "* Save wds configuration settings to backup-file or restore them from backup-file *"
+    echo
+    echo "backup_wds --save <backup-file>      backup wds state"
+    echo "backup_wds --restore <backup-file>   restore wds state"
+    echo "backup_wds --param-count             get number of wds parameters to save"
+    echo
+fi
+
+exit $RESULT

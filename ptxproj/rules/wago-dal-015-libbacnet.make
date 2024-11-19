@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_LIBBACNET) += libbacnet
 #--- paths and names --------------------------------------------------------- 
 #
 LIBBACNET                   := libbacnet
-LIBBACNET_VERSION        		:= 2.0.1
+LIBBACNET_VERSION        		:= 2.1.0
 LIBBACNET_SO_VERSION        := $(LIBBACNET_VERSION)
 LIBBACNET_FOLDER            := libbacnet_git
 
@@ -32,13 +32,20 @@ LIBBACNET_ENV_VENDOR        := WAGO
 ifdef PTXCONF_LIBBACNET_SOURCE_RELEASED
 LIBBACNET_URL               := $(call jfrog_template_to_url, LIBBACNET)
 else
+ifdef PTXCONF_LIBBACNET_ARTIFACTORY_DEV
+LIBBACNET_URL               := $(call jfrog_template_to_url, LIBBACNET_ARTIFACTORY_DEV)
+else
 LIBBACNET_URL               := file://$(LIBBACNET_SRC_DIR)
+endif
 endif
 LIBBACNET_SUFFIX            := $(suffix $(LIBBACNET_URL))
 LIBBACNET_MD5                = $(shell [ -f $(LIBBACNET_MD5_FILE) ] && cat $(LIBBACNET_MD5_FILE))
 LIBBACNET_MD5_FILE          := wago_intern/artifactory_sources/$(LIBBACNET)$(LIBBACNET_SUFFIX).md5
 LIBBACNET_ARTIFACT           = $(call jfrog_get_filename,$(LIBBACNET_URL))
 ifdef PTXCONF_LIBBACNET_SOURCE_RELEASED
+LIBBACNET_ARCHIVE           := $(LIBBACNET)-$(LIBBACNET_VERSION)$(LIBBACNET_SUFFIX)
+endif
+ifdef PTXCONF_LIBBACNET_ARTIFACTORY_DEV
 LIBBACNET_ARCHIVE           := $(LIBBACNET)-$(LIBBACNET_VERSION)$(LIBBACNET_SUFFIX)
 endif
 
@@ -93,6 +100,18 @@ endif
 	@$(call touch)
 endif
 
+ifdef PTXCONF_LIBBACNET_ARTIFACTORY_DEV
+$(STATEDIR)/libbacnet.get:
+	@$(call targetinfo)
+
+ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	$(call ptx/in-path, PTXDIST_PATH, scripts/wago/artifactory.sh) fetch \
+    '$(LIBBACNET_URL)' wago_intern/artifactory_sources/$(LIBBACNET_ARCHIVE) '$(LIBBACNET_MD5_FILE)'
+endif
+
+	@$(call touch)
+endif
+
 # ----------------------------------------------------------------------------
 # Extract
 # ----------------------------------------------------------------------------
@@ -106,10 +125,16 @@ ifdef PTXCONF_LIBBACNET_SOURCE_RELEASED
 	@tar xvf wago_intern/artifactory_sources/$(LIBBACNET_ARCHIVE) -C $(LIBBACNET_DIR) --strip-components=1
 	@$(call patchin, LIBBACNET)
 endif
+ifdef PTXCONF_LIBBACNET_ARTIFACTORY_DEV
+	@mkdir -p $(LIBBACNET_DIR)
+	@tar xvf wago_intern/artifactory_sources/$(LIBBACNET_ARCHIVE) -C $(LIBBACNET_DIR) --strip-components=1
+	@$(call patchin, LIBBACNET)
+else
 ifndef PTXCONF_LIBBACNET_SOURCE_RELEASED
 	@if [ ! -L $(LIBBACNET_DIR) ]; then \
 	  	ln -s $(LIBBACNET_SRC_DIR) $(LIBBACNET_DIR); \
 	fi
+endif
 endif
 endif
 	@$(call touch)

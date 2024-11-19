@@ -1,0 +1,17 @@
+## SECTION=wago_specific
+
+config WDS_CA
+	bool
+	select HOST_CT_BUILD
+	select GOOGLETEST
+	select LIBCURL
+	select OPENSSL
+	select BOOST
+	select BOOST_PROGRAM_OPTIONS
+	select NLOHMANN_JSON
+	select WAGO_SYSTEM
+    select CONFIG_TOOLS
+	select CT_SETTINGS_BACKUP
+	prompt "wds-ca"
+	help
+	  FIXME

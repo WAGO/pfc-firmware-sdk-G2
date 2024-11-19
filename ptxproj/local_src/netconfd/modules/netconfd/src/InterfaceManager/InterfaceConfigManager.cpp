@@ -4,6 +4,8 @@
 #include <algorithm>
 #include <boost/format.hpp>
 
+#include "DeviceType.hpp"
+#include "IInterfaceInformation.hpp"
 #include "Logger.hpp"
 #include "LinkModeConversion.hpp"
 #include "InterfaceConfigurationValidator.hpp"
@@ -84,12 +86,14 @@ static LinkState EthLinkStateToLinkState(eth::InterfaceLinkState state) {
   return (state == eth::InterfaceLinkState::Up) ? LinkState::UP : LinkState::DOWN;
 }
 
-InterfaceStatuses InterfaceConfigManager::GetCurrentPortStatuses() {
-  InterfaceStatuses statuses;
+Status InterfaceConfigManager::GetCurrentPortStatuses(InterfaceStatuses& itf_statuses) {
   for (auto& [itf, eth_itf] : ethernet_interfaces_) {
     InterfaceStatus itf_status{itf};
 
-    eth_itf->UpdateConfig();
+    Status s = eth_itf->UpdateConfig();
+    if(s.IsNotOk()){
+      return s;
+    }
     auto state = eth_itf->GetState();
     itf_status.state_ = EthDeviceStateToInterfaceState(state);
 
@@ -103,10 +107,10 @@ InterfaceStatuses InterfaceConfigManager::GetCurrentPortStatuses() {
 
     itf_status.mac_learning_ = GetMacLearning(eth_itf->GetInterfaceIndex());
 
-    statuses.emplace_back(itf_status);
+    itf_statuses.emplace_back(itf_status);
 
   }
-  return statuses;
+  return Status{};
 }
 
 InterfaceInformation InterfaceConfigManager::GetInterfaceInformation(const NetDev &netdev) const {
@@ -114,9 +118,17 @@ InterfaceInformation InterfaceConfigManager::GetInterfaceInformation(const NetDe
   auto device_type = netdev.GetDeviceType();
   if (device_type == DeviceType::Port && ethernet_interfaces_.count(netdev.GetInterface()) != 0) {
     auto &eif = ethernet_interfaces_.at(netdev.GetInterface());
-    return InterfaceInformation{ netdev.GetInterface(), not IsIpAddressable(device_type),
+    Status s = eif->UpdateConfig();
+    if(s.IsOk()){
+      return InterfaceInformation{ netdev.GetInterface(), not IsIpAddressable(device_type),
         eif->GetAutonegSupport() ? AutonegotiationSupported::YES : AutonegotiationSupported::NO, ToLinkModes(
         eif->GetSupportedLinkModes()) };
+    }else{
+      //If the ethtool link settings are not readable (e.g. WP400) then a default config is returned.
+      //This means that at least a default json config is available for the frontend (WBM).
+      return InterfaceInformation{ netdev.GetInterface(), not IsIpAddressable(device_type),
+        AutonegotiationSupported::YES, {{100, Duplex::FULL}} };
+    }
 
   }
   return InterfaceInformation{ netdev.GetInterface(), not IsIpAddressable(device_type) };
@@ -143,6 +155,7 @@ void InterfaceConfigManager::InitializeCurrentConfigs(const NetDevs &netdevs,
 Status InterfaceConfigManager::ApplyPortConfig(InterfaceConfig const &cfg) {
 
   auto &eif = ethernet_interfaces_.at(cfg.interface_);
+  eif->UpdateConfig();
   if (cfg.autoneg_ != Autonegotiation::UNKNOWN) {
     eif->SetAutoneg((cfg.autoneg_ == Autonegotiation::ON) ? eth::Autoneg::On : eth::Autoneg::Off);
   }
@@ -159,12 +172,8 @@ Status InterfaceConfigManager::ApplyPortConfig(InterfaceConfig const &cfg) {
     SetMacLearning(eif->GetInterfaceIndex(), cfg.mac_learning_);
   }
 
-  try {
-    eif->Commit();
-  } catch (std::exception &e) {
-    return Status { StatusCode::SET_INTERFACE, cfg.interface_.GetName() };
-  }
-  return Status { StatusCode::OK };
+  return eif->Commit();
+
 }
 
 Status InterfaceConfigManager::ApplyPortConfigs(InterfaceConfigs &port_configs) {

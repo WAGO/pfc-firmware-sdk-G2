@@ -16,7 +16,7 @@ PACKAGES-$(PTXCONF_LIBWSERIAL) += libwserial
 #
 # Paths and names
 #
-LIBWSERIAL_VERSION        := 0.2.2
+LIBWSERIAL_VERSION        := 0.2.4
 LIBWSERIAL_MD5            :=
 LIBWSERIAL                := libwserial
 LIBWSERIAL_BUILDCONFIG    := Release

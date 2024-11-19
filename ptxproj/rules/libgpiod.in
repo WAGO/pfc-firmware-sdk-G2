@@ -1,0 +1,75 @@
+## SECTION=system_libraries
+
+menuconfig LIBGPIOD
+	tristate
+	prompt "libgpiod                      "
+	select HOST_SYSTEM_PYTHON3
+	select HOST_AUTOTOOLS_AUTOCONF
+	select HOST_AUTOTOOLS_AUTOCONF_ARCHIVE
+	select GCCLIBS_CXX	if LIBGPIOD_CXX
+	select PYTHON3	if LIBGPIOD_PYTHON3
+	help
+	  libgpiod is a library accompanied by a set of tools for
+	  interacting with the Linux GPIO character device.
+	  Requires kernel-headers >= 5.10.
+
+if LIBGPIOD
+
+config LIBGPIOD_TOOLS
+	bool
+
+config LIBGPIOD_GPIODETECT
+	bool
+	prompt "Install gpiodetect"
+	select LIBGPIOD_TOOLS
+	help
+	  Lists all gpiochips present on the system
+
+config LIBGPIOD_GPIOINFO
+	bool
+	prompt "Install gpioinfo"
+	select LIBGPIOD_TOOLS
+	help
+	  Lists all lines of specified gpiochips
+
+config LIBGPIOD_GPIOGET
+	bool
+	prompt "Install gpioget"
+	select LIBGPIOD_TOOLS
+	help
+	  Reads values of specified GPIO lines
+
+config LIBGPIOD_GPIOSET
+	bool
+	prompt "Install gpioset"
+	select LIBGPIOD_TOOLS
+	help
+	  Sets values of specified GPIO lines
+
+config LIBGPIOD_GPIONOTIFY
+	bool
+	prompt "Install gpionotify"
+	select LIBGPIOD_TOOLS
+	help
+	  Waits for change to the info for GPIO lines
+
+config LIBGPIOD_GPIOMON
+	bool
+	prompt "Install gpiomon"
+	select LIBGPIOD_TOOLS
+	help
+	  Waits for events on a GPIO line
+
+config LIBGPIOD_CXX
+	bool
+	prompt "Install C++ bindings"
+	help
+	  Provides bindings for C++
+
+config LIBGPIOD_PYTHON3
+	bool
+	prompt "Install python3 bindings"
+	help
+	  Provides bindings for Python 3
+
+endif

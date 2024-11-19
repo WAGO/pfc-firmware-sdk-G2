@@ -29,6 +29,13 @@ choice
                 help
                   Use released version of source code, taken from Artifactory.
 
+		config PP_BACNET_ARTIFACTORY_DEV
+				bool
+				prompt "unreleased / Artifactory"
+				help
+		  		  Use unreleased version of source code, taken from Artifactory.
+		  		  Use only for testing!
+
         config PP_BACNET_SOURCE_DEV
                 bool
                 prompt "development / Git"
@@ -59,6 +66,18 @@ config PP_BACNET_URL_TEMPLATE
 	help
 	  Encodes the desired artifact version. Can be configured to a specific version or to a latest compatible version of an artifact.
 	  See Confluence for further details.
+
+endif
+
+if PP_BACNET_ARTIFACTORY_DEV
+
+config PP_BACNET_ARTIFACTORY_DEV_URL_TEMPLATE
+	string
+	depends on PP_BACNET
+	prompt "URL template"
+	default "%ARTIFACTORY_BASE_URL%/artifactory/api/search/latestVersion?g=wago_intern%2FPP_BACnet%2Fmain&a=PP_BACnet-Source&repos=pl_controller-generic-dev-local&v=*"
+	help
+	  Searches for the current dev artifact.
 
 endif
 

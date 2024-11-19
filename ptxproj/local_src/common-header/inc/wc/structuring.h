@@ -5,7 +5,7 @@
 //
 // This file is part of project common-header (PTXdist package libcommonheader).
 //
-// Copyright (c) 2017-2022 WAGO GmbH & Co. KG
+// Copyright (c) 2017-2024 WAGO GmbH & Co. KG
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 ///  \file     structuring.h
@@ -232,6 +232,7 @@
 //                                            function-like macro defined
 #ifdef __cplusplus // C++
 #if (__cplusplus >= 201103L) // C++ >= 201103
+#if ( CLANG_PREREQ(9, 0)) || (! defined(__clang__)) // clang before v9 does not accept noexcept on move operations
 #define WC_INTERFACE_IMPL_CLASS(x) \
     x(x const &) = default; \
     x(x&&) noexcept = default; \
@@ -240,6 +241,16 @@
   public: \
     ~x() noexcept override = default; \
   private:
+#else
+#define WC_INTERFACE_IMPL_CLASS(x) \
+    x(x const &) = default; \
+    x(x&&) = default; \
+    x& operator=(const x&) = default; \
+    x& operator=(x&&) = default; \
+  public: \
+    ~x() noexcept override = default; \
+  private:
+#endif
 #else // C++ < 201103
 #define WC_INTERFACE_IMPL_CLASS(x) \
     x(x const &) {}; \

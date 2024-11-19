@@ -22,11 +22,18 @@ LIBBACNETCONFIG_FOLDER            := libbacnetconfig_git
 ifdef PTXCONF_LIBBACNETSTACK_SOURCE_DEV
 BACNETSTACK_REVISION              := 25
 # configure BACnet version (IPK)
-BACNET_VERSION                    := 2.0.2
-LIBBACNETCONFIG_VERSION           := 2.2.0
+BACNET_VERSION                    := 2.1.3
+LIBBACNETCONFIG_VERSION           := 2.3.2
 endif
 
 ifdef PTXCONF_LIBBACNETSTACK_SOURCE_RELEASED
+BACNETSTACK_REVISION              := 25
+# configure BACnet version (IPK)
+BACNET_VERSION                    := 2.1.3
+LIBBACNETCONFIG_VERSION           := 2.3.2
+endif
+
+ifdef PTXCONF_LIBBACNETSTACK_ARTIFACTORY_DEV
 BACNETSTACK_REVISION              := 25
 # configure BACnet version (IPK)
 BACNET_VERSION                    := 2.0.2
@@ -43,7 +50,11 @@ LIBBACNETCONFIG_SRC_DIR           := $(PTXDIST_WORKSPACE)/$(LIBBACNETCONFIG_REL_
 ifdef PTXCONF_LIBBACNETCONFIG_SOURCE_RELEASED
 LIBBACNETCONFIG_URL               := $(call jfrog_template_to_url, LIBBACNETCONFIG)
 else
+ifdef PTXCONF_LIBBACNETCONFIG_ARTIFACTORY_DEV
+LIBBACNETCONFIG_URL               := $(call jfrog_template_to_url, LIBBACNETCONFIG_ARTIFACTORY_DEV)
+else
 LIBBACNETCONFIG_URL               := file://$(LIBBACNETCONFIG_REL_PATH)
+endif
 endif
 
 LIBBACNETCONFIG_SUFFIX            := $(suffix $(LIBBACNETCONFIG_URL))
@@ -51,6 +62,9 @@ LIBBACNETCONFIG_MD5                = $(shell [ -f $(LIBBACNETCONFIG_MD5_FILE) ] 
 LIBBACNETCONFIG_MD5_FILE          := wago_intern/artifactory_sources/$(LIBBACNETCONFIG)$(LIBBACNETCONFIG_SUFFIX).md5
 LIBBACNETCONFIG_ARTIFACT           = $(call jfrog_get_filename,$(LIBBACNETCONFIG_URL))
 ifdef PTXCONF_LIBBACNETCONFIG_SOURCE_RELEASED
+LIBBACNETCONFIG_ARCHIVE           := $(LIBBACNETCONFIG)-$(LIBBACNETCONFIG_VERSION)$(LIBBACNETCONFIG_SUFFIX)
+endif
+ifdef PTXCONF_LIBBACNETCONFIG_ARTIFACTORY_DEV
 LIBBACNETCONFIG_ARCHIVE           := $(LIBBACNETCONFIG)-$(LIBBACNETCONFIG_VERSION)$(LIBBACNETCONFIG_SUFFIX)
 endif
 
@@ -108,6 +122,18 @@ endif
 	@$(call touch)
 endif
 
+ifdef PTXCONF_LIBBACNETCONFIG_ARTIFACTORY_DEV
+$(STATEDIR)/libbacnetconfig.get:
+	@$(call targetinfo)
+
+ifndef PTXCONF_WAGO_TOOLS_BUILD_VERSION_BINARIES
+	$(call ptx/in-path, PTXDIST_PATH, scripts/wago/artifactory.sh) fetch \
+    '$(LIBBACNETCONFIG_URL)' wago_intern/artifactory_sources/$(LIBBACNETCONFIG_ARCHIVE) '$(LIBBACNETCONFIG_MD5_FILE)'
+endif
+
+	@$(call touch)
+endif
+
 # ----------------------------------------------------------------------------
 # Extract
 # ----------------------------------------------------------------------------
@@ -121,10 +147,16 @@ ifdef PTXCONF_LIBBACNETCONFIG_SOURCE_RELEASED
 	@tar xvf wago_intern/artifactory_sources/$(LIBBACNETCONFIG_ARCHIVE) -C $(LIBBACNETCONFIG_DIR) --strip-components=1
 	@$(call patchin, LIBBACNET)
 endif
+ifdef PTXCONF_LIBBACNETCONFIG_ARTIFACTORY_DEV
+	@mkdir -p $(LIBBACNETCONFIG_DIR)
+	@tar xvf wago_intern/artifactory_sources/$(LIBBACNETCONFIG_ARCHIVE) -C $(LIBBACNETCONFIG_DIR) --strip-components=1
+	@$(call patchin, LIBBACNET)
+else
 ifndef PTXCONF_LIBBACNETCONFIG_SOURCE_RELEASED
 	@if [ ! -L $(LIBBACNETCONFIG_DIR) ]; then \
 	  	ln -s $(LIBBACNETCONFIG_SRC_DIR) $(LIBBACNETCONFIG_DIR); \
 	fi
+endif
 endif
 endif
 	@$(call touch)

@@ -50,12 +50,6 @@ config LIBXML2_DEBUG
 	help
 	  Enable debugging support.
 
-config LIBXML2_FEXCEPTIONS
-	bool
-	prompt "C++ Exception Support"
-	help
-	  Add GCC flag -fexceptions for C++ exceptions.
-
 config LIBXML2_FTP
 	bool
 	default y
@@ -96,12 +90,6 @@ config LIBXML2_LEGACY
 	prompt "Support for deprecated APIs"
 	help
 	  Add support for deprecated APIs (compatibility)
-
-config LIBXML2_MEM_DEBUG
-	bool
-	prompt "Memory Debugging Module"
-	help
-	  Add the memory debugging support.
 
 config LIBXML2_MINIMUM
 	bool
@@ -150,12 +138,6 @@ config LIBXML2_REGEXPS
 	  Add support for Regular Expressions.
 
 #  --with-readline=DIR     use readline in DIR
-
-config LIBXML2_RUN_DEBUG
-	bool
-	prompt "Enable Runtime Debugging"
-	help
-	  Enable runtime debugging module.
 
 config LIBXML2_SAX1
 	bool

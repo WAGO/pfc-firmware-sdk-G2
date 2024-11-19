@@ -1,26 +1,25 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-#include <cstdio>
-#include <csignal>
+#include <execinfo.h>
+#include <getopt.h>
+#include <gio/gio.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include <execinfo.h>
 #include <csignal>
-
-#include <gio/gio.h>
-
+#include <cstdio>
 #include <cstring>
-#include <optional>
-
-#include <getopt.h>
 #include <gsl/gsl>
+#include <optional>
+#include <stdexcept>
+#include <string>
+#include <system_error>
 
+#include "Daemonizer.hpp"
+#include "InterprocessCondition.h"
+#include "Logger.hpp"
 #include "NetworkConfigurator.hpp"
 #include "NetworkConfiguratorSettings.hpp"
 #include "Status.hpp"
-#include "InterprocessCondition.h"
-#include "Logger.hpp"
-#include "Daemonizer.hpp"
 
 #define XSTR(s) #s
 #define STR(s) XSTR(s)
@@ -175,10 +174,18 @@ int main(int argc, char *argv[]) {
   sigaction(SIGTERM, &action, nullptr);
 
   try {
-    netconf::NetworkConfigurator network_configurator { start_condition , startupPortState};
+    netconf::NetworkConfigurator network_configurator{start_condition, startupPortState};
     if (!terminate) {  // Check for early quit signals
       g_main_loop_run(loop);
     }
+  } catch (::std::system_error &ex) {
+    ::std::string exception_message(ex.what());
+    netconf::LogError("NetConf system error: " + ::std::to_string(ex.code().value()) + " " + exception_message);
+    exit(EXIT_FAILURE);
+  } catch (::std::runtime_error &ex) {
+    ::std::string exception_message(ex.what());
+    netconf::LogError("NetConf runtime error: " + exception_message);
+    exit(EXIT_FAILURE);
   } catch (::std::exception &ex) {
     ::std::string exception_message(ex.what());
     netconf::LogError("NetConf exception: " + exception_message);

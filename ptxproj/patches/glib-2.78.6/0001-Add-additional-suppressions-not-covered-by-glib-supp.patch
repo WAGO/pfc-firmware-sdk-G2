@@ -1,0 +1,47 @@
+From: Oleg Ganin <oleg.ganin@wago.com>
+Date: Tue, 27 Aug 2024 16:46:34 +0200
+Subject: [PATCH] Add additional suppressions not covered by glib supplied
+
+---
+ tools/glib.supp | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
+
+diff --git a/tools/glib.supp b/tools/glib.supp
+index 9ff78cc15db2..b94b1f70d19a 100644
+--- a/tools/glib.supp
++++ b/tools/glib.supp
+@@ -1268,3 +1268,34 @@
+ 	...
+ 	fun:xdg_mime_init
+ }
++	
++{
++   wago-glib-leak-g_quark_init
++   Memcheck:Leak
++   match-leak-kinds: reachable,possible
++   ...
++   fun:g_quark_init
++   ...
++   fun:_dl_init
++}
++
++{
++   wago-glib-leak-_g_signal_init
++   Memcheck:Leak
++   match-leak-kinds: reachable,possible
++   ...
++   fun:_g_signal_init
++   ...
++   fun:_dl_init
++}
++
++{
++   wago-glib-leak-gobject_init_ctor
++   Memcheck:Leak
++   match-leak-kinds: reachable,possible
++   ...
++   fun:gobject_init_ctor
++   ...
++   fun:_dl_init
++}
++

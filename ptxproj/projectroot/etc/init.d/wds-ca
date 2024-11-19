@@ -1,0 +1,65 @@
+#!/bin/bash
+
+#-----------------------------------------------------------------------------#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright (c) 2019-2022 WAGO GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+#-----------------------------------------------------------------------------#
+# Script:   wds-ca agent init script
+#
+# Brief:    Startscript for commissioning agent
+#
+# Author:   SD,  WAGO GmbH & Co. KG
+# Author:   MWW, WAGO GmbH & Co. KG
+#-----------------------------------------------------------------------------#
+
+WDSCA_PIDFILE="/var/run/wds-ca.pid"
+
+function do_wdsca_start()
+{
+    echo -n "starting wds commissioning agent ..."
+    start-stop-daemon -S --background --nicelevel 10 --quiet --oknodo --pidfile $WDSCA_PIDFILE --make-pidfile --exec /usr/bin/wds-ca --
+}
+
+function do_wdsca_stop()
+{
+    echo "stopping wds commissioning agent ..."
+    start-stop-daemon -K --quiet --oknodo --pidfile $WDSCA_PIDFILE --
+    rm -f $WDSCA_PIDFILE
+}
+
+function usage()
+{
+    echo "$0 usage: $0 [start|stop|restart]"
+}
+
+case $1 in
+
+    start)
+        if test -r $WDSCA_PIDFILE && ps -p `cat $WDSCA_PIDFILE` > /dev/null 2>&1; then
+            echo "no action done - wds-ca already running"
+            exit 1
+        else
+            do_wdsca_start
+            echo " done"
+        fi
+        ;;
+
+	stop)
+        do_wdsca_stop
+        echo " done"
+        ;;
+
+    restart)
+        do_wdsca_stop
+        echo -e "\nwds commissioning agent stopped, starting again ..."
+        do_wdsca_start
+        echo " done"
+        ;;
+    *)
+        usage
+        ;;
+esac

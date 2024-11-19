@@ -1,0 +1,29 @@
+From: Michael Tretter <m.tretter@pengutronix.de>
+Date: Tue, 12 Mar 2024 18:22:06 +0100
+Subject: [PATCH] HACK: don't fail if uic is missing
+
+Qt5 builds the uic only if Widgets are enabled. The uic is not required
+for applications that don't use Widgets, but is required as standard
+tool by meson.
+
+Ignore uic if it is not found.
+
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+---
+ mesonbuild/modules/qt.py | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/mesonbuild/modules/qt.py b/mesonbuild/modules/qt.py
+index c16d8c603ce7..20ca4810edc5 100644
+--- a/mesonbuild/modules/qt.py
++++ b/mesonbuild/modules/qt.py
+@@ -274,6 +274,9 @@ class QtBaseModule(ExtensionModule):
+                 if tool.name == 'lrelease':
+                     mlog.warning('Ignoring missing lrelease')
+                     continue
++                if tool.name == 'uic':
++                    mlog.warning('Ignoring missing uic')
++                    continue
+                 if required:
+                     raise MesonException('Qt tools not found')
+                 return False

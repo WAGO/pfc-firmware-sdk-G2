@@ -56,10 +56,10 @@ local_prerequisites = $(call lib_buildtarget_raw,$($(1)_LIBS) $($(1)_PKG_CONFIG_
 
 #######################################################################################################################
 # Settings for build target libwago_pcap.a
-libwago_pcap.a_LIBS             += curl
-libwago_pcap.a_STATICALLYLINKED += 
+libwago_pcap.a_LIBS             += curl Common++ Packet++ Pcap++
+libwago_pcap.a_STATICALLYLINKED +=
 libwago_pcap.a_PKG_CONFIGS      += nlohmann_json libnetconf
-libwago_pcap.a_DISABLEDWARNINGS += 
+libwago_pcap.a_DISABLEDWARNINGS +=
 libwago_pcap.a_PREREQUISITES    += $(call local_prerequisites,libwago_pcap.a)
 libwago_pcap.a_SOURCES          += $(call glob_r,$(addprefix $(SRC_DIR)/wago_pcap/**/*.,$(SOURCE_FILE_EXTENSIONS)))
 libwago_pcap.a_CPPFLAGS         += $(addprefix -I,$(INC_DIR))
@@ -76,10 +76,10 @@ libwago_pcap.a_LDFLAGS          += $(call pkg_config_ldflags,$(libwago_pcap.a_PK
 
 #######################################################################################################################
 # Settings for build target alltests.elf
-alltests.elf_LIBS             += gmock_main gmock gtest wago_pcap curl
+alltests.elf_LIBS             += gmock_main gmock gtest wago_pcap curl Common++ Packet++ Pcap++
 alltests.elf_STATICALLYLINKED += gmock_main gmock gtest
 alltests.elf_PKG_CONFIGS      += nlohmann_json libnetconf
-alltests.elf_DISABLEDWARNINGS += 
+alltests.elf_DISABLEDWARNINGS +=
 alltests.elf_PREREQUISITES    += $(call local_prerequisites,alltests.elf)
 alltests.elf_SOURCES          += $(call glob_r,$(addprefix $(PROJECT_ROOT)/test-src/*.,$(SOURCE_FILE_EXTENSIONS)))
 alltests.elf_CPPFLAGS         += $(addprefix -I,$(INC_DIR))
@@ -101,10 +101,10 @@ alltests.elf_CLANG_TIDY_CHECKS += -modernize-raw-string-literal
 #######################################################################################################################
 # Settings for build target pcap_log.elf
 
-pcap_log.elf_LIBS             += wago_pcap pcap curl ctlog
+pcap_log.elf_LIBS             += wago_pcap pcap curl ctlog Common++ Packet++ Pcap++
 pcap_log.elf_STATICALLYLINKED += wago_pcap
 pcap_log.elf_PKG_CONFIGS      += nlohmann_json libnetconf glib-2.0
-pcap_log.elf_DISABLEDWARNINGS += 
+pcap_log.elf_DISABLEDWARNINGS +=
 pcap_log.elf_PREREQUISITES    += $(call local_prerequisites,pcap_log.elf)
 pcap_log.elf_SOURCES          += $(call glob_r,$(addprefix $(PROJECT_ROOT)/src/pcap_log_main/**/*.,$(SOURCE_FILE_EXTENSIONS)))
 pcap_log.elf_CPPFLAGS         += $(addprefix -I,$(INC_DIR))

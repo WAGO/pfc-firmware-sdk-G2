@@ -47,7 +47,7 @@ function hook_routine
 {
     local result=0
 
-    if [ "${BOARD_ID}" = "pfc300" ]; then
+    if [ "${BOARD_ID}" = "pfc300" ] || [ "${BOARD_ID}" = "wp400" ]; then
         exit 0
     fi
 

@@ -471,7 +471,7 @@
     },
     {
       "fileName": "local_src/common-header/inc/wc/structuring.h",
-      "lineStart": "237",
+      "lineStart": "247",
       "columnStart": "7",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -480,7 +480,7 @@
     },
     {
       "fileName": "local_src/common-header/inc/wc/structuring.h",
-      "lineStart": "238",
+      "lineStart": "248",
       "columnStart": "5",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -489,7 +489,7 @@
     },
     {
       "fileName": "local_src/common-header/inc/wc/structuring.h",
-      "lineStart": "239",
+      "lineStart": "249",
       "columnStart": "18",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -498,7 +498,7 @@
     },
     {
       "fileName": "local_src/common-header/inc/wc/structuring.h",
-      "lineStart": "239",
+      "lineStart": "249",
       "columnStart": "5",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -507,7 +507,7 @@
     },
     {
       "fileName": "local_src/common-header/inc/wc/structuring.h",
-      "lineStart": "263",
+      "lineStart": "274",
       "columnStart": "5",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -516,7 +516,7 @@
     },
     {
       "fileName": "local_src/common-header/inc/wc/structuring.h",
-      "lineStart": "264",
+      "lineStart": "275",
       "columnStart": "3",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -525,7 +525,7 @@
     },
     {
       "fileName": "local_src/common-header/inc/wc/structuring.h",
-      "lineStart": "265",
+      "lineStart": "276",
       "columnStart": "16",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -534,7 +534,7 @@
     },
     {
       "fileName": "local_src/common-header/inc/wc/structuring.h",
-      "lineStart": "265",
+      "lineStart": "276",
       "columnStart": "3",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -543,7 +543,7 @@
     },
     {
       "fileName": "local_src/common-header/inc/wc/structuring.h",
-      "lineStart": "284",
+      "lineStart": "295",
       "columnStart": "5",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -552,7 +552,7 @@
     },
     {
       "fileName": "local_src/common-header/inc/wc/structuring.h",
-      "lineStart": "285",
+      "lineStart": "296",
       "columnStart": "3",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -561,7 +561,7 @@
     },
     {
       "fileName": "local_src/common-header/inc/wc/structuring.h",
-      "lineStart": "304",
+      "lineStart": "315",
       "columnStart": "3",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -570,7 +570,7 @@
     },
     {
       "fileName": "local_src/common-header/inc/wc/structuring.h",
-      "lineStart": "322",
+      "lineStart": "333",
       "columnStart": "5",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -579,7 +579,7 @@
     },
     {
       "fileName": "local_src/common-header/inc/wc/structuring.h",
-      "lineStart": "323",
+      "lineStart": "334",
       "columnStart": "16",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -588,7 +588,7 @@
     },
     {
       "fileName": "local_src/common-header/inc/wc/structuring.h",
-      "lineStart": "323",
+      "lineStart": "334",
       "columnStart": "3",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -597,7 +597,7 @@
     },
     {
       "fileName": "local_src/common-header/inc/wc/structuring.h",
-      "lineStart": "338",
+      "lineStart": "349",
       "columnStart": "5",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",

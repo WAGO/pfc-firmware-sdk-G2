@@ -47,12 +47,12 @@
       "moduleName": "netconfd-tests"
     },
     {
-      "fileName": "local_src/netconfd/modules/common/test-src/IPValidatorTest.cpp",
-      "lineStart": "330",
-      "columnStart": "1",
+      "fileName": "local_src/netconfd/modules/netconfd/src/IPManager/DynamicIPClient/DHCPClient.cpp",
+      "lineStart": "85",
+      "columnStart": "7",
       "category": "Warning:clang-diagnostic-deprecated-declarations",
       "severity": "NORMAL",
-      "message": "'InstantiateTestCase_P_IsDeprecated' is deprecated: INSTANTIATE_TEST_CASE_P is deprecated, please use INSTANTIATE_TEST_SUITE_P [clang-diagnostic-deprecated-declarations]",
+      "message": "'g_spawn_check_exit_status' is deprecated: Use 'g_spawn_check_wait_status' instead [clang-diagnostic-deprecated-declarations]",
       "moduleName": "netconfd-tests"
     },
     {
@@ -92,6 +92,150 @@
       "moduleName": "netconfd-tests"
     },
     {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/EthTool.cpp",
+      "lineStart": "106",
+      "columnStart": "3",
+      "category": "Warning:cppcoreguidelines-pro-type-member-init",
+      "severity": "NORMAL",
+      "message": "uninitialized record type: 'ls' [cppcoreguidelines-pro-type-member-init]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/EthTool.cpp",
+      "lineStart": "127",
+      "columnStart": "60",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/EthTool.cpp",
+      "lineStart": "135",
+      "columnStart": "60",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/EthTool.cpp",
+      "lineStart": "143",
+      "columnStart": "60",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/EthTool.cpp",
+      "lineStart": "219",
+      "columnStart": "19",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/EthTool.cpp",
+      "lineStart": "219",
+      "columnStart": "44",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/EthTool.hpp",
+      "lineStart": "37",
+      "columnStart": "8",
+      "category": "Warning:cppcoreguidelines-pro-type-member-init",
+      "severity": "NORMAL",
+      "message": "constructor does not initialize these fields: s_ [cppcoreguidelines-pro-type-member-init]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/EthernetInterface.cpp",
+      "lineStart": "135",
+      "columnStart": "60",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/EthernetInterface.cpp",
+      "lineStart": "142",
+      "columnStart": "60",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/EthernetInterface.cpp",
+      "lineStart": "35",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-pro-type-member-init",
+      "severity": "NORMAL",
+      "message": "constructor does not initialize these fields: if_index_ [cppcoreguidelines-pro-type-member-init]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/EthernetInterface.cpp",
+      "lineStart": "45",
+      "columnStart": "11",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/EthernetInterface.cpp",
+      "lineStart": "45",
+      "columnStart": "18",
+      "category": "Warning:cppcoreguidelines-pro-type-union-access",
+      "severity": "NORMAL",
+      "message": "do not access members of unions; use (boost::)variant instead [cppcoreguidelines-pro-type-union-access]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/EthernetInterface.cpp",
+      "lineStart": "53",
+      "columnStart": "60",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/EthernetInterface.cpp",
+      "lineStart": "73",
+      "columnStart": "60",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/EthernetInterface.cpp",
+      "lineStart": "82",
+      "columnStart": "60",
+      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
+      "severity": "NORMAL",
+      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "local_src/netconfd/modules/netconfd/src/InterfaceManager/InterfaceConfigManager.cpp",
+      "lineStart": "126",
+      "columnStart": "6",
+      "category": "Warning:readability-else-after-return",
+      "severity": "NORMAL",
+      "message": "do not use 'else' after 'return' [readability-else-after-return]",
+      "moduleName": "netconfd-tests"
+    },
+    {
       "fileName": "local_src/netconfd/modules/netconfd/src/Redundancy/Redundancy.cpp",
       "lineStart": "30",
       "columnStart": "7",
@@ -101,36 +245,27 @@
       "moduleName": "netconfd-tests"
     },
     {
-      "fileName": "local_src/netconfd/modules/utility/src/EthTool.cpp",
-      "lineStart": "213",
-      "columnStart": "3",
-      "category": "Warning:cppcoreguidelines-pro-type-member-init",
-      "severity": "NORMAL",
-      "message": "uninitialized record type: 'ls' [cppcoreguidelines-pro-type-member-init]",
-      "moduleName": "netconfd-tests"
-    },
-    {
-      "fileName": "local_src/netconfd/modules/utility/src/EthTool.cpp",
-      "lineStart": "303",
-      "columnStart": "23",
-      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
-      "severity": "NORMAL",
-      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
-      "moduleName": "netconfd-tests"
-    },
-    {
-      "fileName": "local_src/netconfd/modules/utility/src/EthTool.cpp",
-      "lineStart": "303",
-      "columnStart": "46",
-      "category": "Warning:cppcoreguidelines-pro-bounds-array-to-pointer-decay",
-      "severity": "NORMAL",
-      "message": "do not implicitly decay an array into a pointer; consider using gsl::array_view or an explicit cast instead [cppcoreguidelines-pro-bounds-array-to-pointer-decay]",
-      "moduleName": "netconfd-tests"
-    },
-    {
       "fileName": "pfc/ptxproj/local_src/netconfd/modules/common/test-src/MacAddressTest.cpp",
       "lineStart": "73",
       "columnStart": "50",
+      "category": "Warning:missing-braces",
+      "severity": "NORMAL",
+      "message": "missing braces around initializer for ‘std::__array_traits<unsigned char, 6>::_Type’ {aka ‘unsigned char [6]’} [-Wmissing-braces]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/netconfd/modules/netconfd/src/IPManager/DynamicIPClient/DHCPClient.cpp",
+      "lineStart": "85",
+      "columnStart": "32",
+      "category": "Warning:deprecated-declarations",
+      "severity": "NORMAL",
+      "message": "‘gboolean g_spawn_check_exit_status(gint, GError**)’ is deprecated: Use 'g_spawn_check_wait_status' instead [-Wdeprecated-declarations]",
+      "moduleName": "netconfd-tests"
+    },
+    {
+      "fileName": "pfc/ptxproj/local_src/netconfd/modules/netconfd/src/InterfaceManager/EthernetInterface.cpp",
+      "lineStart": "37",
+      "columnStart": "7",
       "category": "Warning:missing-braces",
       "severity": "NORMAL",
       "message": "missing braces around initializer for ‘std::__array_traits<unsigned char, 6>::_Type’ {aka ‘unsigned char [6]’} [-Wmissing-braces]",
@@ -144,16 +279,7 @@
       "severity": "NORMAL",
       "message": "missing braces around initializer for ‘std::__array_traits<unsigned char, 6>::_Type’ {aka ‘unsigned char [6]’} [-Wmissing-braces]",
       "moduleName": "netconfd-tests"
-    },
-    {
-      "fileName": "pfc/ptxproj/local_src/netconfd/modules/utility/src/EthernetInterface.cpp",
-      "lineStart": "34",
-      "columnStart": "7",
-      "category": "Warning:missing-braces",
-      "severity": "NORMAL",
-      "message": "missing braces around initializer for ‘std::__array_traits<unsigned char, 6>::_Type’ {aka ‘unsigned char [6]’} [-Wmissing-braces]",
-      "moduleName": "netconfd-tests"
     }
   ],
-  "size": 17
+  "size": 31
 }

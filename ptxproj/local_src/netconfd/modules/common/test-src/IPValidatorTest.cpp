@@ -7,6 +7,7 @@
 ///  \author   <author> : WAGO GmbH & Co. KG
 //------------------------------------------------------------------------------
 
+#include "BaseTypes.hpp"
 #include "CommonTestDependencies.hpp"
 
 #include <boost/asio/ip/address_v4.hpp>
@@ -14,6 +15,8 @@
 #include <string>
 
 #include "IPValidator.hpp"
+#include "Types.hpp"
+#include "gmock/gmock.h"
 
 using namespace std::literals;
 
@@ -22,6 +25,9 @@ namespace netconf {
 class AnIPValidator : public testing::Test {
  public:
   IPValidator validator_;
+  Interfaces default_bridges = {Interface::CreateBridge("br0"), Interface::CreateBridge("br1"), Interface::CreateBridge("br2")};
+  Interfaces default_eths = {Interface::CreateEthernet("eth0"), Interface::CreateEthernet("eth1"), Interface::CreateEthernet("eth2"),
+                              Interface::CreateEthernet("eth3"), Interface::CreateEthernet("eth4"), Interface::CreateEthernet("eth5")};
 
   AnIPValidator() = default;
 
@@ -34,14 +40,14 @@ class AnIPValidator : public testing::Test {
 
 TEST_F(AnIPValidator, ShouldValidateAnIPConfig) {
   IPConfigs ip_configs = {{"br0", IPSource::STATIC, "192.168.1.1", "255.255.255.0"}};
-  Status status        = validator_.ValidateIPConfigs(ip_configs);
+  Status status        = validator_.ValidateIPConfigs(ip_configs, default_bridges);
 
   EXPECT_TRUE(status.IsOk());
 }
 
 TEST_F(AnIPValidator, ShouldValidateAnIPConfigWithoutBroadcast) {
   IPConfigs ip_configs = {{"br0", IPSource::STATIC, "192.168.1.1", "255.255.255.0"}};
-  Status status        = validator_.ValidateIPConfigs(ip_configs);
+  Status status        = validator_.ValidateIPConfigs(ip_configs, default_bridges);
 
   EXPECT_TRUE(status.IsOk());
 }
@@ -49,7 +55,7 @@ TEST_F(AnIPValidator, ShouldValidateAnIPConfigWithoutBroadcast) {
 TEST_F(AnIPValidator, ShouldValidateTwoIPConfigs) {
   IPConfigs ip_configs = {{"br0", IPSource::STATIC, "192.168.1.1", "255.255.255.0"},
                           {"br1", IPSource::STATIC, "192.168.2.1", "255.255.255.0"}};
-  Status status        = validator_.ValidateIPConfigs(ip_configs);
+  Status status        = validator_.ValidateIPConfigs(ip_configs, default_bridges);
 
   EXPECT_TRUE(status.IsOk());
 }
@@ -58,7 +64,7 @@ TEST_F(AnIPValidator, ShouldRejectZeroIpForStaticSource) {
   IPConfigs ip_configs = {{"br0", IPSource::STATIC, ZeroIP, ZeroNetmask},
                           {"br1", IPSource::STATIC, "192.168.2.1", "255.255.255.0"},
                           {"br2", IPSource::STATIC, ZeroIP, ZeroNetmask}};
-  Status status        = validator_.ValidateIPConfigs(ip_configs);
+  Status status        = validator_.ValidateIPConfigs(ip_configs, default_bridges);
 
   EXPECT_FALSE(status.IsOk());
 }
@@ -67,49 +73,49 @@ TEST_F(AnIPValidator, ShouldAcceptNoneToResetIpParameters) {
   IPConfigs ip_configs = {{"br0", IPSource::NONE, ZeroIP, ZeroNetmask},
                           {"br1", IPSource::STATIC, "192.168.2.1", "255.255.255.0"},
                           {"br2", IPSource::NONE, ZeroIP, ZeroNetmask}};
-  Status status        = validator_.ValidateIPConfigs(ip_configs);
+  Status status        = validator_.ValidateIPConfigs(ip_configs, default_bridges);
 
   EXPECT_TRUE(status.IsOk());
 }
 
 TEST_F(AnIPValidator, FailedToValidateAnStaticIPConfigWhichContainsAnInterfaceThatNotExist) {
   IPConfigs ip_configs = {{"ethX1", IPSource::STATIC, "192.168.1.1", "255.255.255.0"}};
-  Status status        = validator_.ValidateIPConfigs(ip_configs);
+  Status status        = validator_.ValidateIPConfigs(ip_configs, default_eths);
 
   EXPECT_TRUE(status.IsOk());
 }
 
 TEST_F(AnIPValidator, FailedToValidatesADHCPIPConfigWhichContainsAnInterfaceThatNotExist) {
   IPConfigs ip_configs = {{"ethX1", IPSource::DHCP, "192.168.1.1", "255.255.255.0"}};
-  Status status        = validator_.ValidateIPConfigs(ip_configs);
+  Status status        = validator_.ValidateIPConfigs(ip_configs, default_eths);
 
   EXPECT_TRUE(status.IsOk());
 }
 
 TEST_F(AnIPValidator, FailedToValidatesABootpIPConfigWhichContainsAnInterfaceThatNotExist) {
   IPConfigs ip_configs = {{"ethX1", IPSource::BOOTP, "192.168.1.1", "255.255.255.0"}};
-  Status status        = validator_.ValidateIPConfigs(ip_configs);
+  Status status        = validator_.ValidateIPConfigs(ip_configs, default_eths);
 
   EXPECT_TRUE(status.IsOk());
 }
 
 TEST_F(AnIPValidator, FailedToValidateAStaticIPConfigWhichContainsAnInterfaceThatIsNotAssignable) {
   IPConfigs ip_configs = {{"ethX1", IPSource::STATIC, "192.168.1.1", "255.255.255.0"}};
-  Status status        = validator_.ValidateIPConfigs(ip_configs);
+  Status status        = validator_.ValidateIPConfigs(ip_configs, default_eths);
 
   EXPECT_TRUE(status.IsOk());
 }
 
 TEST_F(AnIPValidator, FailedToValidateADHCPIPConfigWhichContainsAnInterfaceThatIsNotAssignable) {
   IPConfigs ip_configs = {{"ethX1", IPSource::DHCP, "192.168.1.1", "255.255.255.0"}};
-  Status status        = validator_.ValidateIPConfigs(ip_configs);
+  Status status        = validator_.ValidateIPConfigs(ip_configs, default_eths);
 
   EXPECT_TRUE(status.IsOk());
 }
 
 TEST_F(AnIPValidator, FailedToValidateABootpIPConfigWhichContainsAnInterfaceThatIsNotAssignable) {
   IPConfigs ip_configs = {{"ethX1", IPSource::BOOTP, "192.168.1.1", "255.255.255.0"}};
-  Status status        = validator_.ValidateIPConfigs(ip_configs);
+  Status status        = validator_.ValidateIPConfigs(ip_configs, default_eths);
 
   EXPECT_TRUE(status.IsOk());
 }
@@ -118,7 +124,7 @@ TEST_F(AnIPValidator, FailedToValidateAnIPConfigWhichContainsOneInterfaceSeveral
   IPConfigs ip_configs = {{"ethX1", IPSource::STATIC, "192.168.2.1", "255.255.255.0"},
                           {"ethX1", IPSource::STATIC, "192.168.1.1", "255.255.255.0"}};
 
-  Status status = validator_.ValidateIPConfigs(ip_configs);
+  Status status = validator_.ValidateIPConfigs(ip_configs, default_eths);
 
   EXPECT_EQ(StatusCode::ENTRY_DUPLICATE, status.GetStatusCode()) << status.ToString();
 }
@@ -126,7 +132,7 @@ TEST_F(AnIPValidator, FailedToValidateAnIPConfigWhichContainsOneInterfaceSeveral
 TEST_F(AnIPValidator, AssigningNetworkAddressAsHostIsRejected) {
    IPConfigs ip_configs = {{"br0", IPSource::STATIC, "192.168.1.128", "255.255.255.128"}};
 
-  Status status = validator_.ValidateIPConfigs(ip_configs);
+  Status status = validator_.ValidateIPConfigs(ip_configs, default_bridges);
   EXPECT_EQ(StatusCode::IP_INVALID, status.GetStatusCode());
 }
 
@@ -135,7 +141,7 @@ TEST_F(AnIPValidator, AssigningNetworkAddressAsHostIsAcceptedForWwan) {
 
   IPConfigs ip_configs = {{"wwan0", IPSource::STATIC, "192.168.1.128", "255.255.255.128"}};
 
-  Status status = validator_.ValidateIPConfigs(ip_configs);
+  Status status = validator_.ValidateIPConfigs(ip_configs, {Interface::CreateWwan("wwan0")});
   EXPECT_EQ(StatusCode::OK, status.GetStatusCode());
 }
 
@@ -158,42 +164,42 @@ TEST_F(AnIPValidator, DisregardsConfigsOfSameInterfaceInOverlappingCheck) {
 TEST_F(AnIPValidator, FailedToValidateAnIPConfigWhichContainsAnInvalidAddress) {
   IPConfigs ip_configs = {{"ethX1", IPSource::STATIC, "192.168.1.1111", "255.255.255.0"}};
 
-  Status status = validator_.ValidateIPConfigs(ip_configs);
+  Status status = validator_.ValidateIPConfigs(ip_configs, default_eths);
   EXPECT_EQ(StatusCode::IP_INVALID, status.GetStatusCode()) << status.ToString();
 }
 
 TEST_F(AnIPValidator, FailedToValidateAnIPConfigWhichAddressContainsOnlyOnes) {
   IPConfigs ip_configs = {{"ethX1", IPSource::STATIC, "255.255.255.255", "255.255.255.0"}};
 
-  Status status = validator_.ValidateIPConfigs(ip_configs);
+  Status status = validator_.ValidateIPConfigs(ip_configs, default_eths);
   EXPECT_EQ(StatusCode::IP_INVALID, status.GetStatusCode());
 }
 
 TEST_F(AnIPValidator, FailedToValidateAnIPConfigWhichAddressContainsZeros) {
   IPConfigs ip_configs = {{"ethX1", IPSource::STATIC, ZeroIP, "255.255.255.0"}};
 
-  Status status = validator_.ValidateIPConfigs(ip_configs);
+  Status status = validator_.ValidateIPConfigs(ip_configs, default_eths);
   EXPECT_EQ(StatusCode::IP_INVALID, status.GetStatusCode());
 }
 
 TEST_F(AnIPValidator, FailedToValidateAnIPConfigWhichContainsAnInvalidNetmask) {
   IPConfigs ip_configs = {{"ethX1", IPSource::STATIC, "192.168.1.1", "255.X.255.0"}};
 
-  Status status = validator_.ValidateIPConfigs(ip_configs);
+  Status status = validator_.ValidateIPConfigs(ip_configs, default_eths);
   EXPECT_EQ(StatusCode::NETMASK_INVALID, status.GetStatusCode());
 }
 
 TEST_F(AnIPValidator, FailedToValidateAnIPConfigWhichContainsZeroNetmask) {
   IPConfigs ip_configs = {{"ethX1", IPSource::STATIC, "192.168.1.1", ZeroNetmask}};
 
-  Status status = validator_.ValidateIPConfigs(ip_configs);
+  Status status = validator_.ValidateIPConfigs(ip_configs, default_eths);
   EXPECT_EQ(StatusCode::NETMASK_INVALID, status.GetStatusCode());
 }
 
 TEST_F(AnIPValidator, FailedToValidateAnIPConfigWhichSubnetmaskContainsZeros) {
   IPConfigs ip_configs = {{"ethX1", IPSource::STATIC, "192.168.1.1", "255.111.255.0"}};
 
-  Status status = validator_.ValidateIPConfigs(ip_configs);
+  Status status = validator_.ValidateIPConfigs(ip_configs, default_eths);
   EXPECT_EQ(StatusCode::NETMASK_INVALID, status.GetStatusCode());
 }
 
@@ -207,7 +213,7 @@ TEST_F(AnIPValidator, FailedToValidateIPConfigsWithSeveralIpAddresses) {
                           },
                           {"ethX3", IPSource::STATIC, "192.168.1.1", "255.0.0.0"}};
 
-  Status status = validator_.ValidateIPConfigs(ip_configs);
+  Status status = validator_.ValidateIPConfigs(ip_configs, default_eths);
   EXPECT_EQ(StatusCode::IP_DISTRIBUTED_MULTIPLE_TIMES, status.GetStatusCode());
 }
 
@@ -216,7 +222,7 @@ TEST_F(AnIPValidator, FailedToValidateIPConfigsWithSeveralNetworks) {
                           {"ethX2", IPSource::STATIC, "192.168.1.2", "255.255.255.0"},
                           {"ethX3", IPSource::STATIC, "192.168.2.1", "255.255.255.0"}};
 
-  Status status = validator_.ValidateIPConfigs(ip_configs);
+  Status status = validator_.ValidateIPConfigs(ip_configs, default_eths);
   EXPECT_EQ(StatusCode::NETWORK_CONFLICT, status.GetStatusCode());
 }
 
@@ -266,7 +272,7 @@ TEST_F(AnIPValidator, ShouldAcceptRFC3021Ips) {
                               {"br1", IPSource::STATIC, "10.12.88.133", "255.255.255.254"},
                               {"br2", IPSource::STATIC, "10.12.88.130", "255.255.255.255"}};
 
-  auto status = validator_.ValidateIPConfigs(netmask_30);
+  auto status = validator_.ValidateIPConfigs(netmask_30, default_bridges);
 
   EXPECT_EQ(StatusCode::OK, status.GetStatusCode()) << status.ToString();
 }
@@ -276,7 +282,7 @@ TEST_F(AnIPValidator, validateOverlappingNetworksAsInvalidInCaseOfStaticIP) {
   IPConfig ip_config_2 = {"ethX2", IPSource::STATIC, "192.168.2.2", "255.255.0.0"};
   IPConfigs ip_configs{ip_config_1, ip_config_2};
 
-  auto status = validator_.ValidateIPConfigs(ip_configs);
+  auto status = validator_.ValidateIPConfigs(ip_configs, default_eths);
   EXPECT_EQ(StatusCode::NETWORK_CONFLICT, status.GetStatusCode()) << status.ToString();
 }
 
@@ -302,8 +308,24 @@ TEST_F(AnIPValidator, shouldValidateDHCPClientID) {
   IPConfig ip_config_1 = {"ethX1", IPSource::DHCP, to_long};
   IPConfigs ip_configs{ip_config_1};
 
-  auto status = validator_.ValidateIPConfigs(ip_configs);
+  auto status = validator_.ValidateIPConfigs(ip_configs, default_eths);
   EXPECT_EQ(StatusCode::GENERIC_ERROR, status.GetStatusCode()) << status.ToString();
+}
+
+TEST_F(AnIPValidator, validateIPSourceDependingOnTheDeviceTypeOfTheCorrespondingInterface) {
+  Interfaces virtual_interfaces = {Interface::CreateDummy("dummy0"), Interface::CreateDummy("dummy1"),
+    Interface::CreateVLAN("vlan42", 42, "br0")};
+  IPConfigs ip_configs_valid = {{"dummy0", IPSource::STATIC, "192.168.1.2", "255.255.255.0"}};
+  IPConfigs ip_configs_invalid = {{"dummy0", IPSource::DHCP}, {"dummy1", IPSource::BOOTP}, {"vlan42", IPSource::FIXIP}};
+  
+  auto status = validator_.ValidateIPConfigs(ip_configs_valid, virtual_interfaces);
+  EXPECT_EQ(StatusCode::OK, status.GetStatusCode()) << status.ToString();
+
+  status = validator_.ValidateIPConfigs(ip_configs_invalid, virtual_interfaces);
+  EXPECT_EQ(StatusCode::IP_CONFIG_SOURCE, status.GetStatusCode()) << status.ToString();
+  EXPECT_THAT(status.ToString(), testing::HasSubstr("dummy0"));
+  EXPECT_THAT(status.ToString(), testing::HasSubstr("dummy1"));
+  EXPECT_THAT(status.ToString(), testing::HasSubstr("vlan42"));
 }
 
 using ValidateParams = std::tuple<IPConfigs, IPConfigs, InterfaceInformations, StatusCode>;
@@ -327,7 +349,7 @@ TEST_P(AnIPValidatorDigests, throughItsValidateMethod) {
   EXPECT_EQ(expected_result, result.GetStatusCode());
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     Values, AnIPValidatorDigests,
     ::testing::Values(
         // #0 No configs can not conflict

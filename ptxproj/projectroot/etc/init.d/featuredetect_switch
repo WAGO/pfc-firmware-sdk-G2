@@ -4,24 +4,39 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (c) 2022 WAGO GmbH & Co. KG
+# Copyright (c) 2024 WAGO GmbH & Co. KG
 
-# detect switch features and create file for detect_feature config tool
+# detect switch features and create files for detect_feature config tool
 
-feature_dir=/etc/specific/features
-rm -f $feature_dir/switch-*
+SWCFG=/usr/sbin/swconfig
+FEATURE_DIR=/etc/specific/features
 
-declare -A feature_file_map
-feature_file_map["bcast_protect"]="switch-broadcast-protection"
-feature_file_map["rate_limit"]="switch-rate-limiting"
-feature_file_map["port_mirror"]="switch-port-mirroring"
-feature_file_map["fast_aging"]="switch-fast-aging"
+rm -f $FEATURE_DIR/switch-*
 
-SWCFG_INFO="$(/sbin/swconfig dev switch0 show)"
+if [[ -e /etc/switch_settings.conf && -x "${SWCFG}" ]]; then
+	touch "$FEATURE_DIR/switch-port-mapping"
+	touch "$FEATURE_DIR/switch-mac-learning"
+	touch "$FEATURE_DIR/switch-stp"
+	
+	declare -A feature_file_map
+	feature_file_map["bcast_protect"]="switch-broadcast-protection"
+	feature_file_map["rate_limit"]="switch-rate-limiting"
+	feature_file_map["port_mirror"]="switch-port-mirroring"
+		
+	SWCFG_INFO="$($SWCFG dev switch0 show)"
 
-for f in "${!feature_file_map[@]}"
-do
-	if [[ "$SWCFG_INFO" == *"$f"* ]]; then
-		touch $feature_dir/${feature_file_map[$f]}
-	fi
-done
+	for f in "${!feature_file_map[@]}"
+	do
+		if [[ "$SWCFG_INFO" == *"$f"* ]]; then
+			touch $FEATURE_DIR/${feature_file_map[$f]}
+		fi
+	done
+
+elif [[ -e /etc/specific/switchconfig.json && -x /etc/config-tools/config_switch ]]; then
+	touch "$FEATURE_DIR/switch-port-mapping"
+	touch "$FEATURE_DIR/switch-broadcast-protection-v2"
+	touch "$FEATURE_DIR/switch-multicast-protection"
+	touch "$FEATURE_DIR/switch-port-mirroring-v2"
+	touch "$FEATURE_DIR/switch-mac-learning"
+	touch "$FEATURE_DIR/switch-stp"
+fi

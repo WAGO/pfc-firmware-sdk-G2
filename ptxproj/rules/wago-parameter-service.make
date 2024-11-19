@@ -24,7 +24,7 @@ PACKAGES-$(PTXCONF_WAGO_PARAMETER_SERVICE) += wago-parameter-service
 #
 # Paths and names
 #
-WAGO_PARAMETER_SERVICE_VERSION        := 1.3.0
+WAGO_PARAMETER_SERVICE_VERSION        := 1.5.0
 WAGO_PARAMETER_SERVICE_MD5            :=
 WAGO_PARAMETER_SERVICE_BASE           := parameter-service
 WAGO_PARAMETER_SERVICE                := wago-$(WAGO_PARAMETER_SERVICE_BASE)-$(WAGO_PARAMETER_SERVICE_VERSION)
@@ -133,6 +133,11 @@ ifdef PTXCONF_WAGO_PARAMETER_SERVICE_DAEMON
 	@$(call install_copy, wago-parameter-service, 0,   0, 0750, -, /usr/sbin/paramd)
 	@$(call install_copy, wago-parameter-service, 0, 121, 0770,    /etc/paramd)
 	@$(call install_copy, wago-parameter-service, 0, 121, 0660, -, /etc/paramd/paramd.conf)
+	@$(call install_copy, wago-parameter-service, 0, 124, 0770,    /etc/authd)
+	@$(call install_copy, wago-parameter-service, 0, 124, 0770,    /etc/authd/clients)
+	@$(call install_copy, wago-parameter-service, 0, 124, 0770,    /etc/authd/resource_servers)
+	@$(call install_copy, wago-parameter-service, 0, 124, 0660, -, /etc/authd/clients/paramd.conf)
+	@$(call install_copy, wago-parameter-service, 0, 124, 0660, -, /etc/authd/resource_servers/wda.conf)
 	@$(call install_copy, wago-parameter-service, 0,   0, 0750, -, /etc/config-tools/get_wda)
 	@$(call install_copy, wago-parameter-service, 0,   0, 0750, -, /etc/config-tools/config_wda)
 	@$(call install_copy, wago-parameter-service, 0,   0, 0750, -, /etc/config-tools/backup-restore/parameter_service)

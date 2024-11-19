@@ -651,6 +651,15 @@
     },
     {
       "fileName": "local_src/config-tools/firewall/src/app/main.cpp",
+      "lineStart": "794",
+      "columnStart": "5",
+      "category": "Warning:clang-diagnostic-deprecated-declarations",
+      "severity": "NORMAL",
+      "message": "'xmlMemoryDump' is deprecated [clang-diagnostic-deprecated-declarations]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "local_src/config-tools/firewall/src/app/main.cpp",
       "lineStart": "796",
       "columnStart": "29",
       "category": "Warning:readability-container-size-empty",
@@ -9173,6 +9182,15 @@
       "moduleName": "firewall-tests"
     },
     {
+      "fileName": "pfc/ptxproj/local_src/config-tools/firewall/src/app/main.cpp",
+      "lineStart": "794",
+      "columnStart": "18",
+      "category": "Warning:deprecated-declarations",
+      "severity": "NORMAL",
+      "message": "‘void xmlMemoryDump()’ is deprecated [-Wdeprecated-declarations]",
+      "moduleName": "firewall-tests"
+    },
+    {
       "fileName": "pfc/ptxproj/local_src/config-tools/firewall/src/lib/error.hpp",
       "lineStart": "80",
       "columnStart": "7",
@@ -9300,7 +9318,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/deprecated/gthread.h",
-      "lineStart": "58",
+      "lineStart": "60",
       "columnStart": "36",
       "category": "Warning:modernize-redundant-void-arg",
       "severity": "NORMAL",
@@ -9309,16 +9327,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/deprecated/gthread.h",
-      "lineStart": "63",
-      "columnStart": "36",
-      "category": "Warning:modernize-redundant-void-arg",
-      "severity": "NORMAL",
-      "message": "redundant void argument list in field declaration [modernize-redundant-void-arg]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/deprecated/gthread.h",
-      "lineStart": "84",
+      "lineStart": "65",
       "columnStart": "36",
       "category": "Warning:modernize-redundant-void-arg",
       "severity": "NORMAL",
@@ -9336,16 +9345,25 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/deprecated/gthread.h",
-      "lineStart": "97",
-      "columnStart": "41",
+      "lineStart": "88",
+      "columnStart": "36",
       "category": "Warning:modernize-redundant-void-arg",
       "severity": "NORMAL",
-      "message": "redundant void argument list in variable declaration [modernize-redundant-void-arg]",
+      "message": "redundant void argument list in field declaration [modernize-redundant-void-arg]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/galloca.h",
+      "lineStart": "35",
+      "columnStart": "10",
+      "category": "Warning:modernize-deprecated-headers",
+      "severity": "NORMAL",
+      "message": "inclusion of deprecated C++ header 'string.h'; consider using 'cstring' instead [modernize-deprecated-headers]",
       "moduleName": "firewall-tests"
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gbacktrace.h",
-      "lineStart": "36",
+      "lineStart": "38",
       "columnStart": "10",
       "category": "Warning:modernize-deprecated-headers",
       "severity": "NORMAL",
@@ -9354,7 +9372,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gbookmarkfile.h",
-      "lineStart": "27",
+      "lineStart": "30",
       "columnStart": "10",
       "category": "Warning:modernize-deprecated-headers",
       "severity": "NORMAL",
@@ -9363,7 +9381,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gdate.h",
-      "lineStart": "32",
+      "lineStart": "34",
       "columnStart": "10",
       "category": "Warning:modernize-deprecated-headers",
       "severity": "NORMAL",
@@ -9372,7 +9390,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gerror.h",
-      "lineStart": "26",
+      "lineStart": "28",
       "columnStart": "10",
       "category": "Warning:modernize-deprecated-headers",
       "severity": "NORMAL",
@@ -9381,7 +9399,43 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
-      "lineStart": "27",
+      "lineStart": "100",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
+      "severity": "NORMAL",
+      "message": "do not use C-style cast to convert between unrelated types [cppcoreguidelines-pro-type-cstyle-cast]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
+      "lineStart": "102",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
+      "severity": "NORMAL",
+      "message": "do not use C-style cast to convert between unrelated types [cppcoreguidelines-pro-type-cstyle-cast]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
+      "lineStart": "103",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
+      "severity": "NORMAL",
+      "message": "do not use C-style cast to convert between unrelated types [cppcoreguidelines-pro-type-cstyle-cast]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
+      "lineStart": "104",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
+      "severity": "NORMAL",
+      "message": "do not use C-style cast to convert between unrelated types [cppcoreguidelines-pro-type-cstyle-cast]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
+      "lineStart": "29",
       "columnStart": "15",
       "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
       "severity": "NORMAL",
@@ -9390,7 +9444,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
-      "lineStart": "27",
+      "lineStart": "29",
       "columnStart": "15",
       "category": "Warning:google-readability-casting",
       "severity": "NORMAL",
@@ -9399,7 +9453,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
-      "lineStart": "34",
+      "lineStart": "36",
       "columnStart": "14",
       "category": "Warning:readability-braces-around-statements",
       "severity": "NORMAL",
@@ -9408,29 +9462,11 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
-      "lineStart": "34",
+      "lineStart": "36",
       "columnStart": "7",
       "category": "Warning:readability-implicit-bool-conversion",
       "severity": "NORMAL",
       "message": "implicit conversion 'GString *' (aka '_GString *') -> bool [readability-implicit-bool-conversion]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
-      "lineStart": "45",
-      "columnStart": "1",
-      "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
-      "severity": "NORMAL",
-      "message": "do not use C-style cast to convert between unrelated types [cppcoreguidelines-pro-type-cstyle-cast]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
-      "lineStart": "46",
-      "columnStart": "1",
-      "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
-      "severity": "NORMAL",
-      "message": "do not use C-style cast to convert between unrelated types [cppcoreguidelines-pro-type-cstyle-cast]",
       "moduleName": "firewall-tests"
     },
     {
@@ -9660,7 +9696,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
-      "lineStart": "73",
+      "lineStart": "72",
       "columnStart": "1",
       "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
       "severity": "NORMAL",
@@ -9669,7 +9705,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
-      "lineStart": "74",
+      "lineStart": "73",
       "columnStart": "1",
       "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
       "severity": "NORMAL",
@@ -9741,6 +9777,15 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
+      "lineStart": "82",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
+      "severity": "NORMAL",
+      "message": "do not use C-style cast to convert between unrelated types [cppcoreguidelines-pro-type-cstyle-cast]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
       "lineStart": "83",
       "columnStart": "1",
       "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
@@ -9759,7 +9804,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
-      "lineStart": "85",
+      "lineStart": "86",
       "columnStart": "1",
       "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
       "severity": "NORMAL",
@@ -9768,7 +9813,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
-      "lineStart": "86",
+      "lineStart": "87",
       "columnStart": "1",
       "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
       "severity": "NORMAL",
@@ -9795,15 +9840,6 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
-      "lineStart": "90",
-      "columnStart": "1",
-      "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
-      "severity": "NORMAL",
-      "message": "do not use C-style cast to convert between unrelated types [cppcoreguidelines-pro-type-cstyle-cast]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
       "lineStart": "91",
       "columnStart": "1",
       "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
@@ -9814,6 +9850,15 @@
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
       "lineStart": "92",
+      "columnStart": "1",
+      "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
+      "severity": "NORMAL",
+      "message": "do not use C-style cast to convert between unrelated types [cppcoreguidelines-pro-type-cstyle-cast]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
+      "lineStart": "93",
       "columnStart": "1",
       "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
       "severity": "NORMAL",
@@ -9849,7 +9894,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glib-autocleanups.h",
-      "lineStart": "99",
+      "lineStart": "98",
       "columnStart": "1",
       "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
       "severity": "NORMAL",
@@ -9858,7 +9903,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/glist.h",
-      "lineStart": "161",
+      "lineStart": "163",
       "columnStart": "10",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -9867,7 +9912,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1039",
+      "lineStart": "1349",
       "columnStart": "11",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -9876,7 +9921,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1044",
+      "lineStart": "1354",
       "columnStart": "77",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -9885,7 +9930,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1046",
+      "lineStart": "1356",
       "columnStart": "71",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -9894,7 +9939,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1049",
+      "lineStart": "1359",
       "columnStart": "63",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -9903,7 +9948,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1051",
+      "lineStart": "1361",
       "columnStart": "64",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -9912,7 +9957,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1053",
+      "lineStart": "1363",
       "columnStart": "73",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -9921,7 +9966,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1064",
+      "lineStart": "1374",
       "columnStart": "68",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -9930,7 +9975,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1068",
+      "lineStart": "1378",
       "columnStart": "68",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -9939,7 +9984,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "1068",
+      "lineStart": "1378",
       "columnStart": "99",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -9948,7 +9993,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmacros.h",
-      "lineStart": "38",
+      "lineStart": "40",
       "columnStart": "10",
       "category": "Warning:modernize-deprecated-headers",
       "severity": "NORMAL",
@@ -9957,7 +10002,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmain.h",
-      "lineStart": "262",
+      "lineStart": "302",
       "columnStart": "38",
       "category": "Warning:modernize-redundant-void-arg",
       "severity": "NORMAL",
@@ -9966,7 +10011,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmain.h",
-      "lineStart": "289",
+      "lineStart": "329",
       "columnStart": "36",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -9975,7 +10020,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmain.h",
-      "lineStart": "526",
+      "lineStart": "572",
       "columnStart": "38",
       "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
       "severity": "NORMAL",
@@ -9984,7 +10029,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmarkup.h",
-      "lineStart": "26",
+      "lineStart": "28",
       "columnStart": "10",
       "category": "Warning:modernize-deprecated-headers",
       "severity": "NORMAL",
@@ -9993,7 +10038,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmem.h",
-      "lineStart": "203",
+      "lineStart": "236",
       "columnStart": "19",
       "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
       "severity": "NORMAL",
@@ -10002,7 +10047,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmem.h",
-      "lineStart": "203",
+      "lineStart": "236",
       "columnStart": "3",
       "category": "Warning:modernize-use-auto",
       "severity": "NORMAL",
@@ -10011,7 +10056,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmem.h",
-      "lineStart": "207",
+      "lineStart": "240",
       "columnStart": "10",
       "category": "Warning:modernize-use-nullptr",
       "severity": "NORMAL",
@@ -10019,8 +10064,17 @@
       "moduleName": "firewall-tests"
     },
     {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmem.h",
+      "lineStart": "247",
+      "columnStart": "45",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "firewall-tests"
+    },
+    {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmessages.h",
-      "lineStart": "282",
+      "lineStart": "298",
       "columnStart": "11",
       "category": "Warning:readability-avoid-const-params-in-decls",
       "severity": "NORMAL",
@@ -10029,7 +10083,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmessages.h",
-      "lineStart": "32",
+      "lineStart": "34",
       "columnStart": "10",
       "category": "Warning:modernize-deprecated-headers",
       "severity": "NORMAL",
@@ -10038,7 +10092,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmessages.h",
-      "lineStart": "400",
+      "lineStart": "416",
       "columnStart": "1",
       "category": "Warning:cert-dcl50-cpp",
       "severity": "NORMAL",
@@ -10047,7 +10101,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmessages.h",
-      "lineStart": "408",
+      "lineStart": "424",
       "columnStart": "10",
       "category": "Warning:readability-braces-around-statements",
       "severity": "NORMAL",
@@ -10056,7 +10110,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmessages.h",
-      "lineStart": "411",
+      "lineStart": "427",
       "columnStart": "1",
       "category": "Warning:cert-dcl50-cpp",
       "severity": "NORMAL",
@@ -10065,7 +10119,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmessages.h",
-      "lineStart": "420",
+      "lineStart": "436",
       "columnStart": "1",
       "category": "Warning:cert-dcl50-cpp",
       "severity": "NORMAL",
@@ -10074,7 +10128,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmessages.h",
-      "lineStart": "429",
+      "lineStart": "445",
       "columnStart": "1",
       "category": "Warning:cert-dcl50-cpp",
       "severity": "NORMAL",
@@ -10083,7 +10137,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmessages.h",
-      "lineStart": "438",
+      "lineStart": "454",
       "columnStart": "1",
       "category": "Warning:cert-dcl50-cpp",
       "severity": "NORMAL",
@@ -10092,16 +10146,34 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gmessages.h",
-      "lineStart": "447",
+      "lineStart": "463",
       "columnStart": "1",
       "category": "Warning:cert-dcl50-cpp",
       "severity": "NORMAL",
       "message": "do not define a C-style variadic function; consider using a function parameter pack or currying instead [cert-dcl50-cpp]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/grefcount.h",
+      "lineStart": "77",
+      "columnStart": "35",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro replacement list should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gslice.h",
+      "lineStart": "28",
+      "columnStart": "10",
+      "category": "Warning:modernize-deprecated-headers",
+      "severity": "NORMAL",
+      "message": "inclusion of deprecated C++ header 'string.h'; consider using 'cstring' instead [modernize-deprecated-headers]",
       "moduleName": "firewall-tests"
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gslist.h",
-      "lineStart": "150",
+      "lineStart": "152",
       "columnStart": "10",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10110,7 +10182,106 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
-      "lineStart": "32",
+      "lineStart": "311",
+      "columnStart": "30",
+      "category": "Warning:readability-implicit-bool-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion 'const char *' -> bool [readability-implicit-bool-conversion]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "311",
+      "columnStart": "39",
+      "category": "Warning:readability-implicit-bool-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion 'const char *' -> bool [readability-implicit-bool-conversion]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "311",
+      "columnStart": "43",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "311",
+      "columnStart": "7",
+      "category": "Warning:readability-implicit-bool-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion 'int' -> bool [readability-implicit-bool-conversion]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "312",
+      "columnStart": "12",
+      "category": "Warning:modernize-use-nullptr",
+      "severity": "NORMAL",
+      "message": "use nullptr [modernize-use-nullptr]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "314",
+      "columnStart": "31",
+      "category": "Warning:readability-implicit-bool-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion 'const char *' -> bool [readability-implicit-bool-conversion]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "314",
+      "columnStart": "41",
+      "category": "Warning:readability-implicit-bool-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion 'const char *' -> bool [readability-implicit-bool-conversion]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "314",
+      "columnStart": "48",
+      "category": "Warning:readability-implicit-bool-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion 'int' -> bool [readability-implicit-bool-conversion]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "314",
+      "columnStart": "7",
+      "category": "Warning:readability-implicit-bool-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion 'int' -> bool [readability-implicit-bool-conversion]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "317",
+      "columnStart": "23",
+      "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
+      "severity": "NORMAL",
+      "message": "do not use C-style cast to convert between unrelated types [cppcoreguidelines-pro-type-cstyle-cast]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "318",
+      "columnStart": "14",
+      "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
+      "severity": "NORMAL",
+      "message": "do not use C-style cast to convert between unrelated types [cppcoreguidelines-pro-type-cstyle-cast]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "34",
       "columnStart": "10",
       "category": "Warning:modernize-deprecated-headers",
       "severity": "NORMAL",
@@ -10118,8 +10289,53 @@
       "moduleName": "firewall-tests"
     },
     {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "35",
+      "columnStart": "10",
+      "category": "Warning:modernize-deprecated-headers",
+      "severity": "NORMAL",
+      "message": "inclusion of deprecated C++ header 'string.h'; consider using 'cstring' instead [modernize-deprecated-headers]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "492",
+      "columnStart": "24",
+      "category": "Warning:readability-implicit-bool-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion 'const char *' -> bool [readability-implicit-bool-conversion]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "492",
+      "columnStart": "72",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstrfuncs.h",
+      "lineStart": "492",
+      "columnStart": "8",
+      "category": "Warning:readability-implicit-bool-conversion",
+      "severity": "NORMAL",
+      "message": "implicit conversion 'char *' -> bool [readability-implicit-bool-conversion]",
+      "moduleName": "firewall-tests"
+    },
+    {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
-      "lineStart": "166",
+      "lineStart": "198",
+      "columnStart": "28",
+      "category": "Warning:modernize-use-nullptr",
+      "severity": "NORMAL",
+      "message": "use nullptr [modernize-use-nullptr]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "201",
       "columnStart": "7",
       "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
       "severity": "NORMAL",
@@ -10128,7 +10344,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
-      "lineStart": "167",
+      "lineStart": "202",
       "columnStart": "7",
       "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
       "severity": "NORMAL",
@@ -10137,7 +10353,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
-      "lineStart": "169",
+      "lineStart": "204",
       "columnStart": "7",
       "category": "Warning:readability-braces-around-statements",
       "severity": "NORMAL",
@@ -10145,35 +10361,125 @@
       "moduleName": "firewall-tests"
     },
     {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "119",
-      "columnStart": "53",
-      "category": "Warning:bugprone-macro-parentheses",
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "220",
+      "columnStart": "29",
+      "category": "Warning:modernize-use-nullptr",
       "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "message": "use nullptr [modernize-use-nullptr]",
       "moduleName": "firewall-tests"
     },
     {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "119",
-      "columnStart": "77",
-      "category": "Warning:bugprone-macro-parentheses",
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "223",
+      "columnStart": "25",
+      "category": "Warning:modernize-use-nullptr",
       "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "message": "use nullptr [modernize-use-nullptr]",
       "moduleName": "firewall-tests"
     },
     {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "119",
-      "columnStart": "99",
-      "category": "Warning:bugprone-macro-parentheses",
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "226",
+      "columnStart": "15",
+      "category": "Warning:readability-braces-around-statements",
       "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
       "moduleName": "firewall-tests"
     },
     {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "30",
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "228",
+      "columnStart": "7",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "233",
+      "columnStart": "32",
+      "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
+      "severity": "NORMAL",
+      "message": "do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "234",
+      "columnStart": "25",
+      "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
+      "severity": "NORMAL",
+      "message": "do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "234",
+      "columnStart": "60",
+      "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
+      "severity": "NORMAL",
+      "message": "do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "234",
+      "columnStart": "76",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "236",
+      "columnStart": "11",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "239",
+      "columnStart": "7",
+      "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
+      "severity": "NORMAL",
+      "message": "do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "242",
+      "columnStart": "3",
+      "category": "Warning:readability-else-after-return",
+      "severity": "NORMAL",
+      "message": "do not use 'else' after 'return' [readability-else-after-return]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "242",
+      "columnStart": "7",
+      "category": "Warning:readability-braces-around-statements",
+      "severity": "NORMAL",
+      "message": "statement should be inside braces [readability-braces-around-statements]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "255",
+      "columnStart": "3",
+      "category": "Warning:cppcoreguidelines-pro-bounds-pointer-arithmetic",
+      "severity": "NORMAL",
+      "message": "do not use pointer arithmetic [cppcoreguidelines-pro-bounds-pointer-arithmetic]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gstring.h",
+      "lineStart": "39",
       "columnStart": "10",
       "category": "Warning:modernize-deprecated-headers",
       "severity": "NORMAL",
@@ -10182,79 +10488,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "315",
-      "columnStart": "63",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "316",
-      "columnStart": "63",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "317",
-      "columnStart": "150",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "317",
-      "columnStart": "186",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "317",
-      "columnStart": "222",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "317",
-      "columnStart": "63",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "36",
-      "columnStart": "35",
-      "category": "Warning:modernize-redundant-void-arg",
-      "severity": "NORMAL",
-      "message": "redundant void argument list in typedef [modernize-redundant-void-arg]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "44",
-      "columnStart": "73",
-      "category": "Warning:bugprone-macro-parentheses",
-      "severity": "NORMAL",
-      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "80",
+      "lineStart": "106",
       "columnStart": "67",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10263,8 +10497,143 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
-      "lineStart": "81",
-      "columnStart": "57",
+      "lineStart": "107",
+      "columnStart": "69",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "107",
+      "columnStart": "89",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "223",
+      "columnStart": "53",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "223",
+      "columnStart": "77",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "223",
+      "columnStart": "99",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "32",
+      "columnStart": "10",
+      "category": "Warning:modernize-deprecated-headers",
+      "severity": "NORMAL",
+      "message": "inclusion of deprecated C++ header 'errno.h'; consider using 'cerrno' instead [modernize-deprecated-headers]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "33",
+      "columnStart": "10",
+      "category": "Warning:modernize-deprecated-headers",
+      "severity": "NORMAL",
+      "message": "inclusion of deprecated C++ header 'stdlib.h'; consider using 'cstdlib' instead [modernize-deprecated-headers]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "34",
+      "columnStart": "10",
+      "category": "Warning:modernize-deprecated-headers",
+      "severity": "NORMAL",
+      "message": "inclusion of deprecated C++ header 'string.h'; consider using 'cstring' instead [modernize-deprecated-headers]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "40",
+      "columnStart": "35",
+      "category": "Warning:modernize-redundant-void-arg",
+      "severity": "NORMAL",
+      "message": "redundant void argument list in typedef [modernize-redundant-void-arg]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "437",
+      "columnStart": "63",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "438",
+      "columnStart": "63",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "439",
+      "columnStart": "150",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "439",
+      "columnStart": "186",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "439",
+      "columnStart": "222",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "439",
+      "columnStart": "63",
+      "category": "Warning:bugprone-macro-parentheses",
+      "severity": "NORMAL",
+      "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtestutils.h",
+      "lineStart": "48",
+      "columnStart": "73",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
       "message": "macro argument should be enclosed in parentheses [bugprone-macro-parentheses]",
@@ -10272,7 +10641,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gthread.h",
-      "lineStart": "340",
+      "lineStart": "353",
       "columnStart": "19",
       "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
       "severity": "NORMAL",
@@ -10281,7 +10650,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gthread.h",
-      "lineStart": "416",
+      "lineStart": "431",
       "columnStart": "23",
       "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
       "severity": "NORMAL",
@@ -10290,7 +10659,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gthread.h",
-      "lineStart": "525",
+      "lineStart": "542",
       "columnStart": "28",
       "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
       "severity": "NORMAL",
@@ -10299,7 +10668,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gthread.h",
-      "lineStart": "578",
+      "lineStart": "597",
       "columnStart": "28",
       "category": "Warning:cppcoreguidelines-pro-type-cstyle-cast",
       "severity": "NORMAL",
@@ -10308,7 +10677,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtypes.h",
-      "lineStart": "35",
+      "lineStart": "41",
       "columnStart": "10",
       "category": "Warning:modernize-deprecated-headers",
       "severity": "NORMAL",
@@ -10317,61 +10686,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtypes.h",
-      "lineStart": "459",
-      "columnStart": "10",
-      "category": "Warning:readability-implicit-bool-conversion",
-      "severity": "NORMAL",
-      "message": "implicit conversion bool -> 'gboolean' (aka 'int') [readability-implicit-bool-conversion]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtypes.h",
-      "lineStart": "461",
-      "columnStart": "10",
-      "category": "Warning:readability-implicit-bool-conversion",
-      "severity": "NORMAL",
-      "message": "implicit conversion bool -> 'gboolean' (aka 'int') [readability-implicit-bool-conversion]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtypes.h",
-      "lineStart": "464",
-      "columnStart": "10",
-      "category": "Warning:readability-implicit-bool-conversion",
-      "severity": "NORMAL",
-      "message": "implicit conversion bool -> 'gboolean' (aka 'int') [readability-implicit-bool-conversion]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtypes.h",
-      "lineStart": "464",
-      "columnStart": "44",
-      "category": "Warning:google-runtime-int",
-      "severity": "NORMAL",
-      "message": "consider replacing 'unsigned long long' with 'uint64' [google-runtime-int]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtypes.h",
-      "lineStart": "466",
-      "columnStart": "10",
-      "category": "Warning:readability-implicit-bool-conversion",
-      "severity": "NORMAL",
-      "message": "implicit conversion bool -> 'gboolean' (aka 'int') [readability-implicit-bool-conversion]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtypes.h",
-      "lineStart": "466",
-      "columnStart": "44",
-      "category": "Warning:google-runtime-int",
-      "severity": "NORMAL",
-      "message": "consider replacing 'unsigned long long' with 'uint64' [google-runtime-int]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtypes.h",
-      "lineStart": "47",
+      "lineStart": "53",
       "columnStart": "9",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
@@ -10380,7 +10695,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtypes.h",
-      "lineStart": "48",
+      "lineStart": "54",
       "columnStart": "9",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
@@ -10389,7 +10704,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtypes.h",
-      "lineStart": "53",
+      "lineStart": "59",
       "columnStart": "9",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
@@ -10398,7 +10713,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gtypes.h",
-      "lineStart": "54",
+      "lineStart": "60",
       "columnStart": "9",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
@@ -10407,16 +10722,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gutils.h",
-      "lineStart": "33",
-      "columnStart": "10",
-      "category": "Warning:modernize-deprecated-headers",
-      "severity": "NORMAL",
-      "message": "inclusion of deprecated C++ header 'stdarg.h'; consider using 'cstdarg' instead [modernize-deprecated-headers]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gutils.h",
-      "lineStart": "331",
+      "lineStart": "324",
       "columnStart": "28",
       "category": "Warning:modernize-redundant-void-arg",
       "severity": "NORMAL",
@@ -10425,7 +10731,16 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gutils.h",
-      "lineStart": "385",
+      "lineStart": "35",
+      "columnStart": "10",
+      "category": "Warning:modernize-deprecated-headers",
+      "severity": "NORMAL",
+      "message": "inclusion of deprecated C++ header 'stdarg.h'; consider using 'cstdarg' instead [modernize-deprecated-headers]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gutils.h",
+      "lineStart": "378",
       "columnStart": "33",
       "category": "Warning:readability-braces-around-statements",
       "severity": "NORMAL",
@@ -10434,7 +10749,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gutils.h",
-      "lineStart": "390",
+      "lineStart": "383",
       "columnStart": "11",
       "category": "Warning:readability-implicit-bool-conversion",
       "severity": "NORMAL",
@@ -10443,7 +10758,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gutils.h",
-      "lineStart": "390",
+      "lineStart": "383",
       "columnStart": "35",
       "category": "Warning:readability-braces-around-statements",
       "severity": "NORMAL",
@@ -10452,7 +10767,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gutils.h",
-      "lineStart": "400",
+      "lineStart": "393",
       "columnStart": "66",
       "category": "Warning:readability-braces-around-statements",
       "severity": "NORMAL",
@@ -10461,7 +10776,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gutils.h",
-      "lineStart": "405",
+      "lineStart": "398",
       "columnStart": "11",
       "category": "Warning:readability-implicit-bool-conversion",
       "severity": "NORMAL",
@@ -10470,7 +10785,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gutils.h",
-      "lineStart": "405",
+      "lineStart": "398",
       "columnStart": "35",
       "category": "Warning:readability-braces-around-statements",
       "severity": "NORMAL",
@@ -10479,7 +10794,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gutils.h",
-      "lineStart": "425",
+      "lineStart": "418",
       "columnStart": "10",
       "category": "Warning:readability-implicit-bool-conversion",
       "severity": "NORMAL",
@@ -10488,26 +10803,8 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/glib-2.0/glib/gutils.h",
-      "lineStart": "433",
+      "lineStart": "426",
       "columnStart": "12",
-      "category": "Warning:modernize-deprecated-headers",
-      "severity": "NORMAL",
-      "message": "inclusion of deprecated C++ header 'stdlib.h'; consider using 'cstdlib' instead [modernize-deprecated-headers]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/SAX2.h",
-      "lineStart": "15",
-      "columnStart": "10",
-      "category": "Warning:modernize-deprecated-headers",
-      "severity": "NORMAL",
-      "message": "inclusion of deprecated C++ header 'stdio.h'; consider using 'cstdio' instead [modernize-deprecated-headers]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/SAX2.h",
-      "lineStart": "16",
-      "columnStart": "10",
       "category": "Warning:modernize-deprecated-headers",
       "severity": "NORMAL",
       "message": "inclusion of deprecated C++ header 'stdlib.h'; consider using 'cstdlib' instead [modernize-deprecated-headers]",
@@ -10524,222 +10821,6 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/entities.h",
-      "lineStart": "60",
-      "columnStart": "5",
-      "category": "Warning:google-runtime-int",
-      "severity": "NORMAL",
-      "message": "consider replacing 'unsigned long' with 'uint32' [google-runtime-int]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/list.h",
-      "lineStart": "122",
-      "columnStart": "16",
-      "category": "Warning:readability-avoid-const-params-in-decls",
-      "severity": "NORMAL",
-      "message": "parameter 'old' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/list.h",
-      "lineStart": "122",
-      "columnStart": "33",
-      "category": "Warning:misc-misplaced-const",
-      "severity": "NORMAL",
-      "message": "'old' declared with a const-qualified typedef type; results in the type being '_xmlList *const' instead of 'const _xmlList *' [misc-misplaced-const]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/list.h",
-      "lineStart": "125",
-      "columnStart": "24",
-      "category": "Warning:misc-misplaced-const",
-      "severity": "NORMAL",
-      "message": "'old' declared with a const-qualified typedef type; results in the type being '_xmlList *const' instead of 'const _xmlList *' [misc-misplaced-const]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/list.h",
-      "lineStart": "125",
-      "columnStart": "7",
-      "category": "Warning:readability-avoid-const-params-in-decls",
-      "severity": "NORMAL",
-      "message": "parameter 'old' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "1072",
-      "columnStart": "26",
-      "category": "Warning:readability-avoid-const-params-in-decls",
-      "severity": "NORMAL",
-      "message": "parameter 'ctxt' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "1072",
-      "columnStart": "49",
-      "category": "Warning:misc-misplaced-const",
-      "severity": "NORMAL",
-      "message": "'ctxt' declared with a const-qualified typedef type; results in the type being '_xmlParserCtxt *const' instead of 'const _xmlParserCtxt *' [misc-misplaced-const]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "1073",
-      "columnStart": "14",
-      "category": "Warning:readability-avoid-const-params-in-decls",
-      "severity": "NORMAL",
-      "message": "parameter 'node' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "1073",
-      "columnStart": "31",
-      "category": "Warning:misc-misplaced-const",
-      "severity": "NORMAL",
-      "message": "'node' declared with a const-qualified typedef type; results in the type being '_xmlNode *const' instead of 'const _xmlNode *' [misc-misplaced-const]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "1078",
-      "columnStart": "11",
-      "category": "Warning:google-runtime-int",
-      "severity": "NORMAL",
-      "message": "consider replacing 'unsigned long' with 'uint32' [google-runtime-int]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "1079",
-      "columnStart": "30",
-      "category": "Warning:readability-avoid-const-params-in-decls",
-      "severity": "NORMAL",
-      "message": "parameter 'seq' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "1079",
-      "columnStart": "60",
-      "category": "Warning:misc-misplaced-const",
-      "severity": "NORMAL",
-      "message": "'seq' declared with a const-qualified typedef type; results in the type being '_xmlParserNodeInfoSeq *const' instead of 'const _xmlParserNodeInfoSeq *' [misc-misplaced-const]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "1080",
-      "columnStart": "42",
-      "category": "Warning:readability-avoid-const-params-in-decls",
-      "severity": "NORMAL",
-      "message": "parameter 'node' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "1080",
-      "columnStart": "59",
-      "category": "Warning:misc-misplaced-const",
-      "severity": "NORMAL",
-      "message": "'node' declared with a const-qualified typedef type; results in the type being '_xmlNode *const' instead of 'const _xmlNode *' [misc-misplaced-const]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "1083",
-      "columnStart": "34",
-      "category": "Warning:misc-misplaced-const",
-      "severity": "NORMAL",
-      "message": "'info' declared with a const-qualified typedef type; results in the type being '_xmlParserNodeInfo *const' instead of 'const _xmlParserNodeInfo *' [misc-misplaced-const]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "1083",
-      "columnStart": "7",
-      "category": "Warning:readability-avoid-const-params-in-decls",
-      "severity": "NORMAL",
-      "message": "parameter 'info' is const-qualified in the function declaration; const-qualification of parameters only has an effect in function definitions [readability-avoid-const-params-in-decls]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "1101",
-      "columnStart": "11",
-      "category": "Warning:google-runtime-int",
-      "severity": "NORMAL",
-      "message": "consider replacing 'long' with 'int32' [google-runtime-int]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "231",
-      "columnStart": "5",
-      "category": "Warning:google-runtime-int",
-      "severity": "NORMAL",
-      "message": "consider replacing 'long' with 'int32' [google-runtime-int]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "232",
-      "columnStart": "5",
-      "category": "Warning:google-runtime-int",
-      "severity": "NORMAL",
-      "message": "consider replacing 'long' with 'int32' [google-runtime-int]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "300",
-      "columnStart": "5",
-      "category": "Warning:google-runtime-int",
-      "severity": "NORMAL",
-      "message": "consider replacing 'unsigned long' with 'uint32' [google-runtime-int]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "301",
-      "columnStart": "5",
-      "category": "Warning:google-runtime-int",
-      "severity": "NORMAL",
-      "message": "consider replacing 'unsigned long' with 'uint32' [google-runtime-int]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "310",
-      "columnStart": "5",
-      "category": "Warning:google-runtime-int",
-      "severity": "NORMAL",
-      "message": "consider replacing 'unsigned long' with 'uint32' [google-runtime-int]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "313",
-      "columnStart": "5",
-      "category": "Warning:google-runtime-int",
-      "severity": "NORMAL",
-      "message": "consider replacing 'unsigned short' with 'uint16' [google-runtime-int]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "314",
-      "columnStart": "5",
-      "category": "Warning:google-runtime-int",
-      "severity": "NORMAL",
-      "message": "consider replacing 'unsigned short' with 'uint16' [google-runtime-int]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
       "lineStart": "64",
       "columnStart": "5",
       "category": "Warning:google-runtime-int",
@@ -10749,7 +10830,70 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "70",
+      "lineStart": "100",
+      "columnStart": "3",
+      "category": "Warning:google-runtime-int",
+      "severity": "NORMAL",
+      "message": "consider replacing 'unsigned long' with 'uint32' [google-runtime-int]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
+      "lineStart": "106",
+      "columnStart": "3",
+      "category": "Warning:google-runtime-int",
+      "severity": "NORMAL",
+      "message": "consider replacing 'unsigned long' with 'uint32' [google-runtime-int]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
+      "lineStart": "107",
+      "columnStart": "3",
+      "category": "Warning:google-runtime-int",
+      "severity": "NORMAL",
+      "message": "consider replacing 'unsigned long' with 'uint32' [google-runtime-int]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
+      "lineStart": "1189",
+      "columnStart": "11",
+      "category": "Warning:google-runtime-int",
+      "severity": "NORMAL",
+      "message": "consider replacing 'unsigned long' with 'uint32' [google-runtime-int]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
+      "lineStart": "1212",
+      "columnStart": "11",
+      "category": "Warning:google-runtime-int",
+      "severity": "NORMAL",
+      "message": "consider replacing 'long' with 'int32' [google-runtime-int]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
+      "lineStart": "228",
+      "columnStart": "5",
+      "category": "Warning:google-runtime-int",
+      "severity": "NORMAL",
+      "message": "consider replacing 'long' with 'int32' [google-runtime-int]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
+      "lineStart": "229",
+      "columnStart": "5",
+      "category": "Warning:google-runtime-int",
+      "severity": "NORMAL",
+      "message": "consider replacing 'long' with 'int32' [google-runtime-int]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
+      "lineStart": "296",
       "columnStart": "5",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
@@ -10758,8 +10902,8 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "87",
-      "columnStart": "3",
+      "lineStart": "297",
+      "columnStart": "5",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
       "message": "consider replacing 'unsigned long' with 'uint32' [google-runtime-int]",
@@ -10767,8 +10911,8 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "88",
-      "columnStart": "3",
+      "lineStart": "306",
+      "columnStart": "5",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
       "message": "consider replacing 'unsigned long' with 'uint32' [google-runtime-int]",
@@ -10776,8 +10920,26 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "89",
-      "columnStart": "3",
+      "lineStart": "309",
+      "columnStart": "5",
+      "category": "Warning:google-runtime-int",
+      "severity": "NORMAL",
+      "message": "consider replacing 'unsigned short' with 'uint16' [google-runtime-int]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
+      "lineStart": "310",
+      "columnStart": "5",
+      "category": "Warning:google-runtime-int",
+      "severity": "NORMAL",
+      "message": "consider replacing 'unsigned short' with 'uint16' [google-runtime-int]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
+      "lineStart": "74",
+      "columnStart": "5",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
       "message": "consider replacing 'unsigned long' with 'uint32' [google-runtime-int]",
@@ -10785,17 +10947,8 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "90",
-      "columnStart": "3",
-      "category": "Warning:google-runtime-int",
-      "severity": "NORMAL",
-      "message": "consider replacing 'unsigned long' with 'uint32' [google-runtime-int]",
-      "moduleName": "firewall-tests"
-    },
-    {
-      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
-      "lineStart": "96",
-      "columnStart": "3",
+      "lineStart": "80",
+      "columnStart": "5",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
       "message": "consider replacing 'unsigned long' with 'uint32' [google-runtime-int]",
@@ -10811,8 +10964,26 @@
       "moduleName": "firewall-tests"
     },
     {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
+      "lineStart": "98",
+      "columnStart": "3",
+      "category": "Warning:google-runtime-int",
+      "severity": "NORMAL",
+      "message": "consider replacing 'unsigned long' with 'uint32' [google-runtime-int]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/parser.h",
+      "lineStart": "99",
+      "columnStart": "3",
+      "category": "Warning:google-runtime-int",
+      "severity": "NORMAL",
+      "message": "consider replacing 'unsigned long' with 'uint32' [google-runtime-int]",
+      "moduleName": "firewall-tests"
+    },
+    {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/tree.h",
-      "lineStart": "122",
+      "lineStart": "133",
       "columnStart": "42",
       "category": "Warning:readability-avoid-const-params-in-decls",
       "severity": "NORMAL",
@@ -10821,7 +10992,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/tree.h",
-      "lineStart": "122",
+      "lineStart": "133",
       "columnStart": "58",
       "category": "Warning:misc-misplaced-const",
       "severity": "NORMAL",
@@ -10830,7 +11001,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/tree.h",
-      "lineStart": "1295",
+      "lineStart": "1345",
       "columnStart": "11",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
@@ -10839,7 +11010,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/tree.h",
-      "lineStart": "15",
+      "lineStart": "24",
       "columnStart": "10",
       "category": "Warning:modernize-deprecated-headers",
       "severity": "NORMAL",
@@ -10848,7 +11019,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/tree.h",
-      "lineStart": "16",
+      "lineStart": "25",
       "columnStart": "10",
       "category": "Warning:modernize-deprecated-headers",
       "severity": "NORMAL",
@@ -10857,7 +11028,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/tree.h",
-      "lineStart": "508",
+      "lineStart": "512",
       "columnStart": "5",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
@@ -10866,7 +11037,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/tree.h",
-      "lineStart": "509",
+      "lineStart": "513",
       "columnStart": "5",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
@@ -10875,7 +11046,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/tree.h",
-      "lineStart": "916",
+      "lineStart": "951",
       "columnStart": "11",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
@@ -10884,7 +11055,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/xmlIO.h",
-      "lineStart": "13",
+      "lineStart": "14",
       "columnStart": "10",
       "category": "Warning:modernize-deprecated-headers",
       "severity": "NORMAL",
@@ -10893,7 +11064,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/xmlIO.h",
-      "lineStart": "136",
+      "lineStart": "159",
       "columnStart": "5",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
@@ -10911,11 +11082,20 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/xmlmemory.h",
-      "lineStart": "151",
+      "lineStart": "155",
       "columnStart": "30",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
       "message": "consider replacing 'long' with 'int32' [google-runtime-int]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/xmlregexp.h",
+      "lineStart": "14",
+      "columnStart": "10",
+      "category": "Warning:modernize-deprecated-headers",
+      "severity": "NORMAL",
+      "message": "inclusion of deprecated C++ header 'stdio.h'; consider using 'cstdio' instead [modernize-deprecated-headers]",
       "moduleName": "firewall-tests"
     },
     {
@@ -10947,7 +11127,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/xpath.h",
-      "lineStart": "526",
+      "lineStart": "530",
       "columnStart": "11",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
@@ -10956,7 +11136,16 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/xpathInternals.h",
-      "lineStart": "223",
+      "lineStart": "15",
+      "columnStart": "10",
+      "category": "Warning:modernize-deprecated-headers",
+      "severity": "NORMAL",
+      "message": "inclusion of deprecated C++ header 'stdio.h'; consider using 'cstdio' instead [modernize-deprecated-headers]",
+      "moduleName": "firewall-tests"
+    },
+    {
+      "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/xpathInternals.h",
+      "lineStart": "224",
       "columnStart": "29",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10965,7 +11154,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/xpathInternals.h",
-      "lineStart": "223",
+      "lineStart": "224",
       "columnStart": "4",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10974,7 +11163,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/xpathInternals.h",
-      "lineStart": "276",
+      "lineStart": "277",
       "columnStart": "56",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -10983,7 +11172,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/include/libxml2/libxml/xpathInternals.h",
-      "lineStart": "287",
+      "lineStart": "288",
       "columnStart": "56",
       "category": "Warning:bugprone-macro-parentheses",
       "severity": "NORMAL",
@@ -11010,7 +11199,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/lib/glib-2.0/include/glibconfig.h",
-      "lineStart": "43",
+      "lineStart": "47",
       "columnStart": "9",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
@@ -11019,7 +11208,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/lib/glib-2.0/include/glibconfig.h",
-      "lineStart": "44",
+      "lineStart": "48",
       "columnStart": "9",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
@@ -11028,7 +11217,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/lib/glib-2.0/include/glibconfig.h",
-      "lineStart": "61",
+      "lineStart": "65",
       "columnStart": "26",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
@@ -11037,7 +11226,7 @@
     },
     {
       "fileName": "ptxproj.2013.03.0/platform-wago-pfcXXX/sysroot-target/usr/lib/glib-2.0/include/glibconfig.h",
-      "lineStart": "62",
+      "lineStart": "66",
       "columnStart": "26",
       "category": "Warning:google-runtime-int",
       "severity": "NORMAL",
@@ -11045,5 +11234,5 @@
       "moduleName": "firewall-tests"
     }
   ],
-  "size": 1227
+  "size": 1248
 }

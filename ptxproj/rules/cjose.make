@@ -14,8 +14,8 @@ PACKAGES-$(PTXCONF_CJOSE) += cjose
 #
 # Paths and names
 #
-CJOSE_VERSION    	:= 0.6.2.2
-CJOSE_MD5		:= f0eb45d7fe058cc55898c67bb3b0cb8f
+CJOSE_VERSION    	:= 0.6.2.3
+CJOSE_MD5		:= 0a04a93dc22996fc662cd032f623fdc3
 CJOSE			:= cjose-$(CJOSE_VERSION)
 CJOSE_SUFFIX		:= tar.gz
 CJOSE_URL		:= https://github.com/OpenIDC/cjose/releases/download/v$(CJOSE_VERSION)/$(CJOSE).$(CJOSE_SUFFIX)

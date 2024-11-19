@@ -121,6 +121,19 @@ EOF
 )
 
 #-------------------------------------------------------------------------------
+# WP400
+#-------------------------------------------------------------------------------
+
+WP400_REFID="TP-Common"
+WP400_MIN_VERSION="3.0.0"
+WP400_ARTICLES=$(cat << EOF
+  0762-3403
+  0762-3404
+  0762-3405
+EOF
+)
+
+#-------------------------------------------------------------------------------
 # CC100
 #-------------------------------------------------------------------------------
 
@@ -129,6 +142,8 @@ CC100_MIN_VERSION="3.0.0"
 CC100_ARTICLES=$(cat << EOF
   0751-9301
   0751-9401
+  0751-9402
+  0751-9402/000-001
 EOF
 )
 
@@ -150,7 +165,12 @@ case "$PLATFORM" in
     MIN_VERSION=$TP_MIN_VERSION
     ARTICLES=$TP_ARTICLES
     ;;
-  CC100-Linux)
+  WP400-Linux)
+    REFID=$WP400_REFID
+    MIN_VERSION=$WP400_MIN_VERSION
+    ARTICLES=$WP400_ARTICLES
+    ;;
+  CC100-Linux|CC100-Linux-hardened)
     REFID=$CC100_REFID
     MIN_VERSION=$CC100_MIN_VERSION
     ARTICLES=$CC100_ARTICLES
